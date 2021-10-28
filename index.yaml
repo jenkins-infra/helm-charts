@@ -11,4 +11,15 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/basic-helm-chart-example-0.1.0/basic-helm-chart-example-0.1.0.tgz
     version: 0.1.0
-generated: "2021-10-27T18:38:16.187987367Z"
+  wiki:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2021-10-28T12:52:18.833408113Z"
+    description: A Helm chart for Kubernetes
+    digest: 989fbd2a66f427895bba635bf25c3f50f7fc207a9b846a6f97db9b3ba761b994
+    name: wiki
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
+    version: 0.1.0
+generated: "2021-10-28T12:52:18.833414013Z"
