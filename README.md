@@ -1,6 +1,6 @@
 # public-charts
 
-Helm chart repository containing the jenkins-infra public charts.
+Helm chart repository containing the jenkins-infra public charts used in https://github.com/jenkins-infra/charts
 
 ## Usage
 
