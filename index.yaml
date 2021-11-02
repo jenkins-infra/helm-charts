@@ -13,6 +13,16 @@ entries:
     version: 0.1.0
   wiki:
   - apiVersion: v2
+    appVersion: 0.0.2
+    created: "2021-11-02T16:40:55.308116206Z"
+    description: A Helm chart for wiki static content
+    digest: fc51e953543152c81d0f1c97a7bf318bc4bd9d322035df7a94874352792da0e3
+    name: wiki
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.1/wiki-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     appVersion: 0.0.1
     created: "2021-10-28T12:52:18.833408113Z"
     description: A Helm chart for Kubernetes
@@ -22,4 +32,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2021-10-29T07:32:38.507991208Z"
+generated: "2021-11-02T16:40:55.308125406Z"
