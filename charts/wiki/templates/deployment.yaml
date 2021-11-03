@@ -39,11 +39,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: / # Webserver should answer, that's all
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: /status # The monitoring must answer properly to allow LB to start sending requests
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
