@@ -15,6 +15,20 @@ entries:
   acme:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2021-11-05T15:59:40.471778228Z"
+    description: A acme settings chart for Jenkins infra project
+    digest: f756b4190a37312c49728607ac219cd024621c8a139e637ba597399b0f2dff26
+    home: https://github.com/jenkins-infra/charts
+    maintainers:
+    - email: me@olblak.com
+      name: Olblak
+      url: https://github.com/olblak
+    name: acme
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/acme-0.1.1/acme-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2021-11-05T15:43:10.051634818Z"
     description: A acme settings chart for Jenkins infra project
     digest: bfd2466205927a6953a82e9cd130d08ac6a1eeba4979577d2ccae23b3e50dbed
@@ -27,6 +41,19 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/acme-0.1.0/acme-0.1.0.tgz
     version: 0.1.0
+  chatbot:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2021-11-05T15:59:40.624676378Z"
+    description: A Helm chart for plugins.jenkins.io
+    digest: 1d1c81159a1bc34935474e643e57513a49b48f166ca29faca62dd6e0de196c58
+    maintainers:
+    - name: timja
+    - name: slide
+    name: chatbot
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/chatbot-0.0.2/chatbot-0.0.2.tgz
+    version: 0.0.2
   custom-distribution-service:
   - apiVersion: v1
     appVersion: 0.0.5
@@ -37,6 +64,15 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/custom-distribution-service-0.2.0/custom-distribution-service-0.2.0.tgz
     version: 0.2.0
+  env-jenkins-release:
+  - apiVersion: v1
+    created: "2021-11-05T15:59:40.750260605Z"
+    description: Jenkins Release Environment Chart
+    digest: cc72f3cb4a51112865d927a36a900cadd67133d463de64407f431a486c5cac0a
+    name: env-jenkins-release
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/env-jenkins-release-0.1.1/env-jenkins-release-0.1.1.tgz
+    version: 0.1.1
   incrementals-publisher:
   - apiVersion: v1
     appVersion: v1.4.0
@@ -59,6 +95,47 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/javadoc-0.0.1/javadoc-0.0.1.tgz
     version: 0.0.1
+  jenkins:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2021-11-05T15:59:40.893722878Z"
+    dependencies:
+    - import-values:
+      - child: jenkins.master
+        parent: master
+      - child: jenkins.agent
+        parent: agent
+      - child: jenkins.persistence
+        parent: persistence
+      - child: jenkins.serviceAccount
+        parent: serviceAccount
+      - child: jenkins.rbac
+        parent: rbac
+      - child: jenkins.networkPolicy
+        parent: networkPolicy
+      name: jenkins
+      repository: https://charts.jenkins.io
+      version: 3.8.6
+    description: Jenkins Core Release Environment
+    digest: 7aef71abe2853ed356087fbae05fb49e1c94986b0b50a798a5ca57a224370b3a
+    icon: https://jenkins.io/images/logos/plumber/256.png
+    maintainers:
+    - name: Olblak
+    name: jenkins
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/jenkins-0.53.1/jenkins-0.53.1.tgz
+    version: 0.53.1
+  jenkins-kubernetes-agents:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2021-11-05T15:59:41.021008819Z"
+    description: A Helm chart for using Jenkins Kubernetes agents on a remote cluster
+    digest: 4da8331ba8a807bad649bd1566edea271480525e0ae9b60ae97c30ccfdd8ec45
+    name: jenkins-kubernetes-agents
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/jenkins-kubernetes-agents-0.1.1/jenkins-kubernetes-agents-0.1.1.tgz
+    version: 0.1.1
   jenkins-wiki-exporter:
   - apiVersion: v1
     created: "2021-11-05T13:21:57.016059026Z"
@@ -84,6 +161,16 @@ entries:
   keycloak:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2021-11-05T15:59:41.165703103Z"
+    description: Non Admin keycloak interface
+    digest: 43b114e3ac756541b460991c7eb1e2761bc2bc6fbcf90fd3b34b65425ddf9a63
+    name: keycloak
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/keycloak-0.1.1/keycloak-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2021-11-05T13:21:57.421015688Z"
     description: Non Admin keycloak interface
     digest: fc87de52107e765b3e4941f10b6cd3ccbc4ea536c7318a6e32a4489399229567
@@ -92,6 +179,18 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/keycloak-0.1.0/keycloak-0.1.0.tgz
     version: 0.1.0
+  ldap:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2021-11-05T15:59:41.285392182Z"
+    description: A Helm chart for ldap.jenkins.io
+    digest: 5351a0571eb2d5bcd0aac2cf31be598711cadff9cea54f3b0cec7ec5a270d07c
+    maintainers:
+    - name: olblak
+    name: ldap
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/ldap-0.0.2/ldap-0.0.2.tgz
+    version: 0.0.2
   mirrorbits:
   - apiVersion: v1
     appVersion: v0.5.1
@@ -203,4 +302,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2021-11-05T15:43:10.051657018Z"
+generated: "2021-11-05T15:59:41.285437482Z"
