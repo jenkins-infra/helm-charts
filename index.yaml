@@ -1,5 +1,132 @@
 apiVersion: v1
 entries:
+  accountapp:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2021-11-05T13:21:56.492597207Z"
+    description: A Helm chart for accounts.jenkins.io
+    digest: c88bbd7d5f13244aa4f8be9ab27afe9551c176e1838126efe493d1efb473a504
+    maintainers:
+    - name: timja
+    name: accountapp
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/accountapp-0.0.1/accountapp-0.0.1.tgz
+    version: 0.0.1
+  custom-distribution-service:
+  - apiVersion: v1
+    appVersion: 0.0.5
+    created: "2021-11-05T13:21:56.633585405Z"
+    description: custom-distribution-service
+    digest: c641b1237ec91c8a119209873edee0c6d9e37b6583f9c133abc307ae896d80ca
+    name: custom-distribution-service
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/custom-distribution-service-0.2.0/custom-distribution-service-0.2.0.tgz
+    version: 0.2.0
+  incrementals-publisher:
+  - apiVersion: v1
+    appVersion: v1.4.0
+    created: "2021-11-05T13:21:56.750382208Z"
+    description: incrementals-publisher
+    digest: f664fe535fd5ca38f15af2420fe70dc8ebecc8483095b87b6ff4d65fdabfb202
+    name: incrementals-publisher
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/incrementals-publisher-0.3.0/incrementals-publisher-0.3.0.tgz
+    version: 0.3.0
+  javadoc:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2021-11-05T13:21:56.893579708Z"
+    description: A Helm chart for javadoc.jenkins.io
+    digest: c78445e713588d3317220da1d32ede43222275ef3722ac31de5ca4af880a3914
+    maintainers:
+    - name: timja
+    name: javadoc
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/javadoc-0.0.1/javadoc-0.0.1.tgz
+    version: 0.0.1
+  jenkins-wiki-exporter:
+  - apiVersion: v1
+    created: "2021-11-05T13:21:57.016059026Z"
+    description: A Helm chart that deploy a service to convert Jenkins plugin information
+      fro confluence into markdown
+    digest: 60dfa1fac697d8ee4d663946f9a81b01b219a9fc0ed4542b630c21ff3970a6e3
+    name: jenkins-wiki-exporter
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/jenkins-wiki-exporter-0.5.0/jenkins-wiki-exporter-0.5.0.tgz
+    version: 0.5.0
+  jenkinsio:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2021-11-05T13:21:57.303856853Z"
+    description: A Helm chart for jenkins.io
+    digest: d4ce59088cd2eedfaa4c83aa64ac27fb79721c1f1b07131de54420194dc2d2b4
+    maintainers:
+    - name: timja
+    name: jenkinsio
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/jenkinsio-0.0.23/jenkinsio-0.0.23.tgz
+    version: 0.0.23
+  keycloak:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-11-05T13:21:57.421015688Z"
+    description: Non Admin keycloak interface
+    digest: fc87de52107e765b3e4941f10b6cd3ccbc4ea536c7318a6e32a4489399229567
+    name: keycloak
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/keycloak-0.1.0/keycloak-0.1.0.tgz
+    version: 0.1.0
+  mirrorbits:
+  - apiVersion: v1
+    appVersion: v0.5.1
+    created: "2021-11-05T13:21:57.572656154Z"
+    description: Mirrobits helm chart for Kubernetes
+    digest: bae025ce05dc84a811682da103ec2bcae035eb8c4b78bdaa86c0bc823d4892a3
+    maintainers:
+    - email: me@olblak.com
+      name: olblak
+    name: mirrorbits
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/mirrorbits-0.1.1/mirrorbits-0.1.1.tgz
+    version: 0.1.1
+  plugin-site:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2021-11-05T13:21:57.737915956Z"
+    description: A Helm chart for plugins.jenkins.io
+    digest: dd55cdffc642b84d8b8be234125956425437ea43427dadd58f9e03b0f17d18c2
+    maintainers:
+    - name: timja
+    - name: halkeye
+    name: plugin-site
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/plugin-site-0.0.3/plugin-site-0.0.3.tgz
+    version: 0.0.3
+  reports:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2021-11-05T13:21:57.887484434Z"
+    description: A Helm chart for reports.jenkins.io
+    digest: 0495c84112775eb7539d24c64331633a70b31a39d2ebe136ad9d7a0c8d36a485
+    maintainers:
+    - name: timja
+    name: reports
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/reports-0.0.1/reports-0.0.1.tgz
+    version: 0.0.1
+  uplink:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2021-11-05T13:21:58.01444766Z"
+    description: A Helm chart for uplink.jenkins.io
+    digest: e1ee1ed7736e365b285b16a75a609e6acf7ca03c537eb4a4ddd090f1e45c1675
+    maintainers:
+    - name: olblak
+    name: uplink
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/uplink-0.1.0/uplink-0.1.0.tgz
+    version: 0.1.0
   wiki:
   - apiVersion: v2
     appVersion: 0.0.7
@@ -61,4 +188,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2021-11-03T18:07:08.287468705Z"
+generated: "2021-11-05T13:21:58.014467062Z"
