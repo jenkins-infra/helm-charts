@@ -14,7 +14,7 @@ helm install -f values.yaml -f values.local.yaml --name chatbot .
 helm upgrade  -f values.yaml -f values.local.yaml  chartbot .
 ```
 
-You need to define some configuration locally in a separate values file
+You need to define some configuration locally in a separate values file.
 
 Here's an example `values.local.yaml` file:
 ```yaml
