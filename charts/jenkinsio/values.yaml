@@ -19,8 +19,9 @@ service:
   type: ClusterIP
   port: 80
 # Please define ingress settings into environment variable
-# ingress:
-#  enabled: true
+ingress:
+  enabled: false
+  className: ""
 #  annotations:
 #    "cert-manager.io/cluster-issuer": "letsencrypt-prod"
 #    "nginx.ingress.kubernetes.io/proxy-body-size": "500m"
