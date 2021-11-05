@@ -37,13 +37,13 @@ spec:
               service:
                 name: keycloak-http
                 port:
-                  number: 80
+                  number: {{ $svcPort }}
           - path: /auth/admin/
             pathType: Prefix
             backend:
               service:
                 name: {{ $fullName }}-404
                 port:
-                  number: 80
+                  number: {{ $svcPort }}
     {{- end }}
   {{- end }}
