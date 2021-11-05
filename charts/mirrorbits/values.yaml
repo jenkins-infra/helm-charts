@@ -39,10 +39,9 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
+  type: ClusterIP
+  port: 80
   files:
-    type: ClusterIP
-    port: 80
-  mirrorbits:
     type: ClusterIP
     port: 80
 
