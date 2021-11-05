@@ -1,6 +1,6 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "mirrorbits.fullname" . -}}
-{{- $svcPort := .Values.service.port -}}
+{{- $svcPort := .Values.service.mirrorbits.port -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -13,8 +13,8 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-{{- if .Values.ingress.ingressClassName }}
-  ingressClassName: {{ .Values.ingress.ingressClassName }}
+{{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
 {{- end }}
 {{- if .Values.ingress.tls }}
   tls:
@@ -38,7 +38,7 @@ spec:
               service:
                 name: {{ if .serviceNameSuffix }}{{ $fullName }}-{{ .serviceNameSuffix }}{{ else }}{{ $fullName }}{{ end }}
                 port:
-                  number: 80
+                  number: {{ $svcPort }}
         {{- end }}
   {{- end }}
 {{- end }}
