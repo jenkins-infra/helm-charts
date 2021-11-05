@@ -43,6 +43,7 @@ service:
 # Please define ingress settings into environment variable
 ingress:
   enabled: false
+  className: ""
   paths:
     - path: /api/(.*)
       svcName: backend
