@@ -15,6 +15,7 @@ service:
   port: 80
 ingress:
   enabled: false
+  className: ""
 # Please define ingress settings into environment variable
 #  enabled: true
 #  annotations:

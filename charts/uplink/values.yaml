@@ -37,6 +37,7 @@ service:
 
 ingress:
   enabled: false
+  className: ""
   annotations:
     kubernetes.io/tls-acme: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /
