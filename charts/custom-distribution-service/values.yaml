@@ -5,8 +5,8 @@
 replicaCount: 1
 image:
   repository: jenkinsciinfra/custom-distribution-service
-  tag: "0.0.5"
-  pullPolicy: IfNotPresent
+  tag: "latest"
+  # pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
