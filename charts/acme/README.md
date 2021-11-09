@@ -1,9 +1,10 @@
 # Jenkins Infrastructure ACME settings
+
 This chart is configured to use the dns challenge.
 
-https://docs.cert-manager.io/en/latest/tasks/acme/configuring-dns01/azuredns.html
-
-The chart allows multiple dns01 configurations to be passed, where `acme.dns01` accepts any valid settings as defined https://cert-manager.io/docs/configuration/acme/dns01/[here].
+It allows multiple dns01 configurations to be passed,
+with `acme.dns01` accepting any valid settings
+as defined in <https://cert-manager.io/docs/configuration/acme/dns01/>.
 
 Example configuration:
 
@@ -45,4 +46,6 @@ acme:
 ```
 
 ## Links
-* https://cert-manager.io/docs/configuration/acme/[cert-manager]
+
+* <https://docs.cert-manager.io/en/latest/tasks/acme/configuring-dns01/azuredns.html>
+* <https://cert-manager.io/docs/configuration/acme/>
