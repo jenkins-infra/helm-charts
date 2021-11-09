@@ -66,6 +66,17 @@ entries:
     version: 0.1.0
   chatbot:
   - apiVersion: v1
+    created: "2021-11-09T18:37:14.624092638Z"
+    description: A Helm chart for plugins.jenkins.io
+    digest: 82c105aeb11d064490e9151cb3054d9e7ea70a420163b7d06ae69bca2680e1e8
+    maintainers:
+    - name: timja
+    - name: slide
+    name: chatbot
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/chatbot-0.1.0/chatbot-0.1.0.tgz
+    version: 0.1.0
+  - apiVersion: v1
     appVersion: "1.0"
     created: "2021-11-05T15:59:40.624676378Z"
     description: A Helm chart for plugins.jenkins.io
@@ -395,4 +406,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2021-11-09T15:58:48.559470537Z"
+generated: "2021-11-09T18:37:14.624523032Z"
