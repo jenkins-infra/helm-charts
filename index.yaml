@@ -24,6 +24,19 @@ entries:
     version: 0.0.1
   acme:
   - apiVersion: v1
+    created: "2021-11-09T15:58:48.559415536Z"
+    description: An acme settings chart for Jenkins infra project
+    digest: 45e54d889575a6dbce1103e471d9c60d13875634a326f2db7fa84dcf7003e94c
+    home: https://github.com/jenkins-infra/charts
+    maintainers:
+    - email: me@olblak.com
+      name: Olblak
+      url: https://github.com/olblak
+    name: acme
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/acme-0.1.2/acme-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v1
     appVersion: "1.0"
     created: "2021-11-05T15:59:40.471778228Z"
     description: A acme settings chart for Jenkins infra project
@@ -382,4 +395,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2021-11-09T11:57:00.007939904Z"
+generated: "2021-11-09T15:58:48.559470537Z"
