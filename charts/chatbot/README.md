@@ -11,12 +11,13 @@ helm install -f values.yaml -f values.local.yaml --name chatbot .
 ```
 
 ```yaml
-helm upgrade  -f values.yaml -f values.local.yaml  chartbot .
+helm upgrade  -f values.yaml -f values.local.yaml chatbot .
 ```
 
 You need to define some configuration locally in a separate values file.
 
 Here's an example `values.local.yaml` file:
+
 ```yaml
 github:
   username: your-github-username
