@@ -2,9 +2,7 @@
 
 This chart is configured to use the dns challenge.
 
-It allows multiple dns01 configurations to be passed,
-with `acme.dns01` accepting any valid settings
-as defined in <https://cert-manager.io/docs/configuration/acme/dns01/>.
+It allows multiple dns01 configurations to be passed, with `acme.dns01` accepting any valid settings as defined in <https://cert-manager.io/docs/configuration/acme/dns01/>.
 
 Example configuration:
 
@@ -46,6 +44,5 @@ acme:
 ```
 
 ## Links
-
 * <https://docs.cert-manager.io/en/latest/tasks/acme/configuring-dns01/azuredns.html>
 * <https://cert-manager.io/docs/configuration/acme/>
