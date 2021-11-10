@@ -196,6 +196,16 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/jenkins-0.53.1/jenkins-0.53.1.tgz
     version: 0.53.1
+  jenkins-additional:
+  - apiVersion: v1
+    created: "2021-11-10T12:48:25.187492363Z"
+    description: Jenkins additional templates
+    digest: 905d7edc8d335a43bf68d93ae2d755f962cc36a620e5a69544b733617ae2614c
+    icon: https://jenkins.io/images/logos/plumber/256.png
+    name: jenkins-additional
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/jenkins-additional-0.0.1/jenkins-additional-0.0.1.tgz
+    version: 0.0.1
   jenkins-kubernetes-agents:
   - apiVersion: v2
     appVersion: 0.1.0
@@ -406,4 +416,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2021-11-09T18:37:14.624523032Z"
+generated: "2021-11-10T12:48:25.187556262Z"
