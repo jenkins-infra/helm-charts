@@ -117,6 +117,14 @@ entries:
     version: 0.1.1
   incrementals-publisher:
   - apiVersion: v1
+    created: "2021-11-16T17:14:17.417810485Z"
+    description: incrementals-publisher
+    digest: e1552f9c3320e2e20d764ad8a6b61b8efc2b29be3f288d1b8777b27bf283f3f3
+    name: incrementals-publisher
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/incrementals-publisher-0.4.0/incrementals-publisher-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v1
     appVersion: v1.4.0
     created: "2021-11-05T13:21:56.750382208Z"
     description: incrementals-publisher
@@ -416,4 +424,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2021-11-10T12:48:25.187556262Z"
+generated: "2021-11-16T17:14:17.417868285Z"
