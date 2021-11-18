@@ -24,8 +24,8 @@ data:
         rewrite ^/((?!patron|maven-site|jenkins.jnlp).+)$ https://www.jenkins.io/$1 permanent;
         rewrite ^/$ https://$host permanent;
       }
-      more_set_headers X-Content-Type-Options "nosniff";
-      more_set_headers X-Frame-Options "DENY";
+      add_header X-Content-Type-Options "nosniff";
+      add_header X-Frame-Options "DENY";
 
       root   /usr/share/nginx/html;
 
