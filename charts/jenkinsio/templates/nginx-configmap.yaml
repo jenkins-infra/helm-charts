@@ -19,7 +19,14 @@ data:
         return 301 https://www.jenkins.io$request_uri;
       }
       {{- end }}
-  
+
+      if ( $scheme = "http" ) {
+        rewrite ^/((?!patron|maven-site|jenkins.jnlp).+)$ https://www.jenkins.io/$1 permanent;
+        rewrite ^/$ https://$host permanent;
+      }
+      more_set_headers X-Content-Type-Options "nosniff";
+      more_set_headers X-Frame-Options "DENY";
+
       root   /usr/share/nginx/html;
 
       location / {
@@ -30,8 +37,6 @@ data:
             rewrite ^/$ https://www.jenkins.io/$lang$1;
           }   
       }
-      
-      add_header X-Frame-Options "DENY";
 
       location ~* \.(?:css|js|woff|eot|svg|ttf|otf|png|gif|jpe?g) {
         expires 2d;
