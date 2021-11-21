@@ -5,12 +5,12 @@
 replicaCount: 1
 images:
   en:
-    repository: nginx@sha256 # nginx:1.17
-    tag: ee2970c234800c5b5841d20d04b7ddc2a08f8653ce6d3376782c8a48eb61428b
+    repository: nginx
+    tag: 1.20.2-alpine
     pullPolicy: Always
   zh:
-    repository: nginx@sha256 # nginx:1.17
-    tag: ee2970c234800c5b5841d20d04b7ddc2a08f8653ce6d3376782c8a48eb61428b
+    repository: nginx
+    tag: 1.20.2-alpine
     pullPolicy: Always
 imagePullSecrets: []
 nameOverride: ""

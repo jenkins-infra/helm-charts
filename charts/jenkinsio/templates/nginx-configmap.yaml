@@ -19,7 +19,10 @@ data:
         return 301 https://www.jenkins.io$request_uri;
       }
       {{- end }}
-  
+
+      add_header X-Content-Type-Options "nosniff";
+      add_header X-Frame-Options "DENY";
+
       root   /usr/share/nginx/html;
 
       location / {
@@ -30,8 +33,6 @@ data:
             rewrite ^/$ https://www.jenkins.io/$lang$1;
           }   
       }
-      
-      add_header X-Frame-Options "DENY";
 
       location ~* \.(?:css|js|woff|eot|svg|ttf|otf|png|gif|jpe?g) {
         expires 2d;

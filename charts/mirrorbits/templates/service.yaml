@@ -5,9 +5,9 @@ metadata:
   labels:
 {{ include "mirrorbits.labels" . | indent 4 }}
 spec:
-  type: {{ .Values.service.mirrorbits.type }}
+  type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.mirrorbits.port }}
+    - port: {{ .Values.service.port }}
       targetPort: 8080
       protocol: TCP
       name: http
