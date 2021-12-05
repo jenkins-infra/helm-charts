@@ -2,7 +2,6 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-
 backend:
   replicaCount: 2
   image:
@@ -69,14 +68,13 @@ ingress:
 #      hosts:
 #        - plugins.jenkins.io
 
-
 nodeSelector: {}
 
 tolerations: []
 
 affinity: {}
 
-dataFileUrl: https://ci.jenkins.io/job/Infra/job/plugin-site-api/job/generate-data/lastSuccessfulBuild/artifact/plugins.json.gzip
+dataFileUrl: https://ci.jenkins.io/job/Infra/job/plugin-site-api/job/master/lastSuccessfulBuild/artifact/plugins.json.gzip
 
 github:
   appId: ""
