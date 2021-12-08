@@ -25,7 +25,5 @@ data:
         expires +1y;
       }
 
-      rewrite ^([^.]*[^/])$ $1/ permanent;
-
       try_files $uri $uri/index.html =404;
     }
