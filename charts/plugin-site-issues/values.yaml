@@ -88,6 +88,6 @@ jira:
   password: ""
 
 github:
-  app_id: ""
+  appId: ""
   # github.privateKey -- token to update github checks and look up commits
-  private_key: ""
+  appPrivateKey: ""
