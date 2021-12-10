@@ -394,6 +394,16 @@ entries:
   plugin-site-issues:
   - apiVersion: v2
     appVersion: 0.0.1
+    created: "2021-12-10T07:00:02.439999853Z"
+    description: plugin-site-issues
+    digest: 90cf3b6d80bee34cbfa5d41fd0f8eb05c4815eee8c571ccd69021c76082a2f49
+    name: plugin-site-issues
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/public-charts/releases/download/plugin-site-issues-0.1.2/plugin-site-issues-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 0.0.1
     created: "2021-12-09T18:10:33.723632827Z"
     description: plugin-site-issues
     digest: 505afc020e40a61a9aa757f12f870c951e97fca5e14d2b79bd3fbf6cf6f12cbe
@@ -497,4 +507,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2021-12-09T18:10:33.723803028Z"
+generated: "2021-12-10T07:00:02.440079253Z"
