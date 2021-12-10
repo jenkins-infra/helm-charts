@@ -68,7 +68,7 @@ spec:
                 secretKeyRef:
                   name: {{ include "plugin-site-issues.fullname" . }}
                   key: github_app_id
-            - name: JIRA_APP_PRIVATE_KEY
+            - name: GITHUB_APP_PRIVATE_KEY
               valueFrom:
                 secretKeyRef:
                   name: {{ include "plugin-site-issues.fullname" . }}
