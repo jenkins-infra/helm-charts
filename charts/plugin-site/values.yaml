@@ -2,12 +2,11 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-
 backend:
   replicaCount: 2
   image:
     repository: jenkinsciinfra/plugin-site-api
-    tag: 242-0f9b58
+    tag: 266-ab61e2
     pullPolicy: IfNotPresent
   port: 8080
   resources:
@@ -68,7 +67,6 @@ ingress:
 #    - secretName: plugins-tls
 #      hosts:
 #        - plugins.jenkins.io
-
 
 nodeSelector: {}
 
