@@ -1,6 +1,6 @@
-# public-charts
+# helm-charts
 
-Helm chart repository containing the jenkins-infra public charts used in https://github.com/jenkins-infra/charts
+Helm chart repository containing the jenkins-infra helm charts used in https://github.com/jenkins-infra/charts
 
 ## Usage
 
@@ -8,7 +8,7 @@ Helm chart repository containing the jenkins-infra public charts used in https:/
 
 Once Helm has been set up correctly, add the repo as follows:
 
-`helm repo add jenkins-infra https://jenkins-infra.github.io/public-charts`
+`helm repo add jenkins-infra https://jenkins-infra.github.io/helm-charts`
 
 If you had already added this repo earlier, run `helm repo update` to retrieve the latest versions of the packages.  You can then run `helm search repo jenkins-infra` to see the charts.
 
