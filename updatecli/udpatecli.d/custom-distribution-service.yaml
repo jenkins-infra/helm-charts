@@ -10,18 +10,28 @@ sources:
       username: "{{ .github.username }}"
       versionFilter:
         kind: latest
+  chartVersion:
+    name: Get custom-distribution-service helm chart version
+    kind: yaml
+    spec:
+      file: "charts/custom-distribution-service/Chart.yaml"
+      key: "version"
+    transformers:
+      - semverInc: "patch"
 conditions:
   checkDockerImagePublished:
     name: "Is latest jenkinsciinfra/custom-distribution-service docker image published"
     kind: dockerImage
+    sourceID: latestRelease
     spec:
       image: "jenkinsciinfra/custom-distribution-service"
 targets:
   updateReleaseInConfig:
     name: "Update the tag of the Docker image for custom-distribution-service"
     kind: yaml
+    sourceID: latestRelease
     spec:
-      file: config/custom-distribution-service.yaml
+      file: charts/custom-distribution-service/values.yaml
       key: image.tag
     scm:
       github:
@@ -32,3 +42,10 @@ targets:
         token: "{{ requiredEnv .github.token }}"
         username: "{{ .github.username }}"
         branch: "{{ .github.branch }}"
+  updateChartVersion:
+    name: Bump custom-distribution-service helm chart version
+    kind: yaml
+    sourceID: chartVersion
+    spec:
+      file: "charts/custom-distribution-service/Chart.yaml"
+      key: "version"

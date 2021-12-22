@@ -9,18 +9,28 @@ sources:
       repository: "docker-confluence-data"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
+  chartVersion:
+    name: Get wiki helm chart version
+    kind: yaml
+    spec:
+      file: "charts/wiki/Chart.yaml"
+      key: "version"
+    transformers:
+      - semverInc: "patch"
 conditions:
   checkDockerImagePublished:
     name: "Test jenkinsciinfra/wiki:<latest_version> docker image tag"
     kind: dockerImage
+    sourceID: latestRelease
     spec:
       image: "jenkinsciinfra/wiki"
 targets:
   updateReleaseInConfig:
     name: "Update wiki docker image tag"
     kind: yaml
+    sourceID: latestRelease
     spec:
-      file: "config/wiki.yaml"
+      file: "charts/wiki/values.yaml"
       key: "image.tag"
     scm:
       github:
@@ -31,3 +41,10 @@ targets:
         token: "{{ requiredEnv .github.token }}"
         username: "{{ .github.username }}"
         branch: "{{ .github.branch }}"
+  updateChartVersion:
+    name: Bump wiki helm chart version
+    kind: yaml
+    sourceID: chartVersion
+    spec:
+      file: "charts/wiki/Chart.yaml"
+      key: "version"

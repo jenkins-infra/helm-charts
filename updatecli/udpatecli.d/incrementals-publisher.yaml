@@ -9,18 +9,28 @@ sources:
       repository: "incrementals-publisher"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
+  chartVersion:
+    name: Get incrementals-publisher helm chart version
+    kind: yaml
+    spec:
+      file: "charts/incrementals-publisher/Chart.yaml"
+      key: "version"
+    transformers:
+      - semverInc: "patch"
 conditions:
   checkDockerImagePublished:
     name: "Test if jenkinsciinfra/incrementals-publisher docker image is published"
     kind: dockerImage
+    sourceID: latestRelease
     spec:
       image: "jenkinsciinfra/incrementals-publisher"
 targets:
   updateReleaseInConfig:
     name: "Update incrementals-publisher appVersion"
     kind: yaml
+    sourceID: latestRelease
     spec:
-      file: config/incrementals-publisher.yaml
+      file: charts/incrementals-publisher/values.yaml
       key: image.tag
     scm:
       github:
@@ -31,3 +41,10 @@ targets:
         token: "{{ requiredEnv .github.token }}"
         username: "{{ .github.username }}"
         branch: "{{ .github.branch }}"
+  updateChartVersion:
+    name: Bump incrementals-publisher helm chart version
+    kind: yaml
+    sourceID: chartVersion
+    spec:
+      file: "charts/incrementals-publisher/Chart.yaml"
+      key: "version"

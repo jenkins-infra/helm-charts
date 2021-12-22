@@ -12,7 +12,7 @@ image:
     tag: v0.1.2
     pullPolicy: Always
   files:
-    repository: httpd
+    repository: httpd@sha256
     tag: 2.4
     pullPolicy: Always
 

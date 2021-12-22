@@ -17,6 +17,14 @@ sources:
     spec:
       image: "httpd"
       tag: "latest"
+  chartVersion:
+    name: Get mirrorbits helm chart version
+    kind: yaml
+    spec:
+      file: "charts/mirrorbits/Chart.yaml"
+      key: "version"
+    transformers:
+      - semverInc: "patch"
 conditions:
   checkDockerImagePublished:
     name: Ensure that the image "jenkinsciinfra/mirrorbits:<found_version>" is published on the DockerHub
@@ -31,7 +39,7 @@ targets:
     sourceID: latestMirrorbitsRelease
     kind: yaml
     spec:
-      file: config/mirrorbits.yaml
+      file: charts/mirrorbits/values.yaml
       key: "image.mirrorbits.tag"
     scm:
       github:
@@ -47,7 +55,7 @@ targets:
     sourceID: latestHttpdDigest
     kind: yaml
     spec:
-      file: config/mirrorbits.yaml
+      file: charts/mirrorbits/values.yaml
       key: "image.files.tag"
     scm:
       github:
@@ -58,3 +66,10 @@ targets:
         token: "{{ requiredEnv .github.token }}"
         username: "{{ .github.username }}"
         branch: "{{ .github.branch }}"
+  updateChartVersion:
+    name: Bump mirrorbits helm chart version
+    kind: yaml
+    sourceID: chartVersion
+    spec:
+      file: "charts/mirrorbits/Chart.yaml"
+      key: "version"

@@ -6,13 +6,22 @@ sources:
     spec:
       image: "jenkinsciinfra/uplink"
       tag: "latest"
+  chartVersion:
+    name: Get uplink helm chart version
+    kind: yaml
+    spec:
+      file: "charts/uplink/Chart.yaml"
+      key: "version"
+    transformers:
+      - semverInc: "patch"
 # no condition to test docker image availability as we're using a digest from docker hub
 targets:
   updateDigestInConfig:
     name: "Update uplink docker image tag"
     kind: yaml
+    sourceID: latestDigest
     spec:
-      file: "config/uplink.yaml"
+      file: "charts/uplink/values.yaml"
       key: "image.tag"
     scm:
       github:
@@ -23,3 +32,10 @@ targets:
         token: "{{ requiredEnv .github.token }}"
         username: "{{ .github.username }}"
         branch: "{{ .github.branch }}"
+  updateChartVersion:
+    name: Bump uplink helm chart version
+    kind: yaml
+    sourceID: chartVersion
+    spec:
+      file: "charts/uplink/Chart.yaml"
+      key: "version"
