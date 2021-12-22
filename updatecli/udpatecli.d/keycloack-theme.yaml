@@ -1,0 +1,34 @@
+title: Bump keycloak-theme docker image version
+sources:
+  latestRelease:
+    kind: githubRelease
+    name: "Get latest jenkins-infra/keycloak-theme release"
+    spec:
+      name: Get jenkins-infra/keycloak-theme latest version
+      owner: "jenkins-infra"
+      repository: "keycloak-theme"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+conditions:
+  checkDockerImagePublished:
+    name: "Test jenkinsciinfra/keycloak-theme:<latest_version> docker image tag"
+    kind: dockerImage
+    spec:
+      image: "jenkinsciinfra/keycloak-theme"
+targets:
+  updateReleaseInConfig:
+    name: "Update keycloak-theme docker image tag"
+    kind: file
+    spec:
+      file: config/keycloak.yaml
+      matchPattern: 'image: jenkinsciinfra/keycloak-theme:.*'
+      replacePattern: 'image: jenkinsciinfra/keycloak-theme:{{ source `latestRelease` }}'
+    scm:
+      github:
+        user: "{{ .github.user }}"
+        email: "{{ .github.email }}"
+        owner: "{{ .github.owner }}"
+        repository: "{{ .github.repository }}"
+        token: "{{ requiredEnv .github.token }}"
+        username: "{{ .github.username }}"
+        branch: "{{ .github.branch }}"
