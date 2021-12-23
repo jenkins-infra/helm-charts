@@ -117,6 +117,14 @@ entries:
     version: 0.1.1
   incrementals-publisher:
   - apiVersion: v1
+    created: "2021-12-23T21:21:59.423724283Z"
+    description: incrementals-publisher
+    digest: c1d374d35038a42f1ac0a73b5c3697479f277e2efd8cc8028b462cd79203d90f
+    name: incrementals-publisher
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/incrementals-publisher-0.4.1/incrementals-publisher-0.4.1.tgz
+    version: 0.4.1
+  - apiVersion: v1
     created: "2021-11-16T17:14:17.417810485Z"
     description: incrementals-publisher
     digest: e1552f9c3320e2e20d764ad8a6b61b8efc2b29be3f288d1b8777b27bf283f3f3
@@ -310,6 +318,16 @@ entries:
     version: 0.1.0
   ldap:
   - apiVersion: v1
+    created: "2021-12-23T21:21:59.574564898Z"
+    description: A Helm chart for ldap.jenkins.io
+    digest: 8e38114700e867474c5cda09d8d0bcfe2756ca0b4a223218b3946859e99cddea
+    maintainers:
+    - name: olblak
+    name: ldap
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/ldap-0.1.2/ldap-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v1
     created: "2021-11-08T17:18:51.313450834Z"
     description: A Helm chart for ldap.jenkins.io
     digest: 26f9534199ca129436037fb6c1f961100d9bd10ccadc93557257d3c22818e429
@@ -342,6 +360,18 @@ entries:
     - https://github.com/jenkins-infra/public-charts/releases/download/ldap-0.0.2/ldap-0.0.2.tgz
     version: 0.0.2
   mirrorbits:
+  - apiVersion: v1
+    appVersion: v0.5.1
+    created: "2021-12-23T21:21:59.733453757Z"
+    description: Mirrobits helm chart for Kubernetes
+    digest: 6de4e59edf5e7c7e90646b13df946c57e7544194cd6c2230b75b25f20837affa
+    maintainers:
+    - email: me@olblak.com
+      name: olblak
+    name: mirrorbits
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/mirrorbits-0.2.1/mirrorbits-0.2.1.tgz
+    version: 0.2.1
   - apiVersion: v1
     appVersion: v0.5.1
     created: "2021-11-05T21:00:10.938377833Z"
@@ -449,6 +479,17 @@ entries:
   uplink:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2021-12-23T21:21:59.889663669Z"
+    description: A Helm chart for uplink.jenkins.io
+    digest: ef789f0250ef1ff9c141b153741db0b613522c75093a3bbd2f613f2c90c75013
+    maintainers:
+    - name: olblak
+    name: uplink
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/uplink-0.1.1/uplink-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2021-11-05T13:21:58.01444766Z"
     description: A Helm chart for uplink.jenkins.io
     digest: e1ee1ed7736e365b285b16a75a609e6acf7ca03c537eb4a4ddd090f1e45c1675
@@ -519,4 +560,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2021-12-21T01:39:25.427559006Z"
+generated: "2021-12-23T21:21:59.890743388Z"
