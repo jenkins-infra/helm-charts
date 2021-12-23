@@ -5,11 +5,11 @@
 replicaCount: 1
 image:
   slapd:
-    repository: jenkinsciinfra/ldap
+    repository: jenkinsciinfra/ldap@sha256
     tag: latest
     pullPolicy: IfNotPresent
   crond:
-    repository: jenkinsciinfra/ldap
+    repository: jenkinsciinfra/ldap@sha256
     tag: latest
     pullPolicy: IfNotPresent
 imagePullSecrets: []
