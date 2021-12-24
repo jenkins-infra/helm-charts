@@ -1,4 +1,4 @@
-title: Bump wiki docker image version
+title: Bump `wiki` docker image and helm chart versions
 sources:
   latestRelease:
     kind: githubRelease

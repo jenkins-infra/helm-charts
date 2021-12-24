@@ -1,4 +1,4 @@
-title: Bump jenkins-wiki-exporter docker image version
+title: Bump `jenkins-wiki-exporter` docker image and helm chart versions
 sources:
   latestRelease:
     kind: githubRelease

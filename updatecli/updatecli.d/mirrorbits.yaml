@@ -1,4 +1,4 @@
-title: Bump mirrorbits docker image digest
+title: Bump `mirrorbits` docker image digest and helm chart version
 sources:
   latestMirrorbitsRelease:
     name: Get latest version of jenkinsciinfra/mirrorbits
