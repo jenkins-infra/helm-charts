@@ -1,4 +1,15 @@
 title: Bump Custom Distribution Service docker image version
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
 sources:
   latestRelease:
     name: Get latest jenkinsci/custom-distribution-service version
@@ -30,22 +41,15 @@ targets:
     name: "Update the tag of the Docker image for custom-distribution-service"
     kind: yaml
     sourceID: latestRelease
+    scmID: default
     spec:
       file: charts/custom-distribution-service/values.yaml
       key: image.tag
-    scm:
-      github:
-        user: "{{ .github.user }}"
-        email: "{{ .github.email }}"
-        owner: "{{ .github.owner }}"
-        repository: "{{ .github.repository }}"
-        token: "{{ requiredEnv .github.token }}"
-        username: "{{ .github.username }}"
-        branch: "{{ .github.branch }}"
   updateChartVersion:
     name: Bump custom-distribution-service helm chart version
     kind: yaml
     sourceID: chartVersion
+    scmID: default
     spec:
       file: "charts/custom-distribution-service/Chart.yaml"
       key: "version"
