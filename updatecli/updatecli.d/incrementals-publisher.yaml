@@ -1,5 +1,4 @@
----
-title: Bump incremental publisher docker image version
+title: Bump `incremental-publisher` docker image and helm chart versions
 sources:
   latestRelease:
     kind: githubRelease

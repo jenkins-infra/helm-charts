@@ -1,4 +1,4 @@
-title: Bump ldap docker image digest
+title: Bump `ldap` docker image digest and helm chart version
 sources:
   crond:
     kind: dockerDigest

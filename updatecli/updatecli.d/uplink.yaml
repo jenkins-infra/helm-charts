@@ -1,4 +1,4 @@
-title: Bump uplink docker image digest
+title: Bump uplink docker image digest and helm chart version
 sources:
   latestDigest:
     kind: dockerDigest
