@@ -1,0 +1,59 @@
+title: Bump `wiki` docker image and helm chart versions
+sources:
+  latestRelease:
+    kind: githubRelease
+    name: "Get latest jenkins-infra/docker-confluence-data release"
+    spec:
+      name: Get jenkins-infra/docker-confluence-data latest version
+      owner: "jenkins-infra"
+      repository: "docker-confluence-data"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+  chartVersion:
+    name: Get wiki helm chart version
+    kind: yaml
+    spec:
+      file: "charts/wiki/Chart.yaml"
+      key: "version"
+    transformers:
+      - semverInc: "patch"
+conditions:
+  checkDockerImagePublished:
+    name: "Test jenkinsciinfra/wiki:<latest_version> docker image tag"
+    kind: dockerImage
+    sourceID: latestRelease
+    spec:
+      image: "jenkinsciinfra/wiki"
+targets:
+  updateReleaseInConfig:
+    name: "Update wiki docker image tag"
+    kind: yaml
+    sourceID: latestRelease
+    spec:
+      file: "charts/wiki/values.yaml"
+      key: "image.tag"
+    scm:
+      github:
+        user: "{{ .github.user }}"
+        email: "{{ .github.email }}"
+        owner: "{{ .github.owner }}"
+        repository: "{{ .github.repository }}"
+        token: "{{ requiredEnv .github.token }}"
+        username: "{{ .github.username }}"
+        branch: "{{ .github.branch }}"
+  updateChartVersion:
+    name: Bump wiki helm chart version
+    kind: yaml
+    sourceID: chartVersion
+    spec:
+      file: "charts/wiki/Chart.yaml"
+      key: "version"
+    scm:
+      github:
+        user: "{{ .github.user }}"
+        email: "{{ .github.email }}"
+        owner: "{{ .github.owner }}"
+        repository: "{{ .github.repository }}"
+        token: "{{ requiredEnv .github.token }}"
+        username: "{{ .github.username }}"
+        branch: "{{ .github.branch }}"
