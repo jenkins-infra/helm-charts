@@ -1,22 +1,22 @@
-title: Bump `mirrorbits` docker image digest and helm chart version
+title: Bump `mirrorbits` docker images version and helm chart version
 sources:
   latestMirrorbitsRelease:
     name: Get latest version of jenkinsciinfra/mirrorbits
     kind: githubRelease
     spec:
-      user: "{{ .github.user }}"
-      email: "{{ .github.email }}"
-      owner: "{{ .github.owner }}"
+      owner: "jenkins-infra"
       repository: "docker-mirrorbits"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
       branch: "{{ .github.branch }}"
-  latestHttpdDigest:
-    kind: dockerDigest
-    name: "Get httdp docker image digest"
+  latestHttpdRelease:
+    name: Get latest version of httpd
+    kind: githubRelease
     spec:
-      image: "httpd"
-      tag: "latest"
+      owner: "docker-library"
+      repository: "httpd"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
   chartVersion:
     name: Get mirrorbits helm chart version
     kind: yaml
@@ -26,16 +26,22 @@ sources:
     transformers:
       - semverInc: "patch"
 conditions:
-  checkDockerImagePublished:
+  checkMirrorbitsDockerImagePublished:
     name: Ensure that the image "jenkinsciinfra/mirrorbits:<found_version>" is published on the DockerHub
     sourceID: latestMirrorbitsRelease
     kind: dockerImage
     spec:
       image: "jenkinsciinfra/mirrorbits"
+  checkHttpdDockerImagePublished:
+    name: Ensure that the image "httpd:<found_version>" is published on the DockerHub
+    sourceID: latestMirrorbitsRelease
+    kind: dockerImage
+    spec:
+      image: "_/httpd"
   # no condition to test httpd docker image availability as we're using a digest from docker hub
 targets:
   updateMirrorbits:
-    name: "Update mirrorbits docker image digest"
+    name: "Update mirrorbits docker image version"
     sourceID: latestMirrorbitsRelease
     kind: yaml
     spec:
@@ -51,8 +57,8 @@ targets:
         username: "{{ .github.username }}"
         branch: "{{ .github.branch }}"
   updateHttpd:
-    name: "Update httpd docker image digest"
-    sourceID: latestHttpdDigest
+    name: "Update httpd docker image version"
+    sourceID: latestHttpdRelease
     kind: yaml
     spec:
       file: charts/mirrorbits/values.yaml
