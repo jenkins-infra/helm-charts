@@ -165,6 +165,18 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/incrementals-publisher-0.3.0/incrementals-publisher-0.3.0.tgz
     version: 0.3.0
+  ircbot:
+  - apiVersion: v1
+    created: "2022-01-06T11:31:29.905941054Z"
+    description: A Helm chart for ircbot
+    digest: 2400b94aba9c3f04842b5f23dd9d9311b79cc2ff8b1dd1f665027fda9708b964
+    maintainers:
+    - name: timja
+    - name: slide
+    name: ircbot
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/ircbot-0.1.0/ircbot-0.1.0.tgz
+    version: 0.1.0
   javadoc:
   - apiVersion: v1
     appVersion: "1.0"
@@ -615,4 +627,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2022-01-04T10:47:01.399122793Z"
+generated: "2022-01-06T11:31:29.906022454Z"
