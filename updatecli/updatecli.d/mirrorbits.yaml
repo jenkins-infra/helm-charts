@@ -29,6 +29,14 @@ sources:
       image: "httpd"
       tag: "2.4"
       architecture: "amd64"
+  latestGeoIPRelease:
+    name: Get latest version of GeoIP
+    kind: githubRelease
+    spec:
+      owner: "maxmind"
+      repository: "geoipupdate"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
   chartVersion:
     name: Get mirrorbits helm chart version
     kind: yaml
@@ -46,7 +54,15 @@ conditions:
     spec:
       image: "jenkinsciinfra/mirrorbits"
       architecture: "amd64"
-      # Tags comes from sourceID
+      # Tag comes from sourceID
+  checkGeoIPDockerImagePublished:
+    name: Ensure that the image "maxmindinc/geoipupdate:<found_version>" is published on the DockerHub
+    sourceID: latestGeoIPRelease
+    kind: dockerImage
+    spec:
+      image: "maxmindinc/geoipupdate"
+      architecture: "amd64"
+      # Tag comes from sourceID
   # no condition to test httpd docker image availability as we're using a digest from docker hub
 
 targets:
@@ -65,6 +81,14 @@ targets:
     spec:
       file: charts/mirrorbits/values.yaml
       key: "image.files.tag"
+    scmID: default
+  updateGeoIP:
+    name: "Update maxmindinc/geoipupdate docker image version"
+    sourceID: latestGeoIPRelease
+    kind: yaml
+    spec:
+      file: charts/mirrorbits/values.yaml
+      key: "geoipupdate.image.tag"
     scmID: default
   updateChartVersion:
     name: Bump mirrorbits helm chart version
