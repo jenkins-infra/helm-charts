@@ -55,7 +55,8 @@ conditions:
       image: "maxmindinc/geoipupdate"
       architecture: "amd64"
       # Tag comes from sourceID
-  # no condition to test httpd docker image availability as we're using a digest from docker hub
+
+# no condition to test httpd docker image availability as we're using a digest from docker hub
 
 targets:
   updateMirrorbits:

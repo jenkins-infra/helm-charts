@@ -32,6 +32,7 @@ conditions:
     sourceID: latestRelease
     spec:
       image: "jenkinsciinfra/jenkins-wiki-exporter"
+      architecture: "amd64"
 
 targets:
   updateChart:

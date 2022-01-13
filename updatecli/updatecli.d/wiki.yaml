@@ -30,6 +30,7 @@ conditions:
     sourceID: latestRelease
     spec:
       image: "jenkinsciinfra/wiki"
+      architecture: "amd64"
 
 targets:
   updateChart:
