@@ -1,4 +1,17 @@
 title: Bump `custom-distribution-service` docker image and helm chart versions
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
 sources:
   latestRelease:
     name: Get latest jenkinsci/custom-distribution-service version
@@ -10,14 +23,7 @@ sources:
       username: "{{ .github.username }}"
       versionFilter:
         kind: latest
-  chartVersion:
-    name: Get custom-distribution-service helm chart version
-    kind: yaml
-    spec:
-      file: "charts/custom-distribution-service/Chart.yaml"
-      key: "version"
-    transformers:
-      - semverInc: "patch"
+
 conditions:
   checkDockerImagePublished:
     name: "Is latest jenkinsciinfra/custom-distribution-service docker image published"
@@ -25,36 +31,26 @@ conditions:
     sourceID: latestRelease
     spec:
       image: "jenkinsciinfra/custom-distribution-service"
+      architecture: "amd64"
+      # Tag comes from sourceID
+
 targets:
-  updateReleaseInConfig:
-    name: "Update the tag of the Docker image for custom-distribution-service"
-    kind: yaml
-    sourceID: latestRelease
+  updateChart:
+    name: "custom-distribution-service appVersion"
+    kind: helmChart
     spec:
-      file: charts/custom-distribution-service/values.yaml
+      name: charts/custom-distribution-service
       key: image.tag
-    scm:
-      github:
-        user: "{{ .github.user }}"
-        email: "{{ .github.email }}"
-        owner: "{{ .github.owner }}"
-        repository: "{{ .github.repository }}"
-        token: "{{ requiredEnv .github.token }}"
-        username: "{{ .github.username }}"
-        branch: "{{ .github.branch }}"
-  updateChartVersion:
-    name: Bump custom-distribution-service helm chart version
-    kind: yaml
-    sourceID: chartVersion
+      versionincrement: patch
+    scmID: default
+
+pullrequests:
+  default:
+    kind: github
+    scmID: default
+    targets:
+      - updateChart
     spec:
-      file: "charts/custom-distribution-service/Chart.yaml"
-      key: "version"
-    scm:
-      github:
-        user: "{{ .github.user }}"
-        email: "{{ .github.email }}"
-        owner: "{{ .github.owner }}"
-        repository: "{{ .github.repository }}"
-        token: "{{ requiredEnv .github.token }}"
-        username: "{{ .github.username }}"
-        branch: "{{ .github.branch }}"
+      labels:
+        - dependencies
+        - custom-distribution-service
