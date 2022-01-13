@@ -26,7 +26,7 @@ sources:
 
 conditions:
   checkDockerImagePublished:
-    name: "Is latest jenkinsciinfra/custom-distribution-service docker image published"
+    name: Is latest jenkinsciinfra/custom-distribution-service docker image published
     kind: dockerImage
     sourceID: latestRelease
     spec:
@@ -36,7 +36,7 @@ conditions:
 
 targets:
   updateChart:
-    name: "custom-distribution-service appVersion"
+    name: Update custom-distribution-service helm chart
     kind: helmChart
     spec:
       name: charts/custom-distribution-service

@@ -37,14 +37,6 @@ sources:
       repository: "geoipupdate"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
-  chartVersion:
-    name: Get mirrorbits helm chart version
-    kind: yaml
-    spec:
-      file: "charts/mirrorbits/Chart.yaml"
-      key: "version"
-    transformers:
-      - semverInc: "patch"
 
 conditions:
   checkMirrorbitsDockerImagePublished:
@@ -69,34 +61,27 @@ targets:
   updateMirrorbits:
     name: "Update mirrorbits docker image version"
     sourceID: latestMirrorbitsRelease
-    kind: yaml
+    kind: helmChart
     spec:
-      file: charts/mirrorbits/values.yaml
+      name: charts/mirrorbits
       key: "image.mirrorbits.tag"
+      versionincrement: patch
     scmID: default
   updateHttpd:
     name: "Update httpd docker image version"
     sourceID: latestHttpdRelease
-    kind: yaml
+    kind: helmChart
     spec:
-      file: charts/mirrorbits/values.yaml
+      name: charts/mirrorbits
       key: "image.files.tag"
     scmID: default
   updateGeoIP:
     name: "Update maxmindinc/geoipupdate docker image version"
     sourceID: latestGeoIPRelease
-    kind: yaml
+    kind: helmChart
     spec:
-      file: charts/mirrorbits/values.yaml
+      name: charts/mirrorbits
       key: "geoipupdate.image.tag"
-    scmID: default
-  updateChartVersion:
-    name: Bump mirrorbits helm chart version
-    kind: yaml
-    sourceID: chartVersion
-    spec:
-      file: "charts/mirrorbits/Chart.yaml"
-      key: "version"
     scmID: default
 
 pullrequests:
@@ -106,8 +91,10 @@ pullrequests:
     targets:
       - updateMirrorbits
       - updateHttpd
-      - updateChartVersion
+      - updateGeoIP
     spec:
       labels:
         - dependencies
         - mirrorbits
+        - httpd
+        - geoip
