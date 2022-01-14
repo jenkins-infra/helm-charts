@@ -1,4 +1,17 @@
 title: Bump `wiki` docker image and helm chart versions
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
 sources:
   latestRelease:
     kind: githubRelease
@@ -9,14 +22,7 @@ sources:
       repository: "docker-confluence-data"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
-  chartVersion:
-    name: Get wiki helm chart version
-    kind: yaml
-    spec:
-      file: "charts/wiki/Chart.yaml"
-      key: "version"
-    transformers:
-      - semverInc: "patch"
+
 conditions:
   checkDockerImagePublished:
     name: "Test jenkinsciinfra/wiki:<latest_version> docker image tag"
@@ -24,36 +30,25 @@ conditions:
     sourceID: latestRelease
     spec:
       image: "jenkinsciinfra/wiki"
+      architecture: "amd64"
+
 targets:
-  updateReleaseInConfig:
-    name: "Update wiki docker image tag"
-    kind: yaml
-    sourceID: latestRelease
+  updateChart:
+    name: Update wiki helm chart
+    kind: helmChart
     spec:
-      file: "charts/wiki/values.yaml"
-      key: "image.tag"
-    scm:
-      github:
-        user: "{{ .github.user }}"
-        email: "{{ .github.email }}"
-        owner: "{{ .github.owner }}"
-        repository: "{{ .github.repository }}"
-        token: "{{ requiredEnv .github.token }}"
-        username: "{{ .github.username }}"
-        branch: "{{ .github.branch }}"
-  updateChartVersion:
-    name: Bump wiki helm chart version
-    kind: yaml
-    sourceID: chartVersion
+      name: charts/wiki
+      key: image.tag
+      versionincrement: patch
+    scmID: default
+
+pullrequests:
+  default:
+    kind: github
+    scmID: default
+    targets:
+      - updateChart
     spec:
-      file: "charts/wiki/Chart.yaml"
-      key: "version"
-    scm:
-      github:
-        user: "{{ .github.user }}"
-        email: "{{ .github.email }}"
-        owner: "{{ .github.owner }}"
-        repository: "{{ .github.repository }}"
-        token: "{{ requiredEnv .github.token }}"
-        username: "{{ .github.username }}"
-        branch: "{{ .github.branch }}"
+      labels:
+        - dependencies
+        - wiki
