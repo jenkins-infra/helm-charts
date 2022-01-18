@@ -16,12 +16,11 @@ backend:
     requests:
       cpu: 500m
       memory: 1024Mi
-
 frontend:
   replicaCount: 2
   image:
     repository: nginx
-    tag: 1.17.7-alpine
+    tag: 1.20.2-alpine
     pullPolicy: IfNotPresent
   port: 80
   resources:
@@ -31,14 +30,11 @@ frontend:
     requests:
       cpu: 100m
       memory: 32Mi
-
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-
 service:
   type: ClusterIP
-
 # Please define ingress settings into environment variable
 ingress:
   enabled: false
@@ -50,7 +46,6 @@ ingress:
     - path: /(.*)
       svcName: frontend
       svcPort: 80
-
   annotations:
     # rewrite target is important to get the path regexes to work
     nginx.ingress.kubernetes.io/rewrite-target: /$1
@@ -69,32 +64,24 @@ ingress:
 #        - plugins.jenkins.io
 
 nodeSelector: {}
-
 tolerations: []
-
 affinity: {}
-
 dataFileUrl: https://ci.jenkins.io/job/Infra/job/plugin-site-api/job/generate-data/lastSuccessfulBuild/artifact/plugins.json.gzip
-
 github:
   appId: ""
   appPrivateKey: ""
-
 jira:
   username: ""
   password: ""
-
 # the volume to mount
 # e.g.
 # htmlVolume:
 #   hostPath:
 #     path: /host
 htmlVolume: {}
-
 # name of the azure storage account to be used
 azureStorageAccountName:
 # key for accessing the azure storage account
 azureStorageAccountKey:
-
 sentry:
   dsn: ""
