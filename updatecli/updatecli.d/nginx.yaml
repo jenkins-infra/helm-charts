@@ -1,0 +1,98 @@
+title: Bump nginx:stable docker image version
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+  nginxGithubMirror:
+    kind: git
+    spec:
+      url: "https://github.com/nginx/nginx"
+      branch: "master"
+
+sources:
+  latestRelease:
+    name: Get latest stable version of nginx
+    kind: gitTag
+    scmID: nginxGithubMirror
+    spec:
+      versionFilter:
+        kind: regex
+        ## Nginx stable version have the minor digit as an even number
+        pattern: 'release-(\d+)\.(\d*[0|2|4|6|8])\.(\d+)'
+    transformers:
+      - trimPrefix: "release-"
+      - addSuffix: "-alpine"
+
+conditions:
+  checkDockerImagePublished:
+    name: "Test nginx:<latest_version> docker image tag"
+    kind: dockerImage
+    sourceID: latestRelease
+    spec:
+      image: "nginx"
+      architecture: amd64
+      # tag comes from the source input value
+
+targets:
+  updateJavadocChart:
+    name: "Update nginx stable docker image version for javadoc chart"
+    kind: yaml
+    spec:
+      file: charts/javadoc/values.yaml
+      key: image.tag
+    scmID: default
+  updateJenkinsioChartEn:
+    name: "Update nginx stable docker image version for jenkinsio chart (EN)"
+    kind: yaml
+    spec:
+      file: charts/jenkinsio/values.yaml
+      key: images.en.tag
+    scmID: default
+  updateJenkinsioChartZh:
+    name: "Update nginx stable docker image version for jenkinsio chart (ZH)"
+    kind: yaml
+    spec:
+      file: charts/jenkinsio/values.yaml
+      key: images.zh.tag
+    scmID: default
+  updatePluginSiteChart:
+    name: "Update nginx stable docker image version for plugin-site chart"
+    kind: yaml
+    spec:
+      file: charts/plugin-site/values.yaml
+      key: frontend.image.tag
+    scmID: default
+  updateReportsChart:
+    name: "Update nginx stable docker image version for reports chart"
+    kind: yaml
+    spec:
+      file: charts/reports/values.yaml
+      key: image.tag
+    scmID: default
+
+pullrequests:
+  default:
+    kind: github
+    scmID: default
+    targets:
+      - updateJavadocChart
+      - updateJenkinsioChartEn
+      - updateJenkinsioChartZh
+      - updatePluginSiteChart
+      - updateReportsChart
+    spec:
+      labels:
+        - dependencies
+        - nginx
+        - javadoc
+        - jenkinsio
+        - plugin-site
+        - reports
