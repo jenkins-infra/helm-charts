@@ -44,38 +44,43 @@ conditions:
 targets:
   updateJavadocChart:
     name: "Update nginx stable docker image version for javadoc chart"
-    kind: yaml
+    kind: helmChart
     spec:
-      file: charts/javadoc/values.yaml
+      name: charts/javadoc
       key: image.tag
+      versionincrement: patch
     scmID: default
   updateJenkinsioChartEn:
     name: "Update nginx stable docker image version for jenkinsio chart (EN)"
-    kind: yaml
+    kind: helmChart
     spec:
-      file: charts/jenkinsio/values.yaml
+      name: charts/jenkinsio
       key: images.en.tag
+      versionincrement: patch
     scmID: default
   updateJenkinsioChartZh:
     name: "Update nginx stable docker image version for jenkinsio chart (ZH)"
-    kind: yaml
+    kind: helmChart
     spec:
-      file: charts/jenkinsio/values.yaml
+      name: charts/jenkinsio
       key: images.zh.tag
+      versionincrement: patch
     scmID: default
   updatePluginSiteChart:
     name: "Update nginx stable docker image version for plugin-site chart"
-    kind: yaml
+    kind: helmChart
     spec:
-      file: charts/plugin-site/values.yaml
+      name: charts/plugin-site
       key: frontend.image.tag
+      versionincrement: patch
     scmID: default
   updateReportsChart:
     name: "Update nginx stable docker image version for reports chart"
-    kind: yaml
+    kind: helmChart
     spec:
-      file: charts/reports/values.yaml
+      name: charts/reports
       key: image.tag
+      versionincrement: patch
     scmID: default
 
 pullrequests:
