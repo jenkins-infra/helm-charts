@@ -37,7 +37,7 @@ service:
 
 # Please define ingress settings into environment variable
 ingress:
-  enabled: true
+  enabled: false
   className: ""
 #  annotations:
 #    "cert-manager.io/cluster-issuer": "letsencrypt-prod"
