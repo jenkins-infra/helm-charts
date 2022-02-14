@@ -286,6 +286,16 @@ entries:
   jenkins-kubernetes-agents:
   - apiVersion: v2
     appVersion: 0.1.0
+    created: "2022-02-14T18:29:22.720513124Z"
+    description: A Helm chart for using Jenkins Kubernetes agents on a remote cluster
+    digest: e64cb7b719fc37dd32fbc647b910bcd7d7b18728f39973937f1a0205074314c5
+    name: jenkins-kubernetes-agents
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/jenkins-kubernetes-agents-0.2.0/jenkins-kubernetes-agents-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 0.1.0
     created: "2021-11-05T15:59:41.021008819Z"
     description: A Helm chart for using Jenkins Kubernetes agents on a remote cluster
     digest: 4da8331ba8a807bad649bd1566edea271480525e0ae9b60ae97c30ccfdd8ec45
@@ -708,4 +718,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2022-02-09T12:55:24.408170539Z"
+generated: "2022-02-14T18:29:22.720793824Z"
