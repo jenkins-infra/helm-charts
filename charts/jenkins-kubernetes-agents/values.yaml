@@ -1,0 +1,7 @@
+## Uncomment (and fill) to add custom imaePullSecrets
+# imageCredentials:
+#   enabled: true
+#   registry: https://index.docker.io/v1/ # DockerHub default
+#   username: someone
+#   password: sillyness
+#   email: someone@host.com
