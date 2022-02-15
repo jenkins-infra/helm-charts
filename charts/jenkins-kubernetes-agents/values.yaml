@@ -1,4 +1,4 @@
-## Uncomment (and fill) to add custom imaePullSecrets
+## Uncomment (and fill) to add custom imagePullSecrets
 # imageCredentials:
 #   enabled: true
 #   registry: https://index.docker.io/v1/ # DockerHub default
