@@ -114,6 +114,17 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/custom-distribution-service-0.2.0/custom-distribution-service-0.2.0.tgz
     version: 0.2.0
+  docker-registry-secrets:
+  - apiVersion: v2
+    created: "2022-02-16T09:08:36.114379023Z"
+    description: "A Helm chart to keep all the secrets for the docker registry access
+      \U0001F512 \U0001F433"
+    digest: 29b2c6645b0ee54aff57e23c134be42d50f3429d5a1c6b552fc6913643db5477
+    name: docker-registry-secrets
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/docker-registry-secrets-0.1.0/docker-registry-secrets-0.1.0.tgz
+    version: 0.1.0
   env-jenkins-release:
   - apiVersion: v1
     created: "2021-11-05T15:59:40.750260605Z"
@@ -728,4 +739,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2022-02-15T11:33:44.750739522Z"
+generated: "2022-02-16T09:08:36.114493221Z"
