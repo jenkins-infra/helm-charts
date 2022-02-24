@@ -4,3 +4,4 @@ imageCredentials:
   username: someone
   password: sillyness
   email: someone@host.com
+  namespaces: []
