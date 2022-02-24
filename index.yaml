@@ -612,6 +612,17 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/plugin-site-issues-0.1.0/plugin-site-issues-0.1.0.tgz
     version: 0.1.0
+  rating:
+  - apiVersion: v2
+    appVersion: "1.0"
+    created: "2022-02-24T12:52:36.064593527Z"
+    description: A Helm chart for Kubernetes
+    digest: aae2a92b19290fda8e6abe96dcd1dba58fb4a901288771976014815c4af5c661
+    name: rating
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/rating-0.1.0/rating-0.1.0.tgz
+    version: 0.1.0
   reports:
   - apiVersion: v1
     appVersion: "1.0"
@@ -739,4 +750,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2022-02-16T09:08:36.114493221Z"
+generated: "2022-02-24T12:52:36.064716136Z"
