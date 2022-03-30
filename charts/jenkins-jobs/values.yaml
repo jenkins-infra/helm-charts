@@ -1,0 +1,40 @@
+keyName: jobs-definition
+jenkinsName: jenkins
+jobsDefinition: {}
+## Example of job definitions
+# jobsDefinition:
+#   parent-folder:
+#     name: Parent Folder
+#     description: Folder hosting all the jobs
+#     kind: folder
+#     credentials:
+#       dockerhub-user:  ## credential ID in Jenkins / pipelines
+#         description: Docker hub credential for user
+#         username: user
+#         password: "${DOCKER_HUB_TOKEN_PUSH}"                      ## Secret variable from JCasc - https://github.com/jenkinsci/configuration-as-code-plugin/blob/master/docs/features/secrets.adoc
+#     children:
+#       multibranchJobA: ## Default to kind: multibranchJob
+#         name: Job A
+#         credentials:
+#           api-token:   ## credential ID in Jenkins / pipelines
+#             description: String secret token for the API
+#             secret: "${SECRET_TOKEN}"                             ## Secret variable from JCasc - https://github.com/jenkinsci/configuration-as-code-plugin/blob/master/docs/features/secrets.adoc
+#           user-azure-serviceprincipal:   ## credential ID in Jenkins / pipelines
+#             azureEnvironmentName: "Azure"
+#             clientId: "${AZURE_CLIENT_ID}"                        ## Secret variable from JCasc - https://github.com/jenkinsci/configuration-as-code-plugin/blob/master/docs/features/secrets.adoc
+#             clientSecret: "${AZURE_CLIENT_SECRET_VALUE}"          ## Secret variable from JCasc - https://github.com/jenkinsci/configuration-as-code-plugin/blob/master/docs/features/secrets.adoc
+#             description: "Azure Service Principal credential"
+#             subscriptionId: "${AZURE_SUBSCRIPTION_ID}"            ## Secret variable from JCasc - https://github.com/jenkinsci/configuration-as-code-plugin/blob/master/docs/features/secrets.adoc
+#             tenant: "${AZURE_TENANT_ID}"                          ## Secret variable from JCasc - https://github.com/jenkinsci/configuration-as-code-plugin/blob/master/docs/features/secrets.adoc
+#       multibranchJobB: ## ## Default to kind: multibranchJob with id == name == description and default settings
+#       multibranchJobC: ## Default to kind: multibranchJob
+#         name: Job C
+#         credentials:
+#            ssh-deploy-key:
+#              username: ${SSH_CHARTS_SECRETS_USERNAME}
+#              description: "SSH privkey used to access jenkins-infra/charts-secrets"
+#              privateKey: "${SSH_CHARTS_SECRETS_PRIVKEY}"
+#            kubeconfig-cik8s:
+#              fileName: "kubeconfig"
+#              description: "Kubeconfig file for cik8s"
+#              secretBytes: "${base64:${KUBECONFIG_CIK8S}}"

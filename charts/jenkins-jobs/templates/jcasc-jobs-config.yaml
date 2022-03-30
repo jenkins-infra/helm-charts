@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.jenkinsName }}-jenkins-config-{{ .Values.keyName }}
+  namespace: {{ $.Release.namespace }}
+  labels:
+    "app.kubernetes.io/name": "jenkins"
+    "app.kubernetes.io/managed-by": "{{ $.Release.Service }}"
+    "app.kubernetes.io/instance": "{{ $.Release.Name }}"
+    {{ .Values.jenkinsName }}-jenkins-config: "true"
+data:
+  {{ .Values.keyName }}.yaml: |-
+    jobs:
+{{- include "jobs-dsl-config" $ | indent 6 }}
