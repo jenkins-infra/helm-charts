@@ -35,10 +35,12 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
+          {{- if .Values.readinessProbe.enabled -}}
           readinessProbe:
             httpGet:
               path: /rate/result.php
               port: http
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
