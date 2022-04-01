@@ -72,7 +72,7 @@ affinity: {}
 
 #flag to disable readinessProbe in deployment.yaml L38
 readinessProbe:
-  enabled: false
+  enabled: true
 
 database:
   username: rating
