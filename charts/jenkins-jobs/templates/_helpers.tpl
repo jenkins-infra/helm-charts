@@ -147,7 +147,7 @@ multibranchPipelineJob('{{ .fullId }}') {
             pruneStaleBranchTrait()
             gitHubTagDiscovery()
             pullRequestLabelsBlackListFilterTrait {
-              labels('on-hold ci-skip skip-ci')
+              labels('on-hold,ci-skip,skip-ci')
             }
             // Select branches and tags to build based on these filters
             headWildcardFilterWithPR {
