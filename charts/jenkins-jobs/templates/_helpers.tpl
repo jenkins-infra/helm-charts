@@ -342,7 +342,8 @@ configNode << 'com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPri
   {{- end }}
   usernameSecret({{ .usernameSecret | default false}})
   privateKeySource(class:"com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPrivateKey\$DirectEntryPrivateKeySource") {
-    privateKey('{{ .privateKey }}')
+    privateKey('''{{ .privateKey }}''')
+
   }
 }
 {{- end }}
