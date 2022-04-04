@@ -96,7 +96,7 @@ properties {
 {{/*
 Generate the job-dsl definition of a folder
 */}}
-{{- define "folder-job-dsl-definition" -}}
+{{- define "folder-job-dsl-definition" }}
 folder('{{ .id }}') {
 {{ include "common-job-dsl-definition" . | indent 2 }}
 }
