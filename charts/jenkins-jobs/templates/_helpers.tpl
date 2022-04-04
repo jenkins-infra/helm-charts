@@ -5,7 +5,7 @@ Generate the job-dsl configuration from specified values
 {{- define "jobs-dsl-config" -}}
   {{- range $jobId, $jobDef := .Values.jobsDefinition }}
 - script: >
-{{ include "generic-job-dsl-definition" (merge $jobDef (dict "id" $jobId)) | indent 4 }}
+{{- include "generic-job-dsl-definition" (merge $jobDef (dict "id" $jobId)) | indent 4 }}
     {{- range $childId, $childDef := $jobDef.children }}
       {{- /*  Jenkins + Job DSL allow to define job children by concatenating their id with the parent id, separated by a / */}}
       {{- $childFullId := printf "%s/%s" $jobId $childId }}
@@ -108,7 +108,7 @@ Generate the job-dsl definition of a multibranch job
 {{- define "multibranch-job-dsl-definition" -}}
 {{- $repository := .repository | default .id }}
 {{- $repositoryOwner := .repoOwner | default "jenkins-infra" }}
-multibranchPipelineJob('{{ .fullId }}') {
+multibranchPipelineJob('{{ .fullId | default .id }}') {
   triggers {
     periodicFolderTrigger {
       interval('2h')
@@ -119,7 +119,7 @@ multibranchPipelineJob('{{ .fullId }}') {
     branchSource {
       source {
         github {
-          id('{{ .fullId | toString }}')
+          id('{{ .fullId | default .id | toString }}')
           credentialsId('{{ .githubCredentialsId | default "github-app-infra" }}')
           configuredByUrl(true)
           repositoryUrl('https://github.com/{{ $repositoryOwner }}/{{ $repository }}')
