@@ -55,12 +55,14 @@ description('{{ coalesce .description .name .id }}')
           {{- $credentialKind = "usernamePassword" }}
         {{- else if and (hasKey $credentialDef "accessKey") (hasKey $credentialDef "secretKey") }}
           {{- $credentialKind = "aws" }}
+        {{- else if and (or (hasKey $credentialDef "appID") (hasKey $credentialDef "appId") (hasKey $credentialDef "appid")) (hasKey $credentialDef "privateKey") }}
+          {{- $credentialKind = "githubapp" }}
         {{- else }}
           {{- $credentialKind = "string" }}
         {{- end }}
       {{- end }}
       {{- $credentialDef = set $credentialDef "kind" $credentialKind }}
-      {{- if has $credentialKind (list "string" "file" "azure-serviceprincipal" "ssh") }}
+      {{- if has $credentialKind (list "string" "file" "azure-serviceprincipal" "ssh" "githubapp") }}
         {{- $_ := set $credentialsWithHackishXml $credentialId $credentialDef }}
       {{- else if has $credentialKind (list "usernamePassword" "aws") }}
         {{- $_ := set $credentialsWithBindings $credentialId $credentialDef }}
@@ -252,6 +254,8 @@ configure { node ->
 {{ include "azuresp-credential-dsl-definition" $credential | indent 2 }}
     {{- else if eq .kind "ssh" }}
 {{ include "ssh-credential-dsl-definition" $credential | indent 2 }}
+    {{- else if eq .kind "githubapp" }}
+{{ include "githubapp-credential-dsl-definition" $credential | indent 2 }}
     {{- end -}}
   {{- end }}
 }
@@ -345,5 +349,19 @@ configNode << 'com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPri
     privateKey('''{{ .privateKey }}''')
 
   }
+}
+{{- end }}
+
+{{/*
+Generate the job-dsl definition of a Github App credential
+*/}}
+{{- define "githubapp-credential-dsl-definition" -}}
+configNode << 'org.jenkinsci.plugins.github__branch__source.GitHubAppCredentials'(plugin: 'github-branch-source') {
+{{ include "credential-common-dsl-definition" . | indent 2 }}
+  appID('{{ coalesce .appID .appId .appid }}')
+  privateKey('''{{ .privateKey }}''')
+  {{- if .owner }}
+  owner({{ .owner }})
+  {{- end }}
 }
 {{- end }}
