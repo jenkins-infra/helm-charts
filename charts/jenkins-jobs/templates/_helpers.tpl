@@ -131,7 +131,7 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
             gitHubSCMSourceStatusChecksTrait {
               // Note: changing this name might have impact on github branch protections if they specify status names
               name('[infra.ci.jenkins.io] {{ .name }}')
-              skip(false)
+              skip({{ .disableGitHubChecks | default "false" }})
               // If this option is checked, the notifications sent by the GitHub Branch Source Plugin will be disabled.
               skipNotifications(false)
               skipProgressUpdates(false)
