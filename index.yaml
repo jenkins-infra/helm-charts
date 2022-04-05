@@ -297,6 +297,18 @@ entries:
   jenkins-jobs:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2022-04-05T15:12:42.672729941Z"
+    description: Jenkins Jobs Definition from YAML to job-dsl
+    digest: 1c9358a6ae6cf15cdb21c2ecded736f4da9ffb7e0601b86597301c5821ad79dc
+    icon: https://jenkins.io/images/logos/plumber/256.png
+    maintainers:
+    - name: Damien Duportal <damien.duportal@gmail.com>
+    name: jenkins-jobs
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/jenkins-jobs-0.2.0/jenkins-jobs-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2022-04-05T10:02:24.933243991Z"
     description: Jenkins Jobs Definition from YAML to job-dsl
     digest: 8c5c3f22c4b5d5f82670f71cbf5f1d85c7521e1dd502c067e020d94d8dcc2659
@@ -845,4 +857,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2022-04-05T10:02:24.933404098Z"
+generated: "2022-04-05T15:12:42.672863347Z"
