@@ -96,7 +96,7 @@ properties {
 {{/*
 Generate the job-dsl definition of a folder
 */}}
-{{- define "folder-job-dsl-definition" -}}
+{{- define "folder-job-dsl-definition" }}
 folder('{{ .id }}') {
 {{ include "common-job-dsl-definition" . | indent 2 }}
 }
@@ -342,7 +342,8 @@ configNode << 'com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPri
   {{- end }}
   usernameSecret({{ .usernameSecret | default false}})
   privateKeySource(class:"com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPrivateKey\$DirectEntryPrivateKeySource") {
-    privateKey('{{ .privateKey }}')
+    privateKey('''{{ .privateKey }}''')
+
   }
 }
 {{- end }}
