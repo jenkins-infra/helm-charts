@@ -1,0 +1,55 @@
+title: Bump `rating` docker image and helm chart versions
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
+sources:
+  latestRelease:
+    kind: githubRelease
+    name: "Get latest jenkins-infra/rating release"
+    spec:
+      name: Get jenkins-infra/rating latest version
+      owner: "jenkins-infra"
+      repository: "rating"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+
+conditions:
+  checkDockerImagePublished:
+    name: |
+      Test jenkinsciinfra/rating:{{ source `latestRelease` }} docker image tag
+    kind: dockerImage
+    sourceID: latestRelease
+    spec:
+      image: "jenkinsciinfra/rating"
+      architecture: "amd64"
+
+targets:
+  updateChart:
+    name: Update rating helm chart
+    kind: helmChart
+    spec:
+      name: charts/rating
+      key: image.tag
+      versionincrement: patch
+    scmID: default
+
+pullrequests:
+  default:
+    kind: github
+    scmID: default
+    targets:
+      - updateChart
+    spec:
+      labels:
+        - dependencies
+        - rating
