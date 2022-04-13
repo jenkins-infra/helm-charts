@@ -21,7 +21,7 @@ sources:
   latestRelease:
     name: Get latest stable version of nginx
     kind: gitTag
-    scmID: nginxGithubMirror
+    scmid: nginxGithubMirror
     spec:
       versionFilter:
         kind: regex
@@ -35,7 +35,7 @@ conditions:
   checkDockerImagePublished:
     name: "Test nginx:<latest_version> docker image tag"
     kind: dockerImage
-    sourceID: latestRelease
+    sourceid: latestRelease
     spec:
       image: "nginx"
       architecture: amd64
@@ -49,7 +49,7 @@ targets:
       name: charts/javadoc
       key: image.tag
       versionincrement: patch
-    scmID: default
+    scmid: default
   updateJenkinsioChartEn:
     name: "Update nginx stable docker image version for jenkinsio chart (EN)"
     kind: helmChart
@@ -57,7 +57,7 @@ targets:
       name: charts/jenkinsio
       key: images.en.tag
       versionincrement: patch
-    scmID: default
+    scmid: default
   updateJenkinsioChartZh:
     name: "Update nginx stable docker image version for jenkinsio chart (ZH)"
     kind: helmChart
@@ -65,7 +65,7 @@ targets:
       name: charts/jenkinsio
       key: images.zh.tag
       versionincrement: patch
-    scmID: default
+    scmid: default
   updatePluginSiteChart:
     name: "Update nginx stable docker image version for plugin-site chart"
     kind: helmChart
@@ -73,7 +73,7 @@ targets:
       name: charts/plugin-site
       key: frontend.image.tag
       versionincrement: patch
-    scmID: default
+    scmid: default
   updateReportsChart:
     name: "Update nginx stable docker image version for reports chart"
     kind: helmChart
@@ -81,12 +81,12 @@ targets:
       name: charts/reports
       key: image.tag
       versionincrement: patch
-    scmID: default
+    scmid: default
 
 pullrequests:
   default:
     kind: github
-    scmID: default
+    scmid: default
     targets:
       - updateJavadocChart
       - updateJenkinsioChartEn

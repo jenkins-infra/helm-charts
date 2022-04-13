@@ -27,7 +27,7 @@ conditions:
   checkDockerImagePublished:
     name: "Test jenkinsciinfra/wiki:<latest_version> docker image tag"
     kind: dockerImage
-    sourceID: latestRelease
+    sourceid: latestRelease
     spec:
       image: "jenkinsciinfra/wiki"
       architecture: "amd64"
@@ -40,12 +40,12 @@ targets:
       name: charts/wiki
       key: image.tag
       versionincrement: patch
-    scmID: default
+    scmid: default
 
 pullrequests:
   default:
     kind: github
-    scmID: default
+    scmid: default
     targets:
       - updateChart
     spec:

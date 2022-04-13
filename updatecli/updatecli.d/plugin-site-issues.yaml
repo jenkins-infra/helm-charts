@@ -1,4 +1,4 @@
-title: Bump `incremental-publisher` docker image and helm chart versions
+title: Bump `plugin-site-issues` docker image and helm chart versions
 
 scms:
   default:
@@ -15,28 +15,29 @@ scms:
 sources:
   latestRelease:
     kind: githubRelease
-    name: Get jenkins-infra/incrementals-publish latest version
+    name: "Get latest jenkins-infra/docker-plugin-site-issues latest version"
     spec:
       owner: "jenkins-infra"
-      repository: "incrementals-publisher"
+      repository: "docker-plugin-site-issues"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
 
 conditions:
   checkDockerImagePublished:
-    name: Test if jenkinsciinfra/incrementals-publisher docker image is published
+    name: |
+      Test jenkinsciinfra/docker-plugin-site-issues:{{ source `latestRelease` }} docker image tag
     kind: dockerImage
     sourceid: latestRelease
     spec:
-      image: "jenkinsciinfra/incrementals-publisher"
+      image: "jenkinsciinfra/plugin-site-issues"
       architecture: "amd64"
 
 targets:
   updateChart:
-    name: Update incrementals-publisher helm chart
+    name: Update rating helm chart
     kind: helmChart
     spec:
-      name: charts/incrementals-publisher
+      name: charts/plugin-site-issues
       key: image.tag
       versionincrement: patch
     scmid: default
@@ -50,4 +51,4 @@ pullrequests:
     spec:
       labels:
         - dependencies
-        - incrementals-publisher
+        - plugin-site-issues
