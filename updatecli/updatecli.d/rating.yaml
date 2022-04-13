@@ -28,7 +28,7 @@ conditions:
     name: |
       Test jenkinsciinfra/rating:{{ source `latestRelease` }} docker image tag
     kind: dockerImage
-    sourceID: latestRelease
+    sourceid: latestRelease
     spec:
       image: "jenkinsciinfra/rating"
       architecture: "amd64"
@@ -41,12 +41,12 @@ targets:
       name: charts/rating
       key: image.tag
       versionincrement: patch
-    scmID: default
+    scmid: default
 
 pullrequests:
   default:
     kind: github
-    scmID: default
+    scmid: default
     targets:
       - updateChart
     spec:

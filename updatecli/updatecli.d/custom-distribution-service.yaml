@@ -28,11 +28,11 @@ conditions:
   checkDockerImagePublished:
     name: Is latest jenkinsciinfra/custom-distribution-service docker image published
     kind: dockerImage
-    sourceID: latestRelease
+    sourceid: latestRelease
     spec:
       image: "jenkinsciinfra/custom-distribution-service"
       architecture: "amd64"
-      # Tag comes from sourceID
+      # Tag comes from sourceid
 
 targets:
   updateChart:
@@ -42,12 +42,12 @@ targets:
       name: charts/custom-distribution-service
       key: image.tag
       versionincrement: patch
-    scmID: default
+    scmid: default
 
 pullrequests:
   default:
     kind: github
-    scmID: default
+    scmid: default
     targets:
       - updateChart
     spec:

@@ -41,54 +41,54 @@ sources:
 conditions:
   checkMirrorbitsDockerImagePublished:
     name: Ensure that the image "jenkinsciinfra/mirrorbits:<found_version>" is published on the DockerHub
-    sourceID: latestMirrorbitsRelease
+    sourceid: latestMirrorbitsRelease
     kind: dockerImage
     spec:
       image: "jenkinsciinfra/mirrorbits"
       architecture: "amd64"
-      # Tag comes from sourceID
+      # Tag comes from sourceid
   checkGeoIPDockerImagePublished:
     name: Ensure that the image "maxmindinc/geoipupdate:<found_version>" is published on the DockerHub
-    sourceID: latestGeoIPRelease
+    sourceid: latestGeoIPRelease
     kind: dockerImage
     spec:
       image: "maxmindinc/geoipupdate"
       architecture: "amd64"
-      # Tag comes from sourceID
+      # Tag comes from sourceid
 
 # no condition to test httpd docker image availability as we're using a digest from docker hub
 
 targets:
   updateMirrorbits:
     name: "Update mirrorbits docker image version"
-    sourceID: latestMirrorbitsRelease
+    sourceid: latestMirrorbitsRelease
     kind: helmChart
     spec:
       name: charts/mirrorbits
       key: "image.mirrorbits.tag"
       versionincrement: patch
-    scmID: default
+    scmid: default
   updateHttpd:
     name: "Update httpd docker image version"
-    sourceID: latestHttpdRelease
+    sourceid: latestHttpdRelease
     kind: helmChart
     spec:
       name: charts/mirrorbits
       key: "image.files.tag"
-    scmID: default
+    scmid: default
   updateGeoIP:
     name: "Update maxmindinc/geoipupdate docker image version"
-    sourceID: latestGeoIPRelease
+    sourceid: latestGeoIPRelease
     kind: helmChart
     spec:
       name: charts/mirrorbits
       key: "geoipupdate.image.tag"
-    scmID: default
+    scmid: default
 
 pullrequests:
   default:
     kind: github
-    scmID: default
+    scmid: default
     targets:
       - updateMirrorbits
       - updateHttpd

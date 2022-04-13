@@ -26,7 +26,7 @@ conditions:
   checkDockerImagePublished:
     name: Test if jenkinsciinfra/incrementals-publisher docker image is published
     kind: dockerImage
-    sourceID: latestRelease
+    sourceid: latestRelease
     spec:
       image: "jenkinsciinfra/incrementals-publisher"
       architecture: "amd64"
@@ -39,12 +39,12 @@ targets:
       name: charts/incrementals-publisher
       key: image.tag
       versionincrement: patch
-    scmID: default
+    scmid: default
 
 pullrequests:
   default:
     kind: github
-    scmID: default
+    scmid: default
     targets:
       - updateChart
     spec:

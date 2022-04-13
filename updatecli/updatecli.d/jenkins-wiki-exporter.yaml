@@ -29,7 +29,7 @@ conditions:
   checkDockerImagePublished:
     name: Test jenkinsciinfra/jenkins-wiki-exporter:<latest_version> docker image tag
     kind: dockerImage
-    sourceID: latestRelease
+    sourceid: latestRelease
     spec:
       image: "jenkinsciinfra/jenkins-wiki-exporter"
       architecture: "amd64"
@@ -42,12 +42,12 @@ targets:
       name: charts/jenkins-wiki-exporter
       key: image.tag
       versionincrement: patch
-    scmID: default
+    scmid: default
 
 pullrequests:
   default:
     kind: github
-    scmID: default
+    scmid: default
     targets:
       - updateChart
     spec:
