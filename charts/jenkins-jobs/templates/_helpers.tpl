@@ -130,12 +130,17 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
           traits {
             gitHubSCMSourceStatusChecksTrait {
               // Note: changing this name might have impact on github branch protections if they specify status names
-              name('[infra.ci.jenkins.io] {{ .name }}')
-              skip({{ .disableGitHubChecks | default "false" }})
+              name({{ .githubCheckName | default "jenkins" | squote }})
+              {{- if empty .enableGitHubChecks }}
+              skip(true)
+              {{- else }}
+              skip({{ not .enableGitHubChecks }})
+              {{- end }}
               // If this option is checked, the notifications sent by the GitHub Branch Source Plugin will be disabled.
               skipNotifications(false)
               skipProgressUpdates(false)
               // Default value: false. Warning: risk of secret leak in console if the build fails
+              // Please note that it only disable the detailled logs. If you really want no logs, then use "skip(false)' instead
               suppressLogs(true)
               unstableBuildNeutral(false)
             }
