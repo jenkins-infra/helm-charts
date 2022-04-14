@@ -4,5 +4,5 @@ icon: https://jenkins.io/images/logos/plumber/256.png
 maintainers:
   - name: Damien Duportal <damien.duportal@gmail.com>
 name: jenkins-jobs
-version: 0.2.0
+version: 0.3.0
 appVersion: "1.0" # unused
