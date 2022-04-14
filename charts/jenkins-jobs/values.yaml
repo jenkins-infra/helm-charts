@@ -29,6 +29,8 @@ jobsDefinition: {}
 #       multibranchJobB: ## ## Default to kind: multibranchJob with id == name == description and default settings
 #       multibranchJobC: ## Default to kind: multibranchJob
 #         name: Job C
+#         enableGitHubChecks: true
+#         githubCheckName: RogerRoger
 #         credentials:
 #            ssh-deploy-key:
 #              username: ${SSH_CHARTS_SECRETS_USERNAME}
