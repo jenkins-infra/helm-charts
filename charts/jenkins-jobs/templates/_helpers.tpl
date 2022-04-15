@@ -13,7 +13,7 @@ Generate the job-dsl configuration from specified values
       {{- if $childDef }}
       {{- $child = (merge $childDef (dict "id" $childId "fullId" $childFullId )) }}
       {{- end }}
-{{ include "generic-job-dsl-definition" $child | indent 6 }}
+{{ include "generic-job-dsl-definition" $child | indent 4 }}
     {{- end -}}
   {{- end -}}
 {{- end -}}
@@ -140,7 +140,7 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
               skipNotifications(false)
               skipProgressUpdates(false)
               // Default value: false. Warning: risk of secret leak in console if the build fails
-              // Please note that it only disable the detailled logs. If you really want no logs, then use "skip(false)' instead
+              // Please note that it only disable the detailed logs. If you really want no logs, then use "skip(false)' instead
               suppressLogs(true)
               unstableBuildNeutral(false)
             }
