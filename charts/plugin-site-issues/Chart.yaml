@@ -1,6 +1,6 @@
 apiVersion: v2
-appVersion: 0.2.0
+appVersion: 0.3.0
 description: plugin-site-issues
 name: plugin-site-issues
 type: application
-version: 0.1.5
+version: 0.1.6
