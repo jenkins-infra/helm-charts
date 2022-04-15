@@ -1,4 +1,17 @@
 title: Bump `incremental-publisher` docker image and helm chart versions
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
 sources:
   latestRelease:
     kind: githubRelease
@@ -8,51 +21,33 @@ sources:
       repository: "incrementals-publisher"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
-  chartVersion:
-    name: Get incrementals-publisher helm chart version
-    kind: yaml
-    spec:
-      file: "charts/incrementals-publisher/Chart.yaml"
-      key: "version"
-    transformers:
-      - semverInc: "patch"
+
 conditions:
   checkDockerImagePublished:
-    name: "Test if jenkinsciinfra/incrementals-publisher docker image is published"
+    name: Test if jenkinsciinfra/incrementals-publisher docker image is published
     kind: dockerImage
-    sourceID: latestRelease
+    sourceid: latestRelease
     spec:
       image: "jenkinsciinfra/incrementals-publisher"
+      architecture: "amd64"
+
 targets:
-  updateReleaseInConfig:
-    name: "Update incrementals-publisher appVersion"
-    kind: yaml
-    sourceID: latestRelease
+  updateChart:
+    name: Update incrementals-publisher helm chart
+    kind: helmChart
     spec:
-      file: charts/incrementals-publisher/values.yaml
+      name: charts/incrementals-publisher
       key: image.tag
-    scm:
-      github:
-        user: "{{ .github.user }}"
-        email: "{{ .github.email }}"
-        owner: "{{ .github.owner }}"
-        repository: "{{ .github.repository }}"
-        token: "{{ requiredEnv .github.token }}"
-        username: "{{ .github.username }}"
-        branch: "{{ .github.branch }}"
-  updateChartVersion:
-    name: Bump incrementals-publisher helm chart version
-    kind: yaml
-    sourceID: chartVersion
+      versionincrement: patch
+    scmid: default
+
+pullrequests:
+  default:
+    kind: github
+    scmid: default
+    targets:
+      - updateChart
     spec:
-      file: "charts/incrementals-publisher/Chart.yaml"
-      key: "version"
-    scm:
-      github:
-        user: "{{ .github.user }}"
-        email: "{{ .github.email }}"
-        owner: "{{ .github.owner }}"
-        repository: "{{ .github.repository }}"
-        token: "{{ requiredEnv .github.token }}"
-        username: "{{ .github.username }}"
-        branch: "{{ .github.branch }}"
+      labels:
+        - dependencies
+        - incrementals-publisher

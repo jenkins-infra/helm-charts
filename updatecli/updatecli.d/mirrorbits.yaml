@@ -1,84 +1,101 @@
-title: Bump `mirrorbits` docker image digest and helm chart version
+title: Bump `mirrorbits` docker images version and helm chart version
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
 sources:
   latestMirrorbitsRelease:
     name: Get latest version of jenkinsciinfra/mirrorbits
     kind: githubRelease
     spec:
-      user: "{{ .github.user }}"
-      email: "{{ .github.email }}"
-      owner: "{{ .github.owner }}"
+      owner: "jenkins-infra"
       repository: "docker-mirrorbits"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
       branch: "{{ .github.branch }}"
-  latestHttpdDigest:
+  latestHttpdRelease:
+    name: Get latest digest of the Docker Image for httpd, in version 2.4
     kind: dockerDigest
-    name: "Get httdp docker image digest"
     spec:
       image: "httpd"
-      tag: "latest"
-  chartVersion:
-    name: Get mirrorbits helm chart version
-    kind: yaml
+      tag: "2.4"
+      architecture: "amd64"
+  latestGeoIPRelease:
+    name: Get latest version of GeoIP
+    kind: githubRelease
     spec:
-      file: "charts/mirrorbits/Chart.yaml"
-      key: "version"
-    transformers:
-      - semverInc: "patch"
+      owner: "maxmind"
+      repository: "geoipupdate"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+
 conditions:
-  checkDockerImagePublished:
+  checkMirrorbitsDockerImagePublished:
     name: Ensure that the image "jenkinsciinfra/mirrorbits:<found_version>" is published on the DockerHub
-    sourceID: latestMirrorbitsRelease
+    sourceid: latestMirrorbitsRelease
     kind: dockerImage
     spec:
       image: "jenkinsciinfra/mirrorbits"
-  # no condition to test httpd docker image availability as we're using a digest from docker hub
+      architecture: "amd64"
+      # Tag comes from sourceid
+  checkGeoIPDockerImagePublished:
+    name: Ensure that the image "maxmindinc/geoipupdate:<found_version>" is published on the DockerHub
+    sourceid: latestGeoIPRelease
+    kind: dockerImage
+    spec:
+      image: "maxmindinc/geoipupdate"
+      architecture: "amd64"
+      # Tag comes from sourceid
+
+# no condition to test httpd docker image availability as we're using a digest from docker hub
+
 targets:
   updateMirrorbits:
-    name: "Update mirrorbits docker image digest"
-    sourceID: latestMirrorbitsRelease
-    kind: yaml
+    name: "Update mirrorbits docker image version"
+    sourceid: latestMirrorbitsRelease
+    kind: helmChart
     spec:
-      file: charts/mirrorbits/values.yaml
+      name: charts/mirrorbits
       key: "image.mirrorbits.tag"
-    scm:
-      github:
-        user: "{{ .github.user }}"
-        email: "{{ .github.email }}"
-        owner: "{{ .github.owner }}"
-        repository: "{{ .github.repository}}"
-        token: "{{ requiredEnv .github.token }}"
-        username: "{{ .github.username }}"
-        branch: "{{ .github.branch }}"
+      versionincrement: patch
+    scmid: default
   updateHttpd:
-    name: "Update httpd docker image digest"
-    sourceID: latestHttpdDigest
-    kind: yaml
+    name: "Update httpd docker image version"
+    sourceid: latestHttpdRelease
+    kind: helmChart
     spec:
-      file: charts/mirrorbits/values.yaml
+      name: charts/mirrorbits
       key: "image.files.tag"
-    scm:
-      github:
-        user: "{{ .github.user }}"
-        email: "{{ .github.email }}"
-        owner: "{{ .github.owner }}"
-        repository: "{{ .github.repository}}"
-        token: "{{ requiredEnv .github.token }}"
-        username: "{{ .github.username }}"
-        branch: "{{ .github.branch }}"
-  updateChartVersion:
-    name: Bump mirrorbits helm chart version
-    kind: yaml
-    sourceID: chartVersion
+    scmid: default
+  updateGeoIP:
+    name: "Update maxmindinc/geoipupdate docker image version"
+    sourceid: latestGeoIPRelease
+    kind: helmChart
     spec:
-      file: "charts/mirrorbits/Chart.yaml"
-      key: "version"
-    scm:
-      github:
-        user: "{{ .github.user }}"
-        email: "{{ .github.email }}"
-        owner: "{{ .github.owner }}"
-        repository: "{{ .github.repository }}"
-        token: "{{ requiredEnv .github.token }}"
-        username: "{{ .github.username }}"
-        branch: "{{ .github.branch }}"
+      name: charts/mirrorbits
+      key: "geoipupdate.image.tag"
+    scmid: default
+
+pullrequests:
+  default:
+    kind: github
+    scmid: default
+    targets:
+      - updateMirrorbits
+      - updateHttpd
+      - updateGeoIP
+    spec:
+      labels:
+        - dependencies
+        - mirrorbits
+        - httpd
+        - geoip

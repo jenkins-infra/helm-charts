@@ -1,0 +1,54 @@
+title: Bump `plugin-site-issues` docker image and helm chart versions
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
+sources:
+  latestRelease:
+    kind: githubRelease
+    name: "Get latest jenkins-infra/docker-plugin-site-issues latest version"
+    spec:
+      owner: "jenkins-infra"
+      repository: "docker-plugin-site-issues"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+
+conditions:
+  checkDockerImagePublished:
+    name: |
+      Test jenkinsciinfra/docker-plugin-site-issues:{{ source `latestRelease` }} docker image tag
+    kind: dockerImage
+    sourceid: latestRelease
+    spec:
+      image: "jenkinsciinfra/plugin-site-issues"
+      architecture: "amd64"
+
+targets:
+  updateChart:
+    name: Update rating helm chart
+    kind: helmChart
+    spec:
+      name: charts/plugin-site-issues
+      key: image.tag
+      versionincrement: patch
+    scmid: default
+
+pullrequests:
+  default:
+    kind: github
+    scmid: default
+    targets:
+      - updateChart
+    spec:
+      labels:
+        - dependencies
+        - plugin-site-issues

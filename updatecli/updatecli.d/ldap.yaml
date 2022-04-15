@@ -1,4 +1,17 @@
 title: Bump `ldap` docker image digest and helm chart version
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
 sources:
   crond:
     kind: dockerDigest
@@ -6,67 +19,47 @@ sources:
     spec:
       image: "jenkinsciinfra/ldap"
       tag: "cron-latest"
+      architecture: "amd64"
   slapd:
     kind: dockerDigest
     name: Get jenkinsciinfra/ldap:latest docker image digest
     spec:
       image: "jenkinsciinfra/ldap"
       tag: "latest"
-  chartVersion:
-    name: Get ldap helm chart version
-    kind: yaml
-    spec:
-      file: "charts/ldap/Chart.yaml"
-      key: "version"
-    transformers:
-      - semverInc: "patch"
+      architecture: "amd64"
+
 # no condition to test docker image availability as we're using a digest from docker hub
+
 targets:
-  crond:
-    sourceID: crond
-    name: "Update jenkinsciinfra/ldap:cron-latest image digest"
-    kind: yaml
+  updateChartCrond:
+    name: Update jenkins-wiki-exporter helm chart
+    kind: helmChart
+    sourceid: crond
     spec:
-      file: "charts/ldap/values.yaml"
-      key: "image.crond.tag"
-    scm:
-      github:
-        user: "{{ .github.user }}"
-        email: "{{ .github.email }}"
-        owner: "{{ .github.owner }}"
-        repository: "{{ .github.repository }}"
-        token: "{{ requiredEnv .github.token }}"
-        username: "{{ .github.username }}"
-        branch: "{{ .github.branch }}"
-  slapd:
-    sourceID: slapd
-    name: "Update jenkinsciinfra/ldap:latest docker image digest"
-    kind: yaml
+      name: charts/ldap
+      key: image.crond.tag
+      versionincrement: patch
+    scmid: default
+  updateChartSlapd:
+    name: Update jenkins-wiki-exporter helm chart
+    kind: helmChart
+    sourceid: slapd
     spec:
-      file: "charts/ldap/values.yaml"
-      key: "image.slapd.tag"
-    scm:
-      github:
-        user: "{{ .github.user }}"
-        email: "{{ .github.email }}"
-        owner: "{{ .github.owner }}"
-        repository: "{{ .github.repository }}"
-        token: "{{ requiredEnv .github.token }}"
-        username: "{{ .github.username }}"
-        branch: "{{ .github.branch }}"
-  updateChartVersion:
-    name: Bump ldap helm chart version
-    kind: yaml
-    sourceID: chartVersion
+      name: charts/ldap
+      key: image.slapd.tag
+      versionincrement: patch
+    scmid: default
+
+pullrequests:
+  default:
+    kind: github
+    scmid: default
+    targets:
+      - updateChartCrond
+      - updateChartSlapd
     spec:
-      file: "charts/ldap/Chart.yaml"
-      key: "version"
-    scm:
-      github:
-        user: "{{ .github.user }}"
-        email: "{{ .github.email }}"
-        owner: "{{ .github.owner }}"
-        repository: "{{ .github.repository }}"
-        token: "{{ requiredEnv .github.token }}"
-        username: "{{ .github.username }}"
-        branch: "{{ .github.branch }}"
+      labels:
+        - dependencies
+        - ldap
+        - crond
+        - slapd

@@ -57,6 +57,16 @@ spec:
                 secretKeyRef:
                   name: {{ include "incrementals-publisher.fullname" . }}
                   key: github_token
+            - name: GITHUB_APP_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "incrementals-publisher.fullname" . }}
+                  key: github_app_id
+            - name: GITHUB_APP_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "incrementals-publisher.fullname" . }}
+                  key: github_app_private_key
             - name: ARTIFACTORY_KEY
               valueFrom:
                 secretKeyRef:

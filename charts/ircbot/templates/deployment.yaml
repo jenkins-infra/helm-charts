@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "chatbot.fullname" . }}
-  labels: {{ include "chatbot.labels" . | nindent 4 }}
+  name: {{ include "ircbot.fullname" . }}
+  labels: {{ include "ircbot.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "chatbot.name" . }}
+      app.kubernetes.io/name: {{ include "ircbot.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
-      labels: {{ include "chatbot.labels" . | nindent 8 }}
+      labels: {{ include "ircbot.labels" . | nindent 8 }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
     spec:
@@ -35,7 +35,7 @@ spec:
             - name: NICK_PASSWORD
               valueFrom:
                 secretKeyRef:
-                    name: {{ include "chatbot.fullname" . }}
+                    name: {{ include "ircbot.fullname" . }}
                     key: nick_password
           volumeMounts:
             - name: credentials
@@ -46,7 +46,7 @@ spec:
       volumes:
         - name: credentials
           secret:
-            secretName: {{ include "chatbot.fullname" . }}
+            secretName: {{ include "ircbot.fullname" . }}
             items:
               - key: github
                 path: .github

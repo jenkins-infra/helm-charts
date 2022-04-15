@@ -8,11 +8,11 @@ replicaCount:
 image:
   mirrorbits:
     repository: jenkinsciinfra/mirrorbits
-    tag: 0.1.4
+    tag: 0.1.17
     pullPolicy: Always
   files:
     repository: httpd@sha256
-    tag: 57c1e4ff150e2782a25c8cebb80b574f81f06b74944caf972f27e21b76074194
+    tag: 10ed1591781d9fdbaefaafee77067f12e833c699c84ed4e21706ccbd5229fd0a
     pullPolicy: Always
 imagePullSecrets: []
 nameOverride: ""
@@ -77,7 +77,7 @@ affinity: {}
 geoipupdate:
   image:
     repository: maxmindinc/geoipupdate
-    tag: v4.3
+    tag: v4.9.0
   #account_id:
   #license_key:
   editions: GeoLite2-ASN GeoLite2-City GeoLite2-Country

@@ -1,4 +1,17 @@
 title: Bump `uplink` docker image digest and helm chart version
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
 sources:
   latestDigest:
     kind: dockerDigest
@@ -6,45 +19,27 @@ sources:
     spec:
       image: "jenkinsciinfra/uplink"
       tag: "latest"
-  chartVersion:
-    name: Get uplink helm chart version
-    kind: yaml
-    spec:
-      file: "charts/uplink/Chart.yaml"
-      key: "version"
-    transformers:
-      - semverInc: "patch"
+      architecture: "amd64"
+
 # no condition to test docker image availability as we're using a digest from docker hub
+
 targets:
-  updateDigestInConfig:
-    name: "Update uplink docker image tag"
-    kind: yaml
-    sourceID: latestDigest
+  updateChart:
+    name: Update uplink helm chart
+    kind: helmChart
     spec:
-      file: "charts/uplink/values.yaml"
-      key: "image.tag"
-    scm:
-      github:
-        user: "{{ .github.user }}"
-        email: "{{ .github.email }}"
-        owner: "{{ .github.owner }}"
-        repository: "{{ .github.repository }}"
-        token: "{{ requiredEnv .github.token }}"
-        username: "{{ .github.username }}"
-        branch: "{{ .github.branch }}"
-  updateChartVersion:
-    name: Bump uplink helm chart version
-    kind: yaml
-    sourceID: chartVersion
+      name: charts/uplink
+      key: image.tag
+      versionincrement: patch
+    scmid: default
+
+pullrequests:
+  default:
+    kind: github
+    scmid: default
+    targets:
+      - updateChart
     spec:
-      file: "charts/uplink/Chart.yaml"
-      key: "version"
-    scm:
-      github:
-        user: "{{ .github.user }}"
-        email: "{{ .github.email }}"
-        owner: "{{ .github.owner }}"
-        repository: "{{ .github.repository }}"
-        token: "{{ requiredEnv .github.token }}"
-        username: "{{ .github.username }}"
-        branch: "{{ .github.branch }}"
+      labels:
+        - dependencies
+        - uplink

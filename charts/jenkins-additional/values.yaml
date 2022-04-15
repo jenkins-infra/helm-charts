@@ -1,3 +1,2 @@
 # Default helm value https://github.com/jenkinsci/helm-charts/blob/main/charts/jenkins/values.yaml
 clusterAdminEnabled: false
-secretName: jenkins-secrets
