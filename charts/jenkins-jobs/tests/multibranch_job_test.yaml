@@ -1,0 +1,443 @@
+suite: default tests
+templates:
+  - jcasc-jobs-config.yaml
+tests:
+  ## TODO: implement validation in template (to fail with the template existing)
+  # - it: should fail if no job name is provided
+  #   set:
+  #     jobsDefinition:
+  #       default-job:
+  #   asserts:
+  #     - failedTemplate:
+  #         errorMessage: "fi"
+  - it: should generate a multibranch job with minimum defaults
+    set:
+      jobsDefinition:
+        default-job:
+          name: Default Job
+    asserts:
+      - equal:
+          path: data.jobs-definition\.yaml
+          value: |-
+            jobs:
+              - script: >
+                  multibranchPipelineJob('default-job') {
+                    triggers {
+                      periodicFolderTrigger {
+                        interval('2h')
+                      }
+                    }
+
+                    branchSources {
+                      branchSource {
+                        source {
+                          github {
+                            id('default-job')
+                            credentialsId('github-app-infra')
+                            configuredByUrl(true)
+                            repositoryUrl('https://github.com/jenkins-infra/default-job')
+                            repoOwner('jenkins-infra')
+                            repository('default-job')
+                            traits {
+                              gitHubSCMSourceStatusChecksTrait {
+                                // Note: changing this name might have impact on github branch protections if they specify status names
+                                name('jenkins')
+                                skip(true)
+                                // If this option is checked, the notifications sent by the GitHub Branch Source Plugin will be disabled.
+                                skipNotifications(false)
+                                skipProgressUpdates(false)
+                                // Default value: false. Warning: risk of secret leak in console if the build fails
+                                // Please note that it only disable the detailed logs. If you really want no logs, then use "skip(false)' instead
+                                suppressLogs(true)
+                                unstableBuildNeutral(false)
+                              }
+                              gitHubBranchDiscovery {
+                                strategyId(1) // 1-only branches that are not pull requests
+                              }
+                              // Only Origin Pull Request
+                              gitHubPullRequestDiscovery {
+                                strategyId(1) // 1-Merging the pull request with the current target branch revision
+                              }
+                              pruneStaleBranchTrait()
+                              gitHubTagDiscovery()
+                              pullRequestLabelsBlackListFilterTrait {
+                                labels('on-hold,ci-skip,skip-ci')
+                              }
+                              // Select branches and tags to build based on these filters
+                              headWildcardFilterWithPR {
+                                includes('main master PR-*') // only branches listed here
+                                excludes('')
+                                tagIncludes('*')
+                                tagExcludes('')
+                              }
+                            }
+                          }
+                          buildStrategies {
+                            buildAnyBranches {
+                              strategies {
+                                buildChangeRequests {
+                                  ignoreTargetOnlyChanges(true)
+                                  ignoreUntrustedChanges(true)
+                                }
+                                buildRegularBranches()
+                                buildTags {
+                                  atLeastDays('-1')
+                                  atMostDays('3')
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    factory {
+                      workflowBranchProjectFactory {
+                        scriptPath('Jenkinsfile_k8s')
+                      }
+                    }
+                    orphanedItemStrategy {
+                      // Remove unused items as soon as possible
+                      discardOldItems {
+                        // Keep removed SCM heads/branch/PRs only for 1 day (not 0 days to be sure that jobs are all finished/timeouted when deleting)
+                        // Does not apply to the build history of kept branches(use Pipeline for that)
+                        daysToKeep(1)
+                      }
+                    }
+                    configure { node ->
+                      def traits = node / 'sources' / 'data' / 'jenkins.branch.BranchSource' / 'source' / 'traits'
+                      // Not discovered by Job-DSL: need to be configured as raw-XML
+                      traits << 'org.jenkinsci.plugins.github__branch__source.ForkPullRequestDiscoveryTrait' {
+                        strategyId(1) // 1-Merging the pull request with the current target branch revision
+                        trust(class: 'org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait$TrustPermission')
+                      }
+                    }
+
+                    displayName('Default Job')
+                    description('Default Job')
+                  }
+  - it: should generate a multibranch job with custom name, description and explicit kind
+    set:
+      jobsDefinition:
+        joba:
+          name: Job A
+          description: Job A for team A
+          kind: multibranchPipelineJob
+    asserts:
+      - equal:
+          path: data.jobs-definition\.yaml
+          value: |-
+            jobs:
+              - script: >
+                  multibranchPipelineJob('joba') {
+                    triggers {
+                      periodicFolderTrigger {
+                        interval('2h')
+                      }
+                    }
+
+                    branchSources {
+                      branchSource {
+                        source {
+                          github {
+                            id('joba')
+                            credentialsId('github-app-infra')
+                            configuredByUrl(true)
+                            repositoryUrl('https://github.com/jenkins-infra/joba')
+                            repoOwner('jenkins-infra')
+                            repository('joba')
+                            traits {
+                              gitHubSCMSourceStatusChecksTrait {
+                                // Note: changing this name might have impact on github branch protections if they specify status names
+                                name('jenkins')
+                                skip(true)
+                                // If this option is checked, the notifications sent by the GitHub Branch Source Plugin will be disabled.
+                                skipNotifications(false)
+                                skipProgressUpdates(false)
+                                // Default value: false. Warning: risk of secret leak in console if the build fails
+                                // Please note that it only disable the detailed logs. If you really want no logs, then use "skip(false)' instead
+                                suppressLogs(true)
+                                unstableBuildNeutral(false)
+                              }
+                              gitHubBranchDiscovery {
+                                strategyId(1) // 1-only branches that are not pull requests
+                              }
+                              // Only Origin Pull Request
+                              gitHubPullRequestDiscovery {
+                                strategyId(1) // 1-Merging the pull request with the current target branch revision
+                              }
+                              pruneStaleBranchTrait()
+                              gitHubTagDiscovery()
+                              pullRequestLabelsBlackListFilterTrait {
+                                labels('on-hold,ci-skip,skip-ci')
+                              }
+                              // Select branches and tags to build based on these filters
+                              headWildcardFilterWithPR {
+                                includes('main master PR-*') // only branches listed here
+                                excludes('')
+                                tagIncludes('*')
+                                tagExcludes('')
+                              }
+                            }
+                          }
+                          buildStrategies {
+                            buildAnyBranches {
+                              strategies {
+                                buildChangeRequests {
+                                  ignoreTargetOnlyChanges(true)
+                                  ignoreUntrustedChanges(true)
+                                }
+                                buildRegularBranches()
+                                buildTags {
+                                  atLeastDays('-1')
+                                  atMostDays('3')
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    factory {
+                      workflowBranchProjectFactory {
+                        scriptPath('Jenkinsfile_k8s')
+                      }
+                    }
+                    orphanedItemStrategy {
+                      // Remove unused items as soon as possible
+                      discardOldItems {
+                        // Keep removed SCM heads/branch/PRs only for 1 day (not 0 days to be sure that jobs are all finished/timeouted when deleting)
+                        // Does not apply to the build history of kept branches(use Pipeline for that)
+                        daysToKeep(1)
+                      }
+                    }
+                    configure { node ->
+                      def traits = node / 'sources' / 'data' / 'jenkins.branch.BranchSource' / 'source' / 'traits'
+                      // Not discovered by Job-DSL: need to be configured as raw-XML
+                      traits << 'org.jenkinsci.plugins.github__branch__source.ForkPullRequestDiscoveryTrait' {
+                        strategyId(1) // 1-Merging the pull request with the current target branch revision
+                        trust(class: 'org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait$TrustPermission')
+                      }
+                    }
+
+                    displayName('Job A')
+                    description('Job A for team A')
+                  }
+  - it: should generate a multibranch job with custom github configuration
+    set:
+      jobsDefinition:
+        job-b:
+          name: Job B
+          description: Job B for team B
+          kind: multibranchPipelineJob
+          repoOwner: obiwankenobi
+          repository: lightsaber
+          githubCredentialsId: the-force
+    asserts:
+      - equal:
+          path: data.jobs-definition\.yaml
+          value: |-
+            jobs:
+              - script: >
+                  multibranchPipelineJob('job-b') {
+                    triggers {
+                      periodicFolderTrigger {
+                        interval('2h')
+                      }
+                    }
+
+                    branchSources {
+                      branchSource {
+                        source {
+                          github {
+                            id('job-b')
+                            credentialsId('the-force')
+                            configuredByUrl(true)
+                            repositoryUrl('https://github.com/obiwankenobi/lightsaber')
+                            repoOwner('obiwankenobi')
+                            repository('lightsaber')
+                            traits {
+                              gitHubSCMSourceStatusChecksTrait {
+                                // Note: changing this name might have impact on github branch protections if they specify status names
+                                name('jenkins')
+                                skip(true)
+                                // If this option is checked, the notifications sent by the GitHub Branch Source Plugin will be disabled.
+                                skipNotifications(false)
+                                skipProgressUpdates(false)
+                                // Default value: false. Warning: risk of secret leak in console if the build fails
+                                // Please note that it only disable the detailed logs. If you really want no logs, then use "skip(false)' instead
+                                suppressLogs(true)
+                                unstableBuildNeutral(false)
+                              }
+                              gitHubBranchDiscovery {
+                                strategyId(1) // 1-only branches that are not pull requests
+                              }
+                              // Only Origin Pull Request
+                              gitHubPullRequestDiscovery {
+                                strategyId(1) // 1-Merging the pull request with the current target branch revision
+                              }
+                              pruneStaleBranchTrait()
+                              gitHubTagDiscovery()
+                              pullRequestLabelsBlackListFilterTrait {
+                                labels('on-hold,ci-skip,skip-ci')
+                              }
+                              // Select branches and tags to build based on these filters
+                              headWildcardFilterWithPR {
+                                includes('main master PR-*') // only branches listed here
+                                excludes('')
+                                tagIncludes('*')
+                                tagExcludes('')
+                              }
+                            }
+                          }
+                          buildStrategies {
+                            buildAnyBranches {
+                              strategies {
+                                buildChangeRequests {
+                                  ignoreTargetOnlyChanges(true)
+                                  ignoreUntrustedChanges(true)
+                                }
+                                buildRegularBranches()
+                                buildTags {
+                                  atLeastDays('-1')
+                                  atMostDays('3')
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    factory {
+                      workflowBranchProjectFactory {
+                        scriptPath('Jenkinsfile_k8s')
+                      }
+                    }
+                    orphanedItemStrategy {
+                      // Remove unused items as soon as possible
+                      discardOldItems {
+                        // Keep removed SCM heads/branch/PRs only for 1 day (not 0 days to be sure that jobs are all finished/timeouted when deleting)
+                        // Does not apply to the build history of kept branches(use Pipeline for that)
+                        daysToKeep(1)
+                      }
+                    }
+                    configure { node ->
+                      def traits = node / 'sources' / 'data' / 'jenkins.branch.BranchSource' / 'source' / 'traits'
+                      // Not discovered by Job-DSL: need to be configured as raw-XML
+                      traits << 'org.jenkinsci.plugins.github__branch__source.ForkPullRequestDiscoveryTrait' {
+                        strategyId(1) // 1-Merging the pull request with the current target branch revision
+                        trust(class: 'org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait$TrustPermission')
+                      }
+                    }
+
+                    displayName('Job B')
+                    description('Job B for team B')
+                  }
+  - it: should generate a multibranch job with advanced configuration
+    set:
+      jobsDefinition:
+        job-c:
+          name: Job C
+          githubCheckName: untrusted-ci
+          enableGitHubChecks: true
+          allowUntrustedChanges: true
+          jenkinsfilePath: Jenkinsfile
+    asserts:
+      - equal:
+          path: data.jobs-definition\.yaml
+          value: |-
+            jobs:
+              - script: >
+                  multibranchPipelineJob('job-c') {
+                    triggers {
+                      periodicFolderTrigger {
+                        interval('2h')
+                      }
+                    }
+
+                    branchSources {
+                      branchSource {
+                        source {
+                          github {
+                            id('job-c')
+                            credentialsId('github-app-infra')
+                            configuredByUrl(true)
+                            repositoryUrl('https://github.com/jenkins-infra/job-c')
+                            repoOwner('jenkins-infra')
+                            repository('job-c')
+                            traits {
+                              gitHubSCMSourceStatusChecksTrait {
+                                // Note: changing this name might have impact on github branch protections if they specify status names
+                                name('untrusted-ci')
+                                skip(false)
+                                // If this option is checked, the notifications sent by the GitHub Branch Source Plugin will be disabled.
+                                skipNotifications(false)
+                                skipProgressUpdates(false)
+                                // Default value: false. Warning: risk of secret leak in console if the build fails
+                                // Please note that it only disable the detailed logs. If you really want no logs, then use "skip(false)' instead
+                                suppressLogs(true)
+                                unstableBuildNeutral(false)
+                              }
+                              gitHubBranchDiscovery {
+                                strategyId(1) // 1-only branches that are not pull requests
+                              }
+                              // Only Origin Pull Request
+                              gitHubPullRequestDiscovery {
+                                strategyId(1) // 1-Merging the pull request with the current target branch revision
+                              }
+                              pruneStaleBranchTrait()
+                              gitHubTagDiscovery()
+                              pullRequestLabelsBlackListFilterTrait {
+                                labels('on-hold,ci-skip,skip-ci')
+                              }
+                              // Select branches and tags to build based on these filters
+                              headWildcardFilterWithPR {
+                                includes('main master PR-*') // only branches listed here
+                                excludes('')
+                                tagIncludes('*')
+                                tagExcludes('')
+                              }
+                            }
+                          }
+                          buildStrategies {
+                            buildAnyBranches {
+                              strategies {
+                                buildChangeRequests {
+                                  ignoreTargetOnlyChanges(true)
+                                  ignoreUntrustedChanges(false)
+                                }
+                                buildRegularBranches()
+                                buildTags {
+                                  atLeastDays('-1')
+                                  atMostDays('3')
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    factory {
+                      workflowBranchProjectFactory {
+                        scriptPath('Jenkinsfile')
+                      }
+                    }
+                    orphanedItemStrategy {
+                      // Remove unused items as soon as possible
+                      discardOldItems {
+                        // Keep removed SCM heads/branch/PRs only for 1 day (not 0 days to be sure that jobs are all finished/timeouted when deleting)
+                        // Does not apply to the build history of kept branches(use Pipeline for that)
+                        daysToKeep(1)
+                      }
+                    }
+                    configure { node ->
+                      def traits = node / 'sources' / 'data' / 'jenkins.branch.BranchSource' / 'source' / 'traits'
+                      // Not discovered by Job-DSL: need to be configured as raw-XML
+                      traits << 'org.jenkinsci.plugins.github__branch__source.ForkPullRequestDiscoveryTrait' {
+                        strategyId(1) // 1-Merging the pull request with the current target branch revision
+                        trust(class: 'org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait$TrustPermission')
+                      }
+                    }
+
+                    displayName('Job C')
+                    description('Job C')
+                  }

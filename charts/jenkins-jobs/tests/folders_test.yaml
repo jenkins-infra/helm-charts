@@ -1,0 +1,187 @@
+suite: default tests
+templates:
+  - jcasc-jobs-config.yaml
+tests:
+  - it: should generate a folder with default description to name
+    set:
+      jobsDefinition:
+        folder-a:
+          name: Folder A
+          kind: folder
+    asserts:
+      - equal:
+          path: data.jobs-definition\.yaml
+          value: |-
+            jobs:
+              - script: >
+                  folder('folder-a') {
+                    displayName('Folder A')
+                    description('Folder A')
+                  }
+  - it: should generate a folder with custom description and name
+    set:
+      jobsDefinition:
+        folder-b:
+          name: Folder B
+          description: This is the folder of the projects of Team B
+          kind: folder
+    asserts:
+      - equal:
+          path: data.jobs-definition\.yaml
+          value: |-
+            jobs:
+              - script: >
+                  folder('folder-b') {
+                    displayName('Folder B')
+                    description('This is the folder of the projects of Team B')
+                  }
+  - it: should generate nested folders with custom description and names
+    set:
+      jobsDefinition:
+        parent-folder:
+          name: Parent Folder
+          description: This is the parent folder
+          kind: folder
+          children:
+            child-folder-1:
+              name: Child Folder 1
+              description: This is the first sub-folder
+              kind: folder
+            child-folder-2:
+              name: Child Folder 2
+              description: This is the second sub-folder
+              kind: folder
+    asserts:
+      - equal:
+          path: data.jobs-definition\.yaml
+          value: |-
+            jobs:
+              - script: >
+                  folder('parent-folder') {
+                    displayName('Parent Folder')
+                    description('This is the parent folder')
+                  }
+
+                  folder('child-folder-1') {
+                    displayName('Child Folder 1')
+                    description('This is the first sub-folder')
+                  }
+
+                  folder('child-folder-2') {
+                    displayName('Child Folder 2')
+                    description('This is the second sub-folder')
+                  }
+  - it: should generate a nested multibranch with a parent folder
+    set:
+      jobsDefinition:
+        parent-folder:
+          name: Parent Folder
+          kind: folder
+          children:
+            child-job:
+              name: Child Multibranch Job
+    asserts:
+      - equal:
+          path: data.jobs-definition\.yaml
+          value: |-
+            jobs:
+              - script: >
+                  folder('parent-folder') {
+                    displayName('Parent Folder')
+                    description('Parent Folder')
+                  }
+
+                  multibranchPipelineJob('parent-folder/child-job') {
+                    triggers {
+                      periodicFolderTrigger {
+                        interval('2h')
+                      }
+                    }
+
+                    branchSources {
+                      branchSource {
+                        source {
+                          github {
+                            id('parent-folder/child-job')
+                            credentialsId('github-app-infra')
+                            configuredByUrl(true)
+                            repositoryUrl('https://github.com/jenkins-infra/child-job')
+                            repoOwner('jenkins-infra')
+                            repository('child-job')
+                            traits {
+                              gitHubSCMSourceStatusChecksTrait {
+                                // Note: changing this name might have impact on github branch protections if they specify status names
+                                name('jenkins')
+                                skip(true)
+                                // If this option is checked, the notifications sent by the GitHub Branch Source Plugin will be disabled.
+                                skipNotifications(false)
+                                skipProgressUpdates(false)
+                                // Default value: false. Warning: risk of secret leak in console if the build fails
+                                // Please note that it only disable the detailed logs. If you really want no logs, then use "skip(false)' instead
+                                suppressLogs(true)
+                                unstableBuildNeutral(false)
+                              }
+                              gitHubBranchDiscovery {
+                                strategyId(1) // 1-only branches that are not pull requests
+                              }
+                              // Only Origin Pull Request
+                              gitHubPullRequestDiscovery {
+                                strategyId(1) // 1-Merging the pull request with the current target branch revision
+                              }
+                              pruneStaleBranchTrait()
+                              gitHubTagDiscovery()
+                              pullRequestLabelsBlackListFilterTrait {
+                                labels('on-hold,ci-skip,skip-ci')
+                              }
+                              // Select branches and tags to build based on these filters
+                              headWildcardFilterWithPR {
+                                includes('main master PR-*') // only branches listed here
+                                excludes('')
+                                tagIncludes('*')
+                                tagExcludes('')
+                              }
+                            }
+                          }
+                          buildStrategies {
+                            buildAnyBranches {
+                              strategies {
+                                buildChangeRequests {
+                                  ignoreTargetOnlyChanges(true)
+                                  ignoreUntrustedChanges(true)
+                                }
+                                buildRegularBranches()
+                                buildTags {
+                                  atLeastDays('-1')
+                                  atMostDays('3')
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    factory {
+                      workflowBranchProjectFactory {
+                        scriptPath('Jenkinsfile_k8s')
+                      }
+                    }
+                    orphanedItemStrategy {
+                      // Remove unused items as soon as possible
+                      discardOldItems {
+                        // Keep removed SCM heads/branch/PRs only for 1 day (not 0 days to be sure that jobs are all finished/timeouted when deleting)
+                        // Does not apply to the build history of kept branches(use Pipeline for that)
+                        daysToKeep(1)
+                      }
+                    }
+                    configure { node ->
+                      def traits = node / 'sources' / 'data' / 'jenkins.branch.BranchSource' / 'source' / 'traits'
+                      // Not discovered by Job-DSL: need to be configured as raw-XML
+                      traits << 'org.jenkinsci.plugins.github__branch__source.ForkPullRequestDiscoveryTrait' {
+                        strategyId(1) // 1-Merging the pull request with the current target branch revision
+                        trust(class: 'org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait$TrustPermission')
+                      }
+                    }
+
+                    displayName('Child Multibranch Job')
+                    description('Child Multibranch Job')
+                  }

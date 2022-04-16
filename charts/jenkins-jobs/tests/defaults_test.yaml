@@ -1,0 +1,97 @@
+suite: default tests
+templates:
+  - jcasc-jobs-config.yaml
+tests:
+  - it: should not generate any config map with default values
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: "should generate a job dsl configuration with only single folder (minimum configuration: name only) and defaults names"
+    set:
+      jobsDefinition:
+        parent-folder:
+          name: Parent Folder
+          description: Folder hosting all the jobs
+          kind: folder
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ConfigMap
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: metadata.name
+          value: jenkins-jenkins-config-jobs-definition
+      - equal:
+          path: metadata.labels.jenkins-jenkins-config
+          value: "true"
+      - equal:
+          path: data.jobs-definition\.yaml
+          value: |-
+            jobs:
+              - script: >
+                  folder('parent-folder') {
+                    displayName('Parent Folder')
+                    description('Folder hosting all the jobs')
+                  }
+  - it: "should generate a job dsl configuration with only single folder (minimum configuration: name only) and custom keyName"
+    set:
+      keyName: custom-config
+      jobsDefinition:
+        parent-folder:
+          name: Parent Folder
+          description: Folder hosting all the jobs
+          kind: folder
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ConfigMap
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: metadata.name
+          value: jenkins-jenkins-config-custom-config
+      - equal:
+          path: metadata.labels.jenkins-jenkins-config
+          value: "true"
+      - equal:
+          path: data.custom-config\.yaml
+          value: |-
+            jobs:
+              - script: >
+                  folder('parent-folder') {
+                    displayName('Parent Folder')
+                    description('Folder hosting all the jobs')
+                  }
+  - it: "should generate a job dsl configuration with only single folder (minimum configuration: name only) and custom jenkinsName"
+    set:
+      jenkinsName: admin-controller
+      jobsDefinition:
+        parent-folder:
+          name: Parent Folder
+          description: Folder hosting all the jobs
+          kind: folder
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ConfigMap
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: metadata.name
+          value: admin-controller-jenkins-config-jobs-definition
+      - equal:
+          path: metadata.labels.admin-controller-jenkins-config
+          value: "true"
+      - equal:
+          path: data.jobs-definition\.yaml
+          value: |-
+            jobs:
+              - script: >
+                  folder('parent-folder') {
+                    displayName('Parent Folder')
+                    description('Folder hosting all the jobs')
+                  }
