@@ -1,0 +1,23 @@
+suite: default tests
+templates:
+  - ingress.yaml
+tests:
+  - it: should generate a config map with default values
+    set:
+      urlredirect: "http://my.domain.com"
+      host: domain
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Ingress
+      - equal:
+          path: metadata.name
+          # The release name, default to "RELEASE-NAME" within helm-unittest
+          value: RELEASE-NAME-domain
+      - equal:
+          path: metadata.annotations.[nginx.ingress.kubernetes.io/permanent-redirect]
+          value: "http://my.domain.com"
+      - equal:
+          path: spec.rules[0].host
+          value: "domain"
