@@ -2,7 +2,7 @@ suite: default tests
 templates:
   - ingress.yaml
 tests:
-  - it: should generate a config map with default values
+  - it: should generate a config map with custom values
     set:
       urlredirect: "http://my.domain.com"
       host: domain
