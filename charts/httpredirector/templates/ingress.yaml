@@ -1,0 +1,11 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/permanent-redirect: {{ .Values.urlredirect }}
+    nginx.ingress.kubernetes.io/permanent-redirect-code: "308"
+  name: "{{ .Release.Name }}-{{ .Values.host }}"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: {{ .Values.host }}
