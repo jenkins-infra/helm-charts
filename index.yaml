@@ -297,18 +297,6 @@ entries:
   jenkins-jobs:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-05-24T07:57:09.916913422Z"
-    description: Jenkins Jobs Definition from YAML to job-dsl
-    digest: cacb63fedb9810a55944356417025232856b6f0819403d463badb4bf6777d6b5
-    icon: https://jenkins.io/images/logos/plumber/256.png
-    maintainers:
-    - name: Damien Duportal <damien.duportal@gmail.com>
-    name: jenkins-jobs
-    urls:
-    - https://github.com/jenkins-infra/helm-charts/releases/download/jenkins-jobs-0.3.2/jenkins-jobs-0.3.2.tgz
-    version: 0.3.2
-  - apiVersion: v1
-    appVersion: "1.0"
     created: "2022-04-16T08:27:38.313745299Z"
     description: Jenkins Jobs Definition from YAML to job-dsl
     digest: 9f29bfff0225e9440266ac908a88248832608fff72ebaf0dc8af716e8037514b
@@ -915,6 +903,16 @@ entries:
   wiki:
   - apiVersion: v2
     appVersion: 0.0.7
+    created: "2022-05-24T07:57:34.839892078Z"
+    description: A Helm chart for wiki static content
+    digest: ee647fe320bdb90bd7ff0b8e591fd2b73cb3dc1cd25c28bf9d926a13afdcea69
+    name: wiki
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/wiki-0.3.7/wiki-0.3.7.tgz
+    version: 0.3.7
+  - apiVersion: v2
+    appVersion: 0.0.7
     created: "2022-05-17T11:48:23.711870568Z"
     description: A Helm chart for wiki static content
     digest: 8db8ad2a9364bd2723929d499cdfdbafb3bcddb17b32eaab88e71f54c1bb4700
@@ -1033,4 +1031,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2022-05-24T07:57:09.917109222Z"
+generated: "2022-05-24T07:57:34.840217893Z"
