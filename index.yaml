@@ -134,6 +134,16 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/env-jenkins-release-0.1.1/env-jenkins-release-0.1.1.tgz
     version: 0.1.1
+  httpredirector:
+  - apiVersion: v2
+    created: "2022-05-24T08:51:33.047437726Z"
+    description: A Helm chart to create an http redirection
+    digest: 65997c75352588d76cea47487a0c4c3882695c1f7215c6011d110c4a4ddefc39
+    name: httpredirector
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/httpredirector-0.1.1/httpredirector-0.1.1.tgz
+    version: 0.1.1
   incrementals-publisher:
   - apiVersion: v1
     created: "2022-01-13T08:37:03.170230984Z"
@@ -1031,4 +1041,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2022-05-24T07:57:34.840217893Z"
+generated: "2022-05-24T08:51:33.047634928Z"
