@@ -136,6 +136,15 @@ entries:
     version: 0.1.1
   httpredirector:
   - apiVersion: v2
+    created: "2022-05-24T12:49:42.901592166Z"
+    description: A Helm chart to create an http redirection
+    digest: 251c5ebdbca6d8fc0b4719f479102545afb81fb8eda22d6658a30092eca9aeb7
+    name: httpredirector
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/httpredirector-0.2.0/httpredirector-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     created: "2022-05-24T08:51:33.047437726Z"
     description: A Helm chart to create an http redirection
     digest: 65997c75352588d76cea47487a0c4c3882695c1f7215c6011d110c4a4ddefc39
@@ -1041,4 +1050,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2022-05-24T08:51:33.047634928Z"
+generated: "2022-05-24T12:49:42.901773066Z"
