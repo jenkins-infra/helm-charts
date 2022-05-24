@@ -6,6 +6,7 @@ tests:
     set:
       urlredirect: "http://my.domain.com"
       host: domain
+      ingressClassName: "public-nginx"
     asserts:
       - hasDocuments:
           count: 1
@@ -21,3 +22,6 @@ tests:
       - equal:
           path: spec.rules[0].host
           value: "domain"
+      - equal:
+          path: spec.ingressClassName
+          value: "public-nginx"

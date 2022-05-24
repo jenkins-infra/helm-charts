@@ -6,6 +6,6 @@ metadata:
     nginx.ingress.kubernetes.io/permanent-redirect-code: "308"
   name: "{{ .Release.Name }}-{{ .Values.host }}"
 spec:
-  ingressClassName: nginx
+  ingressClassName: {{ .Values.ingressClassName }}
   rules:
   - host: {{ .Values.host }}
