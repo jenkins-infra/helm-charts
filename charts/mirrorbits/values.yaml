@@ -12,7 +12,7 @@ image:
     pullPolicy: Always
   files:
     repository: httpd@sha256
-    tag: ea211260dba688134865f1f0f11e2f4b4877f05df16248396adcfaaf2a592ff9
+    tag: a17755a2d2e581779d2ab6b5df6992a754a16503961f6a9d4e908c71c3d46f2d
     pullPolicy: Always
 imagePullSecrets: []
 nameOverride: ""
