@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   repository: nginx
   tag: 1.20.2-alpine
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
