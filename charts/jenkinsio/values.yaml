@@ -10,7 +10,7 @@ images:
     pullPolicy: IfNotPresent
   zh:
     repository: nginx
-    tag: 1.20.2-alpine
+    tag: 1.22.0-alpine
     pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
