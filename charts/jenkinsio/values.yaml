@@ -6,7 +6,7 @@ replicaCount: 1
 images:
   en:
     repository: nginx
-    tag: 1.20.2-alpine
+    tag: 1.22.0-alpine
     pullPolicy: IfNotPresent
   zh:
     repository: nginx
