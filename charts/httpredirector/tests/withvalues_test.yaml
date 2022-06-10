@@ -7,6 +7,7 @@ tests:
       urlredirect: "http://my.domain.com"
       host: domain
       ingressClassName: "public-nginx"
+      tls: false
     asserts:
       - hasDocuments:
           count: 1
@@ -20,8 +21,13 @@ tests:
           path: metadata.annotations.[nginx.ingress.kubernetes.io/permanent-redirect]
           value: "http://my.domain.com"
       - equal:
+          path: metadata.annotations.[nginx.ingress.kubernetes.io/permanent-redirect-code]
+          value: "308"
+      - equal:
           path: spec.rules[0].host
           value: "domain"
       - equal:
           path: spec.ingressClassName
           value: "public-nginx"
+      - isNull:
+          path: spec.tls
