@@ -15,5 +15,6 @@ spec:
     - gid=100
   azureFile:
     secretName: {{ include "ldap.fullname" . }}
+    secretNamespace: {{ .Release.Namespace }}
     shareName: ldap
     readOnly: false
