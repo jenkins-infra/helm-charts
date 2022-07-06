@@ -70,12 +70,14 @@ azureStorageAccountKey: key
 htmlVolume:
   azureFile: 
     secretName: jenkinsio
+    secretNamespace: jenkinsio
     shareName: jenkinsio
     readOnly: true
 
 zhHtmlVolume:
   azureFile: 
     secretName: jenkinsio
+    secretNamespace: jenkinsio
     shareName: zhjenkinsio
     readOnly: true
 # ... you will also need ingress configuration, add as required

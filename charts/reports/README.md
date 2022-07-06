@@ -56,6 +56,7 @@ azureStorageAccountKey: key
 htmlVolume:
   azureFile: 
     secretName: reports
+    secretNamespace: reports
     shareName: reports
     readOnly: true
 

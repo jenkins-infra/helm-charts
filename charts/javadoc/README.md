@@ -53,9 +53,10 @@ Here's some example configuration for running this on Azure:
 azureStorageAccountName: myaccount
 azureStorageAccountKey: key
 htmlVolume:
-  azureFile: 
-    secretName: reports
-    shareName: reports
+  azureFile:
+    secretName: javadoc
+    secretNamespace: javadoc
+    shareName: javadoc
     readOnly: true
 # ... you will also need ingress configuration, add as required
 ```
