@@ -31,6 +31,10 @@ jobsDefinition: {}
 #         name: Job C
 #         enableGitHubChecks: true
 #         githubCheckName: RogerRoger
+#          enableGitHubChecks: true
+#          allowUntrustedChanges: true
+#          jenkinsfilePath: Jenkinsfile
+#          branchIncludes: "prod dev MR-*"
 #         credentials:
 #            ssh-deploy-key:
 #              username: ${SSH_CHARTS_SECRETS_USERNAME}
