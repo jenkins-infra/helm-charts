@@ -158,7 +158,7 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
             }
             // Select branches and tags to build based on these filters
             headWildcardFilterWithPR {
-              includes('main master PR-*') // only branches listed here
+              includes('{{ .branchIncludes | default "main master PR-*" }}') // only branches listed here
               excludes('')
               tagIncludes('*')
               tagExcludes('')
