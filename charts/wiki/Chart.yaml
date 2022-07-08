@@ -3,4 +3,4 @@ appVersion: 0.0.7
 description: A Helm chart for wiki static content
 name: wiki
 type: application
-version: 0.3.15
+version: 0.3.16
