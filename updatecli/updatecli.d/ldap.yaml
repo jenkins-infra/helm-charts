@@ -32,7 +32,7 @@ sources:
 
 targets:
   updateChartCrond:
-    name: Update jenkins-wiki-exporter helm chart
+    name: Update ldap (crond) helm chart
     kind: helmChart
     sourceid: crond
     spec:
@@ -41,7 +41,7 @@ targets:
       versionincrement: patch
     scmid: default
   updateChartSlapd:
-    name: Update jenkins-wiki-exporter helm chart
+    name: Update ldap (slapd) helm chart
     kind: helmChart
     sourceid: slapd
     spec:
