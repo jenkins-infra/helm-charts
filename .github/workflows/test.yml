@@ -25,7 +25,6 @@ jobs:
           - jenkins-additional
           - jenkins-jobs
           - jenkins-kubernetes-agents
-          - jenkins-wiki-exporter
           - jenkinsio
           - keycloak
           - ldap
