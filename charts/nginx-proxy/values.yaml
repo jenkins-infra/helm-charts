@@ -1,4 +1,4 @@
-# Default values for repo-proxy.
+# Default values for nginx-proxy.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -8,7 +8,7 @@ image:
   repository: nginx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "0.0.39"
+  tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
@@ -80,3 +80,17 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+## nginx-proxy values
+# http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_path
+cache:
+  path: "/var/cache/nginx"
+  keysZoneSize: "200m"
+  maxSize: "50g"
+  inactive: "24h"
+  useTempPath: "off"
+proxy:
+  proxyPass: "https://repo.jenkins-ci.org"
+  proxyCacheValidCode: "200 302"
+  proxyCacheValidCodeDuration: "24h"
+  proxyCacheValidAnyDuration: "60m"

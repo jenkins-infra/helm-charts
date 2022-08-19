@@ -1,30 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "repo-proxy.fullname" . }}
+  name: {{ include "nginx-proxy.fullname" . }}
   labels:
-    {{- include "repo-proxy.labels" . | nindent 4 }}
+    {{- include "nginx-proxy.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "repo-proxy.selectorLabels" . | nindent 6 }}
+      {{- include "nginx-proxy.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
+        checksum/config: {{ include (print $.Template.BasePath "/nginx-configmap.yaml") . | sha256sum }}
       {{- end }}
       labels:
-        {{- include "repo-proxy.selectorLabels" . | nindent 8 }}
+        {{- include "nginx-proxy.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "repo-proxy.serviceAccountName" . }}
+      serviceAccountName: {{ include "nginx-proxy.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -47,6 +48,17 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - name: nginx-config
+            mountPath: /etc/nginx/conf.d/
+          - name: nginx-cache
+            mountPath: {{ .Values.cache.path }}
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-configmap
+      - name: nginx-cache
+        emptyDir: {}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
