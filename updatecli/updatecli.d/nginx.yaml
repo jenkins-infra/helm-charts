@@ -82,6 +82,14 @@ targets:
       key: image.tag
       versionincrement: patch
     scmid: default
+  updateNginxProxy:
+    name: "Update nginx stable docker image version for nginx-proxy chart"
+    kind: helmChart
+    spec:
+      name: charts/nginx-proxy
+      key: image.tag
+      versionincrement: patch
+    scmid: default
 
 pullrequests:
   default:
@@ -93,6 +101,7 @@ pullrequests:
       - updateJenkinsioChartZh
       - updatePluginSiteChart
       - updateReportsChart
+      - updateNginxProxy
     spec:
       labels:
         - dependencies
@@ -101,3 +110,4 @@ pullrequests:
         - jenkinsio
         - plugin-site
         - reports
+        - nginx-proxy

@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-configmap
+  labels: {{ include "nginx-proxy.labels" . | nindent 4 }}
+data:
+  cache.conf: |
+    proxy_cache_path {{ .Values.cache.path }} levels=1 keys_zone=nginx_cache:{{ .Values.cache.keysZoneSize }} max_size={{ .Values.cache.maxSize }} inactive={{ .Values.cache.inactive }} use_temp_path={{ .Values.cache.useTempPath }};
+  proxy.conf: |
+    ## add ssl entries when https has been set in config
+    ## server configuration
+
+    server {
+        listen 80 default;
+
+        if ($http_x_forwarded_proto = '') {
+            set $http_x_forwarded_proto  $scheme;
+        }
+
+        rewrite ^/$ /webapp/ redirect;
+        rewrite ^/?(/)?$ /webapp/ redirect;
+        chunked_transfer_encoding on;
+        client_max_body_size 0;
+
+        proxy_set_header    X-Artifactory-Override-Base-Url $http_x_forwarded_proto://$host:$server_port/;
+        proxy_set_header    X-Forwarded-Port  $server_port;
+        proxy_set_header    X-Forwarded-Proto $http_x_forwarded_proto;
+        #proxy_set_header    Host              $http_host;
+        proxy_set_header    X-Forwarded-For   $proxy_add_x_forwarded_for;
+
+        add_header          X-Cache-Status    $upstream_cache_status;
+
+        proxy_read_timeout  900;
+        proxy_pass_header   Server;
+        proxy_cookie_path   ~*^/.* /;
+
+        location ~* (maven-metadata.xml|SNAPSHOT) {
+            proxy_pass          {{ .Values.proxy.proxyPass }};
+        }
+
+        location / {
+            proxy_cache         nginx_cache;
+            proxy_pass          {{ .Values.proxy.proxyPass }}/;
+            #proxy_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie;
+            proxy_cache_valid {{ .Values.proxy.proxyCacheValidCode }} {{ .Values.proxy.proxyCacheValidCodeDuration }};
+            proxy_cache_valid any {{ .Values.proxy.proxyCacheValidAnyDuration }};
+        }
+    }
