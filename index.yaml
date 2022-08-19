@@ -969,6 +969,17 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/mirrorbits-0.1.1/mirrorbits-0.1.1.tgz
     version: 0.1.1
+  nginx-proxy:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-08-19T15:00:13.569372238Z"
+    description: nginx-proxy is a nginx caching proxy in front of repo.jenkins-ci.org
+    digest: e09353de5a2b627c60784d4944afcd8132dc7ebd4822f01f6ad2189ddbc12f31
+    name: nginx-proxy
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/nginx-proxy-0.1.0/nginx-proxy-0.1.0.tgz
+    version: 0.1.0
   plugin-site:
   - apiVersion: v1
     appVersion: "1.0"
@@ -1451,4 +1462,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2022-08-19T11:25:55.872825341Z"
+generated: "2022-08-19T15:00:13.569755041Z"
