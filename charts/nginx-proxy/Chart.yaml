@@ -3,4 +3,4 @@ appVersion: 1.16.0
 description: nginx-proxy is a nginx caching proxy in front of repo.jenkins-ci.org
 name: nginx-proxy
 type: application
-version: 0.1.1
+version: 0.1.3
