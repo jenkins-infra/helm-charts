@@ -21,7 +21,7 @@ metadata:
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
-    {{- if .Values.auth }}
+    {{- if .Values.auth.enabled }}
     nginx.ingress.kubernetes.io/auth-type: basic
     nginx.ingress.kubernetes.io/auth-secret: {{ include "nginx-proxy.fullname" . }}-basic-auth
     {{- end }}
