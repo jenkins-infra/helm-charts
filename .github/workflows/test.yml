@@ -13,31 +13,9 @@ jobs:
     strategy:
       matrix:
         chart:
-          - accountapp
-          - acme
-          - basic-helm-chart-example
-          - custom-distribution-service
-          - docker-registry-secrets
-          - env-jenkins-release
           - httpredirector
-          - incrementals-publisher
-          - ircbot
-          - javadoc
-          - jenkins
-          - jenkins-additional
           - jenkins-jobs
-          - jenkins-kubernetes-agents
-          - jenkinsio
-          - keycloak
-          - ldap
-          - mirrorbits
           - nginx-proxy
-          - plugin-site
-          - plugin-site-issues
-          - rating
-          - reports
-          - uplink
-          - wiki
       fail-fast: false
 
     steps:
