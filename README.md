@@ -1,6 +1,6 @@
 # helm-charts
 
-Helm chart repository containing the jenkins-infra helm charts used in <https://github.com/jenkins-infra/charts>
+Helm chart repository containing the jenkins-infra helm charts used in <https://github.com/jenkins-infra/kubernetes-management>
 
 ## Usage
 
