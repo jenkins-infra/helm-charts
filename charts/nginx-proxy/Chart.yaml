@@ -1,6 +1,6 @@
 apiVersion: v2
 name: nginx-proxy
-description: nginx-proxy is a nginx caching proxy in front of repo.jenkins-ci.org
+description: nginx-proxy is a Nginx caching proxy in front of repo.jenkins-ci.org
 
 # A chart can be either an 'application' or a 'library' chart.
 #
