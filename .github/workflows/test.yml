@@ -15,9 +15,11 @@ jobs:
         chart:
           - accountapp
           - acme
+          - basic-helm-chart-example
           - custom-distribution-service
           - docker-registry-secrets
           - env-jenkins-release
+          - httpredirector
           - incrementals-publisher
           - ircbot
           - javadoc
@@ -29,6 +31,7 @@ jobs:
           - keycloak
           - ldap
           - mirrorbits
+          - nginx-proxy
           - plugin-site
           - plugin-site-issues
           - rating
