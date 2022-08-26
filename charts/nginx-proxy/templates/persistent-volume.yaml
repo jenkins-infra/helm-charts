@@ -6,8 +6,8 @@ metadata:
     {{- include "nginx-proxy.labels" . | nindent 4 }}
     role: {{ include "nginx-proxy.fullname" . }}-cache
 spec:
-  storageClassName: {{ .Values.persistence.storageClassName }}
+  storageClassName: {{ .Values.persistence.storageClass }}
+  accessModes:
+    - {{ .Values.persistence.accessMode }}
   capacity:
     storage: "{{ .Values.persistence.size }}Gi"
-  accessModes:
-    - ReadWriteMany

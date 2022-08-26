@@ -75,7 +75,8 @@ persistence:
   enabled: true
   # cache size (in gigabyte)
   size: 50
-  storageClassName: azurefile-csi-premium
+  storageClass: ""
+  accessMode: ReadWriteMany
 
 # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_path
 cache:
