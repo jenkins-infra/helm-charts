@@ -984,6 +984,16 @@ entries:
   nginx-proxy:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2022-08-26T09:10:50.757919174Z"
+    description: nginx-proxy is a Nginx caching proxy in front of repo.jenkins-ci.org
+    digest: 7f7859869bd37db530270d5f79a50ce9659d10a6febcddeda2516b0d254e064e
+    name: nginx-proxy
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/nginx-proxy-0.2.0/nginx-proxy-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2022-08-25T15:56:28.46210856Z"
     description: nginx-proxy is a Nginx caching proxy in front of repo.jenkins-ci.org
     digest: 1413806c7b4f53bf22c3b52c32211ecd291679ef73abcf9e40f9e86a0a33b4e9
@@ -1524,4 +1534,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2022-08-25T15:56:28.462532318Z"
+generated: "2022-08-26T09:10:50.75836278Z"
