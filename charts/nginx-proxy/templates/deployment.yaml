@@ -54,7 +54,12 @@ spec:
         configMap:
           name: nginx-configmap
       - name: nginx-cache
+      {{- if .Values.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ include "nginx-proxy.fullname" . }}-pvc
+      {{- else }}
         emptyDir: {}
+      {{- end -}}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

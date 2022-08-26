@@ -71,11 +71,16 @@ auth:
   # To generate this value: `htpasswd -c auth foo` (password "bar") then `cat auth`
   basicAuth: ""
 
+persistence:
+  enabled: true
+  # cache size (in gigabyte)
+  size: 50
+  storageClassName: azurefile-csi-premium
+
 # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_path
 cache:
   path: "/var/cache/nginx"
   keysZoneSize: "200m"
-  maxSize: "50g"
   inactive: "24h"
   useTempPath: "off"
 proxy:
