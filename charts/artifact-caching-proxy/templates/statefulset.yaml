@@ -48,14 +48,18 @@ spec:
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
         volumeMounts:
+        {{- if .Values.template.mountConfigMap }}
         - name: nginx-config
           mountPath: /etc/nginx/conf.d/
+        {{- end }}
         - name: nginx-cache
           mountPath: {{ .Values.cache.path }}
+      {{- if .Values.template.mountConfigMap }}
       volumes:
       - name: nginx-config
         configMap:
           name: nginx-configmap
+      {{- end }}
   volumeClaimTemplates:
   - metadata:
       name: nginx-cache
