@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "artifact-caching-proxy.fullname" . }}
+  labels:
+    {{- include "artifact-caching-proxy.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "artifact-caching-proxy.selectorLabels" . | nindent 4 }}
