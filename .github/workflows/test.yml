@@ -13,6 +13,7 @@ jobs:
     strategy:
       matrix:
         chart:
+          - artifact-caching-proxy
           - httpredirector
           - jenkins-jobs
           - nginx-proxy
