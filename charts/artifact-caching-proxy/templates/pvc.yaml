@@ -1,0 +1,15 @@
+{{- if eq .Values.templateType "Deployment" }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "artifact-caching-proxy.fullname" . }}-pvc
+  labels:
+    {{- include "artifact-caching-proxy.labels" . | nindent 4 }}
+spec:
+  storageClassName: {{ .Values.persistence.storageClass }}
+  accessModes:
+    - {{ .Values.persistence.accessMode }}
+  resources:
+    requests:
+      storage: "{{ .Values.persistence.size }}Gi"
+{{- end }}
