@@ -64,6 +64,16 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/acme-0.1.0/acme-0.1.0.tgz
     version: 0.1.0
+  artifact-caching-proxy:
+  - apiVersion: v2
+    created: "2022-08-31T12:46:14.130789635Z"
+    description: artifact-caching-proxy is a Nginx caching proxy in front of repo.jenkins-ci.org
+    digest: 80645c23634c353361e6656db5f1fb915c2afee447df9024de4302edad969852
+    name: artifact-caching-proxy
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/artifact-caching-proxy-0.0.1/artifact-caching-proxy-0.0.1.tgz
+    version: 0.0.1
   chatbot:
   - apiVersion: v1
     created: "2021-11-09T18:37:14.624092638Z"
@@ -1586,4 +1596,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2022-08-31T10:30:59.062957651Z"
+generated: "2022-08-31T12:46:14.131243239Z"
