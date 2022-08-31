@@ -72,7 +72,7 @@ auth:
   basicAuth: ""
 
 persistence:
-  enabled: true
+  enabled: false
   # cache size (in gigabyte)
   size: 50
   storageClass: ""
