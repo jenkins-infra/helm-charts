@@ -1,4 +1,3 @@
-{{- if eq .Values.template.type "Deployment" }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -12,4 +11,3 @@ spec:
   resources:
     requests:
       storage: "{{ .Values.persistence.size }}Gi"
-{{- end }}

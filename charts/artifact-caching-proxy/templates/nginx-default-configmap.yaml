@@ -9,6 +9,7 @@ data:
     worker_processes  auto;
 
     error_log  /var/log/nginx/error.log notice;
+    # The following line is the only change from the original nginx.conf from the official nginx image
     pid        /var/tmp/nginx.pid;
 
 
