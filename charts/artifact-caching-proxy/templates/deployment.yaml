@@ -34,7 +34,7 @@ spec:
           runAsUser: 0
           runAsGroup: 0
         command: ['sh', '-c']
-        args: ["chown -R 1001:1001 {{ .Values.cache.path }"]
+        args: ["chown -R 1000:1000 {{ .Values.cache.path }}"]
         volumeMounts:
           - mountPath: {{ .Values.cache.path }}
             name: nginx-cache
