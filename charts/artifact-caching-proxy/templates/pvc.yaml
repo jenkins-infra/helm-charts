@@ -1,4 +1,4 @@
-{{- if eq .Values.templateType "Deployment" }}
+{{- if eq .Values.template.type "Deployment" }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
