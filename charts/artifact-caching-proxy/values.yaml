@@ -27,9 +27,15 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+initContainer:
+  enabled: false
+  # nginx: 1001
+  chownArg: 1001:1001
+
 service:
   type: ClusterIP
-  port: 80
+  # non root port
+  port: 8080
 
 ingress:
   enabled: false
@@ -68,7 +74,7 @@ affinity: {}
 ## artifact-caching-proxy values
 auth:
   enabled: false
-  # To generate this value: `htpasswd -c auth foo` (password "bar") then `cat auth`
+  # To generate and store this value as secret: `htpasswd -c auth foo` (password "bar") then `cat auth`
   basicAuth: ""
 
 persistence:
@@ -77,11 +83,6 @@ persistence:
   size: 50
   storageClass: ""
   accessMode: ReadWriteOnce
-
-template:
-  # use a Deployment or a StatefulSet
-  type: Deployment
-  mountConfigMap: true
 
 # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_path
 cache:
