@@ -27,6 +27,17 @@ spec:
       {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+      - name: permission-fix
+        image: busybox
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+        command: ['sh', '-c']
+        args: ["chown -R 1001:1001 {{ .Values.cache.path }"]
+        volumeMounts:
+          - mountPath: {{ .Values.cache.path }}
+            name: nginx-cache
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
