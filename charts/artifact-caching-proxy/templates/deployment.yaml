@@ -35,7 +35,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -48,18 +48,24 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-          {{- if .Values.template.mountConfigMap }}
-          - name: nginx-config
+          - name: nginx-default-config
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf
+          - name: nginx-proxy-config
             mountPath: /etc/nginx/conf.d/
-          {{- end }}
+          - name: nginx-tmp
+            mountPath: /var/tmp/
           - name: nginx-cache
             mountPath: {{ .Values.cache.path }}
       volumes:
-      {{- if .Values.template.mountConfigMap }}
-      - name: nginx-config
+      - name: nginx-default-config
         configMap:
-          name: nginx-configmap
-      {{- end }}
+          name: {{ include "artifact-caching-proxy.fullname" . }}-default-configmap
+      - name: nginx-proxy-config
+        configMap:
+          name: {{ include "artifact-caching-proxy.fullname" . }}-proxy-configmap
+      - name: nginx-tmp
+        emptyDir: {}
       - name: nginx-cache
       {{- if .Values.persistence.enabled }}
         persistentVolumeClaim:
