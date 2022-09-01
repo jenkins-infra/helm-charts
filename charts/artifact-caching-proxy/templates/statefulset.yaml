@@ -1,4 +1,4 @@
-{{- if eq .Values.templateType "StatefulSet" }}
+{{- if eq .Values.template.type "StatefulSet" }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -16,7 +16,9 @@ spec:
       {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
+        {{- if .Values.template.mountConfigMap }}
         checksum/config: {{ include (print $.Template.BasePath "/nginx-configmap.yaml") . | sha256sum }}
+        {{- end }}
       {{- end }}
       labels:
         {{- include "artifact-caching-proxy.selectorLabels" . | nindent 8 }}
