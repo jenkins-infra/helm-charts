@@ -16,7 +16,6 @@ jobs:
           - artifact-caching-proxy
           - httpredirector
           - jenkins-jobs
-          - nginx-proxy
       fail-fast: false
 
     steps:
