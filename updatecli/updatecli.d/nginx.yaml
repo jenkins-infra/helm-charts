@@ -82,11 +82,11 @@ targets:
       key: image.tag
       versionincrement: patch
     scmid: default
-  updateNginxProxy:
-    name: "Update nginx stable docker image version for nginx-proxy chart"
+  updateArtifactCachingProxy:
+    name: "Update nginx stable docker image version for artifact-caching-proxy chart"
     kind: helmChart
     spec:
-      name: charts/nginx-proxy
+      name: charts/artifact-caching-proxy
       key: image.tag
       versionincrement: patch
     scmid: default
@@ -101,7 +101,7 @@ pullrequests:
       - updateJenkinsioChartZh
       - updatePluginSiteChart
       - updateReportsChart
-      - updateNginxProxy
+      - updateArtifactCachingProxy
     spec:
       labels:
         - dependencies
@@ -110,4 +110,4 @@ pullrequests:
         - jenkinsio
         - plugin-site
         - reports
-        - nginx-proxy
+        - artifact-caching-proxy
