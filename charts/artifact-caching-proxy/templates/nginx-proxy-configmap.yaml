@@ -17,8 +17,8 @@ data:
             set $http_x_forwarded_proto  $scheme;
         }
 
-        rewrite ^/$ /webapp/ redirect;
-        rewrite ^/?(/)?$ /webapp/ redirect;
+        # rewrite ^/$ /webapp/ redirect;
+        # rewrite ^/?(/)?$ /webapp/ redirect;
         chunked_transfer_encoding on;
         client_max_body_size 0;
 
@@ -36,6 +36,10 @@ data:
 
         location ~* (maven-metadata.xml|SNAPSHOT) {
             proxy_pass          {{ .Values.proxy.proxyPass }};
+        }
+
+        location /health/ {
+            root  /www/;
         }
 
         location / {
