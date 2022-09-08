@@ -38,6 +38,10 @@ data:
             proxy_pass          {{ .Values.proxy.proxyPass }};
         }
 
+        location /health/ {
+            root  /www/;
+        }
+
         location / {
             proxy_cache         nginx_cache;
             proxy_pass          {{ .Values.proxy.proxyPass }}/;
