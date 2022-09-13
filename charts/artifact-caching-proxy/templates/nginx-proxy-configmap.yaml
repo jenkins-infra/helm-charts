@@ -38,11 +38,11 @@ data:
             proxy_pass          {{ .Values.proxy.proxyPass }};
         }
 
-        location {{ .Values.paths.healthPath }}/ {
+        location {{ .Values.paths.healthPath }} {
             auth_basic      off;
             access_log      off;
             allow           all;
-            return          200;
+            return          200 'OK';
         }
 
         location / {

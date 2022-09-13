@@ -30,7 +30,7 @@ securityContext: {}
 initContainer:
   enabled: false
   # nginx: 1001
-  chownArg: 1001:1001
+  chownArg: 101:101
 
 service:
   type: ClusterIP
