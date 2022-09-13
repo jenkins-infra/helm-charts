@@ -42,7 +42,7 @@ data:
             auth_basic      off;
             access_log      off;
             allow           all;
-            return          200;
+            return          200 'OK';
         }
 
         location / {
