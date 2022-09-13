@@ -13,8 +13,6 @@ data:
     server {
         listen {{ .Values.service.port }} default;
 
-        root   {{ .Values.paths.wwwPath }}/;
-
         if ($http_x_forwarded_proto = '') {
             set $http_x_forwarded_proto  $scheme;
         }

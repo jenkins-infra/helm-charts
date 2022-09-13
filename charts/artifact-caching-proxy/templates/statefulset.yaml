@@ -68,8 +68,6 @@ spec:
           subPath: nginx.conf
         - name: nginx-proxy-config
           mountPath: /etc/nginx/conf.d/
-        - name: nginx-health-config
-          mountPath: "{{ .Values.paths.wwwPath }}{{ .Values.paths.healthPath }}"
         - name: nginx-tmp
           mountPath: /var/tmp/
         - name: nginx-cache
@@ -81,9 +79,6 @@ spec:
       - name: nginx-proxy-config
         configMap:
           name: {{ include "artifact-caching-proxy.fullname" . }}-proxy-configmap
-      - name: nginx-health-config
-        configMap:
-          name: {{ include "artifact-caching-proxy.fullname" . }}-health-configmap
       - name: nginx-tmp
         emptyDir: {}
   {{- if .Values.persistence.enabled }}
