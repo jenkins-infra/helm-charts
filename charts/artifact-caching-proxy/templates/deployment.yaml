@@ -33,9 +33,9 @@ spec:
           runAsUser: 0
           runAsGroup: 0
         command: ['sh', '-c']
-        args: ["chown -Rv {{ .Values.initContainer.chownArgs }}  {{ .Values.cache.path }} && ls -l {{ .Values.cache.path }}"]
+        args: ["chown -Rv {{ .Values.initContainer.chownArgs }}  {{ .Values.paths.cachePath }} && ls -l {{ .Values.paths.cachePath }}"]
         volumeMounts:
-          - mountPath: {{ .Values.cache.path }}
+          - mountPath: {{ .Values.paths.cachePath }}
             name: nginx-cache
       {{- end}}
       containers:
@@ -65,11 +65,11 @@ spec:
           - name: nginx-proxy-config
             mountPath: /etc/nginx/conf.d/
           - name: nginx-health-config
-            mountPath: /www/health/
+            mountPath: "{{ .Values.paths.wwwPath }}{{ .Values.paths.healthPath }}"
           - name: nginx-tmp
             mountPath: /var/tmp/
           - name: nginx-cache
-            mountPath: {{ .Values.cache.path }}
+            mountPath: {{ .Values.paths.cachePath }}
       volumes:
       - name: nginx-default-config
         configMap:
