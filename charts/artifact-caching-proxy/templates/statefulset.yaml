@@ -1,10 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "artifact-caching-proxy.fullname" . }}
   labels:
     {{- include "artifact-caching-proxy.labels" . | nindent 4 }}
 spec:
+  serviceName: {{ include "artifact-caching-proxy.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       {{- include "artifact-caching-proxy.selectorLabels" . | nindent 6 }}
@@ -13,8 +15,10 @@ spec:
       {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
+        {{- if .Values.template.mountConfigMap }}
         checksum/default-config: {{ include (print $.Template.BasePath "/nginx-default-configmap.yaml") . | sha256sum }}
         checksum/proxy-config: {{ include (print $.Template.BasePath "/nginx-proxy-configmap.yaml") . | sha256sum }}
+        {{- end }}
       {{- end }}
       labels:
         {{- include "artifact-caching-proxy.selectorLabels" . | nindent 8 }}
@@ -39,37 +43,37 @@ spec:
             name: nginx-cache
       {{- end}}
       containers:
-        - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: http
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          volumeMounts:
-          - name: nginx-default-config
-            mountPath: /etc/nginx/nginx.conf
-            subPath: nginx.conf
-          - name: nginx-proxy-config
-            mountPath: /etc/nginx/conf.d/
-          - name: nginx-health-config
-            mountPath: "{{ .Values.paths.wwwPath }}{{ .Values.paths.healthPath }}"
-          - name: nginx-tmp
-            mountPath: /var/tmp/
-          - name: nginx-cache
-            mountPath: {{ .Values.paths.cachePath }}
+      - name: {{ .Chart.Name }}
+        securityContext:
+          {{- toYaml .Values.securityContext | nindent 12 }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+          - name: http
+            containerPort:  {{ .Values.service.port }}
+            protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.paths.healthPath }}
+            port: http
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.paths.healthPath }}
+            port: http
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+        volumeMounts:
+        - name: nginx-default-config
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+        - name: nginx-proxy-config
+          mountPath: /etc/nginx/conf.d/
+        - name: nginx-health-config
+          mountPath: "{{ .Values.paths.wwwPath }}{{ .Values.paths.healthPath }}"
+        - name: nginx-tmp
+          mountPath: /var/tmp/
+        - name: nginx-cache
+          mountPath: {{ .Values.paths.cachePath }}
       volumes:
       - name: nginx-default-config
         configMap:
@@ -82,22 +86,18 @@ spec:
           name: {{ include "artifact-caching-proxy.fullname" . }}-health-configmap
       - name: nginx-tmp
         emptyDir: {}
+  {{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+  - metadata:
+      name: nginx-cache
+    spec:
+      storageClassName: {{ .Values.persistence.storageClass }}
+      accessModes:
+      - {{ .Values.persistence.accessMode }}
+      resources:
+        requests:
+          storage: "{{ .Values.persistence.size }}Gi"
+  {{- else }}
       - name: nginx-cache
-      {{- if .Values.persistence.enabled }}
-        persistentVolumeClaim:
-          claimName: {{ include "artifact-caching-proxy.fullname" . }}-pvc
-      {{- else }}
         emptyDir: {}
-      {{- end -}}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+  {{- end }}
