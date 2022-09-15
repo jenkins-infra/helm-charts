@@ -59,8 +59,8 @@ tolerations: []
 affinity: {}
 
 config:
-  uc-cron: "* */15 * * * *"
-  pe-cron: "* 10 * * * *"
+  uc_cron: "* */15 * * * *"
+  pe_cron: "* 10 * * * *"
 
 database:
   user: plugin-health-scoring

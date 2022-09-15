@@ -43,9 +43,9 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
             - name: UPDATE_CENTER_CRON
-              value: {{ .Values.config.uc-cron | squote }}
+              value: {{ .Values.config.uc_cron | squote }}
             - name: PROBE_ENGINE_CRON
-              value: {{ .Values.config.pe-cron | squote }}
+              value: {{ .Values.config.pe_cron | squote }}
             - name: POSTGRES_HOST
               value: {{ .Values.database.host | squote }}
             - name: POSTGRES_PORT
