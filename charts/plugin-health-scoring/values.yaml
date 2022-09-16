@@ -67,5 +67,5 @@ database:
   user: plugin-health-scoring
   password: s3cr3t
   db: plugin-health-scoring
-  server: postgresql
+  host: postgresql
   port: 5432
