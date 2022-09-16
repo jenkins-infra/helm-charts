@@ -37,7 +37,11 @@ spec:
               protocol: TCP
           readinessProbe:
             httpGet:
-              path: /actuator/health/readiness
+              path: /actuator/health
+              port: http
+          liveness:
+            httpGet:
+              path: /actuator/health
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
