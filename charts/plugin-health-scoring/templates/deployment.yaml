@@ -56,6 +56,8 @@ spec:
               value: {{ .Values.database.user | squote }}
             - name: POSTGRES_PASSWORD
               value: {{ .Values.database.password | squote }}
+            - name: GITHUB_OAUTH
+              value: {{ .Values.config.github_oauth | squote }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
