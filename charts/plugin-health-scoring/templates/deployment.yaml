@@ -47,9 +47,9 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
             - name: UPDATE_CENTER_CRON
-              value: {{ .Values.config.uc_cron | squote }}
+              value: {{ .Values.config.ucCron | squote }}
             - name: PROBE_ENGINE_CRON
-              value: {{ .Values.config.pe_cron | squote }}
+              value: {{ .Values.config.peCron | squote }}
             - name: POSTGRES_HOST
               value: {{ .Values.database.host | squote }}
             - name: POSTGRES_PORT
@@ -61,7 +61,7 @@ spec:
             - name: POSTGRES_PASSWORD
               value: {{ .Values.database.password | squote }}
             - name: GITHUB_OAUTH
-              value: {{ .Values.config.github_oauth | squote }}
+              value: {{ .Values.config.githubOauth | squote }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

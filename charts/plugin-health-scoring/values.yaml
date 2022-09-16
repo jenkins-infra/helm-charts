@@ -59,9 +59,9 @@ tolerations: []
 affinity: {}
 
 config:
-  uc_cron: "* */15 * * * *"
-  pe_cron: "* 10 * * * *"
-  github_oauth: s3cr3t
+  ucCron: "* */15 * * * *"
+  peCron: "* 10 * * * *"
+  githubOauth: s3cr3t
 
 database:
   user: plugin-health-scoring
