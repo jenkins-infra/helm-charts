@@ -1236,6 +1236,17 @@ entries:
     urls:
     - https://github.com/jenkins-infra/helm-charts/releases/download/nginx-proxy-0.1.0/nginx-proxy-0.1.0.tgz
     version: 0.1.0
+  plugin-health-scoring:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2022-09-19T10:58:42.847534581Z"
+    description: A Helm chart for Kubernetes
+    digest: 57f1a25834b10eed2f49a241ecf2b290acfaed4d9480e31fbb16ad586247c16b
+    name: plugin-health-scoring
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/plugin-health-scoring-1.0.0/plugin-health-scoring-1.0.0.tgz
+    version: 1.0.0
   plugin-site:
   - apiVersion: v1
     appVersion: "1.0"
@@ -1758,4 +1769,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2022-09-19T10:08:16.777038192Z"
+generated: "2022-09-19T10:58:42.848240088Z"
