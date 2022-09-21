@@ -55,7 +55,7 @@ spec:
             - name: POSTGRES_DB
               value: {{ .Values.database.name | squote }}
             - name: POSTGRES_USER
-              value: {{ .Values.database.user | squote }}
+              value: {{ .Values.database.username | squote }}
             - name: POSTGRES_PASSWORD
               value: {{ .Values.database.password | squote }}
             - name: GITHUB_OAUTH

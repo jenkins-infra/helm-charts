@@ -67,7 +67,7 @@ config:
   githubOauth: s3cr3t
 
 database:
-  user: plugin-health-scoring
+  username: plugin-health-scoring
   password: s3cr3t
   name: plugin-health-scoring
   server: postgresql
