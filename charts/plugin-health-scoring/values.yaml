@@ -52,6 +52,9 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
+probes:
+  path: /actuator/health
+
 nodeSelector: {}
 
 tolerations: []
