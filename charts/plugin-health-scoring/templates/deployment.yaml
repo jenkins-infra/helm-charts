@@ -51,11 +51,11 @@ spec:
             - name: PROBE_ENGINE_CRON
               value: {{ .Values.config.peCron | squote }}
             - name: POSTGRES_HOST
-              value: {{ .Values.database.host | squote }}
+              value: {{ .Values.database.server | squote }}
             - name: POSTGRES_PORT
               value: {{ .Values.database.port | squote }}
             - name: POSTGRES_DB
-              value: {{ .Values.database.db | squote }}
+              value: {{ .Values.database.name | squote }}
             - name: POSTGRES_USER
               value: {{ .Values.database.user | squote }}
             - name: POSTGRES_PASSWORD
