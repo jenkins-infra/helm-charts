@@ -1,7 +1,8 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "plugin-health-scoring.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
-apiVersion: networking.k8s.io/v1kind: Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
