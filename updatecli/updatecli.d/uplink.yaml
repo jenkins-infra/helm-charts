@@ -1,4 +1,4 @@
-title: Bump `uplink` docker image digest and helm chart version
+name: Bump `uplink` docker image digest and helm chart version
 
 scms:
   default:
@@ -14,7 +14,7 @@ scms:
 
 sources:
   latestDigest:
-    kind: dockerDigest
+    kind: dockerdigest
     name: "Get httdp docker image digest"
     spec:
       image: "jenkinsciinfra/uplink"
@@ -26,7 +26,7 @@ sources:
 targets:
   updateChart:
     name: Update uplink helm chart
-    kind: helmChart
+    kind: helmchart
     spec:
       name: charts/uplink
       key: image.tag
@@ -37,8 +37,6 @@ pullrequests:
   default:
     kind: github
     scmid: default
-    targets:
-      - updateChart
     spec:
       labels:
         - dependencies

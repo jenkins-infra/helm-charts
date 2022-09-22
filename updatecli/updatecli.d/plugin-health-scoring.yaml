@@ -1,4 +1,4 @@
-title: Bump plugin-health-scoring docker image version
+name: Bump plugin-health-scoring docker image version
 
 scms:
   default:

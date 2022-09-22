@@ -1,4 +1,4 @@
-title: Bump `wiki` docker image and helm chart versions
+name: Bump `wiki` docker image and helm chart versions
 
 scms:
   default:
@@ -14,10 +14,9 @@ scms:
 
 sources:
   latestRelease:
-    kind: githubRelease
+    kind: githubrelease
     name: "Get latest jenkins-infra/docker-confluence-data release"
     spec:
-      name: Get jenkins-infra/docker-confluence-data latest version
       owner: "jenkins-infra"
       repository: "docker-confluence-data"
       token: "{{ requiredEnv .github.token }}"
@@ -26,7 +25,7 @@ sources:
 conditions:
   checkDockerImagePublished:
     name: "Test jenkinsciinfra/wiki:<latest_version> docker image tag"
-    kind: dockerImage
+    kind: dockerimage
     sourceid: latestRelease
     spec:
       image: "jenkinsciinfra/wiki"
@@ -35,7 +34,7 @@ conditions:
 targets:
   updateChart:
     name: Update wiki helm chart
-    kind: helmChart
+    kind: helmchart
     spec:
       name: charts/wiki
       key: image.tag
@@ -46,8 +45,6 @@ pullrequests:
   default:
     kind: github
     scmid: default
-    targets:
-      - updateChart
     spec:
       labels:
         - dependencies

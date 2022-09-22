@@ -1,4 +1,4 @@
-title: Bump account-app docker image version
+name: Bump account-app docker image version
 
 scms:
   default:

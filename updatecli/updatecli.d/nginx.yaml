@@ -1,4 +1,4 @@
-title: Bump nginx:stable docker image version
+name: Bump nginx:stable docker image version
 
 scms:
   default:
@@ -20,21 +20,21 @@ scms:
 sources:
   latestRelease:
     name: Get latest stable version of nginx
-    kind: gitTag
+    kind: gittag
     scmid: nginxGithubMirror
     spec:
-      versionFilter:
+      versionfilter:
         kind: regex
         ## Nginx stable version have the minor digit as an even number
         pattern: 'release-(\d+)\.(\d*[0|2|4|6|8])\.(\d+)'
     transformers:
-      - trimPrefix: "release-"
-      - addSuffix: "-alpine"
+      - trimprefix: "release-"
+      - addsuffix: "-alpine"
 
 conditions:
   checkDockerImagePublished:
     name: "Test nginx:<latest_version> docker image tag"
-    kind: dockerImage
+    kind: dockerimage
     sourceid: latestRelease
     spec:
       image: "nginx"
@@ -44,7 +44,7 @@ conditions:
 targets:
   updateJavadocChart:
     name: "Update nginx stable docker image version for javadoc chart"
-    kind: helmChart
+    kind: helmchart
     spec:
       name: charts/javadoc
       key: image.tag
@@ -52,7 +52,7 @@ targets:
     scmid: default
   updateJenkinsioChartEn:
     name: "Update nginx stable docker image version for jenkinsio chart (EN)"
-    kind: helmChart
+    kind: helmchart
     spec:
       name: charts/jenkinsio
       key: images.en.tag
@@ -60,7 +60,7 @@ targets:
     scmid: default
   updateJenkinsioChartZh:
     name: "Update nginx stable docker image version for jenkinsio chart (ZH)"
-    kind: helmChart
+    kind: helmchart
     spec:
       name: charts/jenkinsio
       key: images.zh.tag
@@ -68,7 +68,7 @@ targets:
     scmid: default
   updatePluginSiteChart:
     name: "Update nginx stable docker image version for plugin-site chart"
-    kind: helmChart
+    kind: helmchart
     spec:
       name: charts/plugin-site
       key: frontend.image.tag
@@ -76,7 +76,7 @@ targets:
     scmid: default
   updateReportsChart:
     name: "Update nginx stable docker image version for reports chart"
-    kind: helmChart
+    kind: helmchart
     spec:
       name: charts/reports
       key: image.tag
@@ -84,7 +84,7 @@ targets:
     scmid: default
   updateArtifactCachingProxy:
     name: "Update nginx stable docker image version for artifact-caching-proxy chart"
-    kind: helmChart
+    kind: helmchart
     spec:
       name: charts/artifact-caching-proxy
       key: image.tag
@@ -95,13 +95,6 @@ pullrequests:
   default:
     kind: github
     scmid: default
-    targets:
-      - updateJavadocChart
-      - updateJenkinsioChartEn
-      - updateJenkinsioChartZh
-      - updatePluginSiteChart
-      - updateReportsChart
-      - updateArtifactCachingProxy
     spec:
       labels:
         - dependencies
