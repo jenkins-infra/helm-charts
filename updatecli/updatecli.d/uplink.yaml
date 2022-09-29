@@ -37,7 +37,7 @@ pullrequests:
   default:
     kind: github
     scmid: default
-    title: Bump `uplink` docker image version to {{ source "latestRelease" }}
+    title: Bump `uplink` docker image version to {{ source "latestDigest" }}
     spec:
       labels:
         - dependencies

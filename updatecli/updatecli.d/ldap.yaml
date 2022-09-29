@@ -54,7 +54,7 @@ pullrequests:
   default:
     kind: github
     scmid: default
-    title: Bump `ldap` docker image version to {{ source "latestRelease" }}
+    title: Bump `ldap` crond docker image to {{ source "crond" }} and `ldap` slapd docker image to {{ source "slapd" }}
     spec:
       labels:
         - dependencies
