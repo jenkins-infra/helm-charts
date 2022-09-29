@@ -1,4 +1,4 @@
-title: Bump `plugin-site-issues` docker image and helm chart versions
+name: Bump `plugin-site-issues` docker image and helm chart versions
 
 scms:
   default:
@@ -14,7 +14,7 @@ scms:
 
 sources:
   latestRelease:
-    kind: githubRelease
+    kind: githubrelease
     name: "Get latest jenkins-infra/docker-plugin-site-issues latest version"
     spec:
       owner: "jenkins-infra"
@@ -26,7 +26,7 @@ conditions:
   checkDockerImagePublished:
     name: |
       Test jenkinsciinfra/docker-plugin-site-issues:{{ source `latestRelease` }} docker image tag
-    kind: dockerImage
+    kind: dockerimage
     sourceid: latestRelease
     spec:
       image: "jenkinsciinfra/plugin-site-issues"
@@ -35,7 +35,7 @@ conditions:
 targets:
   updateChart:
     name: Update rating helm chart
-    kind: helmChart
+    kind: helmchart
     spec:
       name: charts/plugin-site-issues
       key: image.tag
@@ -46,8 +46,7 @@ pullrequests:
   default:
     kind: github
     scmid: default
-    targets:
-      - updateChart
+    title: Bump `plugin-site-issues` docker image version to {{ source "latestRelease" }}
     spec:
       labels:
         - dependencies

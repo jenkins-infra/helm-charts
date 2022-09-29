@@ -1,4 +1,4 @@
-name: Bump `wiki` docker image and helm chart versions
+name: Bump account-app docker image version
 
 scms:
   default:
@@ -15,28 +15,28 @@ scms:
 sources:
   latestRelease:
     kind: githubrelease
-    name: "Get latest jenkins-infra/docker-confluence-data release"
+    name: "Get latest jenkins-infra/account-app release"
     spec:
       owner: "jenkins-infra"
-      repository: "docker-confluence-data"
+      repository: "account-app"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
 
 conditions:
   checkDockerImagePublished:
-    name: "Test jenkinsciinfra/wiki:<latest_version> docker image tag"
+    name: "Test jenkinsciinfra/account-app:<latest_version> docker image tag"
     kind: dockerimage
-    sourceid: latestRelease
     spec:
-      image: "jenkinsciinfra/wiki"
-      architecture: "amd64"
+      image: "jenkinsciinfra/account-app"
+      ## Tag from source
+      architecture: amd64
 
 targets:
   updateChart:
-    name: Update wiki helm chart
+    name: Update accountapp helm chart
     kind: helmchart
     spec:
-      name: charts/wiki
+      name: charts/accountapp
       key: image.tag
       versionincrement: patch
     scmid: default
@@ -45,8 +45,8 @@ pullrequests:
   default:
     kind: github
     scmid: default
-    title: Bump `wiki` docker image version to {{ source "latestRelease" }}
+    title: Bump `accountapp` docker image version to {{ source "latestRelease" }}
     spec:
       labels:
         - dependencies
-        - wiki
+        - accountapp

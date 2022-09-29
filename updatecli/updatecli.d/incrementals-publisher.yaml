@@ -1,4 +1,4 @@
-title: Bump `incremental-publisher` docker image and helm chart versions
+name: Bump `incremental-publisher` docker image and helm chart versions
 
 scms:
   default:
@@ -14,7 +14,7 @@ scms:
 
 sources:
   latestRelease:
-    kind: githubRelease
+    kind: githubrelease
     name: Get jenkins-infra/incrementals-publish latest version
     spec:
       owner: "jenkins-infra"
@@ -25,7 +25,7 @@ sources:
 conditions:
   checkDockerImagePublished:
     name: Test if jenkinsciinfra/incrementals-publisher docker image is published
-    kind: dockerImage
+    kind: dockerimage
     sourceid: latestRelease
     spec:
       image: "jenkinsciinfra/incrementals-publisher"
@@ -34,7 +34,7 @@ conditions:
 targets:
   updateChart:
     name: Update incrementals-publisher helm chart
-    kind: helmChart
+    kind: helmchart
     spec:
       name: charts/incrementals-publisher
       key: image.tag
@@ -45,8 +45,7 @@ pullrequests:
   default:
     kind: github
     scmid: default
-    targets:
-      - updateChart
+    title: Bump `incrementals-publisher` docker image version to {{ source "latestRelease" }}
     spec:
       labels:
         - dependencies

@@ -1,4 +1,4 @@
-title: Bump `rating` docker image and helm chart versions
+name: Bump `rating` docker image and helm chart versions
 
 scms:
   default:
@@ -14,10 +14,9 @@ scms:
 
 sources:
   latestRelease:
-    kind: githubRelease
+    kind: githubrelease
     name: "Get latest jenkins-infra/rating release"
     spec:
-      name: Get jenkins-infra/rating latest version
       owner: "jenkins-infra"
       repository: "rating"
       token: "{{ requiredEnv .github.token }}"
@@ -27,7 +26,7 @@ conditions:
   checkDockerImagePublished:
     name: |
       Test jenkinsciinfra/rating:{{ source `latestRelease` }} docker image tag
-    kind: dockerImage
+    kind: dockerimage
     sourceid: latestRelease
     spec:
       image: "jenkinsciinfra/rating"
@@ -36,7 +35,7 @@ conditions:
 targets:
   updateChart:
     name: Update rating helm chart
-    kind: helmChart
+    kind: helmchart
     spec:
       name: charts/rating
       key: image.tag
@@ -47,8 +46,7 @@ pullrequests:
   default:
     kind: github
     scmid: default
-    targets:
-      - updateChart
+    title: Bump `rating` docker image version to {{ source "latestRelease" }}
     spec:
       labels:
         - dependencies

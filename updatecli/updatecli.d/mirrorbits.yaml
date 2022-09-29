@@ -1,4 +1,4 @@
-title: Bump `mirrorbits` docker images version and helm chart version
+name: Bump `mirrorbits` docker images version and helm chart version
 
 scms:
   default:
@@ -15,23 +15,22 @@ scms:
 sources:
   latestMirrorbitsRelease:
     name: Get latest version of jenkinsciinfra/mirrorbits
-    kind: githubRelease
+    kind: githubrelease
     spec:
       owner: "jenkins-infra"
       repository: "docker-mirrorbits"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
-      branch: "{{ .github.branch }}"
   latestHttpdRelease:
     name: Get latest digest of the Docker Image for httpd, in version 2.4
-    kind: dockerDigest
+    kind: dockerdigest
     spec:
       image: "httpd"
       tag: "2.4"
       architecture: "amd64"
   latestGeoIPRelease:
     name: Get latest version of GeoIP
-    kind: githubRelease
+    kind: githubrelease
     spec:
       owner: "maxmind"
       repository: "geoipupdate"
@@ -42,7 +41,7 @@ conditions:
   checkMirrorbitsDockerImagePublished:
     name: Ensure that the image "jenkinsciinfra/mirrorbits:<found_version>" is published on the DockerHub
     sourceid: latestMirrorbitsRelease
-    kind: dockerImage
+    kind: dockerimage
     spec:
       image: "jenkinsciinfra/mirrorbits"
       architecture: "amd64"
@@ -50,7 +49,7 @@ conditions:
   checkGeoIPDockerImagePublished:
     name: Ensure that the image "maxmindinc/geoipupdate:<found_version>" is published on the DockerHub
     sourceid: latestGeoIPRelease
-    kind: dockerImage
+    kind: dockerimage
     spec:
       image: "maxmindinc/geoipupdate"
       architecture: "amd64"
@@ -62,7 +61,7 @@ targets:
   updateMirrorbits:
     name: "Update mirrorbits docker image version"
     sourceid: latestMirrorbitsRelease
-    kind: helmChart
+    kind: helmchart
     spec:
       name: charts/mirrorbits
       key: "image.mirrorbits.tag"
@@ -71,7 +70,7 @@ targets:
   updateHttpd:
     name: "Update httpd docker image version"
     sourceid: latestHttpdRelease
-    kind: helmChart
+    kind: helmchart
     spec:
       name: charts/mirrorbits
       key: "image.files.tag"
@@ -79,7 +78,7 @@ targets:
   updateGeoIP:
     name: "Update maxmindinc/geoipupdate docker image version"
     sourceid: latestGeoIPRelease
-    kind: helmChart
+    kind: helmchart
     spec:
       name: charts/mirrorbits
       key: "geoipupdate.image.tag"
@@ -89,10 +88,6 @@ pullrequests:
   default:
     kind: github
     scmid: default
-    targets:
-      - updateMirrorbits
-      - updateHttpd
-      - updateGeoIP
     spec:
       labels:
         - dependencies

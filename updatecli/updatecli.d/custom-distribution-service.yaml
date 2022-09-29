@@ -1,4 +1,4 @@
-title: Bump `custom-distribution-service` docker image and helm chart versions
+name: Bump `custom-distribution-service` docker image and helm chart versions
 
 scms:
   default:
@@ -15,19 +15,19 @@ scms:
 sources:
   latestRelease:
     name: Get latest jenkinsci/custom-distribution-service version
-    kind: githubRelease
+    kind: githubrelease
     spec:
       owner: "jenkinsci"
       repository: "custom-distribution-service"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
-      versionFilter:
+      versionfilter:
         kind: latest
 
 conditions:
   checkDockerImagePublished:
     name: Is latest jenkinsciinfra/custom-distribution-service docker image published
-    kind: dockerImage
+    kind: dockerimage
     sourceid: latestRelease
     spec:
       image: "jenkinsciinfra/custom-distribution-service"
@@ -37,7 +37,7 @@ conditions:
 targets:
   updateChart:
     name: Update custom-distribution-service helm chart
-    kind: helmChart
+    kind: helmchart
     spec:
       name: charts/custom-distribution-service
       key: image.tag
@@ -48,8 +48,7 @@ pullrequests:
   default:
     kind: github
     scmid: default
-    targets:
-      - updateChart
+    title: Bump `custom-distribution-service` docker image version to {{ source "latestRelease" }}
     spec:
       labels:
         - dependencies
