@@ -45,7 +45,7 @@ pullrequests:
   default:
     kind: github
     scmid: default
-    title: Bump accountapp docker version to {{ source "latestRelease" }}
+    title: Bump `accountapp` docker image version to {{ source "latestRelease" }}
     spec:
       labels:
         - dependencies

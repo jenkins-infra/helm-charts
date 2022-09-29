@@ -46,6 +46,7 @@ pullrequests:
   default:
     kind: github
     scmid: default
+    title: Bump `plugin-site-issues` docker image version to {{ source "latestRelease" }}
     spec:
       labels:
         - dependencies

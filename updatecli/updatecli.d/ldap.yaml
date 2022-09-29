@@ -54,6 +54,7 @@ pullrequests:
   default:
     kind: github
     scmid: default
+    title: Bump `ldap` docker image version to {{ source "latestRelease" }}
     spec:
       labels:
         - dependencies

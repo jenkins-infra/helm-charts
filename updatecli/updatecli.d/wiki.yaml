@@ -45,6 +45,7 @@ pullrequests:
   default:
     kind: github
     scmid: default
+    title: Bump `wiki` docker image version to {{ source "latestRelease" }}
     spec:
       labels:
         - dependencies

@@ -95,6 +95,7 @@ pullrequests:
   default:
     kind: github
     scmid: default
+    title: Bump `nginx` docker image version to {{ source "latestRelease" }}
     spec:
       labels:
         - dependencies

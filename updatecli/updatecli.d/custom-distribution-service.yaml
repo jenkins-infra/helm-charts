@@ -48,6 +48,7 @@ pullrequests:
   default:
     kind: github
     scmid: default
+    title: Bump `custom-distribution-service` docker image version to {{ source "latestRelease" }}
     spec:
       labels:
         - dependencies

@@ -45,7 +45,7 @@ pullrequests:
   default:
     kind: github
     scmid: default
-    title: Bump plugin-health-scoring docker version to {{ source "latestRelease" }}
+    title: Bump `plugin-health-scoring` docker image version to {{ source "latestRelease" }}
     spec:
       labels:
         - dependencies
