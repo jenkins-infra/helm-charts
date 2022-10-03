@@ -31,6 +31,7 @@ service:
   type: ClusterIP
   # non root port
   port: 8080
+  annotations: {}
 ingress:
   enabled: false
   className: ""
