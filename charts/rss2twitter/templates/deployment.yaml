@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "rss2twitter.fullname" . }}
+  labels:
+    {{- include "rss2twitter.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "rss2twitter.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "rss2twitter.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "rss2twitter.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: exclusionPatterns
+              mountPath: srv/exclusion-patterns.txt
+              subPath: exclusion-patterns.txt
+          volumes:
+            - name: exclusionPatterns
+              configMap:
+                name: {{ include "rss2twitter.fullname" . }}
+                - key: exclusion-patterns.txt
+                  path: exclusion-patterns.txt
+          env:
+            - name: FEED
+              value: {{ .Values.env.rssFeed}}
+            - name: REFRESH
+              value: {{ .Values.env.rssRefreshRate }}
+            - name: REFRESH
+              value: {{ .Values.env.rssRefreshRate }}
+            - name: DRY
+              value: {{ .Values.env.rssRefreshRate }}
+            - name: TWI_CONSUMER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "rss2twitter.fullname" . }}
+                  key: twitterConsumerKey
+            - name: TWI_CONSUMER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "rss2twitter.fullname" . }}
+                  key: twitterConsumerSecret
+            - name: TWI_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "rss2twitter.fullname" . }}
+                  key: twitterAccessToken
+            - name: TWI_ACCESS_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "rss2twitter.fullname" . }}
+                  key: twitterAccessSecret
+            - name: TEMPLATE
+              value: {{ .Values.env.template | quote }}
+            - name: DRY
+              value: {{ .Values.env.dryMode}}
+            - name: DEBUG
+              value: {{ .Values.env.debugMode}}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
