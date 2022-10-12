@@ -47,6 +47,9 @@ pullrequests:
     scmid: default
     title: Bump `plugin-health-scoring` docker image version to {{ source "latestRelease" }}
     spec:
+      automerge: true
+      reviewers:
+        - alecharp
       labels:
         - dependencies
         - plugin-health-scoring
