@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   repository: "jenkinsciinfra/plugin-health-scoring"
   pullPolicy: IfNotPresent
-  tag: "v0.0.3"
+  tag: "v0.1.0"
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
