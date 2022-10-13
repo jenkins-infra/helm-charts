@@ -37,7 +37,7 @@ spec:
           runAsUser: 0
           runAsGroup: 0
         command: ['sh', '-c']
-        args: ["chown -Rv {{ .Values.initContainer.chownArgs }}  {{ .Values.paths.cachePath }} && ls -l {{ .Values.paths.cachePath }}"]
+        args: ["chown -Rv {{ .Values.initContainer.chownArgs }} {{ .Values.paths.cachePath }} && chown -Rv {{ .Values.initContainer.chownArgs }} {{ .Values.paths.cachePath }}/lost+found && ls -l {{ .Values.paths.cachePath }}"]
         volumeMounts:
           - mountPath: {{ .Values.paths.cachePath }}
             name: nginx-cache
