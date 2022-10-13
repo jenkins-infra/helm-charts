@@ -23,7 +23,7 @@ securityContext: {}
 # runAsNonRoot: true
 # runAsUser: 1000
 
-initContainer:
+initContainers:
   enabled: false
   # nginx: 1001
   chownArg: 101:101
