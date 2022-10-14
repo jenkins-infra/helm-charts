@@ -433,6 +433,17 @@ entries:
     version: 0.3.0
   ircbot:
   - apiVersion: v1
+    created: "2022-10-14T21:10:22.972939896Z"
+    description: A Helm chart for ircbot
+    digest: b0fa0bfdd023201f45a7cd100e443d3e49cd4563be857bde376b2253c8049587
+    maintainers:
+    - name: timja
+    - name: slide
+    name: ircbot
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/ircbot-0.2.0/ircbot-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v1
     created: "2022-10-14T06:54:00.456341673Z"
     description: A Helm chart for ircbot
     digest: 3c9c5449cb483fc7d86d655428310a79dbb1d68b5f00bc18424932f95ae76d49
@@ -2048,4 +2059,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2022-10-14T16:50:55.040243078Z"
+generated: "2022-10-14T21:10:22.973680504Z"
