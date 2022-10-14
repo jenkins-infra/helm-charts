@@ -23,10 +23,6 @@ securityContext: {}
 # runAsNonRoot: true
 # runAsUser: 1000
 
-initContainers:
-  enabled: false
-  # nginx: 1001
-  chownArg: 101:101
 service:
   type: ClusterIP
   # non root port
@@ -72,8 +68,14 @@ persistence:
   size: 50
   storageClass: ""
   accessMode: ReadWriteOnce
+
+initContainers:
+  enabled: false
 paths:
-  cachePath: /var/cache/nginx
+  cachePath:
+    - name: /var/cache/nginx
+    # nginx: 101
+    - initContainersCommand: chown -Rv 101:101 /var/cache/nginx && ls -l /var/cache/nginx
   healthPath: /healthz
 # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_path
 cache:

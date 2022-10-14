@@ -37,9 +37,9 @@ spec:
           runAsUser: 0
           runAsGroup: 0
         command: ['sh', '-c']
-        args: ["chown -Rv {{ .Values.initContainers.chownArgs }}  {{ .Values.paths.cachePath }} && ls -l {{ .Values.paths.cachePath }}"]
+        args: [{{ .Values.paths.cachePath.initContainersCommand }}]
         volumeMounts:
-          - mountPath: {{ .Values.paths.cachePath }}
+          - mountPath: {{ .Values.paths.cachePath.name }}
             name: nginx-cache
       {{- end}}
       containers:
@@ -71,7 +71,7 @@ spec:
         - name: nginx-tmp
           mountPath: /var/tmp/
         - name: nginx-cache
-          mountPath: {{ .Values.paths.cachePath }}
+          mountPath: {{ .Values.paths.cachePath.name }}
       volumes:
       - name: nginx-default-config
         configMap:
