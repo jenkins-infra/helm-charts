@@ -5,7 +5,7 @@ metadata:
   labels: {{ include "artifact-caching-proxy.labels" . | nindent 4 }}
 data:
   cache.conf: |
-    proxy_cache_path {{ .Values.paths.cachePath.name }} levels=1 keys_zone=nginx_cache:{{ .Values.cache.keysZoneSize }} max_size={{ .Values.persistence.size }}g inactive={{ .Values.cache.inactive }} use_temp_path={{ .Values.cache.useTempPath }};
+    proxy_cache_path {{ .Values.paths.cachePath }} levels=1 keys_zone=nginx_cache:{{ .Values.cache.keysZoneSize }} max_size={{ .Values.persistence.size }}g inactive={{ .Values.cache.inactive }} use_temp_path={{ .Values.cache.useTempPath }};
   proxy.conf: |
     ## add ssl entries when https has been set in config
     ## server configuration

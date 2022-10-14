@@ -32,14 +32,10 @@ spec:
       {{ if .Values.initContainers.enabled }}
       initContainers:
       - name: permission-fix
-        image: busybox
-        securityContext:
-          runAsUser: 0
-          runAsGroup: 0
-        command: ['sh', '-c']
-        args: [{{ .Values.paths.cachePath.initContainersCommand }}]
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        command: ['chown', '-R', 'nginx:nginx', '{{ .Values.paths.cachePath }}']
         volumeMounts:
-          - mountPath: {{ .Values.paths.cachePath.name }}
+          - mountPath: {{ .Values.paths.cachePath }}
             name: nginx-cache
       {{- end}}
       containers:
@@ -71,7 +67,7 @@ spec:
         - name: nginx-tmp
           mountPath: /var/tmp/
         - name: nginx-cache
-          mountPath: {{ .Values.paths.cachePath.name }}
+          mountPath: {{ .Values.paths.cachePath }}
       volumes:
       - name: nginx-default-config
         configMap:
