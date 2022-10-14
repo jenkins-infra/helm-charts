@@ -1,0 +1,53 @@
+name: Bump `ircbot` docker image and helm chart versions
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
+sources:
+  latestRelease:
+    kind: githubrelease
+    name: "Get latest jenkins-infra/ircbot latest version"
+    spec:
+      owner: "jenkins-infra"
+      repository: "ircbot"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+
+conditions:
+  checkDockerImagePublished:
+    name: |
+      Test jenkinsciinfra/ircbot:{{ source `latestRelease` }} docker image tag
+    kind: dockerimage
+    sourceid: latestRelease
+    spec:
+      image: "jenkinsciinfra/ircbot"
+      architecture: "amd64"
+
+targets:
+  updateChart:
+    name: Update rating helm chart
+    kind: helmchart
+    spec:
+      name: charts/ircbot
+      key: image.tag
+      versionincrement: patch
+    scmid: default
+
+pullrequests:
+  default:
+    kind: github
+    scmid: default
+    title: Bump `ircbot` docker image version to {{ source "latestRelease" }}
+    spec:
+      labels:
+        - dependencies
+        - ircbot
