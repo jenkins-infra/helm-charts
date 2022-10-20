@@ -7,7 +7,7 @@ image:
   repository: nginx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.22.0-alpine"
+  tag: "1.22.1-alpine"
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -68,7 +68,6 @@ persistence:
   size: 50
   storageClass: ""
   accessMode: ReadWriteOnce
-
 initContainers:
   enabled: true
 # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_path
