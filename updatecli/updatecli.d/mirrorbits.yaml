@@ -28,6 +28,8 @@ sources:
       image: "httpd"
       tag: "2.4"
       architecture: "amd64"
+    transformers:
+      - trimprefix: 'sha256:'
   latestGeoIPRelease:
     name: Get latest version of GeoIP
     kind: githubrelease
