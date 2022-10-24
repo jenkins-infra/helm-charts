@@ -55,6 +55,7 @@ spec:
             - name: exclusionPatterns
               configMap:
                 name: {{ include "rss2twitter.fullname" . }}
+                items:
                 - key: exclusion-patterns.txt
                   path: exclusion-patterns.txt
           env:
