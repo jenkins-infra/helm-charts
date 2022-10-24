@@ -42,7 +42,7 @@ spec:
               command:
               - /bin/sh
               - -c
-              - ps aux | grep rss2twitter | grep -v grep
+              - pgrep rss2twitter
             initialDelaySeconds: 10
             periodSeconds: 10
           readinessProbe:
