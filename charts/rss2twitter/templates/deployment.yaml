@@ -59,20 +59,16 @@ spec:
                 - key: exclusion-patterns.txt
                   path: exclusion-patterns.txt
           env:
+            - name: DEBUG
+              value: {{ .Values.env.debugMode}}
+            - name: DRY
+              value: {{ .Values.env.dryMode}}
             - name: FEED
               value: {{ .Values.env.rssFeed}}
             - name: REFRESH
               value: {{ .Values.env.rssRefreshRate }}
-            - name: REFRESH
-              value: {{ .Values.env.rssRefreshRate }}
-            - name: DRY
-              value: {{ .Values.env.rssRefreshRate }}
             - name: TEMPLATE
               value: {{ .Values.env.template | quote }}
-            - name: DRY
-              value: {{ .Values.env.dryMode}}
-            - name: DEBUG
-              value: {{ .Values.env.debugMode}}
           envFrom:
           - secretRef:
               name: {{ include "rss2twitter.fullname" . }}
