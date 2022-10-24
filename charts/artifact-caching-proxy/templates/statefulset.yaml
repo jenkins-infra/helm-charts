@@ -19,6 +19,22 @@ spec:
         checksum/default-config: {{ include (print $.Template.BasePath "/nginx-default-configmap.yaml") . | sha256sum }}
         checksum/proxy-config: {{ include (print $.Template.BasePath "/nginx-proxy-configmap.yaml") . | sha256sum }}
         {{- end }}
+        # metrics collection with Datadog
+        ad.datadoghq.com/{{ .Chart.Name }}.checks: |
+          {
+            "{{ .Chart.Name }}": {
+              "init_config": {},
+              "instances": [
+                {
+                  "nginx_status_url":"http://%%host%%:{{ .Values.service.statusPort }}/nginx_status/"
+                }
+              ]
+            }
+          }
+        {{- if .Values.logCollection.enabled }}
+        # log collection with Datadog
+        ad.datadoghq.com/{{ .Chart.Name }}.logs: {{ .Values.logCollection.config }}
+        {{- end }}
       {{- end }}
       labels:
         {{- include "artifact-caching-proxy.selectorLabels" . | nindent 8 }}
@@ -47,6 +63,9 @@ spec:
         ports:
           - name: http
             containerPort:  {{ .Values.service.port }}
+            protocol: TCP
+          - name: status
+            containerPort:  {{ .Values.service.statusPort }}
             protocol: TCP
         livenessProbe:
           httpGet:

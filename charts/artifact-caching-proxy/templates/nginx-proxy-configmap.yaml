@@ -53,3 +53,16 @@ data:
             proxy_cache_valid any {{ .Values.proxy.proxyCacheValidAnyDuration }};
         }
     }
+  status.conf: |
+    status.conf: |
+    server {
+      listen {{ .Values.service.statusPort }};
+
+      location /nginx_status {
+        stub_status on;
+      }
+
+      location / {
+        return 404;
+      }
+    }

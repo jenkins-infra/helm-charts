@@ -27,6 +27,8 @@ service:
   type: ClusterIP
   # non root port
   port: 8080
+  # to expose nginx metrics
+  statusPort: 18080
 ingress:
   enabled: false
   className: ""
@@ -53,6 +55,11 @@ resources: {}
 # requests:
 #   cpu: 100m
 #   memory: 128Mi
+
+# log collection with Datadog
+logCollection:
+  enabled: true
+  config: '[{"source":"nginx","service":"artifact-caching-proxy", "tags": "env:prod"}]'
 
 nodeSelector: {}
 tolerations: []
