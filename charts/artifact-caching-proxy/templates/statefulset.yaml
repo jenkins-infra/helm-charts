@@ -29,15 +29,11 @@ spec:
       {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      {{ if .Values.initContainer.enabled }}
+      {{ if .Values.initContainers.enabled }}
       initContainers:
       - name: permission-fix
-        image: busybox
-        securityContext:
-          runAsUser: 0
-          runAsGroup: 0
-        command: ['sh', '-c']
-        args: ["chown -Rv {{ .Values.initContainer.chownArgs }}  {{ .Values.paths.cachePath }} && ls -l {{ .Values.paths.cachePath }}"]
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        command: ['chown', '-R', 'nginx:nginx', '{{ .Values.paths.cachePath }}']
         volumeMounts:
           - mountPath: {{ .Values.paths.cachePath }}
             name: nginx-cache

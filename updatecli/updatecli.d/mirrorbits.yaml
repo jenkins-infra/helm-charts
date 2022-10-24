@@ -1,4 +1,4 @@
-name: Bump `mirrorbits` docker images version and helm chart version
+name: Bump `mirrorbits` docker images and helm chart versions
 
 scms:
   default:
@@ -28,6 +28,8 @@ sources:
       image: "httpd"
       tag: "2.4"
       architecture: "amd64"
+    transformers:
+      - trimprefix: 'sha256:'
   latestGeoIPRelease:
     name: Get latest version of GeoIP
     kind: githubrelease
@@ -88,6 +90,7 @@ pullrequests:
   default:
     kind: github
     scmid: default
+    title: Bump `mirrorbits` docker images and helm chart versions
     spec:
       labels:
         - dependencies
