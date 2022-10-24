@@ -40,9 +40,8 @@ spec:
           livenessProbe:
             exec:
               command:
-              - /bin/sh
-              - -c
-              - pgrep rss2twitter
+              - pgrep
+              - rss2twitter
             initialDelaySeconds: 10
             periodSeconds: 10
           readinessProbe:
