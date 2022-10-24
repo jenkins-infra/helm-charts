@@ -40,7 +40,7 @@ spec:
           livenessProbe:
             exec:
               command:
-              - /bin/bash
+              - /bin/sh
               - -c
               - ps aux | grep rss2twitter | grep -v grep
             initialDelaySeconds: 10
