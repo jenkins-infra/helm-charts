@@ -11,5 +11,9 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+    - port: {{ .Values.service.statusPort }}
+      targetPort: {{ .Values.service.statusPort }}
+      protocol: TCP
+      name: status
   selector:
     {{- include "artifact-caching-proxy.selectorLabels" . | nindent 4 }}
