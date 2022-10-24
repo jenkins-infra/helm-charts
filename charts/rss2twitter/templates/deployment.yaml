@@ -67,32 +67,15 @@ spec:
               value: {{ .Values.env.rssRefreshRate }}
             - name: DRY
               value: {{ .Values.env.rssRefreshRate }}
-            - name: TWI_CONSUMER_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "rss2twitter.fullname" . }}
-                  key: twitterConsumerKey
-            - name: TWI_CONSUMER_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "rss2twitter.fullname" . }}
-                  key: twitterConsumerSecret
-            - name: TWI_ACCESS_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "rss2twitter.fullname" . }}
-                  key: twitterAccessToken
-            - name: TWI_ACCESS_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "rss2twitter.fullname" . }}
-                  key: twitterAccessSecret
             - name: TEMPLATE
               value: {{ .Values.env.template | quote }}
             - name: DRY
               value: {{ .Values.env.dryMode}}
             - name: DEBUG
               value: {{ .Values.env.debugMode}}
+          envFrom:
+          - secretRef:
+              name: {{ include "rss2twitter.fullname" . }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
