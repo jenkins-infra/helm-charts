@@ -49,14 +49,3 @@ Selector labels
 app.kubernetes.io/name: {{ include "rss2twitter.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
-
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "rss2twitter.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "rss2twitter.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
