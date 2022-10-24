@@ -54,7 +54,6 @@ data:
         }
     }
   status.conf: |
-    status.conf: |
     server {
       listen {{ .Values.service.statusPort }};
 
