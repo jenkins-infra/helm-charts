@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "rss2twitter.fullname" . }}
+  labels:
+    {{- include "rss2twitter.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "rss2twitter.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "rss2twitter.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          livenessProbe:
+            exec:
+              command:
+              - pgrep
+              - rss2twitter
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: exclusion-patterns
+              mountPath: srv/exclusion-patterns.txt
+              subPath: exclusion-patterns.txt
+          env:
+            - name: DEBUG
+              value: {{ .Values.env.debugMode}}
+            - name: DRY
+              value: {{ .Values.env.dryMode}}
+            - name: FEED
+              value: {{ .Values.env.rssFeed}}
+            - name: REFRESH
+              value: {{ .Values.env.rssRefreshRate }}
+            - name: TEMPLATE
+              value: {{ .Values.env.template | quote }}
+          envFrom:
+          - secretRef:
+              name: {{ include "rss2twitter.fullname" . }}
+      volumes:
+        - name: exclusion-patterns
+          configMap:
+            name: {{ include "rss2twitter.fullname" . }}
+            items:
+            - key: exclusion-patterns.txt
+              path: exclusion-patterns.txt
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
