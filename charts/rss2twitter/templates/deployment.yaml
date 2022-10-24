@@ -51,13 +51,6 @@ spec:
             - name: exclusionPatterns
               mountPath: srv/exclusion-patterns.txt
               subPath: exclusion-patterns.txt
-          volumes:
-            - name: exclusionPatterns
-              configMap:
-                name: {{ include "rss2twitter.fullname" . }}
-                items:
-                - key: exclusion-patterns.txt
-                  path: exclusion-patterns.txt
           env:
             - name: DEBUG
               value: {{ .Values.env.debugMode}}
@@ -72,6 +65,13 @@ spec:
           envFrom:
           - secretRef:
               name: {{ include "rss2twitter.fullname" . }}
+      volumes:
+        - name: exclusionPatterns
+          configMap:
+            name: {{ include "rss2twitter.fullname" . }}
+            items:
+            - key: exclusion-patterns.txt
+              path: exclusion-patterns.txt
     {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
