@@ -40,6 +40,8 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
+  healthPath: /healthz
+  healthPathType: ImplementationSpecific
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -77,11 +79,9 @@ persistence:
   accessMode: ReadWriteOnce
 initContainers:
   enabled: true
-# http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_path
-paths:
-  cachePath: /data/nginx-cache
-  healthPath: /healthz
 cache:
+  # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_path
+  path: /data/nginx-cache
   keysZoneSize: "200m"
   inactive: "24h"
   useTempPath: "off"

@@ -49,9 +49,9 @@ spec:
       initContainers:
       - name: permission-fix
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-        command: ['chown', '-R', 'nginx:nginx', '{{ .Values.paths.cachePath }}']
+        command: ['chown', '-R', 'nginx:nginx', '{{ .Values.cache.path }}']
         volumeMounts:
-          - mountPath: {{ .Values.paths.cachePath }}
+          - mountPath: {{ .Values.cache.path }}
             name: nginx-cache
       {{- end}}
       containers:
@@ -69,11 +69,11 @@ spec:
             protocol: TCP
         livenessProbe:
           httpGet:
-            path: {{ .Values.paths.healthPath }}
+            path: {{ .Values.ingress.healthPath }}
             port: http
         readinessProbe:
           httpGet:
-            path: {{ .Values.paths.healthPath }}
+            path: {{ .Values.ingress.healthPath }}
             port: http
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
@@ -86,7 +86,7 @@ spec:
         - name: nginx-tmp
           mountPath: /var/tmp/
         - name: nginx-cache
-          mountPath: {{ .Values.paths.cachePath }}
+          mountPath: {{ .Values.cache.path }}
       volumes:
       - name: nginx-default-config
         configMap:
