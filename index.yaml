@@ -1830,6 +1830,15 @@ entries:
     version: 0.0.1
   rss2twitter:
   - apiVersion: v2
+    created: "2022-10-25T15:44:58.266373989Z"
+    description: A Helm chart for https://github.com/umputun/rss2twitter
+    digest: 22fa5d950c24042f5e935cf616ccb9cc8368c6c2325892cd3e8f1ff2b36ec1ad
+    name: rss2twitter
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/rss2twitter-0.0.2/rss2twitter-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
     created: "2022-10-24T15:38:46.953176227Z"
     description: A Helm chart for https://github.com/umputun/rss2twitter
     digest: 75d2aa16ccec7540e825ab5328a958104874ce59bfc3f3f9ffebae9ad0bf7102
@@ -2263,4 +2272,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2022-10-25T14:33:33.351591637Z"
+generated: "2022-10-25T15:44:58.267023789Z"
