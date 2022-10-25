@@ -15,16 +15,12 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ $fullName }}-healthz
   labels:
     {{- include "artifact-caching-proxy.labels" . | nindent 4 }}
   {{- if or .Values.auth.enabled .Values.ingress.annotations }}
   annotations:
   {{- end }}
-    {{- if .Values.auth.enabled }}
-    nginx.ingress.kubernetes.io/auth-type: basic
-    nginx.ingress.kubernetes.io/auth-secret: {{ include "artifact-caching-proxy.fullname" . }}-basic-auth
-    {{- end }}
   {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -47,10 +43,9 @@ spec:
     - host: {{ .host | quote }}
       http:
         paths:
-          {{- range .paths }}
-          - path: {{ .path }}
-            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
-            pathType: {{ .pathType }}
+          - path: {{ $.Values.ingress.healthPath }}
+            {{- if and $.Values.ingress.healthPathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
+            pathType: {{ $.Values.ingress.healthPathType }}
             {{- end }}
             backend:
               {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
@@ -62,6 +57,5 @@ spec:
               serviceName: {{ $fullName }}
               servicePort: {{ $svcPort }}
               {{- end }}
-          {{- end }}
     {{- end }}
 {{- end }}
