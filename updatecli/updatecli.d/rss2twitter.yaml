@@ -1,0 +1,52 @@
+name: Bump rss2twitter docker image version
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
+sources:
+  latestRelease:
+    kind: githubrelease
+    name: "Get latest umputun/rss2twitter release"
+    spec:
+      owner: "jenkins-infra"
+      repository: "rss2twitter"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+
+conditions:
+  checkDockerImagePublished:
+    name: "Test umputun/rss2twitter:<latest_version> docker image tag"
+    kind: dockerimage
+    spec:
+      image: "umputun/rss2twitter"
+      ## Tag from source
+      architecture: amd64
+
+targets:
+  updateChart:
+    name: Update rss2twitter helm chart
+    kind: helmchart
+    spec:
+      name: charts/rss2twitter
+      key: image.tag
+      versionincrement: patch
+    scmid: default
+
+pullrequests:
+  default:
+    kind: github
+    scmid: default
+    title: Bump `rss2twitter` docker image version to {{ source "latestRelease" }}
+    spec:
+      labels:
+        - dependencies
+        - rss2twitter
