@@ -24,7 +24,7 @@ securityContext:
     drop:
     - ALL
   readOnlyRootFilesystem: true
-  runAsNonRoot: true
+  runAsUser: 1001 # app
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
