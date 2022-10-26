@@ -45,9 +45,9 @@ spec:
               subPath: exclusion-patterns.txt
           env:
             - name: DEBUG
-              value: {{ .Values.env.debugMode}}
+              value: {{ .Values.env.debugMode | quote}}
             - name: DRY
-              value: {{ .Values.env.dryMode}}
+              value: {{ .Values.env.dryMode | quote}}
             - name: FEED
               value: {{ .Values.env.rssFeed}}
             - name: REFRESH
