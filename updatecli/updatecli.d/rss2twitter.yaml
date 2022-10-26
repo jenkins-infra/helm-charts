@@ -17,7 +17,7 @@ sources:
     kind: githubrelease
     name: "Get latest umputun/rss2twitter release"
     spec:
-      owner: "jenkins-infra"
+      owner: "umputun"
       repository: "rss2twitter"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
