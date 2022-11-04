@@ -61,7 +61,7 @@ resources: {}
 # log collection with Datadog
 logCollection:
   enabled: true
-  config: '[{"source":"nginx","service":"artifact-caching-proxy", "tags": "env:prod"}]'
+  config: '[{"source":"nginx","service":"artifact-caching-proxy","tag": "env:prod"}]'
 
 nodeSelector: {}
 tolerations: []
