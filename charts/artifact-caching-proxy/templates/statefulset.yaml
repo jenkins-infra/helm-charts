@@ -29,7 +29,7 @@ spec:
           }
         {{- if .Values.logCollection.enabled }}
         # log collection with Datadog
-        ad.datadoghq.com/{{ .Chart.Name }}.logs: {{ .Values.logCollection.config }}
+        ad.datadoghq.com/{{ .Chart.Name }}.logs: {{ .Values.logCollection.config | squote }}
         {{- end }}
         {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
