@@ -12,13 +12,9 @@ spec:
       {{- include "artifact-caching-proxy.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-        {{- if .Values.template.mountConfigMap }}
         checksum/default-config: {{ include (print $.Template.BasePath "/nginx-default-configmap.yaml") . | sha256sum }}
         checksum/proxy-config: {{ include (print $.Template.BasePath "/nginx-proxy-configmap.yaml") . | sha256sum }}
-        {{- end }}
         # metrics collection with Datadog
         ad.datadoghq.com/{{ .Chart.Name }}.checks: |
           {
@@ -35,7 +31,9 @@ spec:
         # log collection with Datadog
         ad.datadoghq.com/{{ .Chart.Name }}.logs: {{ .Values.logCollection.config }}
         {{- end }}
-      {{- end }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       labels:
         {{- include "artifact-caching-proxy.selectorLabels" . | nindent 8 }}
     spec:
