@@ -38,7 +38,7 @@ spec:
         # - https://docs.datadoghq.com/integrations/nginx/?tab=kubernetes#log-collection
         # - https://docs.datadoghq.com/containers/kubernetes/log/?tab=kubernetes#configuration
         #   1. With 'ad.datadoghq.com/xxx.logs' , the 'xxx' must be the name of the pod's container name
-        ad.datadoghq.com/{{ .Chart.Name }}.logs: '[{"source":"nginx","service":"{{ .Chart.Name }}","tag": "env:prod"}]'
+        ad.datadoghq.com/{{ .Chart.Name }}.logs: '[{"source":"nginx","service":"{{ .Chart.Name }}"}]'
         {{- end }}
         {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
