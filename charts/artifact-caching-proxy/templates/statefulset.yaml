@@ -15,10 +15,15 @@ spec:
       annotations:
         checksum/default-config: {{ include (print $.Template.BasePath "/nginx-default-configmap.yaml") . | sha256sum }}
         checksum/proxy-config: {{ include (print $.Template.BasePath "/nginx-proxy-configmap.yaml") . | sha256sum }}
-        # metrics collection with Datadog
+        {{- if .Values.datadog.metricsCollection.enabled }}
+        # Nginx Metrics collection with Datadog:
+        # - https://docs.datadoghq.com/integrations/nginx/?tab=kubernetes
+        # - https://docs.datadoghq.com/containers/kubernetes/integrations/?tab=kubernetesadv2#configuration
+        #   1. With 'ad.datadoghq.com/xxx.checks' , the 'xxx' must be the name of the pod's container name
+        #   2. The doc. mentions "<INTEGRATION NAME>" which is "nginx" in our case (as the name of datadog integration system)
         ad.datadoghq.com/{{ .Chart.Name }}.checks: |
           {
-            "{{ .Chart.Name }}": {
+            "nginx": {
               "init_config": {},
               "instances": [
                 {
@@ -27,9 +32,13 @@ spec:
               ]
             }
           }
-        {{- if .Values.logCollection.enabled }}
-        # log collection with Datadog
-        ad.datadoghq.com/{{ .Chart.Name }}.logs: {{ .Values.logCollection.config | squote }}
+        {{- end }}
+        {{- if .Values.datadog.logCollection.enabled }}
+        # Nginx Log collection with Datadog:
+        # - https://docs.datadoghq.com/integrations/nginx/?tab=kubernetes#log-collection
+        # - https://docs.datadoghq.com/containers/kubernetes/log/?tab=kubernetes#configuration
+        #   1. With 'ad.datadoghq.com/xxx.logs' , the 'xxx' must be the name of the pod's container name
+        ad.datadoghq.com/{{ .Chart.Name }}.logs: '[{"source":"nginx","service":"{{ .Chart.Name }}"}]'
         {{- end }}
         {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
