@@ -4,3 +4,6 @@ imageCredentials:
   username: someone
   password: sillyness
   email: someone@host.com
+## Uncomment to set quotas
+# quotas:
+#   pods: 30

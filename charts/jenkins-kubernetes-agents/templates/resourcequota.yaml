@@ -1,0 +1,9 @@
+{{- if .Values.quotas -}}
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: pods
+spec:
+  hard:
+    pods: {{ .Values.quotas.pods | quote }}
+{{- end -}}
