@@ -49,8 +49,8 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 config:
-  ucCron: "* */15 * * * *"
-  peCron: "* 10 * * * *"
+  ucCron: "0 */15 * * * *"
+  peCron: "0 10 * * * *"
   githubOauth: s3cr3t
 database:
   username: plugin-health-scoring
