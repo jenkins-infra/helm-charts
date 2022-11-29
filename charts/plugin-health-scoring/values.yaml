@@ -45,14 +45,16 @@ resources: {}
 #   cpu: 100m
 #   memory: 128Mi
 
-probes:
-  path: /actuator/health
 nodeSelector: {}
 tolerations: []
 affinity: {}
+probes:
+  path: /actuator/health
+  readinessPath: /actuator/health/readiness
+  livenessPath: /actuator/health/liveness
 config:
-  ucCron: "* */15 * * * *"
-  peCron: "* 10 * * * *"
+  ucCron: "0 */15 * * * *"
+  peCron: "0 10 * * * *"
   githubOauth: s3cr3t
 database:
   username: plugin-health-scoring
