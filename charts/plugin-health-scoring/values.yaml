@@ -48,6 +48,9 @@ resources: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
+probes:
+  readiness: /actuator/health/readiness
+  liveness: /actuator/health/liveness
 config:
   ucCron: "0 */15 * * * *"
   peCron: "0 10 * * * *"
