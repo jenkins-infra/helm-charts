@@ -58,8 +58,12 @@ spec:
               value: {{ .Values.database.username | squote }}
             - name: POSTGRES_PASSWORD
               value: {{ .Values.database.password | squote }}
-            - name: GITHUB_OAUTH
-              value: {{ .Values.config.githubOauth | squote }}
+            - name: GITHUB_APP_ID
+              value: {{ .Values.config.github.app-id | squote }}
+            - name: GITHUB_APP_PRIVATE_KEY
+              value: {{ .Values.config.github.private-key-path | squote }}
+            - name: GITHUB_APP_INSTALLATION_NAME
+              value: {{ .Values.config.github.app-installation-name | squote }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   repository: "jenkinsciinfra/plugin-health-scoring"
   pullPolicy: IfNotPresent
-  tag: "v1.4.0"
+  tag: "v1.5.0"
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -55,7 +55,10 @@ probes:
 config:
   ucCron: "0 */15 * * * *"
   peCron: "0 10 * * * *"
-  githubOauth: s3cr3t
+  github:
+    app-id: app-id
+    private-key-path: path
+    app-installation-name: jenkinsci
 database:
   username: plugin-health-scoring
   password: s3cr3t
