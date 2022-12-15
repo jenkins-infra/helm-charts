@@ -44,9 +44,9 @@ targets:
       versionincrement: patch
     scmid: default
 
-pullrequests:
+actions:
   default:
-    kind: github
+    kind: github/pullrequest
     scmid: default
     title: Bump `custom-distribution-service` docker image version to {{ source "latestRelease" }}
     spec:
