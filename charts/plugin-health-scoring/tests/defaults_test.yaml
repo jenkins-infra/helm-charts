@@ -41,8 +41,8 @@ tests:
           value: czNjcjN0 # echo 'czNjcjN0' | base64 -d => 's3cr3t'
         template: secret.yaml
       - equal:
-          path: data.githubOauthToken
-          value: czNjcjN0VG9rZW4= # echo 'czNjcjN0VG9rZW4=' | base64 -d => 's3cr3tToken'
+          path: data.githubAppPrivateKey
+          value: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tIGJsYWJsYWJsYWJsYSAtLS0tLUJFR0lOIFBSSVZBVEUgS0VZLS0tLS0=
         template: secret.yaml
       - equal:
           path: spec.replicas
@@ -56,7 +56,7 @@ tests:
         template: deployment.yaml
       - equal:
           path: spec.template.metadata.annotations.checksum/config
-          value: 5f98b97aee063de948038e1917915e1fa84be48a5976863d45863627e51b9b9f # Any change to secret.yaml will need to regenerate this checksum
+          value: 600dfe251c9b9b799d46e286966e4faead2adce12ce5510e4c474712cff5defb # Any change to secret.yaml will need to regenerate this checksum
         template: deployment.yaml
       - contains:
           path: spec.template.spec.containers[0].env

@@ -58,11 +58,9 @@ config:
   github:
     appId: app-id
     privateKey: >-
-      ----- BEGIN -----
+      -----BEGIN PRIVATE KEY-----
       blablablabla
-      blablablabla
-      blablablabla
-      -----  END  -----
+      -----BEGIN PRIVATE KEY-----
     appInstallationName: jenkinsci
 database:
   username: plugin-health-scoring
