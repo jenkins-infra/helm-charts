@@ -64,14 +64,14 @@ spec:
                   name: {{ include "plugin-health-scoring.fullname" . }}
                   key: databasePassword
             - name: GITHUB_APP_ID
-              value: {{ .Values.config.github.app-id | squote }}
+              value: {{ .Values.config.github.appId | squote }}
             - name: GITHUB_APP_PRIVATE_KEY_PATH
               valueFrom:
                 secretKeyRef:
                   name: {{ include "plugin-health-scoring.fullname" . }}
                   key: githubPrivateKey
             - name: GITHUB_APP_INSTALLATION_NAME
-              value: {{ .Values.config.github.app-installation-name | squote }}
+              value: {{ .Values.config.github.appInstallationName | squote }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

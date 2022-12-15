@@ -56,9 +56,9 @@ config:
   ucCron: "0 */15 * * * *"
   peCron: "0 10 * * * *"
   github:
-    app-id: app-id
-    private-key-path: path
-    app-installation-name: jenkinsci
+    appId: app-id
+    privateKeyPath: path
+    appInstallationName: jenkinsci
 database:
   username: plugin-health-scoring
   password: s3cr3t
