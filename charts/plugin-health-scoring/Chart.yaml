@@ -2,4 +2,4 @@ apiVersion: v2
 description: A Helm chart for Kubernetes
 name: plugin-health-scoring
 type: application
-version: 1.4.0
+version: 1.4.1
