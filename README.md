@@ -17,7 +17,6 @@ Helm chart repository containing the jenkins-infra helm charts used [HERE](https
 
 - To uninstall the chart: `helm delete my-<chart-name>`
 
-<br>
 
 ## Contributors
 
