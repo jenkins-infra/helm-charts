@@ -67,3 +67,12 @@ tests:
                 name: RELEASE-NAME-plugin-health-scoring
                 key: databasePassword
         template: deployment.yaml
+      - contains:
+        path: spec.template.spec.containers[0].env
+        content:
+          name: GITHUB_APP_PRIVATE_KEY_PATH
+          valueFrom:
+            secretKeyRef:
+              name: RELEASE-NAME-plugin-health-scoring
+              key: githubPrivateKey
+        template: deployment.yaml

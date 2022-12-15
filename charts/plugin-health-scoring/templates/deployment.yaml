@@ -66,12 +66,20 @@ spec:
             - name: GITHUB_APP_ID
               value: {{ .Values.config.github.appId | squote }}
             - name: GITHUB_APP_PRIVATE_KEY_PATH
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "plugin-health-scoring.fullname" . }}
-                  key: githubPrivateKey
+              value: /mnt/secrets/githubAppPrivateKey
             - name: GITHUB_APP_INSTALLATION_NAME
               value: {{ .Values.config.github.appInstallationName | squote }}
+          volumeMounts:
+            - name: secretGitHubAppPrivateKey
+              mountPath: "/mnt/secrets"
+              readOnly: true
+      volumes:
+        - name: secretGitHubAppPrivateKey
+          secret:
+            secretName:
+            items:
+              - key: githubAppPrivateKey
+                path: githubAppPrivateKey
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

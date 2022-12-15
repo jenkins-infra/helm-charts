@@ -57,7 +57,12 @@ config:
   peCron: "0 10 * * * *"
   github:
     appId: app-id
-    privateKeyPath: path
+    privateKey: >-
+      ----- BEGIN -----
+      blablablabla
+      blablablabla
+      blablablabla
+      -----  END  -----
     appInstallationName: jenkinsci
 database:
   username: plugin-health-scoring
