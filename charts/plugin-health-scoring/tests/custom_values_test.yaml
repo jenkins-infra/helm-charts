@@ -31,7 +31,7 @@ tests:
         template: secret.yaml
       - equal:
           path: data.databasePassword
-          value: UGxlYXNlRG9Ob3RVc2VXZWFrUGFzc3dvcmRz # echo 'UGxlYXNlRG9Ob3RVc2VXZWFrUGFzc3dvcmRz' | base64 -d => 's3cr3t'
+          value: UGxlYXNlRG9Ob3RVc2VXZWFrUGFzc3dvcmRz # echo 'UGxlYXNlRG9Ob3RVc2VXZWFrUGFzc3dvcmRz' | base64 -d => 'PleaseDoNotUseWeakPasswords'
         template: secret.yaml
       - equal:
           path: data.githubOauthToken
