@@ -66,7 +66,7 @@ spec:
             - name: GITHUB_APP_ID
               value: {{ .Values.config.github.appId | squote }}
             - name: GITHUB_APP_PRIVATE_KEY_PATH
-              value: /mnt/secrets/githubAppPrivateKey
+              value: /mnt/secrets/github/private-key
             - name: GITHUB_APP_INSTALLATION_NAME
               value: {{ .Values.config.github.appInstallationName | squote }}
           volumeMounts:
@@ -79,7 +79,7 @@ spec:
             secretName:
             items:
               - key: githubAppPrivateKey
-                path: githubAppPrivateKey
+                path: github/private-key
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
