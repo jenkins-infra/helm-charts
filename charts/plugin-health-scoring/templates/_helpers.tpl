@@ -61,3 +61,10 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Create path to mount secrets into
+*/}}
+{{- define "plugin-health-scoring.secretsMountPath" -}}
+{{- "/mnt/secrets" }}
+{{- end }}
