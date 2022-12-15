@@ -1,0 +1,78 @@
+suite: default tests
+templates:
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+  - secret.yaml
+tests:
+  - it: should generate a service and deployment only with default values
+    asserts:
+      - hasDocuments:
+          count: 1
+        template: deployment.yaml
+      - isKind:
+          of: Deployment
+        template: deployment.yaml
+      - hasDocuments:
+          count: 1
+        template: service.yaml
+      - isKind:
+          of: Service
+        template: service.yaml
+      - hasDocuments:
+          count: 1
+        template: secret.yaml
+      - isKind:
+          of: Secret
+        template: secret.yaml
+      - hasDocuments:
+          count: 0
+        template: ingress.yaml
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-plugin-health-scoring
+        template: deployment.yaml
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-plugin-health-scoring
+        template: secret.yaml
+      - equal:
+          path: data.databasePassword
+          value: czNjcjN0 # echo 'czNjcjN0' | base64 -d => 's3cr3t'
+        template: secret.yaml
+      - equal:
+          path: data.githubOauthToken
+          value: czNjcjN0VG9rZW4= # echo 'czNjcjN0VG9rZW4=' | base64 -d => 's3cr3tToken'
+        template: secret.yaml
+      - equal:
+          path: spec.replicas
+          value: 1
+        template: deployment.yaml
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: UPDATE_CENTER_CRON
+            value: "0 */15 * * * *"
+        template: deployment.yaml
+      - equal:
+          path: spec.template.metadata.annotations.checksum/config
+          value: c3e248a2e4a4d043a471ee251b931b99dceb35f870a2efb5dab6072c5ec6ef58 # Any change to secret.yaml will need to regenerate this checksum
+        template: deployment.yaml
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: RELEASE-NAME-plugin-health-scoring
+                key: databasePassword
+        template: deployment.yaml
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: GITHUB_OAUTH
+            valueFrom:
+              secretKeyRef:
+                name: RELEASE-NAME-plugin-health-scoring
+                key: githubOauthToken
+        template: deployment.yaml
