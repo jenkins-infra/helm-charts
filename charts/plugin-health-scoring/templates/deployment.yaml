@@ -15,6 +15,8 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "plugin-health-scoring.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -57,11 +59,17 @@ spec:
             - name: POSTGRES_USER
               value: {{ .Values.database.username | squote }}
             - name: POSTGRES_PASSWORD
-              value: {{ .Values.database.password | squote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "plugin-health-scoring.fullname" . }}
+                  key: databasePassword
             - name: GITHUB_APP_ID
               value: {{ .Values.config.github.app-id | squote }}
             - name: GITHUB_APP_PRIVATE_KEY_PATH
-              value: {{ .Values.config.github.private-key-path | squote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "plugin-health-scoring.fullname" . }}
+                  key: githubPrivateKey
             - name: GITHUB_APP_INSTALLATION_NAME
               value: {{ .Values.config.github.app-installation-name | squote }}
       {{- with .Values.nodeSelector }}

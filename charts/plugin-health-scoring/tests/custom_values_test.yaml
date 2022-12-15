@@ -1,0 +1,43 @@
+suite: custom values
+templates:
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+  - secret.yaml
+tests:
+  - it: should use custom secrets
+    set:
+      config:
+        github0auth: "SuperSecret2022!"
+      database:
+        password: "PleaseDoNotUseWeakPasswords"
+    asserts:
+      - hasDocuments:
+          count: 1
+        template: deployment.yaml
+      - isKind:
+          of: Deployment
+        template: deployment.yaml
+      - hasDocuments:
+          count: 1
+        template: secret.yaml
+      - isKind:
+          of: Secret
+        template: secret.yaml
+      # Secret name should not change
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-plugin-health-scoring
+        template: secret.yaml
+      - equal:
+          path: data.databasePassword
+          value: UGxlYXNlRG9Ob3RVc2VXZWFrUGFzc3dvcmRz # echo 'UGxlYXNlRG9Ob3RVc2VXZWFrUGFzc3dvcmRz' | base64 -d => 's3cr3t'
+        template: secret.yaml
+      - equal:
+          path: data.githubOauthToken
+          value: czNjcjN0VG9rZW4= # echo 'czNjcjN0VG9rZW4=' | base64 -d => 's3cr3tToken'
+        template: secret.yaml
+      - equal:
+          path: spec.template.metadata.annotations.checksum/config
+          value: 816842499daaa0371bd1eb31e5d7f2c00b1a1fd56f912c74e7f5d5a398b4f458 # Any change to secret.yaml will need to regenerate this checksum
+        template: deployment.yaml

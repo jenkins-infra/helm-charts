@@ -6,6 +6,10 @@ on:
       - main
     paths:
       - 'charts/**'
+
+# Only allow 1 release at a time (avoid concurent deployment to gh-pages)
+concurrency: "release-chart"
+
 jobs:
   release:
     runs-on: ubuntu-latest

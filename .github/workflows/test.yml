@@ -16,6 +16,8 @@ jobs:
           - artifact-caching-proxy
           - httpredirector
           - jenkins-jobs
+          - jenkins-kubernetes-agents
+          - plugin-health-scoring
       fail-fast: false
 
     steps:
