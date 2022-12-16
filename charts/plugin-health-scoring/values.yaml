@@ -68,3 +68,4 @@ database:
   name: plugin-health-scoring
   server: postgresql
   port: 5432
+secretsMountPath: /mnt/secrets
