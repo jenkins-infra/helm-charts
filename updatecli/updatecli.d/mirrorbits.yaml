@@ -86,9 +86,9 @@ targets:
       key: "geoipupdate.image.tag"
     scmid: default
 
-pullrequests:
+actions:
   default:
-    kind: github
+    kind: github/pullrequest
     scmid: default
     title: Bump `mirrorbits` docker images and helm chart versions
     spec:

@@ -41,9 +41,9 @@ targets:
       versionincrement: patch
     scmid: default
 
-pullrequests:
+actions:
   default:
-    kind: github
+    kind: github/pullrequest
     scmid: default
     title: Bump `incrementals-publisher` docker image version to {{ source "latestRelease" }}
     spec:
