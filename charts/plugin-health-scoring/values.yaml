@@ -64,7 +64,6 @@ config:
     appInstallationName: jenkinsci
 database:
   username: plugin-health-scoring
-  password: s3cr3t
   name: plugin-health-scoring
   server: postgresql
   port: 5432
