@@ -54,9 +54,9 @@ targets:
       versionincrement: patch
     scmid: default
 
-pullrequests:
+actions:
   default:
-    kind: github
+    kind: github/pullrequest
     scmid: default
     title: Bump `ldap` crond docker image to {{ source "crond" }} and `ldap` slapd docker image to {{ source "slapd" }}
     spec:
