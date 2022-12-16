@@ -68,8 +68,8 @@ tests:
                 key: databasePassword
         template: deployment.yaml
       - contains:
-        path: spec.template.spec.containers[0].env
-        content:
-          name: GITHUB_APP_PRIVATE_KEY_PATH
-          value: /mnt/secrets/github/private-key
+          path: spec.template.spec.containers[0].env
+          content:
+            name: GITHUB_APP_PRIVATE_KEY_PATH
+            value: /mnt/secrets/github/private-key
         template: deployment.yaml
