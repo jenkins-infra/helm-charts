@@ -55,10 +55,13 @@ probes:
 config:
   ucCron: "0 */15 * * * *"
   peCron: "0 10 * * * *"
-  githubOauth: s3cr3tToken
 database:
   username: plugin-health-scoring
-  password: s3cr3t
   name: plugin-health-scoring
   server: postgresql
   port: 5432
+
+secrets:
+  database:
+    password: s3cr3t
+  githubOauth: s3cr3tToken
