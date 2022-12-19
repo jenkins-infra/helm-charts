@@ -60,7 +60,6 @@ database:
   name: plugin-health-scoring
   server: postgresql
   port: 5432
-
 secrets:
   database:
     password: s3cr3t
