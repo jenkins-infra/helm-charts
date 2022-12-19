@@ -7,10 +7,10 @@ templates:
 tests:
   - it: should use custom secrets
     set:
-      config:
+      secrets:
         github0auth: "SuperSecret2022!"
-      database:
-        password: "PleaseDoNotUseWeakPasswords"
+        database:
+          password: "PleaseDoNotUseWeakPasswords"
     asserts:
       - hasDocuments:
           count: 1
