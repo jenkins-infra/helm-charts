@@ -35,9 +35,9 @@ targets:
       versionincrement: patch
     scmid: default
 
-pullrequests:
+actions:
   default:
-    kind: github
+    kind: github/pullrequest
     scmid: default
     title: Bump `uplink` docker image version to {{ source "latestDigest" }}
     spec:
