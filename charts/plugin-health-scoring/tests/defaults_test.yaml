@@ -41,8 +41,8 @@ tests:
           value: czNjcjN0 # echo 'czNjcjN0' | base64 -d => 's3cr3t'
         template: secret.yaml
       - equal:
-          path: data.githubOauthToken
-          value: czNjcjN0VG9rZW4= # echo 'czNjcjN0VG9rZW4=' | base64 -d => 's3cr3tToken'
+          path: data.githubAppPrivateKey
+          value: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tIGJsYWJsYWJsYWJsYSAtLS0tLUJFR0lOIFBSSVZBVEUgS0VZLS0tLS0=
         template: secret.yaml
       - equal:
           path: spec.replicas
@@ -69,9 +69,6 @@ tests:
       - contains:
           path: spec.template.spec.containers[0].env
           content:
-            name: GITHUB_OAUTH
-            valueFrom:
-              secretKeyRef:
-                name: RELEASE-NAME-plugin-health-scoring
-                key: githubOauthToken
+            name: GITHUB_APP_PRIVATE_KEY_PATH
+            value: /mnt/secrets/github/private-key
         template: deployment.yaml

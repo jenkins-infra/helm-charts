@@ -63,11 +63,23 @@ spec:
                 secretKeyRef:
                   name: {{ include "plugin-health-scoring.fullname" . }}
                   key: databasePassword
-            - name: GITHUB_OAUTH
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "plugin-health-scoring.fullname" . }}
-                  key: githubOauthToken
+            - name: GITHUB_APP_ID
+              value: {{ .Values.config.github.appId | squote }}
+            - name: GITHUB_APP_PRIVATE_KEY_PATH
+              value: {{ .Values.secretsMountPath }}/github/private-key
+            - name: GITHUB_APP_INSTALLATION_NAME
+              value: {{ .Values.config.github.appInstallationName | squote }}
+          volumeMounts:
+            - name: secretGitHubAppPrivateKey
+              mountPath: {{ .Values.secretsMountPath }}
+              readOnly: true
+      volumes:
+        - name: secretGitHubAppPrivateKey
+          secret:
+            secretName: {{ include "plugin-health-scoring.fullname" . }}
+            items:
+              - key: githubAppPrivateKey
+                path: github/private-key
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
