@@ -70,11 +70,11 @@ spec:
             - name: GITHUB_APP_INSTALLATION_NAME
               value: {{ .Values.config.github.appInstallationName | squote }}
           volumeMounts:
-            - name: secretGitHubAppPrivateKey
+            - name: secret-github-app-privatekey
               mountPath: {{ .Values.secretsMountPath }}
               readOnly: true
       volumes:
-        - name: secretGitHubAppPrivateKey
+        - name: secret-github-app-privatekey
           secret:
             secretName: {{ include "plugin-health-scoring.fullname" . }}
             items:
