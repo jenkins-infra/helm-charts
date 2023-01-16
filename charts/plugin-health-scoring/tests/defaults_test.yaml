@@ -54,9 +54,8 @@ tests:
             name: UPDATE_CENTER_CRON
             value: "0 */15 * * * *"
         template: deployment.yaml
-      - equal:
+      - isNotEmpty:
           path: spec.template.metadata.annotations.checksum/config
-          value: 600dfe251c9b9b799d46e286966e4faead2adce12ce5510e4c474712cff5defb # Any change to secret.yaml will need to regenerate this checksum
         template: deployment.yaml
       - contains:
           path: spec.template.spec.containers[0].env

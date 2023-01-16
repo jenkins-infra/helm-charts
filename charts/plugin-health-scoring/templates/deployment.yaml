@@ -16,7 +16,7 @@ spec:
         app.kubernetes.io/name: {{ include "plugin-health-scoring.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        checksum/config: {{ print "%v" .Values.secrets | sha256sum }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
