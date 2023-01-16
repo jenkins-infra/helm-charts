@@ -56,7 +56,7 @@ tests:
         template: deployment.yaml
       - equal:
           path: spec.template.metadata.annotations.checksum/config
-          value: 5f98b97aee063de948038e1917915e1fa84be48a5976863d45863627e51b9b9f # Any change to secret.yaml will need to regenerate this checksum
+          value: 1f80fe50398936bc7d62c2f2654fb97ceca2d8de49f5c307c6feaf8a4fd3731a # Any change to secret.yaml will need to regenerate this checksum
         template: deployment.yaml
       - contains:
           path: spec.template.spec.containers[0].env
