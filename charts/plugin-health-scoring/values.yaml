@@ -57,6 +57,7 @@ config:
   peCron: "0 10 * * * *"
   github:
     appId: app-id
+    # GitHub organization or username where the app is installed
     appInstallationName: jenkinsci
 database:
   username: plugin-health-scoring
