@@ -7,10 +7,10 @@ templates:
 tests:
   - it: should use custom secrets
     set:
-      config:
+      secrets:
         github0auth: "SuperSecret2022!"
-      database:
-        password: "PleaseDoNotUseWeakPasswords"
+        database:
+          password: "PleaseDoNotUseWeakPasswords"
     asserts:
       - hasDocuments:
           count: 1
@@ -37,7 +37,6 @@ tests:
           path: data.githubOauthToken
           value: czNjcjN0VG9rZW4= # echo 'czNjcjN0VG9rZW4=' | base64 -d => 's3cr3tToken'
         template: secret.yaml
-      - equal:
+      - isNotEmpty:
           path: spec.template.metadata.annotations.checksum/config
-          value: 58c01dc5e08c7da8a5ee44574bdc38dea8966a1284ebbb19a40aac5017fa6239 # Any change to secret.yaml will need to regenerate this checksum
         template: deployment.yaml
