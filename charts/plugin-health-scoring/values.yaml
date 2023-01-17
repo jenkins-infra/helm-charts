@@ -69,4 +69,6 @@ secrets:
   database:
     password: s3cr3t
   githubAppPrivateKey: >-
-    -----BEGIN PRIVATE KEY----- blablablabla -----BEGIN PRIVATE KEY-----
+    -----BEGIN PRIVATE KEY-----
+    blablablabla
+    -----BEGIN PRIVATE KEY-----
