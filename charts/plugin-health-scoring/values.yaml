@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   repository: "jenkinsciinfra/plugin-health-scoring"
   pullPolicy: IfNotPresent
-  tag: "v1.6.0"
+  tag: "1.6.1"
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -69,6 +69,4 @@ secrets:
   database:
     password: s3cr3t
   githubAppPrivateKey: >-
-    -----BEGIN PRIVATE KEY-----
-    blablablabla
-    -----BEGIN PRIVATE KEY-----
+    -----BEGIN PRIVATE KEY----- blablablabla -----BEGIN PRIVATE KEY-----
