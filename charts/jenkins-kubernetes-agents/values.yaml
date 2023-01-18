@@ -8,9 +8,9 @@ imageCredentials:
 # quotas:
 #   pods: 30
 serviceAccount:
-  reuseExistingServiceAccount: false
   name: jenkins-agent
   ## uncomment to override the jenkins agent namespace
   # namespaceOverride: jenkins-infra-agents
+  reuseExistingServiceAccount: false
   existingServiceAccountName: jenkins-controller
   existingServiceAccountNamespace: jenkins-infra
