@@ -70,7 +70,7 @@ tests:
           value: tatooine
 
   # With reusing an existing service account
-  - it: Should not create a service account named 'jenkins-agent' in the custom namespace if we're reusing an existing one
+  - it: Should not create a service account named 'jenkins-agent' in the custom namespace if we're reusing an existing service account
     template: serviceaccount.yaml
     set:
       existingServiceAccount: jenkins-infra:jenkins-controller
@@ -80,7 +80,7 @@ tests:
       - hasDocuments:
           count: 0
 
-  - it: Should create the default Role '<service-account-name>-role' in the provided namespace if we're reusing an existing one
+  - it: Should create the default Role '<service-account-name>-role' in the provided namespace if we're reusing an existing service account
     template: rbac.yaml
     set:
       existingServiceAccount: jenkins-infra:jenkins-controller
@@ -99,7 +99,7 @@ tests:
           path: metadata.namespace
           value: tatooine
 
-  - it: Should create the default RoleBinding '<service-account-name>-rolebinding' in the provided namespace if we're reusing an existing one
+  - it: Should create the default RoleBinding '<service-account-name>-rolebinding' in the provided namespace if we're reusing an existing service account
     template: rbac.yaml
     set:
       existingServiceAccount: jenkins-infra:jenkins-controller
