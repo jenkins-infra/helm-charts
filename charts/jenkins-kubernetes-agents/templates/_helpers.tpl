@@ -5,17 +5,6 @@
 {{- end }}
 {{- end }}
 
-{{/*
-Allow the release namespace to be overridden for multi-namespace deployments in combined charts.
-*/}}
-{{- define "jenkins.namespace" -}}
-  {{- if .Values.serviceAccount.namespaceOverride -}}
-    {{- .Values.serviceAccount.namespaceOverride -}}
-  {{- else -}}
-    {{- .Release.Namespace -}}
-  {{- end -}}
-{{- end -}}
-
 {{- define "jenkins.serviceAccountName" -}}
   {{- if .Values.serviceAccount.reuseExistingServiceAccount -}}
     {{- .Values.serviceAccount.existingServiceAccountName -}}
