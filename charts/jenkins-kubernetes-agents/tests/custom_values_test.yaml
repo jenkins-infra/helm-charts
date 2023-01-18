@@ -1,17 +1,27 @@
-suite: Tests with default values
+suite: Tests with custom values
 templates:
+  - serviceaccount.yaml
   - rbac.yaml
   - resourcequota.yaml
-  - serviceaccount.yaml
 tests:
-  - it: Should not create any quotas by default
+  - it: Should set a quota of maximum 30 pods when specified by values
     template: resourcequota.yaml
+    set:
+      quotas:
+        pods: 30
     asserts:
       - hasDocuments:
-          count: 0
+          count: 1
+      - isKind:
+          of: ResourceQuota
+      - equal:
+          path: spec.hard.pods
+          value: "30"
 
-  - it: Should create a service account named 'jenkins-agent' in the provided namespace
+  - it: Should create a service account named 'jenkins-agent' in the custom namespace
     template: serviceaccount.yaml
+    release:
+      namespace: tatooine
     asserts:
       - hasDocuments:
           count: 1
@@ -22,10 +32,12 @@ tests:
           value: jenkins-agent
       - equal:
           path: metadata.namespace
-          value: NAMESPACE
+          value: tatooine
 
   - it: Should create the default Role 'jenkins-agent-role' in the provided namespace
     template: rbac.yaml
+    release:
+      namespace: tatooine
     documentIndex: 0
     asserts:
       - hasDocuments:
@@ -37,9 +49,11 @@ tests:
           value: jenkins-agent-role
       - equal:
           path: metadata.namespace
-          value: NAMESPACE
+          value: tatooine
 
   - it: Should create the default RoleBinding 'jenkins-agent-rolebinding' in the provided namespace
+    release:
+      namespace: tatooine
     template: rbac.yaml
     documentIndex: 1
     asserts:
@@ -52,4 +66,4 @@ tests:
           value: jenkins-agent-rolebinding
       - equal:
           path: metadata.namespace
-          value: NAMESPACE
+          value: tatooine
