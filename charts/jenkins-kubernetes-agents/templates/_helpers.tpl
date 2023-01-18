@@ -6,21 +6,17 @@
 {{- end }}
 
 {{- define "jenkins.serviceAccountName" -}}
-  {{- if .Values.serviceAccount.reuseExistingServiceAccount -}}
-    {{- .Values.serviceAccount.existingServiceAccountName -}}
+  {{- if .Values.existingServiceAccount -}}
+    {{- splitList ":" .Values.existingServiceAccount | last -}}
   {{- else -}}
-    {{- .Values.serviceAccount.name -}}
+    {{- "jenkins-agent" -}}
   {{- end -}}
 {{- end -}}
 
 {{- define "jenkins.serviceAccountNamespace" -}}
-  {{- if .Values.serviceAccount.reuseExistingServiceAccount -}}
-    {{- .Values.serviceAccount.existingServiceAccountNamespace -}}
+  {{- if .Values.existingServiceAccount -}}
+    {{- splitList ":" .Values.existingServiceAccount | first -}}
   {{- else -}}
-    {{- if .Values.serviceAccount.namespaceOverride -}}
-      {{- .Values.serviceAccount.namespaceOverride -}}
-    {{- else -}}
-      {{- .Release.Namespace -}}
-    {{- end -}}
+    {{- .Release.Namespace -}}
   {{- end -}}
 {{- end -}}
