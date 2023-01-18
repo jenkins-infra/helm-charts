@@ -7,3 +7,5 @@ imageCredentials:
 ## Uncomment to set quotas
 # quotas:
 #   pods: 30
+## uncomment to reuse an existing service account
+# existingServiceAccount: jenkins-infra:jenkins-controller
