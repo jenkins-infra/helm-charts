@@ -1,0 +1,6 @@
+{{- if .Values.serviceAccount.namespaceOverride }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.serviceAccount.namespaceOverride }}
+{{- end }}

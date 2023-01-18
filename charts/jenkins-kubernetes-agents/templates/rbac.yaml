@@ -1,10 +1,10 @@
 ---
 # From https://github.com/jenkinsci/kubernetes-plugin/blob/master/src/main/kubernetes/service-account.yml
-kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
 metadata:
-  name: jenkins-agent-role
-  namespace: {{ .Release.Namespace }}
+  name: {{ template "jenkins.serviceAccountName" . }}-role
+  namespace: {{ template "jenkins.namespace" . }}
 rules:
 - apiGroups: [""]
   resources: ["pods"]
@@ -21,17 +21,17 @@ rules:
 - apiGroups: [""]
   resources: ["secrets"]
   verbs: ["get"]
-
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: jenkins-agent-rolebinding
-  namespace: {{ .Release.Namespace }}
+  name: {{ template "jenkins.serviceAccountName" . }}-rolebinding
+  namespace: {{ template "jenkins.namespace" . }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: jenkins-agent-role
+  name: {{ template "jenkins.serviceAccountName" . }}-role
 subjects:
 - kind: ServiceAccount
-  name: jenkins-agent
+  name: {{ template "jenkins.serviceAccountName" . }}
+  namespace: {{ template "jenkins.serviceAccountNamespace" . }}
