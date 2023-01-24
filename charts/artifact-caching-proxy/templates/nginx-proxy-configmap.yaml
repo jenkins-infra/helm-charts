@@ -28,7 +28,7 @@ data:
         proxy_pass_header   Server;
         proxy_cookie_path   ~*^/.* /;
 
-        location ~* (maven-metadata.xml|SNAPSHOT) {
+        location ~* (maven-metadata.xml) {
             proxy_pass          {{ .Values.proxy.proxyPass }};
         }
 
