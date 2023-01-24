@@ -43,7 +43,7 @@ data:
 
         location / {
             proxy_cache         nginx_cache;
-            proxy_pass          {{ .Values.proxy.proxyPass }}/;
+            proxy_pass          {{ .Values.proxy.proxyPass }}$request_uri;
             #proxy_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie;
             proxy_cache_valid {{ .Values.proxy.proxyCacheValidCode }} {{ .Values.proxy.proxyCacheValidCodeDuration }};
             proxy_cache_valid any {{ .Values.proxy.proxyCacheValidAnyDuration }};
