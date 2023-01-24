@@ -29,12 +29,16 @@ data:
 
         access_log  /var/log/nginx/access.log  main;
 
+        # Optimize IO workload for static files
+        # https://docs.nginx.com/nginx/admin-guide/web-server/serving-static-content/#enabling-sendfile
+        # https://www.sobyte.net/post/2022-08/nginx-send/
         sendfile        on;
-        #tcp_nopush     on;
+        sendfile_max_chunk 1m; # Limits chunks to 1 Megabytes;
+        tcp_nopush     on;
 
         keepalive_timeout  65;
 
-        #gzip  on;
+        gzip  on;
 
         include /etc/nginx/conf.d/*.conf;
     }
