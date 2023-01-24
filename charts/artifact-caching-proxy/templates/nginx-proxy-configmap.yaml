@@ -55,6 +55,9 @@ data:
 
       location /nginx_status {
         stub_status on;
+
+        # Avoid verbose access log
+        access_log      off;
       }
 
       location / {
