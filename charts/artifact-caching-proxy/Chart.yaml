@@ -2,4 +2,4 @@ apiVersion: v2
 description: artifact-caching-proxy is a Nginx caching proxy in front of repo.jenkins-ci.org
 name: artifact-caching-proxy
 type: application
-version: 0.5.1
+version: 0.6.0
