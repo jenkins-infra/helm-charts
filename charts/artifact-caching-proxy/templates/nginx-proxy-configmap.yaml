@@ -22,14 +22,10 @@ data:
         chunked_transfer_encoding on;
         client_max_body_size 0;
 
-        proxy_set_header    X-Artifactory-Override-Base-Url $http_x_forwarded_proto://$host:$server_port/;
-        proxy_set_header    X-Forwarded-Port  $server_port;
-        proxy_set_header    X-Forwarded-Proto $http_x_forwarded_proto;
-        #proxy_set_header    Host              $http_host;
-        proxy_set_header    X-Forwarded-For   $proxy_add_x_forwarded_for;
-
         add_header          X-Cache-Status    $upstream_cache_status;
 
+        # Ensure that no authentication header are forwarded to the upstream
+        proxy_set_header    Authorization     "";
         proxy_read_timeout  900;
         proxy_pass_header   Server;
         proxy_cookie_path   ~*^/.* /;
@@ -47,7 +43,7 @@ data:
 
         location / {
             proxy_cache         nginx_cache;
-            proxy_pass          {{ .Values.proxy.proxyPass }}/;
+            proxy_pass          {{ .Values.proxy.proxyPass }}$request_uri;
             #proxy_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie;
             proxy_cache_valid {{ .Values.proxy.proxyCacheValidCode }} {{ .Values.proxy.proxyCacheValidCodeDuration }};
             proxy_cache_valid any {{ .Values.proxy.proxyCacheValidAnyDuration }};
