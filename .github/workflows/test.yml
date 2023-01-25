@@ -28,7 +28,7 @@ jobs:
         uses: azure/setup-helm@v3
 
       - name: install helm unittests
-        with:
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           helm env
