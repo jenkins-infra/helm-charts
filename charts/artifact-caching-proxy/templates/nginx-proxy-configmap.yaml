@@ -17,8 +17,6 @@ data:
             set $http_x_forwarded_proto  $scheme;
         }
 
-        # rewrite ^/$ /webapp/ redirect;
-        # rewrite ^/?(/)?$ /webapp/ redirect;
         chunked_transfer_encoding on;
         client_max_body_size 0;
 
@@ -34,8 +32,10 @@ data:
             proxy_pass          {{ .Values.proxy.proxyPass }};
         }
 
+        # Endpoint used to check healthiness of the service before running Maven commands in Jenkins pipelines
         location {{ .Values.ingress.healthPath }} {
             auth_basic      off;
+            # Avoid verbose access log
             access_log      off;
             allow           all;
             return          200 'OK';
@@ -50,11 +50,15 @@ data:
         }
     }
   status.conf: |
+    # Vhost used by datadog to collect custom Nginx metrics
     server {
       listen {{ .Values.service.statusPort }};
 
       location /nginx_status {
         stub_status on;
+
+        # Avoid verbose access log
+        access_log      off;
       }
 
       location / {
