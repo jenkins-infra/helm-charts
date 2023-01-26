@@ -37,9 +37,9 @@ data:
         listen {{ .Values.service.port }} default;
         server_name _; # Catch all hostnames, including invalids
 
-        # Specify a DNS resolver ton ensure upstream DNS are dynamically resolved
+        # Specify a DNS resolver to ensure upstream DNS are dynamically resolved
         # Ref. https://github.com/DmitryFillo/nginx-proxy-pitfalls
-        resolver 8.8.8.8 valid=60s;
+        resolver 9.9.9.9 valid=60s;
         # Specify the upstream URL as a variable to ensure dynamic resolution
         set $remote_repo {{ .Values.proxy.proxyPass }};
 
