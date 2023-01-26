@@ -67,7 +67,7 @@ data:
 
             # If upstream respond with "HTTP 30x Redirect"
             # then this section will be used to follow the redirect
-            # By using the "virtual location" @handle_redirects below
+            # by using the "virtual location" @handle_redirects below
             proxy_intercept_errors on;
             error_page 307 302 301 = @handle_redirects;
         }
