@@ -36,10 +36,13 @@ jobs:
       - name: install helm unittests
         run: |
           helm env
-          # Repeat 3 times to fight against network errors in  GHA runners
+          # Repeat 2 times to fight against network errors in  GHA runners
+          # Always return true
           helm plugin install https://github.com/quintush/helm-unittest \
             || helm plugin install https://github.com/quintush/helm-unittest \
-            || helm plugin install https://github.com/quintush/helm-unittest
+            || true
+          # Fail if not installed
+          helm plugin list | grep unittest
 
       - name: run unit tests
         working-directory: ./charts/
