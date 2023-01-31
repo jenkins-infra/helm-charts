@@ -15,7 +15,7 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}-healthz
+  name: {{ $fullName }}-health
   labels:
     {{- include "artifact-caching-proxy.labels" . | nindent 4 }}
   {{- if or .Values.auth.enabled .Values.ingress.annotations }}
