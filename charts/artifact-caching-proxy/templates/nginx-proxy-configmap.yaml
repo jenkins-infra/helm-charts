@@ -6,30 +6,85 @@ metadata:
 data:
   cache.conf: |
     proxy_cache_path {{ .Values.cache.path }} levels=1 keys_zone=nginx_cache:{{ .Values.cache.keysZoneSize }} max_size={{ .Values.persistence.size }}g inactive={{ .Values.cache.inactive }} use_temp_path={{ .Values.cache.useTempPath }};
-  proxy.conf: |
-    ## add ssl entries when https has been set in config
-    ## server configuration
+  common-proxy.conf: |
+    # Enable caching
+    proxy_cache         nginx_cache;
+
+    # Specify HTTP code of responses to cache
+    proxy_cache_valid {{ .Values.proxy.proxyCacheValidCode }} {{ .Values.proxy.proxyCacheValidCodeDuration }};
+
+    # Ensure that no authentication header are sent to the upstreams
+    proxy_set_header    Authorization     "";
+
+    # Pass headers to allow HTTP/30x responses from upstream to be followed
+    proxy_set_header    X-Artifactory-Override-Base-Url $http_x_forwarded_proto://$host:$server_port/;
+    proxy_set_header    X-Forwarded-Port  $server_port;
+    proxy_set_header    X-Forwarded-Proto $http_x_forwarded_proto;
+    proxy_set_header    X-Forwarded-For   $proxy_add_x_forwarded_for;
+
+    # Pass the current Server's identification to upstream
+    # Ref. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server
+    proxy_pass_header   Server;
+
+    # Remove any cookie in the requests to upstream
+    proxy_cookie_path   ~*^/.* /;
+
+    proxy_read_timeout  900;
+  vhost-proxy.conf: |
+    include /etc/nginx/conf.d/cache.conf;
 
     server {
         listen {{ .Values.service.port }} default;
+        server_name _; # Catch all hostnames, including invalids
+
+        # Specify a DNS resolver to ensure upstream DNS are dynamically resolved
+        # Ref. https://github.com/DmitryFillo/nginx-proxy-pitfalls
+        resolver 9.9.9.9 valid=60s;
+        # Specify the upstream URL as a variable to ensure dynamic resolution
+        set $remote_repo {{ .Values.proxy.proxyPass }};
 
         if ($http_x_forwarded_proto = '') {
             set $http_x_forwarded_proto  $scheme;
         }
 
+        # In-memory requests tuning for buffering content
         chunked_transfer_encoding on;
         client_max_body_size 0;
 
+        # Headers added to responses to the client
         add_header          X-Cache-Status    $upstream_cache_status;
 
-        # Ensure that no authentication header are forwarded to the upstream
-        proxy_set_header    Authorization     "";
-        proxy_read_timeout  900;
-        proxy_pass_header   Server;
-        proxy_cookie_path   ~*^/.* /;
+        # Location for the non-cached requests
+        location ~* (maven-metadata.xml) {
+            proxy_pass          https://$remote_repo$request_uri;
+        }
 
-        location ~* (maven-metadata.xml|SNAPSHOT) {
-            proxy_pass          {{ .Values.proxy.proxyPass }};
+        # Default location for cached requests
+        location / {
+            proxy_pass          https://$remote_repo$request_uri;
+            proxy_cache_key     $uri;
+            include /etc/nginx/conf.d/common-proxy.conf;
+
+            # If upstream respond with "HTTP 30x Redirect"
+            # then this section will be used to follow the redirect
+            # by using the "virtual location" @handle_redirects below
+            proxy_intercept_errors on;
+            error_page 307 302 301 = @handle_redirects;
+        }
+
+        location @handle_redirects {
+            # We need to capture these values now otherwise they disapear
+            # as soon as we invoke the proxy_* directives
+            set $original_uri $uri;
+            set $orig_loc $upstream_http_location;
+
+            # Send the request to the URL passed in the `Location` header of the reponse
+            proxy_pass $orig_loc;
+
+            # Cache the result with the cache key of the original request URI
+            # so that future requests won't need to follow the redirect too
+            proxy_cache_key $original_uri;
+            include /etc/nginx/conf.d/common-proxy.conf;
         }
 
         # Endpoint used to check healthiness of the service before running Maven commands in Jenkins pipelines
@@ -39,14 +94,6 @@ data:
             access_log      off;
             allow           all;
             return          200 'OK';
-        }
-
-        location / {
-            proxy_cache         nginx_cache;
-            proxy_pass          {{ .Values.proxy.proxyPass }}$request_uri;
-            #proxy_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie;
-            proxy_cache_valid {{ .Values.proxy.proxyCacheValidCode }} {{ .Values.proxy.proxyCacheValidCodeDuration }};
-            proxy_cache_valid any {{ .Values.proxy.proxyCacheValidAnyDuration }};
         }
     }
   status.conf: |
