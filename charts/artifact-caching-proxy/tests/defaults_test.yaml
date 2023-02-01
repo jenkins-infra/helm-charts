@@ -1,12 +1,32 @@
 suite: default tests
 templates:
   - ingress.yaml
+  - ingress-health.yaml
 tests:
   - it: should not generate any ingress with default values
+    template: ingress.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should not generate any ingress with default values
+    template: ingress-health.yaml
     asserts:
       - hasDocuments:
           count: 0
   - it: "should generate an ingress without any annotation"
+    template: ingress.yaml
+    set:
+      ingress:
+        enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Ingress
+      - isNull:
+          path: metadata.annotations
+  - it: "should generate an ingress without any annotation"
+    template: ingress-health.yaml
     set:
       ingress:
         enabled: true
@@ -18,6 +38,7 @@ tests:
       - isNull:
           path: metadata.annotations
   - it: "should generate an ingress with auth annotations"
+    template: ingress.yaml
     set:
       ingress:
         enabled: true
@@ -35,7 +56,40 @@ tests:
           value:
             nginx.ingress.kubernetes.io/auth-secret: RELEASE-NAME-artifact-caching-proxy-basic-auth
             nginx.ingress.kubernetes.io/auth-type: basic
+  - it: "should generate an ingress with auth annotations"
+    template: ingress-health.yaml
+    set:
+      ingress:
+        enabled: true
+      auth:
+        enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Ingress
+      - isNull:
+          path: metadata.annotations
   - it: "should generate an ingress with custom annotations"
+    template: ingress.yaml
+    set:
+      ingress:
+        enabled: true
+        annotations:
+          a-custom/annotation: "hello world"
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Ingress
+      - isNotNull:
+          path: metadata.annotations
+      - equal:
+          path: metadata.annotations
+          value:
+            a-custom/annotation: "hello world"
+  - it: "should generate an ingress with custom annotations"
+    template: ingress-health.yaml
     set:
       ingress:
         enabled: true
@@ -53,6 +107,7 @@ tests:
           value:
             a-custom/annotation: "hello world"
   - it: "should generate an ingress with auth and custom annotations"
+    template: ingress.yaml
     set:
       ingress:
         enabled: true
@@ -73,3 +128,23 @@ tests:
             a-custom/annotation: "hello world"
             nginx.ingress.kubernetes.io/auth-secret: RELEASE-NAME-artifact-caching-proxy-basic-auth
             nginx.ingress.kubernetes.io/auth-type: basic
+  - it: "should generate an ingress with auth and custom annotations"
+    template: ingress-health.yaml
+    set:
+      ingress:
+        enabled: true
+        annotations:
+          a-custom/annotation: "hello world"
+      auth:
+        enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Ingress
+      - isNotNull:
+          path: metadata.annotations
+      - equal:
+          path: metadata.annotations
+          value:
+            a-custom/annotation: "hello world"
