@@ -40,7 +40,7 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
-  healthPath: /healthz
+  healthPath: /health
   healthPathType: ImplementationSpecific
   tls: []
   #  - secretName: chart-example-tls
