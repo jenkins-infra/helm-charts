@@ -1,7 +1,31 @@
 suite: Tests with custom values
 templates:
   - ingress-health.yaml
+  - ingress.yaml
 tests:
+  - it: Should set a custom health check path when specified by values
+    template: ingress.yaml
+    set:
+      ingress:
+        enabled: true
+        annotations:
+          a-custom/annotation: "hello world"
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Ingress
+      - equal:
+          path: spec.rules[0].http.paths[0].path
+          value: "/"
+      - equal:
+          path: spec.rules[0].http.paths[0].pathType
+          value: "ImplementationSpecific"
+      - equal:
+          path: metadata.annotations
+          value:
+            a-custom/annotation: "hello world"
+
   - it: Should set a custom health check path when specified by values
     template: ingress-health.yaml
     set:
@@ -9,6 +33,8 @@ tests:
         enabled: true
         healthPath: "la-cite-de-la-peur"
         healthPathType: "fait-peur"
+        annotations:
+          a-custom/annotation: "hello world"
     asserts:
       - hasDocuments:
           count: 1
@@ -20,3 +46,7 @@ tests:
       - equal:
           path: spec.rules[0].http.paths[0].pathType
           value: "fait-peur"
+      - equal:
+          path: metadata.annotations
+          value:
+            a-custom/annotation: "hello world"
