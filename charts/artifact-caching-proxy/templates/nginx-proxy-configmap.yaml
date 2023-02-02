@@ -96,7 +96,7 @@ data:
             return          200 'OK';
         }
     }
-  status.conf: |
+  vhost-status.conf: |
     # Vhost used by datadog to collect custom Nginx metrics
     server {
       listen {{ .Values.service.statusPort }};
