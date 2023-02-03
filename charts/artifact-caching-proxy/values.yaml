@@ -85,9 +85,9 @@ cache:
   # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_path
   path: /data/nginx-cache
   keysZoneSize: "200m"
-  inactive: "24h"
+  inactive: "1M"
   useTempPath: "off"
 proxy:
   proxyPass: "repo.jenkins-ci.org"
   proxyCacheValidCode: "200 206"
-  proxyCacheValidCodeDuration: "24h"
+  proxyCacheValidCodeDuration: "1M"
