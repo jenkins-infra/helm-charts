@@ -4,18 +4,18 @@
 
 replicaCount: 1
 image:
-  repository: jenkinsciinfra/account-app
-  tag: 0.2.35
+    repository: jenkinsciinfra/account-app
+    tag: 0.2.38
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 service:
-  type: ClusterIP
-  port: 8080
+    type: ClusterIP
+    port: 8080
 # Please define ingress settings into environment variable
 ingress:
-  enabled: true
-  className: ""
+    enabled: true
+    className: ""
 #  annotations:
 #    "cert-manager.io/cluster-issuer": "letsencrypt-prod"
 #    "nginx.ingress.kubernetes.io/proxy-body-size": "500m"
@@ -45,24 +45,24 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 ldap:
-  url: ldaps://ldap.jenkins.io:636/
-  managerDn: cn=admin,dc=jenkins-ci,dc=org
-  newUserBaseDn: ou=people,dc=jenkins-ci,dc=org
-  password:
+    url: ldaps://ldap.jenkins.io:636/
+    managerDn: cn=admin,dc=jenkins-ci,dc=org
+    newUserBaseDn: ou=people,dc=jenkins-ci,dc=org
+    password:
 jira:
-  username: accountapp
-  password:
-  url: https://issues.jenkins.io/
+    username: accountapp
+    password:
+    url: https://issues.jenkins.io/
 seats: 2
 seniority: 12
 smtp:
-  auth: true
-  server: smtp.sendgrid.net
-  user:
-  password:
+    auth: true
+    server: smtp.sendgrid.net
+    user:
+    password:
 appUrl: https://accounts.jenkins.io
 election:
-  open: 1970-01-01
-  close: 1970-01-02
-  logDir: /var/log/accountapp/elections
-  candidates: bob,alice
+    open: 1970-01-01
+    close: 1970-01-02
+    logDir: /var/log/accountapp/elections
+    candidates: bob,alice
