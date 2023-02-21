@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   accountapp:
   - apiVersion: v1
+    created: "2023-02-21T09:22:29.660892135Z"
+    description: A Helm chart for accounts.jenkins.io
+    digest: 2b1aeff0d25f3830055a3e5e1bb7d29f095b6a8e35c0dd53e93b889f6e2c9a31
+    maintainers:
+    - name: timja
+    name: accountapp
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/accountapp-0.2.38/accountapp-0.2.38.tgz
+    version: 0.2.38
+  - apiVersion: v1
     created: "2023-02-21T09:10:33.82794008Z"
     description: A Helm chart for accounts.jenkins.io
     digest: 4eb87b2afe0eb1510feeeee81324eec5933fae7e6497e24b37e61091d4ec10e3
@@ -3513,4 +3523,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2023-02-21T09:18:44.482412408Z"
+generated: "2023-02-21T09:22:29.661442341Z"
