@@ -1,15 +1,12 @@
 name: Release Charts
-
 on:
   push:
     branches:
       - main
     paths:
       - 'charts/**'
-
 # Only allow 1 release at a time (avoid concurent deployment to gh-pages)
 concurrency: "release-chart"
-
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -18,16 +15,13 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
       - name: Configure Git
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-
       - name: Install Helm
-        uses: azure/setup-helm@v3
-
+        uses: azure/setup-helm@5119fcb9089d432beecbf79bb2c7915207344b78 # v3
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.5.0
+        uses: helm/chart-releaser-action@be16258da8010256c6e82849661221415f031968 # v1.5.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
