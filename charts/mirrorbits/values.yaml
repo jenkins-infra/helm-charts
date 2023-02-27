@@ -8,7 +8,7 @@ replicaCount:
 image:
     mirrorbits:
         repository: jenkinsciinfra/mirrorbits
-        tag: "0.1.67"
+        tag: "0.1.69"
         pullPolicy: Always
     files:
         repository: httpd@sha256
