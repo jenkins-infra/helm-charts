@@ -8,11 +8,11 @@ replicaCount:
 image:
     mirrorbits:
         repository: jenkinsciinfra/mirrorbits
-        tag: "0.1.69"
+        tag: "0.1.70"
         pullPolicy: Always
     files:
         repository: httpd@sha256
-        tag: d866e5c91f31fc6a122aaf37149cc67ba2ca0de68ae73ab206747a190937967e
+        tag: 55e1118da373ce349be524e344be08bebddf0139b14916729175426fff73f88a
         pullPolicy: Always
 imagePullSecrets: []
 nameOverride: ""
