@@ -3,26 +3,26 @@
 # Declare variables to be passed into your templates.
 
 replicaCount:
-    mirrorbits: 1
-    files: 1
+  mirrorbits: 1
+  files: 1
 image:
-    mirrorbits:
-        repository: jenkinsciinfra/mirrorbits
-        tag: "0.1.70"
-        pullPolicy: Always
-    files:
-        repository: httpd@sha256
-        tag: 55e1118da373ce349be524e344be08bebddf0139b14916729175426fff73f88a
-        pullPolicy: Always
+  mirrorbits:
+    repository: jenkinsciinfra/mirrorbits
+    tag: "0.1.71"
+    pullPolicy: Always
+  files:
+    repository: httpd@sha256
+    tag: 3a841b1f4de100463e4d7269e32666f8a24260a6b675d8384b17b8e8b165f0b7
+    pullPolicy: Always
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 serviceAccount:
-    # Specifies whether a service account should be created
-    create: false
-    # The name of the service account to use.
-    # If not set and create is true, a name is generated using the fullname template
-    name:
+  # Specifies whether a service account should be created
+  create: false
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
 podSecurityContext: {}
 # fsGroup: 2000
 
@@ -35,30 +35,30 @@ securityContext: {}
 # runAsUser: 1000
 
 service:
+  type: ClusterIP
+  port: 80
+  files:
     type: ClusterIP
     port: 80
-    files:
-        type: ClusterIP
-        port: 80
 ingress:
-    enabled: false
-    className: ""
-    annotations: {}
-    # kubernetes.io/tls-acme: "true"
-    hosts:
-        - host: chart-example.local
-          paths:
-            - path: /
-              serviceNameSuffix: files
-            - path: /.*[.](deb|hpi|war|rpm|msi|pkg|sha256|md5sum|zip|gz|pdf|json|svg|sh|jpeg|ico|png|html)$
-        - host: fallback.chart-example.local
-          paths:
-            - path: /
-              serviceNameSuffix: files
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
+  enabled: false
+  className: ""
+  annotations: {}
+  # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          serviceNameSuffix: files
+        - path: /.*[.](deb|hpi|war|rpm|msi|pkg|sha256|md5sum|zip|gz|pdf|json|svg|sh|jpeg|ico|png|html)$
+    - host: fallback.chart-example.local
+      paths:
+        - path: /
+          serviceNameSuffix: files
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
 resources: {}
 # We usually recommend not to specify default resources and to leave this as a conscious
 # choice for the user. This also increases chances charts run on environments with little
@@ -75,30 +75,30 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 geoipupdate:
-    image:
-        repository: maxmindinc/geoipupdate
-        tag: "v4.10.0"
-    #account_id:
-    #license_key:
-    editions: GeoLite2-ASN GeoLite2-City GeoLite2-Country
-    update_frequency: 24
+  image:
+    repository: maxmindinc/geoipupdate
+    tag: "v4.10.0"
+  #account_id:
+  #license_key:
+  editions: GeoLite2-ASN GeoLite2-City GeoLite2-Country
+  update_frequency: 24
 mirrorbits:
-    # Accept the mirrorbits.conf data
-    conf: |
-        Repository: /srv/repo
-        Templates: /usr/share/mirrorbits/templates
-        RedisAddress: mirrors-redis-master:6379
+  # Accept the mirrorbits.conf data
+  conf: |
+    Repository: /srv/repo
+    Templates: /usr/share/mirrorbits/templates
+    RedisAddress: mirrors-redis-master:6379
 repository:
-    name: mirrorbits-binary
-    persistentVolumeClaim:
-        enabled: false
-        # spec hold persistentVolumeClaim spec
-        spec: {}
-    persistentVolume:
-        enabled: false
-        # spec hold persistentVolume spec
-        spec: {}
-    secrets:
-        enabled: false
-        # data hold secrets data used by persistentVolume
-        data: {}
+  name: mirrorbits-binary
+  persistentVolumeClaim:
+    enabled: false
+    # spec hold persistentVolumeClaim spec
+    spec: {}
+  persistentVolume:
+    enabled: false
+    # spec hold persistentVolume spec
+    spec: {}
+  secrets:
+    enabled: false
+    # data hold secrets data used by persistentVolume
+    data: {}
