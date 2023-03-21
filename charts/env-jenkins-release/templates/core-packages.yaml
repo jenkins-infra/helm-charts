@@ -17,6 +17,7 @@ metadata:
   labels:
     data: binary
 spec:
+  storageClassName: azurefile-csi-premium
   capacity:
     storage: 100Gi
   accessModes:
@@ -40,7 +41,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: binary-core-packages
 spec:
-  storageClassName: ""
+  storageClassName: azurefile-csi-premium
   accessModes:
     - ReadWriteMany
   resources:
@@ -58,6 +59,7 @@ metadata:
   labels:
     data: pkgsite
 spec:
+  storageClassName: azurefile-csi-premium
   capacity:
     storage: 100Gi
   accessModes:
@@ -81,7 +83,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: website-core-packages
 spec:
-  storageClassName: ""
+  storageClassName: azurefile-csi-premium
   accessModes:
     - ReadWriteMany
   resources:
