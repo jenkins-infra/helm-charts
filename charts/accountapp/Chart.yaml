@@ -3,4 +3,4 @@ description: A Helm chart for accounts.jenkins.io
 maintainers:
 - name: timja
 name: accountapp
-version: 0.2.57
+version: 0.2.58
