@@ -32,9 +32,14 @@ data:
         # Optimize IO workload for static files
         # https://docs.nginx.com/nginx/admin-guide/web-server/serving-static-content/#enabling-sendfile
         # https://www.sobyte.net/post/2022-08/nginx-send/
-        sendfile        on;
-        sendfile_max_chunk 1m; # Limits chunks to 1 Megabytes;
-        tcp_nopush     on;
+        # https://hub.packtpub.com/fine-tune-nginx-configufine-tune-nginx-configurationfine-tune-nginx-configurationratio/
+        sendfile             on;
+        sendfile_max_chunk   2m;
+        tcp_nopush           on;
+        tcp_nodelay          on;
+        aio                  on;
+        directio            10m;
+        directio_alignment 4096;
 
         keepalive_timeout  65;
 
