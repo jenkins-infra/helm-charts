@@ -4,4 +4,4 @@ description: A Helm chart for javadoc.jenkins.io
 maintainers:
 - name: timja
 name: javadoc
-version: 0.1.2
+version: 0.1.3
