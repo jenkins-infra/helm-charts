@@ -13,13 +13,13 @@ tests:
           # The release name, default to "RELEASE-NAME" within helm-unittest
           value: RELEASE-NAME-localhost
       - equal:
-          path: metadata.annotations.[nginx.ingress.kubernetes.io/permanent-redirect]
+          path: metadata.annotations["nginx.ingress.kubernetes.io/permanent-redirect"]
           value: "http://demo.localhost.me"
       - equal:
-          path: metadata.annotations.[nginx.ingress.kubernetes.io/permanent-redirect-code]
+          path: metadata.annotations["nginx.ingress.kubernetes.io/permanent-redirect-code"]
           value: "308"
       - equal:
-          path: metadata.annotations.[cert-manager.io/cluster-issuer]
+          path: metadata.annotations["cert-manager.io/cluster-issuer"]
           value: "letsencrypt-prod"
       - equal:
           path: spec.rules[0].host

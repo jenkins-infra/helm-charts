@@ -1,4 +1,4 @@
-suite: default tests
+suite: folder tests
 templates:
   - jcasc-jobs-config.yaml
 tests:
@@ -10,7 +10,7 @@ tests:
           kind: folder
     asserts:
       - equal:
-          path: data.jobs-definition\.yaml
+          path: data["jobs-definition.yaml"]
           value: |-
             jobs:
               - script: >
@@ -27,7 +27,7 @@ tests:
           kind: folder
     asserts:
       - equal:
-          path: data.jobs-definition\.yaml
+          path: data["jobs-definition.yaml"]
           value: |-
             jobs:
               - script: >
@@ -53,7 +53,7 @@ tests:
               kind: folder
     asserts:
       - equal:
-          path: data.jobs-definition\.yaml
+          path: data["jobs-definition.yaml"]
           value: |-
             jobs:
               - script: >
@@ -82,7 +82,7 @@ tests:
               name: Child Multibranch Job
     asserts:
       - equal:
-          path: data.jobs-definition\.yaml
+          path: data["jobs-definition.yaml"]
           value: |-
             jobs:
               - script: >
