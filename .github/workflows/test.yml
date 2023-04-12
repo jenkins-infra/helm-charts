@@ -28,9 +28,16 @@ jobs:
         with:
           version: "${{ steps.tools-versions.outputs.CURRENT_HELM_VERSION }}"
       - name: install helm unittests
+        env:
+          HELM_UNITTESTS_URL: https://github.com/helm-unittest/helm-unittest
         run: |
           helm env
-          helm plugin install https://github.com/quintush/helm-unittest
+          # Repeat 2 times to fight against network errors in  GHA runners
+          # Always return true
+          helm plugin install "$HELM_UNITTESTS_URL" \
+            || helm plugin install "$HELM_UNITTESTS_URL" \
+            || true
+          # Fail if not installed
           helm plugin list | grep unittest
       - name: run unit tests
         working-directory: ./charts/
