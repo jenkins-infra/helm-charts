@@ -22,6 +22,6 @@ tests:
       - isKind:
           of: ConfigMap
       - isNotNull:
-          path: data.vhost-proxy\.conf
+          path: data["vhost-proxy.conf"]
       - isNotNull:
-          path: data.vhost-status\.conf
+          path: data["vhost-status.conf"]

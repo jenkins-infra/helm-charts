@@ -32,12 +32,12 @@ jobs:
           helm env
           # Repeat 2 times to fight against network errors in  GHA runners
           # Always return true
-          helm plugin install https://github.com/quintush/helm-unittest \
-            || helm plugin install https://github.com/quintush/helm-unittest \
+          helm plugin install https://github.com/helm-unittest/helm-unittest \
+            || helm plugin install https://github.com/helm-unittest/helm-unittest \
             || true
           # Fail if not installed
           helm plugin list | grep unittest
       - name: run unit tests
         working-directory: ./charts/
         run: |
-          helm unittest --helm3 "${{ matrix.chart }}"
+          helm unittest "${{ matrix.chart }}"

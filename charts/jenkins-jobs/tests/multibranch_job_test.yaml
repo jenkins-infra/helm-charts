@@ -1,4 +1,4 @@
-suite: default tests
+suite: multibranch jobs tests
 templates:
   - jcasc-jobs-config.yaml
 tests:
@@ -17,7 +17,7 @@ tests:
           name: Default Job
     asserts:
       - equal:
-          path: data.jobs-definition\.yaml
+          path: data["jobs-definition.yaml"]
           value: |-
             jobs:
               - script: >
@@ -124,7 +124,7 @@ tests:
           kind: multibranchPipelineJob
     asserts:
       - equal:
-          path: data.jobs-definition\.yaml
+          path: data["jobs-definition.yaml"]
           value: |-
             jobs:
               - script: >
@@ -234,7 +234,7 @@ tests:
           githubCredentialsId: the-force
     asserts:
       - equal:
-          path: data.jobs-definition\.yaml
+          path: data["jobs-definition.yaml"]
           value: |-
             jobs:
               - script: >
@@ -344,7 +344,7 @@ tests:
           branchIncludes: "prod dev MR-*"
     asserts:
       - equal:
-          path: data.jobs-definition\.yaml
+          path: data["jobs-definition.yaml"]
           value: |-
             jobs:
               - script: >
