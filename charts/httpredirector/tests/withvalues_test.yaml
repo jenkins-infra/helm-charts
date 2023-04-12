@@ -18,10 +18,10 @@ tests:
           # The release name, default to "RELEASE-NAME" within helm-unittest
           value: RELEASE-NAME-domain
       - equal:
-          path: metadata.annotations.[nginx.ingress.kubernetes.io/permanent-redirect]
+          path: metadata.annotations["nginx.ingress.kubernetes.io/permanent-redirect"]
           value: "http://my.domain.com"
       - equal:
-          path: metadata.annotations.[nginx.ingress.kubernetes.io/permanent-redirect-code]
+          path: metadata.annotations["nginx.ingress.kubernetes.io/permanent-redirect-code"]
           value: "308"
       - equal:
           path: spec.rules[0].host
