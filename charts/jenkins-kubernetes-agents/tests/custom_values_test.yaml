@@ -56,7 +56,6 @@ tests:
           path: metadata.annotations["kubernetes.io/service-account.name"]
           value: jenkins-agent
 
-
   - it: Should create the default Role 'jenkins-agent-role' in the provided namespace
     template: rbac.yaml
     release:
