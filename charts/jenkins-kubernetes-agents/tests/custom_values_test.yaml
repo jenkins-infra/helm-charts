@@ -34,6 +34,27 @@ tests:
       - equal:
           path: metadata.namespace
           value: tatooine
+  - it: Should create a token for the the service account 'jenkins-agent' in the provided namespace
+    template: serviceaccounttoken.yaml
+    release:
+      namespace: tatooine
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Secret
+      - equal:
+          path: metadata.name
+          value: jenkins-agent-token
+      - equal:
+          path: type
+          value: kubernetes.io/service-account-token
+      - equal:
+          path: metadata.namespace
+          value: tatooine
+      - equal:
+          path: metadata.annotations["kubernetes.io/service-account.name"]
+          value: jenkins-agent
 
   - it: Should create the default Role 'jenkins-agent-role' in the provided namespace
     template: rbac.yaml
