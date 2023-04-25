@@ -59,7 +59,7 @@ smtp:
   auth: true
   server: smtp.sendgrid.net
   sender: admin@jenkins-ci.org
-  port: 25
+  port: 587
   user:
   password:
 appUrl: https://accounts.jenkins.io
