@@ -46,6 +46,8 @@ spec:
               value: {{ .Values.smtp.auth | quote }}
             - name: SMTP_SERVER
               value: {{ .Values.smtp.server }}
+            - name: SMTP_PORT
+              value: {{ .Values.smtp.port }}
             - name: SMTP_USER
               value: {{ .Values.smtp.user }}
             - name: APP_URL
