@@ -5,7 +5,7 @@
 replicaCount: 1
 image:
   repository: jenkinsciinfra/account-app
-  tag: 0.3.5
+  tag: 0.4.1
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -58,7 +58,8 @@ seniority: 12
 smtp:
   auth: true
   server: smtp.sendgrid.net
-  port: 25
+  sender: admin@jenkins-ci.org
+  port: 587
   user:
   password:
 appUrl: https://accounts.jenkins.io
