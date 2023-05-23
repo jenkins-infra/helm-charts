@@ -32,8 +32,9 @@ jobs:
           helm env
           # Repeat 2 times to fight against network errors in  GHA runners
           # Always return true
-          helm plugin install https://github.com/helm-unittest/helm-unittest \
-            || helm plugin install https://github.com/helm-unittest/helm-unittest \
+          unittest_version="v0.3.2"
+          helm plugin install https://github.com/helm-unittest/helm-unittest --version ${unittest_version} \
+            || helm plugin install https://github.com/helm-unittest/helm-unittest --version ${unittest_version} \
             || true
           # Fail if not installed
           helm plugin list | grep unittest
