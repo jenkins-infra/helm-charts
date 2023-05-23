@@ -1637,6 +1637,16 @@ entries:
   jenkins-kubernetes-agents:
   - apiVersion: v2
     appVersion: 0.1.0
+    created: "2023-05-23T10:46:58.375230993Z"
+    description: A Helm chart for using Jenkins Kubernetes agents on a remote cluster
+    digest: 8525cecacf9c1ecb78aa106501278a1043d1b550380046bf3d01c197743c87be
+    name: jenkins-kubernetes-agents
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/jenkins-kubernetes-agents-0.5.1/jenkins-kubernetes-agents-0.5.1.tgz
+    version: 0.5.1
+  - apiVersion: v2
+    appVersion: 0.1.0
     created: "2023-04-17T13:36:00.463222211Z"
     description: A Helm chart for using Jenkins Kubernetes agents on a remote cluster
     digest: 2f6ddab201f753907e799a4cb372a7f312aa6e180b349a7f3350d6c29a4d348a
@@ -3003,6 +3013,15 @@ entries:
     version: 0.1.0
   plugin-health-scoring:
   - apiVersion: v2
+    created: "2023-05-23T10:46:58.513563979Z"
+    description: A Helm chart for Kubernetes
+    digest: ddddd5d98cab166fff2e3e0f2cdee4371ab38ceb902610be0745f379c04d4136
+    name: plugin-health-scoring
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/plugin-health-scoring-2.1.5/plugin-health-scoring-2.1.5.tgz
+    version: 2.1.5
+  - apiVersion: v2
     created: "2023-04-17T22:20:24.502576914Z"
     description: A Helm chart for Kubernetes
     digest: 43c047b7456f1eb6afc8cf62c62ab291a88e4b0dfd9d805699a5c3f9fc838a03
@@ -4295,4 +4314,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2023-05-19T05:35:52.068264602Z"
+generated: "2023-05-23T10:46:58.514706303Z"
