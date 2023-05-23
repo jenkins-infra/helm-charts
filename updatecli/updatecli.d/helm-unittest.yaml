@@ -25,13 +25,11 @@ sources:
 targets:
   updateChart:
     name: Update helm-unittest version in the GitHub Action workflow
-    kind: file
+    kind: yaml
     scmid: default
     spec:
-      matchpattern: >
-        unittest_version=(.*)
-      replacepattern: >
-        unittest_version={{ source "latestRelease" }}
+      file: .github/workflows/test.yml
+      key: env.UNITTEST_VERSION
 
 actions:
   default:

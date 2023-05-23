@@ -3,6 +3,8 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+env:
+  UNITTEST_VERSION: v0.3.2
 jobs:
   unit-tests:
     runs-on: ubuntu-latest
@@ -32,9 +34,8 @@ jobs:
           helm env
           # Repeat 2 times to fight against network errors in  GHA runners
           # Always return true
-          unittest_version="v0.3.2"
-          helm plugin install https://github.com/helm-unittest/helm-unittest --version ${unittest_version} \
-            || helm plugin install https://github.com/helm-unittest/helm-unittest --version ${unittest_version} \
+          helm plugin install https://github.com/helm-unittest/helm-unittest --version ${UNITTEST_VERSION} \
+            || helm plugin install https://github.com/helm-unittest/helm-unittest --version ${UNITTEST_VERSION} \
             || true
           # Fail if not installed
           helm plugin list | grep unittest
