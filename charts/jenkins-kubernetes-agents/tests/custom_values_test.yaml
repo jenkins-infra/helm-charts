@@ -3,6 +3,8 @@ templates:
   - serviceaccount.yaml
   - rbac.yaml
   - resourcequota.yaml
+  - serviceaccount.yaml
+  - serviceaccounttoken.yaml
 tests:
   - it: Should set a quota of maximum 30 pods when specified by values
     template: resourcequota.yaml
