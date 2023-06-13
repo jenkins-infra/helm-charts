@@ -1,13 +1,12 @@
 # Default values for wiki.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
 replicaCount: 1
 image:
   repository: jenkinsciinfra/wiki
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "0.0.127"
+  tag: 0.0.127
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -22,7 +21,6 @@ serviceAccount:
 podAnnotations: {}
 podSecurityContext: {}
 # fsGroup: 2000
-
 securityContext: {}
 # capabilities:
 #   drop:
@@ -30,7 +28,6 @@ securityContext: {}
 # readOnlyRootFilesystem: true
 # runAsNonRoot: true
 # runAsUser: 1000
-
 service:
   type: ClusterIP
   port: 80
@@ -60,7 +57,6 @@ resources: {}
 # requests:
 #   cpu: 100m
 #   memory: 128Mi
-
 autoscaling:
   enabled: false
   minReplicas: 1
