@@ -1,14 +1,13 @@
 # Default values for mirrorbits.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
 replicaCount:
   mirrorbits: 1
   files: 1
 image:
   mirrorbits:
     repository: jenkinsciinfra/mirrorbits
-    tag: "0.1.84"
+    tag: 0.1.84
     pullPolicy: Always
   files:
     repository: httpd@sha256
@@ -22,10 +21,9 @@ serviceAccount:
   create: false
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name:
+  name: null
 podSecurityContext: {}
 # fsGroup: 2000
-
 securityContext: {}
 # capabilities:
 #   drop:
@@ -33,7 +31,6 @@ securityContext: {}
 # readOnlyRootFilesystem: true
 # runAsNonRoot: true
 # runAsUser: 1000
-
 service:
   type: ClusterIP
   port: 80
@@ -70,14 +67,13 @@ resources: {}
 # requests:
 #   cpu: 100m
 #   memory: 128Mi
-
 nodeSelector: {}
 tolerations: []
 affinity: {}
 geoipupdate:
   image:
     repository: maxmindinc/geoipupdate
-    tag: "v5.1.1"
+    tag: v5.1.1
   #account_id:
   #license_key:
   editions: GeoLite2-ASN GeoLite2-City GeoLite2-Country
