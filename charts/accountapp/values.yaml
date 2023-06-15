@@ -1,11 +1,10 @@
 # Default values for accounts.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
 replicaCount: 1
 image:
   repository: jenkinsciinfra/account-app
-  tag: 0.4.11
+  tag: 0.4.12
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -29,9 +28,7 @@ ingress:
 #    - secretName: accounts-tls
 #      hosts:
 #        - accounts.jenkins.io
-
-resources:
-# We usually recommend not to specify default resources and to leave this as a conscious
+resources: # We usually recommend not to specify default resources and to leave this as a conscious
 # choice for the user. This also increases chances charts run on environments with little
 # resources, such as Minikube. If you do want to specify resources, uncomment the following
 # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
@@ -48,10 +45,10 @@ ldap:
   url: ldaps://ldap.jenkins.io:636/
   managerDn: cn=admin,dc=jenkins-ci,dc=org
   newUserBaseDn: ou=people,dc=jenkins-ci,dc=org
-  password:
+  password: null
 jira:
   username: accountapp
-  password:
+  password: null
   url: https://issues.jenkins.io/
 seats: 2
 seniority: 12
@@ -60,8 +57,8 @@ smtp:
   server: smtp.sendgrid.net
   sender: admin@jenkins-ci.org
   port: 587
-  user:
-  password:
+  user: null
+  password: null
 appUrl: https://accounts.jenkins.io
 election:
   open: 1970-01-01
