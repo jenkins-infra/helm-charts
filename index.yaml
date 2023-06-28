@@ -1357,6 +1357,17 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/incrementals-publisher-0.3.0/incrementals-publisher-0.3.0.tgz
     version: 0.3.0
+  ipv6-lb-service:
+  - apiVersion: v2
+    created: "2023-06-28T15:19:43.613514808Z"
+    description: A Helm chart for Kubernetes to add an additional LB service dedicated
+      to IPv6
+    digest: 1d1f2ac3e0bc5ebf9d582fb8fea2ef32e69fc3675169b06e0ada52a2c52b7ff2
+    name: ipv6-lb-service
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/ipv6-lb-service-0.1.0/ipv6-lb-service-0.1.0.tgz
+    version: 0.1.0
   ircbot:
   - apiVersion: v1
     created: "2023-01-25T19:46:36.372904267Z"
@@ -4624,4 +4635,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2023-06-28T12:24:27.385175135Z"
+generated: "2023-06-28T15:19:43.614596136Z"
