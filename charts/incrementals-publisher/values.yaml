@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: jenkinsciinfra/incrementals-publisher
-  tag: 1.5.2
+  tag: 1.5.5
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
