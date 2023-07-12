@@ -73,7 +73,7 @@ affinity: {}
 geoipupdate:
   image:
     repository: maxmindinc/geoipupdate
-    tag: v5.1.1
+    tag: v6.0.0
   #account_id:
   #license_key:
   editions: GeoLite2-ASN GeoLite2-City GeoLite2-Country
