@@ -1,10 +1,10 @@
 # Mirrorbits
 
-This chart deploys two services [mirrorbits](https://github.com/etix/mirrorbits) and a simple nginx service that return every file
+This chart deploys two services [mirrorbits](https://github.com/etix/mirrorbits) and a simple httpd (Apache2) service that return every file
 
 A "Quick Start" is available on [etix/mirrorbits](repository)
 
-Docker image used in this chart is defined from [olblak/mirrorbits](https://github.com/olblak/mirrorbits)
+Docker image used in this chart is defined from [jenkins-infra/docker-mirrorbits](https://github.com/jenkins-infra/docker-mirrorbits)
 
 
 Parameters can be added to a file url to display various information like:
@@ -112,4 +112,4 @@ mirrorbits add -rsync rsync://archives.jenkins.io/jenkins/ -http https://archive
 ## Links
 
 * [Mirrorbits](https://github.com/etix/mirrorbits) - Upstream project
-* [Mirrorbits](https://github.com/olblak/mirrorbits) - Docker Image
+* [Mirrorbits](https://github.com/jenkins-infra/docker-mirrorbits) - Docker Image
