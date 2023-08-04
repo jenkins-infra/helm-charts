@@ -19,6 +19,7 @@ data:
       root   /usr/share/nginx/html;
 
       location / {
+          absolute_redirect off;
           index  index.html index.htm;
       }
 
