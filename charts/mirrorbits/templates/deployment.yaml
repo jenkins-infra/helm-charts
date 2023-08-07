@@ -126,5 +126,5 @@ spec:
         {{ if $.Values.repository.persistentVolumeClaim.enabled -}}
         - name: binary
           persistentVolumeClaim:
-            claimName: {{ include "mirrorbits.fullname" . }}-binary
+            claimName: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits.fullname" .)) }}
         {{- end -}}
