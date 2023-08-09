@@ -1,0 +1,12 @@
+suite: default tests
+values:
+  - ../values.yaml
+  - default_secrets_values.yaml
+templates:
+  - ingress.yaml
+tests:
+  - it: should not create any ingress by default
+    template: ingress.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
