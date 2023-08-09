@@ -3,10 +3,38 @@ values:
   - ../values.yaml
   - default_secrets_values.yaml
 templates:
+  - deployment.files.yaml
   - ingress.yaml
+  - service.files.yaml
 tests:
   - it: should not create any ingress by default
     template: ingress.yaml
     asserts:
       - hasDocuments:
           count: 0
+  - it: Should set the correct service selector labels
+    template: service.files.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+      - equal:
+          path: spec.selector["app.kubernetes.io/name"]
+          value: "mirrorbits-files"
+      - equal:
+          path: spec.selector["app.kubernetes.io/instance"]
+          value: "RELEASE-NAME-files"
+  - it: Should set the correct deployment labels
+    template: deployment.files.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/name"]
+          value: "mirrorbits-files"
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/instance"]
+          value: "RELEASE-NAME-files"

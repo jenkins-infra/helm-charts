@@ -1,0 +1,34 @@
+suite: Tests with custom values
+templates:
+  - service.files.yaml
+tests:
+  - it: Should set the correct service selector labels when a fullNameOverride is specified
+    template: service.files.yaml
+    set:
+      fullNameOverride: "my-fullNameOverride"
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+      - equal:
+          path: spec.selector["app.kubernetes.io/name"]
+          value: "mirrorbits-files"
+      - equal:
+          path: spec.selector["app.kubernetes.io/instance"]
+          value: "RELEASE-NAME-files"
+  - it: Should set the correct service selector labels when a nameOverride is specified
+    template: service.files.yaml
+    set:
+      nameOverride: "my-nameOverride"
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+      - equal:
+          path: spec.selector["app.kubernetes.io/name"]
+          value: "my-nameOverride-files"
+      - equal:
+          path: spec.selector["app.kubernetes.io/instance"]
+          value: "RELEASE-NAME-files"
