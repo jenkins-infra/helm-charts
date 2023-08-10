@@ -2,10 +2,10 @@ suite: Tests with custom values
 values:
   - default_secrets_values.yaml
 templates:
-  - service.files.yaml
   - deployment.yaml
-  - secret.yaml # Direct dependency of deployment.yaml
   - deployment.files.yaml
+  - secret.yaml # Direct dependency of deployment.yaml
+  - service.files.yaml
 tests:
   - it: Should set the correct service selector labels when a fullNameOverride is specified
     template: service.files.yaml
@@ -37,7 +37,7 @@ tests:
       - equal:
           path: spec.selector["app.kubernetes.io/instance"]
           value: "RELEASE-NAME-files"
-  - it: Should define a customized "files" deployment
+  - it: should define a customized "files" deployment
     template: deployment.files.yaml
     set:
       image:
@@ -51,7 +51,7 @@ tests:
       - equal:
           path: "spec.template.spec.containers[*].imagePullPolicy"
           value: Never
-  - it: Should define a customized "mirrorbits" deployment
+  - it: should define a customized "mirrorbits" deployment
     template: deployment.yaml
     set:
       image:
