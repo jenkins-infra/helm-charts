@@ -4,7 +4,9 @@ values:
   - default_secrets_values.yaml
 templates:
   - deployment.files.yaml
+  - deployment.yaml
   - ingress.yaml
+  - secret.yaml # Direct dependency of deployment.yaml
   - service.files.yaml
 tests:
   - it: should not create any ingress by default
@@ -25,7 +27,7 @@ tests:
       - equal:
           path: spec.selector["app.kubernetes.io/instance"]
           value: "RELEASE-NAME-files"
-  - it: Should set the correct deployment labels
+  - it: should define the default "files" deployment
     template: deployment.files.yaml
     asserts:
       - hasDocuments:
@@ -38,3 +40,16 @@ tests:
       - equal:
           path: spec.template.metadata.labels["app.kubernetes.io/instance"]
           value: "RELEASE-NAME-files"
+      - equal:
+          path: "spec.template.spec.containers[*].imagePullPolicy"
+          value: IfNotPresent
+  - it: should define the default "mirrorbits" deployment
+    template: deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[*].imagePullPolicy
+          value: IfNotPresent

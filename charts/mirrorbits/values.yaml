@@ -8,11 +8,11 @@ image:
   mirrorbits:
     repository: jenkinsciinfra/mirrorbits
     tag: 0.1.94
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
   files:
     repository: httpd@sha256
     tag: c5624d7cea88f123321843ec5d12ced1b2acab0e2dc861ed737269894ed890a3
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
