@@ -1,13 +1,12 @@
 suite: Tests with custom values
 values:
-  - default_secrets_values.yaml
+  - secrets_default_values.yaml
 templates:
   - deployment.yaml
   - deployment.files.yaml
   - ingress.yaml
   - secret.yaml # Direct dependency of deployment.yaml
   - service.files.yaml
-  - ingress.yaml
 tests:
   - it: Should set the correct service selector labels when a fullNameOverride is specified
     template: service.files.yaml

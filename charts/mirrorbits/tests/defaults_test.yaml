@@ -1,7 +1,7 @@
 suite: default tests
 values:
   - ../values.yaml
-  - default_secrets_values.yaml
+  - secrets_default_values.yaml
 templates:
   - deployment.files.yaml
   - deployment.yaml
@@ -83,4 +83,3 @@ tests:
       - equal:
           path: spec.template.spec.containers[*].imagePullPolicy
           value: IfNotPresent
-
