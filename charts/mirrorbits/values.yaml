@@ -74,6 +74,7 @@ geoipupdate:
   image:
     repository: maxmindinc/geoipupdate
     tag: v6.0.0
+  # Secret values commented below for reference:
   #account_id:
   #license_key:
   editions: GeoLite2-ASN GeoLite2-City GeoLite2-Country
