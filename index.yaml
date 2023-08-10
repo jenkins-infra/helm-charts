@@ -2157,6 +2157,18 @@ entries:
   mirrorbits:
   - apiVersion: v1
     appVersion: v0.5.2
+    created: "2023-08-10T14:55:51.250839173Z"
+    description: Mirrobits helm chart for Kubernetes
+    digest: 19e5e825301843bc5042a168f1fcfb38a5265245661ea06136681c2003de77dc
+    maintainers:
+    - email: me@olblak.com
+      name: olblak
+    name: mirrorbits
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/mirrorbits-0.56.0/mirrorbits-0.56.0.tgz
+    version: 0.56.0
+  - apiVersion: v1
+    appVersion: v0.5.2
     created: "2023-08-10T11:48:02.79361474Z"
     description: Mirrobits helm chart for Kubernetes
     digest: 9450148c6bcaa578dced7b5ebd7c3ad59eecb5c24e25744cb2f6e5bbb410ce0b
@@ -5061,4 +5073,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2023-08-10T11:48:02.794636759Z"
+generated: "2023-08-10T14:55:51.251851777Z"
