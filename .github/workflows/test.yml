@@ -11,6 +11,7 @@ jobs:
     strategy:
       matrix:
         chart:
+          - accountapp
           - artifact-caching-proxy
           - httpredirector
           - jenkins-jobs
