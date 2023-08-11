@@ -1,0 +1,86 @@
+suite: Tests with custom values
+values:
+  - secrets_default_values.yaml
+templates:
+  - deployment.yaml
+  - deployment.files.yaml
+  - ingress.yaml
+  - secret.yaml # Direct dependency of deployment.yaml
+  - service.files.yaml
+tests:
+  - it: Should set the correct service selector labels when a fullNameOverride is specified
+    template: service.files.yaml
+    set:
+      fullNameOverride: "my-fullNameOverride"
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+      - equal:
+          path: spec.selector["app.kubernetes.io/name"]
+          value: "mirrorbits-files"
+      - equal:
+          path: spec.selector["app.kubernetes.io/instance"]
+          value: "RELEASE-NAME-files"
+  - it: Should set the correct service selector labels when a nameOverride is specified
+    template: service.files.yaml
+    set:
+      nameOverride: "my-nameOverride"
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+      - equal:
+          path: spec.selector["app.kubernetes.io/name"]
+          value: "my-nameOverride-files"
+      - equal:
+          path: spec.selector["app.kubernetes.io/instance"]
+          value: "RELEASE-NAME-files"
+  - it: should define a customized "files" deployment
+    template: deployment.files.yaml
+    set:
+      image:
+        files:
+          pullPolicy: Never
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: "spec.template.spec.containers[*].imagePullPolicy"
+          value: Never
+  - it: should define a customized "mirrorbits" deployment
+    template: deployment.yaml
+    set:
+      image:
+        mirrorbits:
+          pullPolicy: Always
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[*].imagePullPolicy
+          value: Always
+  - it: should create ingress with pathType set to the specified custom value by default
+    template: ingress.yaml
+    set:
+      ingress:
+        enabled: true
+        hosts:
+          - host: chart-example.local
+            paths:
+            - path: /
+              pathType: IfNotPresent
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Ingress
+      - equal:
+          path: spec.rules[0].http.paths[0].pathType
+          value: "IfNotPresent"

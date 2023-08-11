@@ -1,0 +1,85 @@
+suite: default tests
+values:
+  - ../values.yaml
+  - secrets_default_values.yaml
+templates:
+  - deployment.files.yaml
+  - deployment.yaml
+  - ingress.yaml
+  - secret.yaml # Direct dependency of deployment.yaml
+  - service.files.yaml
+tests:
+  - it: should not create any ingress by default
+    template: ingress.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should create ingress with pathType set to Prefix by default
+    template: ingress.yaml
+    set:
+      ingress:
+        enabled: true
+        hosts:
+          - host: chart-example.local
+            paths:
+            - path: /
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Ingress
+      - equal:
+          path: spec.rules[0].http.paths[0].pathType
+          value: "Prefix"
+  - it: should set the correct service selector labels
+    template: service.files.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+      - equal:
+          path: spec.selector["app.kubernetes.io/name"]
+          value: "mirrorbits-files"
+      - equal:
+          path: spec.selector["app.kubernetes.io/instance"]
+          value: "RELEASE-NAME-files"
+  - it: Should set the correct deployment metadata labels
+    template: deployment.files.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/name"]
+          value: "mirrorbits-files"
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/instance"]
+          value: "RELEASE-NAME-files"
+  - it: should define the default "files" deployment with default imagePullPolicy and metadata labels
+    template: deployment.files.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/name"]
+          value: "mirrorbits-files"
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/instance"]
+          value: "RELEASE-NAME-files"
+      - equal:
+          path: "spec.template.spec.containers[*].imagePullPolicy"
+          value: IfNotPresent
+  - it: should define the default "mirrorbits" deployment with default imagePullPolicy
+    template: deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[*].imagePullPolicy
+          value: IfNotPresent

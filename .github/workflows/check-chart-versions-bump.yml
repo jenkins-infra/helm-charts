@@ -1,0 +1,45 @@
+name: Check chart version bump
+on:
+  pull_request:
+jobs:
+  check-chart-version-bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - id: list_modified_chart_folders
+        name: List modified chart folders
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Retrieve the list of modified chart folders from the pull request changes
+          gh pr view ${{ github.event.pull_request.number }} --json files -q '.files[].path' | grep "^charts/" | xargs dirname | cut -d "/" -f 2 | sort --unique > modified_chart_folders.txt
+          
+          # Store the modified folders as a step output
+          {
+            echo 'modified_chart_folders<<EOF'
+            cat modified_chart_folders.txt
+            echo EOF
+          } >> "$GITHUB_ENV"
+      - id: check_bump
+        name: Check if chart version has been bumped
+        run: |
+          git fetch --quiet origin pull/${{ github.event.pull_request.number }}/head:pr-branch
+          git fetch --quiet origin ${{ github.event.pull_request.base.ref }}:target-branch
+          
+          notBumped=0
+
+          for folder in $modified_chart_folders; do
+            MAIN_CHART_VERSION=$(git show target-branch:charts/$folder/Chart.yaml | grep "^version:" | cut -d " " -f 2)
+            PR_CHART_VERSION=$(git show pr-branch:charts/$folder/Chart.yaml | grep "^version:" | cut -d " " -f 2)
+
+            if [ "$MAIN_CHART_VERSION" == "$PR_CHART_VERSION" ]; then
+              echo "ERROR: the version of the '${folder}' chart hasn't been bumped: '$PR_CHART_VERSION'."
+              ((notBumped++))
+            fi
+
+            echo "Info: the version of the '${folder}' chart has been bumped from '$MAIN_CHART_VERSION' to '$PR_CHART_VERSION'."
+          done
+
+          if [ "$notBumped" -gt 0 ]; then
+            exit 1
+          fi
