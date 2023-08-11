@@ -11,7 +11,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # Retrive the list of modifed chart folders from the pull request changes
+          # Retrieve the list of modified chart folders from the pull request changes
           gh pr view ${{ github.event.pull_request.number }} --json files -q '.files[].path' | grep "^charts/" | xargs dirname | cut -d "/" -f 2 | sort --unique > modified_chart_folders.txt
           
           # Store the modified folders as a step output
