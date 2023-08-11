@@ -86,3 +86,4 @@ proxy:
   proxyPass: "repo.jenkins-ci.org"
   proxyCacheValidCode: "200 206"
   proxyCacheValidCodeDuration: "1M"
+
