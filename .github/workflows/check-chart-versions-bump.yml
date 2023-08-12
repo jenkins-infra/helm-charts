@@ -1,45 +1,66 @@
 name: Check chart version bump
 on:
   pull_request:
+    paths:
+      - 'charts/**'
 jobs:
-  check-chart-version-bump:
+  find_modified_charts:
     runs-on: ubuntu-latest
+    outputs:
+      charts_matrix: ${{ steps.list_modified_charts.outputs.modified_charts }}
+    name: Find modified charts
     steps:
       - uses: actions/checkout@v3
-      - id: list_modified_chart_folders
-        name: List modified chart folders
+      - id: list_modified_charts
+        name: List modified charts
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # Retrieve the list of modified chart folders from the pull request changes
-          gh pr view ${{ github.event.pull_request.number }} --json files -q '.files[].path' | grep "^charts/" | xargs dirname | cut -d "/" -f 2 | sort --unique > modified_chart_folders.txt
-          
-          # Store the modified folders as a step output
-          {
-            echo 'modified_chart_folders<<EOF'
-            cat modified_chart_folders.txt
-            echo EOF
-          } >> "$GITHUB_ENV"
+          # Retrieve the list of modified chart names in the pull request
+          modifiedCharts=$(gh pr view ${{ github.event.pull_request.number }} --json files -q '.files[].path' | xargs dirname | grep "^charts/" | cut -d "/" -f 2 | sort --unique)
+
+          jsonArray=""
+          if [ -n "$modifiedCharts" ]; then
+            echo "= List of modified charts:"
+            echo "$modifiedCharts"
+            # Convert to JSON array
+            jsonArray=$(echo "$modifiedCharts" | jq --raw-input --slurp 'split("\n") | map(select(length > 0))' | tr -d '\n')
+          else
+            echo "= Info: no modified chart found."
+          fi
+
+          # Store the JSON as step output
+          echo "modified_charts={\"chart\": ${jsonArray}}" >> "$GITHUB_OUTPUT"
+  check_chart_version_bump:
+    runs-on: ubuntu-latest
+    needs: find_modified_charts
+    if: ${{ needs.find_modified_charts.outputs.charts_matrix != '' }}  # Without it, the strategy parser will fail if the charts_matrix is empty.
+    name: Check chart version bump
+    strategy:
+      matrix: ${{fromJson(needs.find_modified_charts.outputs.charts_matrix)}}
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
       - id: check_bump
         name: Check if chart version has been bumped
         run: |
           git fetch --quiet origin pull/${{ github.event.pull_request.number }}/head:pr-branch
           git fetch --quiet origin ${{ github.event.pull_request.base.ref }}:target-branch
           
-          notBumped=0
+          # Retrieve version from each branch Chart.yaml, or empty if it does not exist
+          MAIN_CHART_VERSION=$(git show target-branch:charts/${{ matrix.chart }}/Chart.yaml 2>/dev/null | grep "^version:" | cut -d " " -f 2)
+          PR_CHART_VERSION=$(git show pr-branch:charts/${{ matrix.chart }}/Chart.yaml 2>/dev/null | grep "^version:" | cut -d " " -f 2)
 
-          for folder in $modified_chart_folders; do
-            MAIN_CHART_VERSION=$(git show target-branch:charts/$folder/Chart.yaml | grep "^version:" | cut -d " " -f 2)
-            PR_CHART_VERSION=$(git show pr-branch:charts/$folder/Chart.yaml | grep "^version:" | cut -d " " -f 2)
+          # If it's a new chart we're just informing the file doesn't exist or a version can't be read from it on the target branch
+          if [ -z "$MAIN_CHART_VERSION" ]; then
+            echo "= Info: charts/${{ matrix.chart }}/Chart.yaml doesn't exist or a version can't be read from it on the target branch."
+          fi
 
-            if [ "$MAIN_CHART_VERSION" == "$PR_CHART_VERSION" ]; then
-              echo "ERROR: the version of the '${folder}' chart hasn't been bumped: '$PR_CHART_VERSION'."
-              ((notBumped++))
-            fi
-
-            echo "Info: the version of the '${folder}' chart has been bumped from '$MAIN_CHART_VERSION' to '$PR_CHART_VERSION'."
-          done
-
-          if [ "$notBumped" -gt 0 ]; then
+          # If the version hasn't been bumped between the pull request and the target branch
+          # or if there is no Chart.yaml in the pull request branch
+          if [ "$MAIN_CHART_VERSION" == "$PR_CHART_VERSION" ] || [ -z "$PR_CHART_VERSION" ]; then
+            echo "= ERROR: the version of the '${{ matrix.chart }}' chart hasn't been bumped: '$PR_CHART_VERSION'."
             exit 1
           fi
+
+          echo "= Info: the version of the '${{ matrix.chart }}' chart has been bumped from '$MAIN_CHART_VERSION' to '$PR_CHART_VERSION'."
