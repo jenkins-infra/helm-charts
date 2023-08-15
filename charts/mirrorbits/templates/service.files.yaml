@@ -12,5 +12,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: {{ include "mirrorbits.fullname" . }}-files
+    app.kubernetes.io/name: {{ include "mirrorbits.name" . }}-files
     app.kubernetes.io/instance: {{ .Release.Name }}-files

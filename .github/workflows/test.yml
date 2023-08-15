@@ -11,10 +11,12 @@ jobs:
     strategy:
       matrix:
         chart:
+          - accountapp
           - artifact-caching-proxy
           - httpredirector
           - jenkins-jobs
           - jenkins-kubernetes-agents
+          - mirrorbits
           - plugin-health-scoring
       fail-fast: false
     steps:

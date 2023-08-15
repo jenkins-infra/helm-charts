@@ -1,0 +1,24 @@
+suite: default tests
+values:
+  - ../values.yaml
+  - secrets_default_values.yaml
+templates:
+  - deployment.yaml
+  - ingress.yaml
+  - secret.yaml # Direct dependency of deployment.yaml
+tests:
+  - it: should create an ingress by default
+    template: ingress.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+  - it: should define the default deployment with default imagePullPolicy
+    template: deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].imagePullPolicy
+          value: IfNotPresent
