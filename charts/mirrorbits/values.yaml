@@ -11,7 +11,7 @@ image:
     pullPolicy: IfNotPresent
   files:
     repository: httpd@sha256
-    tag: c5624d7cea88f123321843ec5d12ced1b2acab0e2dc861ed737269894ed890a3
+    tag: 18427eed921af003c951b5c97f0bde8a6df40cc7cb09b9739b9e35041a3c3acd
     pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
