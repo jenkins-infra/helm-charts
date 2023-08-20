@@ -76,6 +76,9 @@ jobs:
       - name: run unit tests
         working-directory: ./charts/
         run: |
-          while IFS=',' read -r chartName; do
+          # Set IFS to a comma to split the string into an array
+          IFS=',' read -ra chartNames <<< "${{ steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests }}"
+
+          for chartName in "${chartNames[@]}"; do
             helm unittest "$chartName"
-          done <<< "${{ steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests }}"
+          done
