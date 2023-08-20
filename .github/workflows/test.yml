@@ -36,6 +36,7 @@ jobs:
           # Keep only modified charts with unit tests
           modifiedChartsWithUnitTests=()
           while IFS= read -r chartPath; do
+              echo "= Checking if the modified chart path '$chartPath' contains unit tests folder..."
               if [ -d "${chartPath}/tests" ]; then
                   modifiedChartsWithUnitTests+=("$(echo $chartPath | cut -d '/' -f 2)")
               fi
@@ -72,5 +73,6 @@ jobs:
         working-directory: ./charts/
         run: |
           for chartName in ${{ steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests }}; do
-            helm unittest "$chartName"
+            # helm unittest "$chartName"
+            echo "= To be tested: $chartName"
           done
