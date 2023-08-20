@@ -30,7 +30,6 @@ jobs:
           else
             # Retrieve all charts
             modifiedChartPaths=$(find . -maxdepth 2 -type d | grep "^charts/" | cut -d "/" -f2-3 | sort --unique)
-            # TODO: Retrieve only the list of modified chart names in the last commit since the push
           fi
 
           # Keep only modified charts with unit tests
