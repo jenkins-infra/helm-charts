@@ -34,22 +34,26 @@ jobs:
           fi
 
           # Keep only modified charts with unit tests
-          modifiedChartsWithUnitTests=()
+          modifiedChartsWithUnitTests=""
           while IFS= read -r chartPath; do
               echo "= Checking if the modified chart path '$chartPath' contains unit tests folder..."
               if [ -d "${chartPath}/tests" ]; then
-                  modifiedChartsWithUnitTests+=("$(echo $chartPath | cut -d '/' -f 2)")
+                  modifiedChartsWithUnitTests="${modifiedChartsWithUnitTests},$(echo $chartPath | cut -d '/' -f 2)"
               fi
           done <<< "$modifiedChartPaths"
+          # Remove first character (',')
+          modifiedChartsWithUnitTests=${modifiedChartsWithUnitTests#?}
 
           # Return early if there is no modified chart with unit tests
           if [ -z "$modifiedChartsWithUnitTests" ]; then
             echo "= no modified chart with unit tests found."
             exit 0
+          else
+            echo "= modified chart(s) with unit tests: ${modifiedChartsWithUnitTests}"
           fi
 
           # Store the result
-          echo "modified_charts_with_unit_tests=$modifiedChartsWithUnitTests" >> "$GITHUB_OUTPUT"
+          echo "modified_charts_with_unit_tests=${modifiedChartsWithUnitTests}" >> "$GITHUB_OUTPUT"
       - name: Get Tools Versions
         id: tools-versions
         run: |
@@ -72,7 +76,8 @@ jobs:
       - name: run unit tests
         working-directory: ./charts/
         run: |
-          while IFS= read -r chartName; do
+          while IFS=',' read -r my_array <<< "$EXISTING_ARRAY"
+          #while IFS= read -r chartName; do
             # helm unittest "$chartName"
             echo "= To be tested: $chartName"
           done <<< "${{ steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests }}"
