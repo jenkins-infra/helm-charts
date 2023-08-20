@@ -72,7 +72,7 @@ jobs:
       - name: run unit tests
         working-directory: ./charts/
         run: |
-          for chartName in ${{ steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests }}; do
+          while IFS= read -r chartName; do
             # helm unittest "$chartName"
             echo "= To be tested: $chartName"
-          done
+          done <<< "${{ steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests }}"
