@@ -14,8 +14,6 @@ env:
 jobs:
   run_unit_tests_on_modified_charts:
     runs-on: ubuntu-latest
-    outputs:
-      charts_matrix: ${{ steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests }}
     name: Run tests on modified charts with unit tests
     steps:
       - uses: actions/checkout@v3
