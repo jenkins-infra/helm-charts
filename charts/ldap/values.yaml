@@ -1,7 +1,6 @@
 # Default values for ldap.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
 replicaCount: 1
 image:
   slapd:
@@ -10,7 +9,7 @@ image:
     pullPolicy: IfNotPresent
   crond:
     repository: jenkinsciinfra/ldap@sha256
-    tag: b8ead29ff164e44cd2985b6019be8ff3214326fe1f9bbb919a436aa6cc51ba5d
+    tag: cron-latest@sha256:b8ead29ff164e44cd2985b6019be8ff3214326fe1f9bbb919a436aa6cc51ba5d
     pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
@@ -20,7 +19,7 @@ serviceAccount:
   create: true
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name:
+  name: null
 ldap:
   admin:
     dn: 'cn=admin,dc=jenkins-ci,dc=org'
@@ -44,7 +43,6 @@ ldap:
       value: ''
 podSecurityContext: {}
 # fsGroup: 2000
-
 securityContext: {}
 # capabilities:
 #   drop:
@@ -52,7 +50,6 @@ securityContext: {}
 # readOnlyRootFilesystem: true
 # runAsNonRoot: true
 # runAsUser: 1000
-
 service:
   type: LoadBalancer
   #IP: ''
