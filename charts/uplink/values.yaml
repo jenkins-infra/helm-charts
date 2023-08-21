@@ -1,11 +1,10 @@
 # Default values for uplink.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
 replicaCount: 1
 image:
   repository: jenkinsciinfra/uplink@sha256
-  tag: c7ecad0e5e24bc05ac722418faf844d6a0286620c6316ff712459ecfcc3ee7ce
+  tag: latest@sha256:c7ecad0e5e24bc05ac722418faf844d6a0286620c6316ff712459ecfcc3ee7ce
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
@@ -15,10 +14,9 @@ serviceAccount:
   create: true
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name:
+  name: null
 podSecurityContext: {}
 # fsGroup: 2000
-
 securityContext: {}
 # capabilities:
 #   drop:
@@ -26,7 +24,6 @@ securityContext: {}
 # readOnlyRootFilesystem: true
 # runAsNonRoot: true
 # runAsUser: 1000
-
 service:
   type: ClusterIP
   port: 80
@@ -59,7 +56,7 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 postgresql:
-  url:
+  url: null
 client:
   id: ""
   secret: ""
