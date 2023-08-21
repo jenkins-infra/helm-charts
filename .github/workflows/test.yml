@@ -45,23 +45,27 @@ jobs:
           # Return early if there is no modified chart with unit tests
           if [ -z "$modifiedChartsWithUnitTests" ]; then
             echo "= no modified chart with unit tests found."
-            exit 0
           else
             echo "= modified chart(s) with unit tests: ${modifiedChartsWithUnitTests}"
           fi
 
           # Store the result
           echo "modified_charts_with_unit_tests=${modifiedChartsWithUnitTests}" >> "$GITHUB_OUTPUT"
-      - name: Get Tools Versions
-        id: tools-versions
+      - id: tools_versions
+        name: Get Tools Versions
+        if: steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests != ''
         run: |
           current_helm_version="$(curl --silent --location https://raw.githubusercontent.com/jenkins-infra/docker-helmfile/main/Dockerfile  | grep 'ARG' | grep 'HELM_VERSION=' | sort -u | cut -d'=' -f2)"
           echo "CURRENT_HELM_VERSION=${current_helm_version}" >> $GITHUB_OUTPUT
-      - name: Set up Helm
+      - id: setup_helm
+        name: Set up Helm
+        if: steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests != ''
         uses: azure/setup-helm@5119fcb9089d432beecbf79bb2c7915207344b78 # v3
         with:
           version: "${{ steps.tools-versions.outputs.CURRENT_HELM_VERSION }}"
-      - name: install helm unittests
+      - id: install_helm_unittests
+        name: install helm unittests
+        if: steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests != ''
         run: |
           helm env
           # Repeat 2 times to fight against network errors in  GHA runners
@@ -71,7 +75,9 @@ jobs:
             || true
           # Fail if not installed
           helm plugin list | grep unittest
-      - name: run unit tests
+      - id: run_helm_unittests
+        name: run unit tests
+        if: steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests != ''
         working-directory: ./charts/
         run: |
           # Set IFS to a comma to split the string into an array
