@@ -38,9 +38,9 @@ service:
     type: ClusterIP
     port: 873
     #    IP:
-    whitelisted_sources:
-      - 52.167.253.43/32
-      - 52.202.51.185/32
+    whitelisted_sources: []
+      # - 52.167.253.43/32
+      # - 52.202.51.185/32
 # ingress:
 #  enabled: true
 #  annotations: 
