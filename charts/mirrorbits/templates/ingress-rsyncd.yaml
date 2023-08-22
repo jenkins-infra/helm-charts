@@ -1,22 +1,22 @@
-{{- if .Values.ingressRsyncd.enabled -}}
-{{- $fullName := include "rsyncd-mirror.fullname" . -}}
+{{- if and .Values.rsyncd.ingress.enabled .Values.rsyncd.service.enabled -}}
+{{- $fullName := include "mirrorbits.fullname" . -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-{{ include "rsyncd-mirror.labels" . | indent 4 }}
-  {{- with .Values.ingressRsyncd.annotations }}
+{{ include "mirrorbits.labels" . | indent 4 }}
+  {{- with .Values.rsyncd.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-{{- if .Values.ingressRsyncd.ingressClassName }}
-  ingressClassName: {{ .Values.ingressRsyncd.ingressClassName }}
+{{- if .Values.rsyncd.ingress.ingressClassName }}
+  ingressClassName: {{ .Values.rsyncd.ingress.ingressClassName }}
 {{- end }}
-{{- if .Values.ingressRsyncd.tls }}
+{{- if .Values.rsyncd.ingress.tls }}
   tls:
-  {{- range .Values.ingressRsyncd.tls }}
+  {{- range .Values.rsyncd.ingress.tls }}
     - hosts:
       {{- range .hosts }}
         - {{ . | quote }}
@@ -25,18 +25,18 @@ spec:
   {{- end }}
 {{- end }}
   rules:
-  {{- range .Values.ingressRsyncd.hosts }}
+  {{- range .Values.rsyncd.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
         {{- range .paths }}
           - path: {{ .path }}
-            pathType: Prefix
+            pathType: {{ .pathType | default "Prefix" }}
             backend:
               service:
                 name: {{ $fullName }}-rsyncd
                 port:
-                  number: {{ int ($.Values.service.rsyncd.port) }}
+                  number: {{ int ($.Values.rsyncd.service.port) }}
         {{- end }}
   {{- end }}
 {{- end }}
