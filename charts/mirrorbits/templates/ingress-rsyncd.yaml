@@ -1,0 +1,42 @@
+{{- if .Values.ingressRsyncd.enabled -}}
+{{- $fullName := include "rsyncd-mirror.fullname" . -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+{{ include "rsyncd-mirror.labels" . | indent 4 }}
+  {{- with .Values.ingressRsyncd.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+{{- if .Values.ingressRsyncd.ingressClassName }}
+  ingressClassName: {{ .Values.ingressRsyncd.ingressClassName }}
+{{- end }}
+{{- if .Values.ingressRsyncd.tls }}
+  tls:
+  {{- range .Values.ingressRsyncd.tls }}
+    - hosts:
+      {{- range .hosts }}
+        - {{ . | quote }}
+      {{- end }}
+      secretName: {{ .secretName }}
+  {{- end }}
+{{- end }}
+  rules:
+  {{- range .Values.ingressRsyncd.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+        {{- range .paths }}
+          - path: {{ .path }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}-rsyncd
+                port:
+                  number: {{ int ($.Values.service.rsyncd.port) }}
+        {{- end }}
+  {{- end }}
+{{- end }}
