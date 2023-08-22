@@ -29,7 +29,7 @@ targets:
     scmid: default
     spec:
       file: .github/workflows/test.yml
-      key: env.UNITTEST_VERSION
+      key: $.env.UNITTEST_VERSION
 
 actions:
   default:

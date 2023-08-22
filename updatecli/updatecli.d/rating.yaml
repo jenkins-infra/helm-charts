@@ -38,7 +38,7 @@ targets:
     kind: helmchart
     spec:
       name: charts/rating
-      key: image.tag
+      key: $.image.tag
       versionincrement: patch
     scmid: default
 

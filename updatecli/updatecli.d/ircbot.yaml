@@ -38,7 +38,7 @@ targets:
     kind: helmchart
     spec:
       name: charts/ircbot
-      key: image.tag
+      key: $.image.tag
       versionincrement: patch
     scmid: default
 
