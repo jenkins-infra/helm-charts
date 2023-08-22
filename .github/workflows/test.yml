@@ -1,37 +1,69 @@
 name: Test Charts
 on:
-  push: null
-  pull_request: null
-  workflow_dispatch: null
+  push:
+    branches:
+      - main
+    paths:
+      - 'charts/**'
+  pull_request:
+    paths:
+      - 'charts/**'
+  workflow_dispatch:
 env:
   UNITTEST_VERSION: v0.3.4
 jobs:
-  unit-tests:
+  run_unit_tests_on_modified_charts:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        chart:
-          - accountapp
-          - artifact-caching-proxy
-          - httpredirector
-          - jenkins-jobs
-          - jenkins-kubernetes-agents
-          - mirrorbits
-          - plugin-health-scoring
-      fail-fast: false
+    name: Run tests on modified charts with unit tests
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Get Tools Versions
-        id: tools-versions
+      - uses: actions/checkout@v3
+      - id: list_modified_charts_with_unit_tests
+        name: List modified charts with unit tests
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+            # Retrieve the list of modified chart names in the pull request
+            modifiedChartPaths=$(gh pr view ${{ github.event.pull_request.number }} --json files -q '.files[].path' | xargs dirname | grep "^charts/" | cut -d "/" -f1-2 | sort --unique)
+          else
+            # Retrieve all charts
+            modifiedChartPaths=$(find . -maxdepth 2 -type d | grep "^charts/" | cut -d "/" -f2-3 | sort --unique)
+          fi
+
+          # Keep only modified charts with unit tests
+          modifiedChartsWithUnitTests=""
+          while IFS= read -r chartPath; do
+              if [ -d "${chartPath}/tests" ]; then
+                  modifiedChartsWithUnitTests+=",$(echo $chartPath | cut -d '/' -f 2)"
+              fi
+          done <<< "$modifiedChartPaths"
+          # Remove first comma
+          modifiedChartsWithUnitTests=${modifiedChartsWithUnitTests#,}
+
+          # Return early if there is no modified chart with unit tests
+          if [ -z "$modifiedChartsWithUnitTests" ]; then
+            echo "= no modified chart with unit tests found."
+          else
+            echo "= modified chart(s) with unit tests: ${modifiedChartsWithUnitTests}"
+          fi
+
+          # Store the result
+          echo "modified_charts_with_unit_tests=${modifiedChartsWithUnitTests}" >> "$GITHUB_OUTPUT"
+      - id: tools_versions
+        name: Get Tools Versions
+        if: steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests != ''
         run: |
           current_helm_version="$(curl --silent --location https://raw.githubusercontent.com/jenkins-infra/docker-helmfile/main/Dockerfile  | grep 'ARG' | grep 'HELM_VERSION=' | sort -u | cut -d'=' -f2)"
           echo "CURRENT_HELM_VERSION=${current_helm_version}" >> $GITHUB_OUTPUT
-      - name: Set up Helm
+      - id: setup_helm
+        name: Set up Helm
+        if: steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests != ''
         uses: azure/setup-helm@5119fcb9089d432beecbf79bb2c7915207344b78 # v3
         with:
           version: "${{ steps.tools-versions.outputs.CURRENT_HELM_VERSION }}"
-      - name: install helm unittests
+      - id: install_helm_unittests
+        name: install helm unittests
+        if: steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests != ''
         run: |
           helm env
           # Repeat 2 times to fight against network errors in  GHA runners
@@ -41,7 +73,14 @@ jobs:
             || true
           # Fail if not installed
           helm plugin list | grep unittest
-      - name: run unit tests
+      - id: run_helm_unittests
+        name: run unit tests
+        if: steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests != ''
         working-directory: ./charts/
         run: |
-          helm unittest "${{ matrix.chart }}"
+          # Set IFS to a comma to split the string into an array
+          IFS=',' read -ra chartNames <<< "${{ steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests }}"
+
+          for chartName in "${chartNames[@]}"; do
+            helm unittest "$chartName"
+          done
