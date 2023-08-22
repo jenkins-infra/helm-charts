@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "mirror.fullname" . }}-rsyncd
+  name: {{ include "rsyncd-mirror.fullname" . }}-rsyncd
   labels:
-{{ include "mirror.labels" . | indent 4 }}
+{{ include "rsyncd-mirror.labels" . | indent 4 }}
 spec:
   type: {{ .Values.service.rsyncd.type }}
   {{- if eq .Values.service.rsyncd.type "LoadBalancer" }}
@@ -22,5 +22,5 @@ spec:
       protocol: TCP
       name: rsyncd
   selector:
-    app.kubernetes.io/name: {{ include "mirror.name" . }}
+    app.kubernetes.io/name: {{ include "rsyncd-mirror.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

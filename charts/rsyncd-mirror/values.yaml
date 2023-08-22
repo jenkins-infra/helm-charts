@@ -1,4 +1,4 @@
-# Default values for mirror.
+# Default values for rsyncd-mirror.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -38,13 +38,13 @@ service:
     type: ClusterIP
     port: 873
     #    IP:
-    whitelisted_sources:
-      - 52.167.253.43/32
-      - 52.202.51.185/32
+    whitelisted_sources: []
+      # - 52.167.253.43/32
+      # - 52.202.51.185/32
 # ingress:
 #  enabled: true
 #  annotations: 
-#    "cert-manager.io/cluster-issuer": "letsencrypt-prod"
+#    "cert-manager.io/cluster-issuer": "letsencrypt-staging"
 #    "nginx.ingress.kubernetes.io/proxy-body-size": "500m"
 #
 #  hosts:
@@ -53,6 +53,17 @@ service:
 #    - secretName: releasemirror-tls
 #      hosts:
 #        - mirror.jenkins.io
+ingressRsyncd:
+ enabled: false
+ annotations: 
+   "cert-manager.io/cluster-issuer": "letsencrypt-staging"
+
+ hosts:
+   - host: rsyncd.mirror.jenkins.io
+ tls:
+   - secretName: rsyncd-releasemirror-tls
+     hosts:
+       - rsyncd.mirror.jenkins.io
 resources:
   web:
     limits:
@@ -80,11 +91,11 @@ tolerations: []
 affinity: {}
 persistent:
   volume:
-    name: mirror-binary
+    name: rsyncd-mirror-binary
     enabled: false
     spec: {}
   volumeClaim:
-    name: mirror-binary
+    name: rsyncd-mirror-binary
     enabled: false
     spec:
       storageClassName: default
@@ -94,7 +105,7 @@ persistent:
         requests:
           storage: 200Gi
   secret:
-    name: mirror-binary
+    name: rsyncd-mirror-binary
     enabled: false
     data: {}
 synchronize:

@@ -1,4 +1,4 @@
-# Mirror
+# rsyncd-mirror
 
 This helm charts starts three containers:
 - One to synchronize remote Jenkins mirror with a local directory using rsync command from a cronjob
