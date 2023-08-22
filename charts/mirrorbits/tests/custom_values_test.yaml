@@ -4,9 +4,10 @@ values:
 templates:
   - deployment.yaml
   - deployment.files.yaml
+  - deployment.rsyncd.yaml
   - ingress.yaml
   - ingress.rsyncd.yaml
-  - secret.yaml # Direct dependency of deployment.yaml
+  - secret.yaml # Direct dependency of deployment(.*).yaml
   - service.files.yaml
   - service.rsyncd.yaml
 tests:
@@ -100,30 +101,47 @@ tests:
       - equal:
           path: spec.template.spec.containers[*].imagePullPolicy
           value: Always
-  - it: should define a rsyncd container if rsyncd service is enabled
-    template: deployment.yaml
+  - it: should create rsyncd deployment if rsyncd service is enabled and PVC is enabled
+    template: deployment.rsyncd.yaml
     set:
       rsyncd:
         service:
           enabled: true
+      repository:
+        persistentVolumeClaim:
+          enabled: true
     asserts:
-      - contains:
-          path: spec.template.spec.containers
-          content:
-            name: rsyncd
-          any: true # Ignores any other values within the found content
-  - it: should create rsyncd service only if rsyncd service is enabled
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+  - it: should create rsyncd deployment if only rsyncd service is enabled
+    template: deployment.rsyncd.yaml
+    set:
+      rsyncd:
+        service:
+          enabled: true
+      repository:
+        persistentVolumeClaim:
+          enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should create rsyncd service if rsyncd service and PVC are enabled
     template: service.rsyncd.yaml
     set:
       rsyncd:
         service:
+          enabled: true
+      repository:
+        persistentVolumeClaim:
           enabled: true
     asserts:
       - hasDocuments:
           count: 1
       - isKind:
           of: Service
-  - it: should create rsyncd ingress only if rsyncd ingress and service are enabled
+  - it: should create rsyncd ingress if rsyncd ingress & service and PVC are enabled
     template: ingress.rsyncd.yaml
     set:
       rsyncd:
@@ -136,6 +154,9 @@ tests:
               paths:
               - path: /
                 pathType: IfNotPresent
+      repository:
+        persistentVolumeClaim:
+          enabled: true
     asserts:
       - hasDocuments:
           count: 1

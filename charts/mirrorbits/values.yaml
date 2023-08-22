@@ -4,6 +4,7 @@
 replicaCount:
   mirrorbits: 1
   files: 1
+  rsyncd: 1
 image:
   mirrorbits:
     repository: jenkinsciinfra/mirrorbits
