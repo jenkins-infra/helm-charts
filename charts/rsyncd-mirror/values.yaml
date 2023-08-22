@@ -44,7 +44,7 @@ service:
 # ingress:
 #  enabled: true
 #  annotations: 
-#    "cert-manager.io/cluster-issuer": "letsencrypt-prod"
+#    "cert-manager.io/cluster-issuer": "letsencrypt-staging"
 #    "nginx.ingress.kubernetes.io/proxy-body-size": "500m"
 #
 #  hosts:
@@ -53,6 +53,17 @@ service:
 #    - secretName: releasemirror-tls
 #      hosts:
 #        - mirror.jenkins.io
+ingressRsyncd:
+ enabled: false
+ annotations: 
+   "cert-manager.io/cluster-issuer": "letsencrypt-staging"
+
+ hosts:
+   - host: rsyncd.mirror.jenkins.io
+ tls:
+   - secretName: rsyncd-releasemirror-tls
+     hosts:
+       - rsyncd.mirror.jenkins.io
 resources:
   web:
     limits:
