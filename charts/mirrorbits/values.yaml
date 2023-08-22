@@ -4,6 +4,7 @@
 replicaCount:
   mirrorbits: 1
   files: 1
+  rsyncd: 1
 image:
   mirrorbits:
     repository: jenkinsciinfra/mirrorbits
@@ -12,6 +13,10 @@ image:
   files:
     repository: httpd@sha256
     tag: 18427eed921af003c951b5c97f0bde8a6df40cc7cb09b9739b9e35041a3c3acd
+    pullPolicy: IfNotPresent
+  rsyncd:
+    repository: jenkinsciinfra/rsyncd@sha256
+    tag: bc5b180219c491e514234ad1c7274f53cf8161c4be90be86dae9231f843e8417
     pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
@@ -100,3 +105,27 @@ repository:
     enabled: false
     # data hold secrets data used by persistentVolume
     data: {}
+rsyncd:
+  service:
+    enabled: false
+    type: ClusterIP
+    port: 873
+    #    IP:
+    whitelisted_sources: []
+      # - 52.167.253.43/32
+      # - 52.202.51.185/32
+  ingress:
+    enabled: false
+    # annotations:
+    #   "cert-manager.io/cluster-issuer": "letsencrypt-staging"
+    # hosts:
+    #   - host: rsyncd.mirror.jenkins.io
+    # tls:
+    #   - secretName: rsyncd-releasemirror-tls
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi

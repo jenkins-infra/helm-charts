@@ -1,0 +1,64 @@
+{{ if and .Values.rsyncd.service.enabled .Values.repository.persistentVolumeClaim.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mirrorbits.fullname" . }}
+  labels:
+{{ include "mirrorbits.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount.rsyncd }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "mirrorbits.name" . }}-rsyncd
+      app.kubernetes.io/instance: {{ .Release.Name }}-rsyncd
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "mirrorbits.name" . }}-rsyncd
+        app.kubernetes.io/instance: {{ .Release.Name }}-rsyncd
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ template "mirrorbits.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: rsyncd
+          image: "{{ .Values.image.rsyncd.repository }}:{{ .Values.image.rsyncd.tag }}"
+          imagePullPolicy: {{ .Values.image.rsyncd.pullPolicy }}
+          ports:
+            - name: rsyncd
+              containerPort: 873
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+             port: 873
+          readinessProbe:
+            tcpSocket:
+             port: 873
+          resources:
+            {{- toYaml .Values.rsyncd.resources | nindent 12 }}
+          volumeMounts:
+            - name: binary
+              mountPath: /srv/repo
+              readOnly: true
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      volumes:
+        - name: binary
+          persistentVolumeClaim:
+            claimName: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits.fullname" .)) }}
+{{- end }}

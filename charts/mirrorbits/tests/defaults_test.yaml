@@ -3,14 +3,32 @@ values:
   - ../values.yaml
   - secrets_default_values.yaml
 templates:
-  - deployment.files.yaml
   - deployment.yaml
+  - deployment.files.yaml
+  - deployment.rsyncd.yaml
   - ingress.yaml
-  - secret.yaml # Direct dependency of deployment.yaml
+  - ingress.rsyncd.yaml
+  - secret.yaml # Direct dependency of deployment(.*).yaml
   - service.files.yaml
+  - service.rsyncd.yaml
 tests:
   - it: should not create any ingress by default
     template: ingress.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should not create any rsyncd ingress by default
+    template: ingress.rsyncd.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should not create any rsyncd service by default
+    template: service.rsyncd.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should not create any rsyncd deployment by default
+    template: deployment.rsyncd.yaml
     asserts:
       - hasDocuments:
           count: 0
@@ -72,14 +90,4 @@ tests:
           value: "RELEASE-NAME-files"
       - equal:
           path: "spec.template.spec.containers[*].imagePullPolicy"
-          value: IfNotPresent
-  - it: should define the default "mirrorbits" deployment with default imagePullPolicy
-    template: deployment.yaml
-    asserts:
-      - hasDocuments:
-          count: 1
-      - isKind:
-          of: Deployment
-      - equal:
-          path: spec.template.spec.containers[*].imagePullPolicy
           value: IfNotPresent
