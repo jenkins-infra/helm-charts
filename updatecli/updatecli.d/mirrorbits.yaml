@@ -38,6 +38,15 @@ sources:
       repository: "geoipupdate"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
+  latestRsyncdRelease:
+    kind: dockerdigest
+    name: "Get jenkinsciinfra/rsyncd:latest docker image digest"
+    spec:
+      image: "jenkinsciinfra/rsyncd"
+      tag: "latest"
+      architecture: "amd64"
+    transformers:
+      - trimprefix: 'sha256:'
 
 conditions:
   checkMirrorbitsDockerImagePublished:
@@ -85,6 +94,14 @@ targets:
       name: charts/mirrorbits
       key: "geoipupdate.image.tag"
     scmid: default
+  updateRsyncd:
+    name: "Update rsyncd docker image version"
+    sourceid: latestRsyncdRelease
+    kind: helmchart
+    spec:
+      name: charts/mirrorbits
+      key: "image.rsyncd.tag"
+    scmid: default
 
 actions:
   default:
@@ -97,3 +114,4 @@ actions:
         - mirrorbits
         - httpd
         - geoip
+        - rsyncd
