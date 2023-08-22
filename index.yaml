@@ -4238,6 +4238,16 @@ entries:
     urls:
     - https://github.com/jenkins-infra/helm-charts/releases/download/rss2twitter-0.0.1/rss2twitter-0.0.1.tgz
     version: 0.0.1
+  rsyncd-mirror:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2023-08-22T12:44:21.624396258Z"
+    description: A Helm chart which deploys a Jenkins mirror
+    digest: b5e7aceb5f183bde56c5a70b679ddc61c0548cde97c6298349761ee57042f418
+    name: rsyncd-mirror
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/rsyncd-mirror-0.1.23/rsyncd-mirror-0.1.23.tgz
+    version: 0.1.23
   uplink:
   - apiVersion: v1
     appVersion: "1.0"
@@ -5133,4 +5143,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2023-08-22T09:58:34.363745286Z"
+generated: "2023-08-22T12:44:21.625461674Z"
