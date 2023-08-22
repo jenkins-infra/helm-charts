@@ -5,8 +5,10 @@ templates:
   - deployment.yaml
   - deployment.files.yaml
   - ingress.yaml
+  - ingress.rsyncd.yaml
   - secret.yaml # Direct dependency of deployment.yaml
   - service.files.yaml
+  - service.rsyncd.yaml
 tests:
   - it: Should set the correct service selector labels when a fullNameOverride is specified
     template: service.files.yaml
@@ -84,3 +86,67 @@ tests:
       - equal:
           path: spec.rules[0].http.paths[0].pathType
           value: "IfNotPresent"
+  - it: should define a customized "mirrorbits" deployment
+    template: deployment.yaml
+    set:
+      image:
+        mirrorbits:
+          pullPolicy: Always
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[*].imagePullPolicy
+          value: Always
+  - it: should define a rsyncd container if rsyncd service is enabled
+    template: deployment.yaml
+    set:
+      rsyncd:
+        service:
+          enabled: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers
+          content:
+            name: rsyncd
+          any: true # Ignores any other values within the found content
+  - it: should create rsyncd service only if rsyncd service is enabled
+    template: service.rsyncd.yaml
+    set:
+      rsyncd:
+        service:
+          enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+  - it: should create rsyncd ingress only if rsyncd ingress and service are enabled
+    template: ingress.rsyncd.yaml
+    set:
+      rsyncd:
+        service:
+          enabled: true
+        ingress:
+          enabled: true
+          hosts:
+            - host: chart-example.local
+              paths:
+              - path: /
+                pathType: IfNotPresent
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Ingress
+  - it: should not create rsyncd ingress if only rsyncd ingress is enabled
+    template: ingress.rsyncd.yaml
+    set:
+      rsyncd:
+        ingress:
+          enabled: true
+    asserts:
+      - hasDocuments:
+          count: 0
