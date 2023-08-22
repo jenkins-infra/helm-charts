@@ -2192,6 +2192,16 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/ldap-0.0.2/ldap-0.0.2.tgz
     version: 0.0.2
+  mirror:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2023-08-22T09:58:34.362086092Z"
+    description: A Helm chart which deploys a Jenkins mirror
+    digest: 0fb2789da775a31a30ba2116284492decb4ac6bc7c7bd00da96986ac04796d9a
+    name: mirror
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/mirror-0.1.23/mirror-0.1.23.tgz
+    version: 0.1.23
   mirrorbits:
   - apiVersion: v1
     appVersion: v0.5.2
@@ -5123,4 +5133,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2023-08-17T11:59:18.749327751Z"
+generated: "2023-08-22T09:58:34.363745286Z"
