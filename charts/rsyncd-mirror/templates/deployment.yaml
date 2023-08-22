@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "mirror.fullname" . }}
+  name: {{ include "rsyncd-mirror.fullname" . }}
   labels:
-{{ include "mirror.labels" . | indent 4 }}
+{{ include "rsyncd-mirror.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   strategy: 
     {{- toYaml .Values.strategy | nindent 4 }} 
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "mirror.name" . }}
+      app.kubernetes.io/name: {{ include "rsyncd-mirror.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "mirror.name" . }}
+        app.kubernetes.io/name: {{ include "rsyncd-mirror.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum | trunc 63 }}
     spec:
@@ -101,17 +101,17 @@ spec:
       volumes:
         - name: conf
           configMap:
-            name: {{ include "mirror.fullname" . }}
+            name: {{ include "rsyncd-mirror.fullname" . }}
             items:
               - key: httpd.conf
                 path: httpd.conf
         {{- if .Values.persistent.volumeClaim.enabled }}
         - name: binary
           persistentVolumeClaim:
-            claimName:  {{ $.Values.persistent.volumeClaim.name | default (printf "%s-binary" (include "mirror.fullname" .))  }}
+            claimName:  {{ $.Values.persistent.volumeClaim.name | default (printf "%s-binary" (include "rsyncd-mirror.fullname" .))  }}
         {{- end }}
       {{- if .Values.synchronize.enabled }}
         - name: cronjobs
           configMap:
-            name: {{ include "mirror.fullname" . }}-cronjobs
+            name: {{ include "rsyncd-mirror.fullname" . }}-cronjobs
       {{- end }}

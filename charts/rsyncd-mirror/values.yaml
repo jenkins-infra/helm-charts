@@ -1,4 +1,4 @@
-# Default values for mirror.
+# Default values for rsyncd-mirror.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -80,11 +80,11 @@ tolerations: []
 affinity: {}
 persistent:
   volume:
-    name: mirror-binary
+    name: rsyncd-mirror-binary
     enabled: false
     spec: {}
   volumeClaim:
-    name: mirror-binary
+    name: rsyncd-mirror-binary
     enabled: false
     spec:
       storageClassName: default
@@ -94,7 +94,7 @@ persistent:
         requests:
           storage: 200Gi
   secret:
-    name: mirror-binary
+    name: rsyncd-mirror-binary
     enabled: false
     data: {}
 synchronize:
