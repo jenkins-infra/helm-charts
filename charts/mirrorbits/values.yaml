@@ -12,7 +12,7 @@ image:
     pullPolicy: IfNotPresent
   files:
     repository: httpd@sha256
-    tag: 18427eed921af003c951b5c97f0bde8a6df40cc7cb09b9739b9e35041a3c3acd
+    tag: 2.4@sha256:18427eed921af003c951b5c97f0bde8a6df40cc7cb09b9739b9e35041a3c3acd
     pullPolicy: IfNotPresent
   rsyncd:
     repository: jenkinsciinfra/rsyncd@sha256
@@ -112,8 +112,8 @@ rsyncd:
     port: 873
     #    IP:
     whitelisted_sources: []
-      # - 52.167.253.43/32
-      # - 52.202.51.185/32
+    # - 52.167.253.43/32
+    # - 52.202.51.185/32
   ingress:
     enabled: false
     # annotations:
