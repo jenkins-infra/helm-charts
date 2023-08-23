@@ -108,7 +108,7 @@ repository:
 rsyncd:
   service:
     enabled: false
-    type: ClusterIP
+    type: LoadBalancer # Needed as this service is a TCP one
     port: 873
     #    IP:
     whitelisted_sources: []
