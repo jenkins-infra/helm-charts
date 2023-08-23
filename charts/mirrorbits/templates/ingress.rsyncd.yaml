@@ -3,7 +3,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ $fullName }}-rsyncd
   labels:
 {{ include "mirrorbits.labels" . | indent 4 }}
   {{- with .Values.rsyncd.ingress.annotations }}
