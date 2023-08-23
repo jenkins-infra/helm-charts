@@ -37,7 +37,7 @@ targets:
     kind: helmchart
     spec:
       name: charts/plugin-health-scoring
-      key: image.tag
+      key: $.image.tag
       versionincrement: patch
     scmid: default
 
