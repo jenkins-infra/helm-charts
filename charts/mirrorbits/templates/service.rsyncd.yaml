@@ -23,6 +23,6 @@ spec:
       protocol: TCP
       name: rsyncd
   selector:
-    app.kubernetes.io/name: {{ include "mirrorbits.name" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/name: {{ include "mirrorbits.name" . }}-rsyncd
+    app.kubernetes.io/instance: {{ .Release.Name }}-rsyncd
 {{- end }}
