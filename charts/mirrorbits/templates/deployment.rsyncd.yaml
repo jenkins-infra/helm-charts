@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "mirrorbits.fullname" . }}
+  name: {{ include "mirrorbits.fullname" . }}-rsyncd
   labels:
 {{ include "mirrorbits.labels" . | indent 4 }}
 spec:
