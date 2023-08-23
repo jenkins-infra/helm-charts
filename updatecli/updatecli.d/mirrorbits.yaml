@@ -28,8 +28,9 @@ sources:
       image: "httpd"
       tag: "2.4"
       architecture: "amd64"
+      hidetag: true
     transformers:
-      - trimprefix: 'sha256:'
+      - trimprefix: '@sha256:'
   latestGeoIPRelease:
     name: Get latest version of GeoIP
     kind: githubrelease
@@ -75,7 +76,7 @@ targets:
     kind: helmchart
     spec:
       name: charts/mirrorbits
-      key: "image.mirrorbits.tag"
+      key: $.image.mirrorbits.tag
       versionincrement: patch
     scmid: default
   updateHttpd:
@@ -84,7 +85,7 @@ targets:
     kind: helmchart
     spec:
       name: charts/mirrorbits
-      key: "image.files.tag"
+      key: $.image.files.tag
     scmid: default
   updateGeoIP:
     name: "Update maxmindinc/geoipupdate docker image version"
@@ -92,7 +93,7 @@ targets:
     kind: helmchart
     spec:
       name: charts/mirrorbits
-      key: "geoipupdate.image.tag"
+      key: $.geoipupdate.image.tag
     scmid: default
   updateRsyncd:
     name: "Update rsyncd docker image version"

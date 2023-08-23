@@ -47,7 +47,7 @@ targets:
     kind: helmchart
     spec:
       name: charts/javadoc
-      key: image.tag
+      key: $.image.tag
       versionincrement: patch
     scmid: default
   updateJenkinsioChartEn:
@@ -55,7 +55,7 @@ targets:
     kind: helmchart
     spec:
       name: charts/jenkinsio
-      key: images.en.tag
+      key: $.images.en.tag
       versionincrement: patch
     scmid: default
   updateJenkinsioChartZh:
@@ -63,7 +63,7 @@ targets:
     kind: helmchart
     spec:
       name: charts/jenkinsio
-      key: images.zh.tag
+      key: $.images.zh.tag
       versionincrement: patch
     scmid: default
   updatePluginSiteChart:
@@ -71,7 +71,7 @@ targets:
     kind: helmchart
     spec:
       name: charts/plugin-site
-      key: frontend.image.tag
+      key: $.frontend.image.tag
       versionincrement: patch
     scmid: default
   updateReportsChart:
@@ -79,7 +79,7 @@ targets:
     kind: helmchart
     spec:
       name: charts/reports
-      key: image.tag
+      key: $.image.tag
       versionincrement: patch
     scmid: default
   updateArtifactCachingProxy:
@@ -87,7 +87,7 @@ targets:
     kind: helmchart
     spec:
       name: charts/artifact-caching-proxy
-      key: image.tag
+      key: $.image.tag
       versionincrement: patch
     scmid: default
 
