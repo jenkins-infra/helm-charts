@@ -1,0 +1,9 @@
+{{- if .Values.rsyncd.configurationFiles.rsyncdConf.override }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "mirrorbits.fullname" . }}-rsyncd-conf
+data:
+  rsyncd.conf:
+{{ .Values.rsyncd.configurationFiles.rsyncdConf.content | indent 4 }}
+{{- end -}}

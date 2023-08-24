@@ -4,11 +4,9 @@ on:
     paths:
       - 'charts/**'
 jobs:
-  find_modified_charts:
+  check_version_bump_on_modified_charts:
     runs-on: ubuntu-latest
-    outputs:
-      charts_matrix: ${{ steps.list_modified_charts.outputs.modified_charts }}
-    name: Find modified charts
+    name: Check version bump on modified charts
     steps:
       - uses: actions/checkout@v3
       - id: list_modified_charts
@@ -38,7 +36,7 @@ jobs:
           git fetch --quiet origin ${{ github.event.pull_request.base.ref }}:target-branch
 
           # Set IFS to a comma to split the string into an array
-          IFS=',' read -ra chartNames <<< "${{ steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests }}"
+          IFS=',' read -ra chartNames <<< "${{ steps.list_modified_charts.outputs.modified_charts }}"
 
           notBumped=0
 

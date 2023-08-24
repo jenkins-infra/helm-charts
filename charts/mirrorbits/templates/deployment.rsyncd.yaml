@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "mirrorbits.fullname" . }}
+  name: {{ include "mirrorbits.fullname" . }}-rsyncd
   labels:
 {{ include "mirrorbits.labels" . | indent 4 }}
 spec:
@@ -44,7 +44,18 @@ spec:
             - name: binary
               mountPath: /srv/repo
               readOnly: true
-
+            {{- if .Values.rsyncd.configurationFiles.rsyncdConf.override }}
+            - name: rsyncd-conf
+              mountPath: /etc/rsyncd.conf
+              subPath: rsyncd.conf
+              readOnly: true
+            {{- end }}
+            {{- if .Values.rsyncd.configurationFiles.jenkinsMotd.override }}
+            - name: jenkins-motd
+              mountPath: /etc/jenkins-motd
+              subPath: jenkins-motd
+              readOnly: true
+            {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -61,4 +72,14 @@ spec:
         - name: binary
           persistentVolumeClaim:
             claimName: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits.fullname" .)) }}
+        {{- if .Values.rsyncd.configurationFiles.rsyncdConf.override }}
+        - name: rsyncd-conf
+          configMap:
+            name: {{ include "mirrorbits.fullname" . }}-rsyncd-conf
+        {{- end }}
+        {{- if .Values.rsyncd.configurationFiles.rsyncdConf.override }}
+        - name: jenkins-motd
+          configMap:
+            name: {{ include "mirrorbits.fullname" . }}-jenkins-motd
+        {{- end }}
 {{- end }}
