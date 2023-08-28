@@ -8,7 +8,7 @@ replicaCount:
 image:
   mirrorbits:
     repository: jenkinsciinfra/mirrorbits
-    tag: 0.1.95
+    tag: 0.1.96
     pullPolicy: IfNotPresent
   files:
     repository: httpd@sha256
@@ -16,7 +16,7 @@ image:
     pullPolicy: IfNotPresent
   rsyncd:
     repository: jenkinsciinfra/rsyncd@sha256
-    tag: bc5b180219c491e514234ad1c7274f53cf8161c4be90be86dae9231f843e8417
+    tag: latest@sha256:ab76cbaa200f914d69cce68ee771e40aced3627740796e9e31845d7c883f0a67
     pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
@@ -112,8 +112,8 @@ rsyncd:
     port: 873
     #    IP:
     whitelisted_sources: []
-      # - 52.167.253.43/32
-      # - 52.202.51.185/32
+    # - 52.167.253.43/32
+    # - 52.202.51.185/32
   ingress:
     enabled: false
     # annotations:
