@@ -34,10 +34,10 @@ spec:
               protocol: TCP
           livenessProbe:
             tcpSocket:
-             port: 873
+              port: 873
           readinessProbe:
             tcpSocket:
-             port: 873
+              port: 873
           resources:
             {{- toYaml .Values.rsyncd.resources | nindent 12 }}
           volumeMounts:

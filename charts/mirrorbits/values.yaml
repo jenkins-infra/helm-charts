@@ -11,11 +11,11 @@ image:
     tag: 0.1.96
     pullPolicy: IfNotPresent
   files:
-    repository: httpd@sha256
-    tag: 18427eed921af003c951b5c97f0bde8a6df40cc7cb09b9739b9e35041a3c3acd
+    repository: httpd
+    tag: 2.4@sha256:18427eed921af003c951b5c97f0bde8a6df40cc7cb09b9739b9e35041a3c3acd
     pullPolicy: IfNotPresent
   rsyncd:
-    repository: jenkinsciinfra/rsyncd@sha256
+    repository: jenkinsciinfra/rsyncd
     tag: latest@sha256:ab76cbaa200f914d69cce68ee771e40aced3627740796e9e31845d7c883f0a67
     pullPolicy: IfNotPresent
 imagePullSecrets: []
@@ -158,7 +158,7 @@ rsyncd:
       #    timeout = 300
       #
       #    # Any attempted uploads will fail
-      #    read only = true 
+      #    read only = true
       #
       #    # Downloads will be possible if file permissions on the daemon side allow them
       #    write only = false
