@@ -100,41 +100,21 @@ tests:
       - equal:
           path: spec.template.spec.containers[*].imagePullPolicy
           value: Always
-  - it: should create rsyncd deployment if rsyncd service is enabled and PVC is enabled
+  - it: should create rsyncd deployment if rsyncd is enabled
     template: deployment.rsyncd.yaml
     set:
       rsyncd:
-        service:
-          enabled: true
-      repository:
-        persistentVolumeClaim:
-          enabled: true
+        enabled: true
     asserts:
       - hasDocuments:
           count: 1
       - isKind:
           of: Deployment
-  - it: should create rsyncd deployment if only rsyncd service is enabled
-    template: deployment.rsyncd.yaml
-    set:
-      rsyncd:
-        service:
-          enabled: true
-      repository:
-        persistentVolumeClaim:
-          enabled: false
-    asserts:
-      - hasDocuments:
-          count: 0
-  - it: should create rsyncd service if rsyncd service and PVC are enabled
+  - it: should create rsyncd service if rsyncd is enabled
     template: service.rsyncd.yaml
     set:
       rsyncd:
-        service:
-          enabled: true
-      repository:
-        persistentVolumeClaim:
-          enabled: true
+        enabled: true
     asserts:
       - hasDocuments:
           count: 1
