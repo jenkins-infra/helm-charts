@@ -106,8 +106,11 @@ repository:
     # data hold secrets data used by persistentVolume
     data: {}
 rsyncd:
+  enabled: false
+  volumes:
+    datadir: {}
+      # emptyDir:
   service:
-    enabled: false
     type: ClusterIP
     port: 873
     #    IP:
@@ -129,41 +132,16 @@ rsyncd:
     requests:
       cpu: 50m
       memory: 64Mi
+  configuration:
+    datadir: /srv/repo
+    uid: nobody
+    gid: nogroup
+    motd_path: /etc/jenkins.motd
+    port: 873
+    hosts_allow: '*'
+    comment: "Jenkins Read-Only Mirror"
   # Custom configuration files used to override default rsyncd settings defined in https://github.com/jenkins-infra/docker-rsyncd/tree/main/config
   configurationFiles:
-    rsyncdConf:
-      override: false
-      # content: |-
-      #    # /etc/rsyncd: configuration file for
-      #    rsync daemon mode
-      #
-      #    # See rsyncd.conf man page for more options.
-      #
-      #    # configuration example:
-      #
-      #    uid = nobody
-      #    gid = nogroup
-      #    use chroot = yes
-      #    max connections = 0
-      #    pid file = /var/run/rsyncd.pid
-      #    exclude = lost+found/
-      #    transfer logging = yes
-      #    log file = /dev/stdout
-      #    ignore nonreadable = yes
-      #    dont compress   = *.gz *.tgz *.zip *.z *.Z *.rpm *.deb *.bz2
-      #    port = 873
-      #    motd file = /etc/jenkins.motd
-      #
-      #    # Timeout in seconds
-      #    timeout = 300
-      #
-      #    # Any attempted uploads will fail
-      #    read only = true
-      #
-      #    # Downloads will be possible if file permissions on the daemon side allow them
-      #    write only = false
-      #
-      #    hosts allow = localhost, get.jenkins.io, mirrors.jenkins-ci.org,172.16.0.0/12,10.0.0.0/8,192.168.0.0/16
     jenkinsMotd:
       override: false
       # content: |-

@@ -1,4 +1,4 @@
-{{ if and .Values.rsyncd.service.enabled .Values.repository.persistentVolumeClaim.enabled -}}
+{{- if .Values.rsyncd.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -41,18 +41,16 @@ spec:
           resources:
             {{- toYaml .Values.rsyncd.resources | nindent 12 }}
           volumeMounts:
-            - name: binary
-              mountPath: /srv/repo
+            - name: datadir
+              mountPath: {{ .Values.rsyncd.configuration.datadir }}
               readOnly: true
-            {{- if .Values.rsyncd.configurationFiles.rsyncdConf.override }}
             - name: rsyncd-conf
               mountPath: /etc/rsyncd.conf
               subPath: rsyncd.conf
               readOnly: true
-            {{- end }}
             {{- if .Values.rsyncd.configurationFiles.jenkinsMotd.override }}
             - name: jenkins-motd
-              mountPath: /etc/jenkins-motd
+              mountPath: {{ .Values.rsyncd.configuration.motd_path }}
               subPath: jenkins-motd
               readOnly: true
             {{- end }}
@@ -69,15 +67,16 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       volumes:
-        - name: binary
-          persistentVolumeClaim:
-            claimName: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits.fullname" .)) }}
-        {{- if .Values.rsyncd.configurationFiles.rsyncdConf.override }}
+        - name: datadir
+          {{- if .Values.rsyncd.volumes.datadir }}
+          {{- toYaml .Values.rsyncd.volumes.datadir | nindent 10 }}
+          {{- else }}
+          emptyDir:
+          {{- end }}
         - name: rsyncd-conf
           configMap:
             name: {{ include "mirrorbits.fullname" . }}-rsyncd-conf
-        {{- end }}
-        {{- if .Values.rsyncd.configurationFiles.rsyncdConf.override }}
+        {{- if .Values.rsyncd.configurationFiles.jenkinsMotd.override }}
         - name: jenkins-motd
           configMap:
             name: {{ include "mirrorbits.fullname" . }}-jenkins-motd
