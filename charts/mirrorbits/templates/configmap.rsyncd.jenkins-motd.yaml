@@ -1,4 +1,4 @@
-{{- if .Values.rsyncd.configurationFiles.jenkinsMotd.override }}
+{{- if and .Values.rsyncd.enabled .Values.rsyncd.configurationFiles.jenkinsMotd.override -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
