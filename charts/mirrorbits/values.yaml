@@ -16,7 +16,7 @@ image:
     pullPolicy: IfNotPresent
   rsyncd:
     repository: jenkinsciinfra/rsyncd
-    tag: latest@sha256:ab76cbaa200f914d69cce68ee771e40aced3627740796e9e31845d7c883f0a67
+    tag: latest@sha256:1f45e8733ead8f735271fbe9c68297b065218db57b2a557bbec515aba97e3d08
     pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
@@ -109,7 +109,7 @@ rsyncd:
   enabled: false
   volumes:
     datadir: {}
-      # emptyDir:
+    # emptyDir:
   service:
     type: ClusterIP
     port: 873
