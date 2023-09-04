@@ -1,0 +1,84 @@
+{{- if .Values.rsyncd.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mirrorbits.fullname" . }}-rsyncd
+  labels:
+{{ include "mirrorbits.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount.rsyncd }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "mirrorbits.name" . }}-rsyncd
+      app.kubernetes.io/instance: {{ .Release.Name }}-rsyncd
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "mirrorbits.name" . }}-rsyncd
+        app.kubernetes.io/instance: {{ .Release.Name }}-rsyncd
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ template "mirrorbits.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: rsyncd
+          image: "{{ .Values.image.rsyncd.repository }}:{{ .Values.image.rsyncd.tag }}"
+          imagePullPolicy: {{ .Values.image.rsyncd.pullPolicy }}
+          ports:
+            - name: rsyncd
+              containerPort: 873
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 873
+          readinessProbe:
+            tcpSocket:
+              port: 873
+          resources:
+            {{- toYaml .Values.rsyncd.resources | nindent 12 }}
+          volumeMounts:
+            - name: datadir
+              mountPath: {{ .Values.rsyncd.configuration.datadir }}
+              readOnly: true
+            - name: rsyncd-conf
+              mountPath: /etc/rsyncd.conf
+              subPath: rsyncd.conf
+              readOnly: true
+            {{- if .Values.rsyncd.configurationFiles.jenkinsMotd.override }}
+            - name: jenkins-motd
+              mountPath: {{ .Values.rsyncd.configuration.motd_path }}
+              subPath: jenkins-motd
+              readOnly: true
+            {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      volumes:
+        - name: datadir
+          {{- if .Values.rsyncd.volumes.datadir }}
+          {{- toYaml .Values.rsyncd.volumes.datadir | nindent 10 }}
+          {{- else }}
+          emptyDir:
+          {{- end }}
+        - name: rsyncd-conf
+          configMap:
+            name: {{ include "mirrorbits.fullname" . }}-rsyncd-conf
+        {{- if .Values.rsyncd.configurationFiles.jenkinsMotd.override }}
+        - name: jenkins-motd
+          configMap:
+            name: {{ include "mirrorbits.fullname" . }}-jenkins-motd
+        {{- end }}
+{{- end }}
