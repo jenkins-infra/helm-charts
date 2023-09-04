@@ -18,7 +18,7 @@ tests:
           of: Service
       - equal:
           path: spec.selector["app.kubernetes.io/name"]
-          value: "mirrorbitslite-files"
+          value: "mirrorbitslite"
       - equal:
           path: spec.selector["app.kubernetes.io/instance"]
           value: "RELEASE-NAME"
@@ -26,8 +26,7 @@ tests:
     template: deployment.yaml
     set:
       image:
-        mirrorbits:
-          pullPolicy: Always
+        pullPolicy: Always
     asserts:
       - hasDocuments:
           count: 1

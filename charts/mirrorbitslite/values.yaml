@@ -73,7 +73,7 @@ geoipupdate:
   #license_key:
   editions: GeoLite2-ASN GeoLite2-City GeoLite2-Country
   update_frequency: 24
-mirrorbits:
+mirrorbitslite:
   # Accept the mirrorbits.conf data
   conf: |
     Repository: /srv/repo
