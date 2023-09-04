@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "mirrorbits.fullname" . }}-files
+  name: {{ include "httpd.fullname" . }}
   labels:
-{{ include "mirrorbits.labels" . | indent 4 }}
+{{ include "httpd.labels" . | indent 4 }}
 spec:
   type: {{ .Values.service.files.type }}
   ports:
@@ -12,5 +12,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: {{ include "mirrorbits.name" . }}-files
-    app.kubernetes.io/instance: {{ .Release.Name }}-files
+    app.kubernetes.io/name: {{ include "httpd.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}

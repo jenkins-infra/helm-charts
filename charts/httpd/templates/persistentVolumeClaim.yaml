@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ $.Values.repository.name | default (printf "%s-binary" (include "mirrorbits.fullname" .))  }}
+  name: {{ $.Values.repository.name | default (printf "%s-binary" (include "httpd.fullname" .))  }}
 spec:
 {{ toYaml $.Values.repository.persistentVolumeClaim.spec | nindent 2 }}
 {{- end -}}

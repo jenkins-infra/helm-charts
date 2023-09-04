@@ -3,33 +3,14 @@ values:
   - ../values.yaml
   - secrets_default_values.yaml
 templates:
+  - configmap.yaml
   - deployment.yaml
-  - deployment.files.yaml
-  - deployment.rsyncd.yaml
   - ingress.yaml
   - secret.yaml # Direct dependency of deployment(.*).yaml
-  - service.files.yaml
-  - service.rsyncd.yaml
-  - configmap.rsyncd.rsyncd-conf.yaml
-  - configmap.rsyncd.jenkins-motd.yaml
-  - service.rsyncd.yaml
+  - service.yaml
 tests:
   - it: should not create any ingress by default
     template: ingress.yaml
-    asserts:
-      - hasDocuments:
-          count: 0
-  - it: should not create any rsyncd service by default
-    template: service.rsyncd.yaml
-    asserts:
-      - hasDocuments:
-          count: 0
-  - it: should not create any rsyncd resource by default
-    templates:
-      - deployment.rsyncd.yaml
-      - configmap.rsyncd.rsyncd-conf.yaml
-      - configmap.rsyncd.jenkins-motd.yaml
-      - service.rsyncd.yaml
     asserts:
       - hasDocuments:
           count: 0
@@ -51,7 +32,7 @@ tests:
           path: spec.rules[0].http.paths[0].pathType
           value: "Prefix"
   - it: should set the correct service selector labels
-    template: service.files.yaml
+    template: service.yaml
     asserts:
       - hasDocuments:
           count: 1
@@ -59,12 +40,12 @@ tests:
           of: Service
       - equal:
           path: spec.selector["app.kubernetes.io/name"]
-          value: "mirrorbits-files"
+          value: "httpd"
       - equal:
           path: spec.selector["app.kubernetes.io/instance"]
-          value: "RELEASE-NAME-files"
+          value: "RELEASE-NAME"
   - it: Should set the correct deployment metadata labels
-    template: deployment.files.yaml
+    template: deployment.yaml
     asserts:
       - hasDocuments:
           count: 1
@@ -72,12 +53,12 @@ tests:
           of: Deployment
       - equal:
           path: spec.template.metadata.labels["app.kubernetes.io/name"]
-          value: "mirrorbits-files"
+          value: "httpd"
       - equal:
           path: spec.template.metadata.labels["app.kubernetes.io/instance"]
-          value: "RELEASE-NAME-files"
+          value: "RELEASE-NAME"
   - it: should define the default "files" deployment with default imagePullPolicy and metadata labels
-    template: deployment.files.yaml
+    template: deployment.yaml
     asserts:
       - hasDocuments:
           count: 1
@@ -85,10 +66,10 @@ tests:
           of: Deployment
       - equal:
           path: spec.template.metadata.labels["app.kubernetes.io/name"]
-          value: "mirrorbits-files"
+          value: "httpd"
       - equal:
           path: spec.template.metadata.labels["app.kubernetes.io/instance"]
-          value: "RELEASE-NAME-files"
+          value: "RELEASE-NAME"
       - equal:
           path: "spec.template.spec.containers[*].imagePullPolicy"
           value: IfNotPresent

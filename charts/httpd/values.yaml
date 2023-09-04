@@ -1,23 +1,11 @@
 # Default values for mirrorbits.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-replicaCount:
-  mirrorbits: 1
-  files: 1
-  rsyncd: 1
+replicaCount: 1
 image:
-  mirrorbits:
-    repository: jenkinsciinfra/mirrorbits
-    tag: 0.1.97
-    pullPolicy: IfNotPresent
-  files:
-    repository: httpd
-    tag: 2.4@sha256:18427eed921af003c951b5c97f0bde8a6df40cc7cb09b9739b9e35041a3c3acd
-    pullPolicy: IfNotPresent
-  rsyncd:
-    repository: jenkinsciinfra/rsyncd
-    tag: latest@sha256:8288d9df36c5b62d331736341d7f58b8a78998ace06f2d60fc38f6a4a9d7e6cb
-    pullPolicy: IfNotPresent
+  repository: httpd
+  tag: 2.4@sha256:18427eed921af003c951b5c97f0bde8a6df40cc7cb09b9739b9e35041a3c3acd
+  pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -73,26 +61,8 @@ resources: {}
 # requests:
 #   cpu: 100m
 #   memory: 128Mi
-nodeSelector: {}
-tolerations: []
-affinity: {}
-geoipupdate:
-  image:
-    repository: maxmindinc/geoipupdate
-    tag: v6.0.0
-  # Secret values commented below for reference:
-  #account_id:
-  #license_key:
-  editions: GeoLite2-ASN GeoLite2-City GeoLite2-Country
-  update_frequency: 24
-mirrorbits:
-  # Accept the mirrorbits.conf data
-  conf: |
-    Repository: /srv/repo
-    Templates: /usr/share/mirrorbits/templates
-    RedisAddress: mirrors-redis-master:6379
 repository:
-  name: mirrorbits-binary
+  name: httpd-binary
   persistentVolumeClaim:
     enabled: false
     # spec hold persistentVolumeClaim spec
@@ -105,53 +75,6 @@ repository:
     enabled: false
     # data hold secrets data used by persistentVolume
     data: {}
-rsyncd:
-  enabled: false
-  volumes:
-    datadir: {}
-    # emptyDir:
-  service:
-    type: ClusterIP
-    port: 873
-    #    IP:
-    whitelisted_sources: []
-    # - 52.167.253.43/32
-    # - 52.202.51.185/32
-  ingress:
-    enabled: false
-    # annotations:
-    #   "cert-manager.io/cluster-issuer": "letsencrypt-staging"
-    # hosts:
-    #   - host: rsyncd.mirror.jenkins.io
-    # tls:
-    #   - secretName: rsyncd-releasemirror-tls
-  resources:
-    limits:
-      cpu: 100m
-      memory: 128Mi
-    requests:
-      cpu: 50m
-      memory: 64Mi
-  configuration:
-    datadir: /srv/repo
-    uid: nobody
-    gid: nogroup
-    motd_path: /etc/jenkins.motd
-    port: 873
-    hosts_allow: '*'
-    comment: "Jenkins Read-Only Mirror"
-  # Custom configuration files used to override default rsyncd settings defined in https://github.com/jenkins-infra/docker-rsyncd/tree/main/config
-  configurationFiles:
-    jenkinsMotd:
-      override: false
-      # content: |-
-      #    [jenkins]
-      #    path = /srv/releases/jenkins
-      #    comment = "Jenkins Read-Only Mirror"
-      #    ========================
-      #    ==== JENKINS MIRROR ====
-      #    ========================
-      #
-      #    **Read Only**
-      #
-      #    Feel free to reach out on https://www.jenkins.io/chat/#jenkins-infra/ with any question you may have
+nodeSelector: {}
+tolerations: []
+affinity: {}

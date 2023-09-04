@@ -3,15 +3,12 @@ values:
   - secrets_default_values.yaml
 templates:
   - deployment.yaml
-  - deployment.files.yaml
-  - deployment.rsyncd.yaml
   - ingress.yaml
-  - secret.yaml # Direct dependency of deployment(.*).yaml
-  - service.files.yaml
-  - service.rsyncd.yaml
+  - secret.yaml # Direct dependency of deployment.yaml
+  - service.yaml
 tests:
   - it: Should set the correct service selector labels when a fullNameOverride is specified
-    template: service.files.yaml
+    template: service.yaml
     set:
       fullNameOverride: "my-fullNameOverride"
     asserts:
@@ -21,12 +18,12 @@ tests:
           of: Service
       - equal:
           path: spec.selector["app.kubernetes.io/name"]
-          value: "mirrorbits-files"
+          value: "httpd"
       - equal:
           path: spec.selector["app.kubernetes.io/instance"]
-          value: "RELEASE-NAME-files"
+          value: "RELEASE-NAME"
   - it: Should set the correct service selector labels when a nameOverride is specified
-    template: service.files.yaml
+    template: service.yaml
     set:
       nameOverride: "my-nameOverride"
     asserts:
@@ -36,16 +33,15 @@ tests:
           of: Service
       - equal:
           path: spec.selector["app.kubernetes.io/name"]
-          value: "my-nameOverride-files"
+          value: "my-nameOverride"
       - equal:
           path: spec.selector["app.kubernetes.io/instance"]
-          value: "RELEASE-NAME-files"
+          value: "RELEASE-NAME"
   - it: should define a customized "files" deployment
-    template: deployment.files.yaml
+    template: deployment.yaml
     set:
       image:
-        files:
-          pullPolicy: Never
+        pullPolicy: Never
     asserts:
       - hasDocuments:
           count: 1
@@ -54,12 +50,11 @@ tests:
       - equal:
           path: "spec.template.spec.containers[*].imagePullPolicy"
           value: Never
-  - it: should define a customized "mirrorbits" deployment
+  - it: should define a customized "httpd" deployment
     template: deployment.yaml
     set:
       image:
-        mirrorbits:
-          pullPolicy: Always
+        pullPolicy: Always
     asserts:
       - hasDocuments:
           count: 1
@@ -86,37 +81,3 @@ tests:
       - equal:
           path: spec.rules[0].http.paths[0].pathType
           value: "IfNotPresent"
-  - it: should define a customized "mirrorbits" deployment
-    template: deployment.yaml
-    set:
-      image:
-        mirrorbits:
-          pullPolicy: Always
-    asserts:
-      - hasDocuments:
-          count: 1
-      - isKind:
-          of: Deployment
-      - equal:
-          path: spec.template.spec.containers[*].imagePullPolicy
-          value: Always
-  - it: should create rsyncd deployment if rsyncd is enabled
-    template: deployment.rsyncd.yaml
-    set:
-      rsyncd:
-        enabled: true
-    asserts:
-      - hasDocuments:
-          count: 1
-      - isKind:
-          of: Deployment
-  - it: should create rsyncd service if rsyncd is enabled
-    template: service.rsyncd.yaml
-    set:
-      rsyncd:
-        enabled: true
-    asserts:
-      - hasDocuments:
-          count: 1
-      - isKind:
-          of: Service
