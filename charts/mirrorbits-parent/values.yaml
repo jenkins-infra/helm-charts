@@ -1,0 +1,14 @@
+## Global values if any
+global: {}
+
+## Sub charts specific values
+mirrorbits-lite:
+  enabled: true
+  conf: |
+    Repository: /srv/repo
+    Templates: /usr/share/mirrorbits/templates
+    RedisAddress: mirrors-redis-master:6379
+httpd:
+  enabled: true
+rsyncd:
+  enabled: false
