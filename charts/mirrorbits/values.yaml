@@ -16,7 +16,7 @@ image:
     pullPolicy: IfNotPresent
   rsyncd:
     repository: jenkinsciinfra/rsyncd
-    tag: latest@sha256:1f45e8733ead8f735271fbe9c68297b065218db57b2a557bbec515aba97e3d08
+    tag: latest@sha256:8288d9df36c5b62d331736341d7f58b8a78998ace06f2d60fc38f6a4a9d7e6cb
     pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
