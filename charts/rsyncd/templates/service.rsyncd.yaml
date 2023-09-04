@@ -1,0 +1,28 @@
+{{- if .Values.rsyncd.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mirrorbits.fullname" . }}-rsyncd
+  labels:
+{{ include "mirrorbits.labels" . | indent 4 }}
+spec:
+  type: {{ .Values.rsyncd.service.type }}
+  {{- if eq .Values.rsyncd.service.type "LoadBalancer" }}
+  {{- if .Values.rsyncd.service.IP }}
+  loadBalancerIP: {{ .Values.rsyncd.service.IP }}
+  {{- end }}
+  loadBalancerSourceRanges:
+    {{- range .Values.rsyncd.service.whitelisted_sources }}
+    - {{ . | quote }}
+    {{- end }}
+  {{- end }}
+
+  ports:
+    - port: {{ .Values.rsyncd.service.port }}
+      targetPort: 873
+      protocol: TCP
+      name: rsyncd
+  selector:
+    app.kubernetes.io/name: {{ include "mirrorbits.name" . }}-rsyncd
+    app.kubernetes.io/instance: {{ .Release.Name }}-rsyncd
+{{- end }}

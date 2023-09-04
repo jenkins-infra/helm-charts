@@ -1,0 +1,43 @@
+{{- if .Values.rsyncd.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "mirrorbits.fullname" . }}-rsyncd-conf
+data:
+  rsyncd.conf: |
+    # /etc/rsyncd: configuration file for
+    rsync daemon mode
+
+    # See rsyncd.conf man page for more options.
+
+    # configuration example:
+
+    uid = {{ .Values.rsyncd.configuration.uid }}
+    gid = {{ .Values.rsyncd.configuration.gid }}
+    use chroot = yes
+    max connections = 0
+    pid file = /var/run/rsyncd.pid
+    exclude = lost+found/
+    transfer logging = yes
+    log file = /dev/stdout
+    ignore nonreadable = yes
+    dont compress   = *.gz *.tgz *.zip *.z *.Z *.rpm *.deb *.bz2
+    port = {{ .Values.rsyncd.configuration.port }}
+    # motd file = {{ .Values.rsyncd.configuration.motd_path }}
+    max verbosity = 4
+
+    # Timeout in seconds
+    timeout = 300
+
+    # Any attempted uploads will fail
+    read only = true
+
+    # Downloads will be possible if file permissions on the daemon side allow them
+    write only = false
+
+    hosts allow = {{ .Values.rsyncd.configuration.hosts_allow }}
+
+    [jenkins]
+    path = {{ .Values.rsyncd.configuration.datadir }}
+    comment = {{ .Values.rsyncd.configuration.comment }}
+{{- end -}}
