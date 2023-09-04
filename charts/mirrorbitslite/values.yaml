@@ -73,14 +73,13 @@ geoipupdate:
   #license_key:
   editions: GeoLite2-ASN GeoLite2-City GeoLite2-Country
   update_frequency: 24
-mirrorbitslite:
-  # Accept the mirrorbits.conf data
-  conf: |
-    Repository: /srv/repo
-    Templates: /usr/share/mirrorbits/templates
-    RedisAddress: mirrors-redis-master:6379
+# Accept the mirrorbits.conf data
+conf: |
+  Repository: /srv/repo
+  Templates: /usr/share/mirrorbits/templates
+  RedisAddress: mirrors-redis-master:6379
 repository:
-  name: mirrorbitslite-binary
+  name: mirrorbits-lite-binary
   persistentVolumeClaim:
     enabled: false
     # spec hold persistentVolumeClaim spec

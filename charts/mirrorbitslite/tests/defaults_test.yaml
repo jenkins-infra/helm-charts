@@ -30,7 +30,7 @@ tests:
       - equal:
           path: spec.rules[0].http.paths[0].pathType
           value: "Prefix"
-  - it: should define the default "mirrorbitslite" deployment with default imagePullPolicy and metadata labels
+  - it: should define the default "mirrorbits-lite" deployment with default imagePullPolicy and metadata labels
     template: deployment.yaml
     asserts:
       - hasDocuments:
@@ -39,7 +39,7 @@ tests:
           of: Deployment
       - equal:
           path: spec.template.metadata.labels["app.kubernetes.io/name"]
-          value: "mirrorbitslite"
+          value: "mirrorbits-lite"
       - equal:
           path: spec.template.metadata.labels["app.kubernetes.io/instance"]
           value: "RELEASE-NAME"

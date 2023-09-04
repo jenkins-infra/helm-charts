@@ -18,11 +18,11 @@ tests:
           of: Service
       - equal:
           path: spec.selector["app.kubernetes.io/name"]
-          value: "mirrorbitslite"
+          value: "mirrorbits-lite"
       - equal:
           path: spec.selector["app.kubernetes.io/instance"]
           value: "RELEASE-NAME"
-  - it: should define a customized "mirrorbitslite" deployment
+  - it: should define a customized "mirrorbits-lite" deployment
     template: deployment.yaml
     set:
       image:
