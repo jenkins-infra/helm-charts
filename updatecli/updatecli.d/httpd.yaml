@@ -1,0 +1,44 @@
+name: Bump `httpd` docker images and helm chart versions
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
+sources:
+  latestHttpdRelease:
+    name: Get latest digest of the Docker Image for httpd, in version 2.4
+    kind: dockerdigest
+    spec:
+      image: "httpd"
+      tag: "2.4"
+      architecture: "amd64"
+
+# no condition to test httpd docker image availability as we're using a digest from docker hub
+
+targets:
+  updateHttpd:
+    name: "Update httpd docker image version"
+    sourceid: latestHttpdRelease
+    kind: helmchart
+    spec:
+      name: charts/httpd
+      key: $.image.files.tag
+    scmid: default
+
+actions:
+  default:
+    kind: github/pullrequest
+    scmid: default
+    title: Bump `httpd` docker images and helm chart versions
+    spec:
+      labels:
+        - dependencies
+        - httpd
