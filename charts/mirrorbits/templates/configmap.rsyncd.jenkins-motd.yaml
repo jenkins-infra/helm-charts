@@ -1,0 +1,9 @@
+{{- if and .Values.rsyncd.enabled .Values.rsyncd.configurationFiles.jenkinsMotd.override -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "mirrorbits.fullname" . }}-jenkins-motd
+data:
+  jenkins.motd:
+{{ .Values.rsyncd.configurationFiles.jenkinsMotd.content | indent 4 }}
+{{- end -}}

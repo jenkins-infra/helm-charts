@@ -6,7 +6,6 @@ templates:
   - deployment.files.yaml
   - deployment.rsyncd.yaml
   - ingress.yaml
-  - ingress.rsyncd.yaml
   - secret.yaml # Direct dependency of deployment(.*).yaml
   - service.files.yaml
   - service.rsyncd.yaml
@@ -101,73 +100,23 @@ tests:
       - equal:
           path: spec.template.spec.containers[*].imagePullPolicy
           value: Always
-  - it: should create rsyncd deployment if rsyncd service is enabled and PVC is enabled
+  - it: should create rsyncd deployment if rsyncd is enabled
     template: deployment.rsyncd.yaml
     set:
       rsyncd:
-        service:
-          enabled: true
-      repository:
-        persistentVolumeClaim:
-          enabled: true
+        enabled: true
     asserts:
       - hasDocuments:
           count: 1
       - isKind:
           of: Deployment
-  - it: should create rsyncd deployment if only rsyncd service is enabled
-    template: deployment.rsyncd.yaml
-    set:
-      rsyncd:
-        service:
-          enabled: true
-      repository:
-        persistentVolumeClaim:
-          enabled: false
-    asserts:
-      - hasDocuments:
-          count: 0
-  - it: should create rsyncd service if rsyncd service and PVC are enabled
+  - it: should create rsyncd service if rsyncd is enabled
     template: service.rsyncd.yaml
     set:
       rsyncd:
-        service:
-          enabled: true
-      repository:
-        persistentVolumeClaim:
-          enabled: true
+        enabled: true
     asserts:
       - hasDocuments:
           count: 1
       - isKind:
           of: Service
-  - it: should create rsyncd ingress if rsyncd ingress & service and PVC are enabled
-    template: ingress.rsyncd.yaml
-    set:
-      rsyncd:
-        service:
-          enabled: true
-        ingress:
-          enabled: true
-          hosts:
-            - host: chart-example.local
-              paths:
-              - path: /
-                pathType: IfNotPresent
-      repository:
-        persistentVolumeClaim:
-          enabled: true
-    asserts:
-      - hasDocuments:
-          count: 1
-      - isKind:
-          of: Ingress
-  - it: should not create rsyncd ingress if only rsyncd ingress is enabled
-    template: ingress.rsyncd.yaml
-    set:
-      rsyncd:
-        ingress:
-          enabled: true
-    asserts:
-      - hasDocuments:
-          count: 0

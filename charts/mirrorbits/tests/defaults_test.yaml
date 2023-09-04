@@ -7,18 +7,15 @@ templates:
   - deployment.files.yaml
   - deployment.rsyncd.yaml
   - ingress.yaml
-  - ingress.rsyncd.yaml
   - secret.yaml # Direct dependency of deployment(.*).yaml
   - service.files.yaml
+  - service.rsyncd.yaml
+  - configmap.rsyncd.rsyncd-conf.yaml
+  - configmap.rsyncd.jenkins-motd.yaml
   - service.rsyncd.yaml
 tests:
   - it: should not create any ingress by default
     template: ingress.yaml
-    asserts:
-      - hasDocuments:
-          count: 0
-  - it: should not create any rsyncd ingress by default
-    template: ingress.rsyncd.yaml
     asserts:
       - hasDocuments:
           count: 0
@@ -27,8 +24,12 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
-  - it: should not create any rsyncd deployment by default
-    template: deployment.rsyncd.yaml
+  - it: should not create any rsyncd resource by default
+    templates:
+      - deployment.rsyncd.yaml
+      - configmap.rsyncd.rsyncd-conf.yaml
+      - configmap.rsyncd.jenkins-motd.yaml
+      - service.rsyncd.yaml
     asserts:
       - hasDocuments:
           count: 0
