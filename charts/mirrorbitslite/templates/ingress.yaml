@@ -1,12 +1,12 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "mirrorbits-lite.fullname" . -}}
+{{- $fullName := include "mirrorbitslite.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-{{ include "mirrorbits-lite.labels" . | indent 4 }}
+{{ include "mirrorbitslite.labels" . | indent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"

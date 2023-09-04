@@ -1,4 +1,4 @@
 apiVersion: v1
 description: Mirrobits lite helm chart for Kubernetes
-name: mirrorbits-lite
+name: mirrorbitslite
 version: 0.0.1
