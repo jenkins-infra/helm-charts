@@ -1,0 +1,56 @@
+suite: Tests with custom values
+values:
+  - secrets_default_values.yaml
+templates:
+  - deployment.yaml
+  - ingress.yaml
+  - secret.yaml # Direct dependency of deployment(.*).yaml
+  - service
+tests:
+  - it: Should set the correct service selector labels when a fullNameOverride is specified
+    template: service.yaml
+    set:
+      fullNameOverride: "my-fullNameOverride"
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+      - equal:
+          path: spec.selector["app.kubernetes.io/name"]
+          value: "mirrorbits-lite-files"
+      - equal:
+          path: spec.selector["app.kubernetes.io/instance"]
+          value: "RELEASE-NAME"
+  - it: should define a customized "mirrorbits-lite" deployment
+    template: deployment.yaml
+    set:
+      image:
+        mirrorbits:
+          pullPolicy: Always
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[*].imagePullPolicy
+          value: Always
+  - it: should create ingress with pathType set to the specified custom value by default
+    template: ingress.yaml
+    set:
+      ingress:
+        enabled: true
+        hosts:
+          - host: chart-example.local
+            paths:
+            - path: /
+              pathType: IfNotPresent
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Ingress
+      - equal:
+          path: spec.rules[0].http.paths[0].pathType
+          value: "IfNotPresent"
