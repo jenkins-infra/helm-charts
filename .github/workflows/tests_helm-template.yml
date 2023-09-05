@@ -1,4 +1,4 @@
-name: Test helm template on charts
+name: Test charts with 'helm template'
 on:
   push:
     branches:
@@ -27,6 +27,7 @@ jobs:
             modifiedChartPaths=$(gh pr view ${{ github.event.pull_request.number }} --json files -q '.files[].path' | xargs dirname | grep "^charts/" | cut -d "/" -f1-2 | sort --unique)
           else
             # Retrieve all charts
+            echo "= running on main, returning all charts"
             modifiedChartPaths=$(find . -maxdepth 2 -type d | grep "charts/" | cut -d "/" -f2-3 | sort --unique)
           fi
 
