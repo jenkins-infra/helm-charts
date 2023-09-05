@@ -1434,6 +1434,15 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/env-jenkins-release-0.1.1/env-jenkins-release-0.1.1.tgz
     version: 0.1.1
+  httpd:
+  - apiVersion: v1
+    created: "2023-09-05T07:33:26.699327633Z"
+    description: httpd helm chart for Kubernetes
+    digest: db06df8d8778e2d3ffcfe03d9dd65c6506bae89597e8034e2e7e85b19bb48965
+    name: httpd
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/httpd-0.0.1/httpd-0.0.1.tgz
+    version: 0.0.1
   httpredirector:
   - apiVersion: v2
     created: "2023-04-12T12:24:09.996431308Z"
@@ -5340,4 +5349,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-05T07:31:24.116923256Z"
+generated: "2023-09-05T07:33:26.700321929Z"
