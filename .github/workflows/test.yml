@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Run tests on modified charts with unit tests
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - id: list_modified_charts_with_unit_tests
         name: List modified charts with unit tests
         env:
