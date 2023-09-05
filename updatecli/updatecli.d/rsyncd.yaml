@@ -1,0 +1,44 @@
+name: Bump `rsyncd` docker images and helm chart versions
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
+sources:
+  latestRsyncdRelease:
+    kind: dockerdigest
+    name: "Get jenkinsciinfra/rsyncd:latest docker image digest"
+    spec:
+      image: "jenkinsciinfra/rsyncd"
+      tag: "latest"
+      architecture: "amd64"
+
+# no condition to test rsyncd docker image availability as we're using a digest from docker hub
+
+targets:
+  updateRsyncd:
+    name: "Update rsyncd docker image version"
+    sourceid: latestRsyncdRelease
+    kind: helmchart
+    spec:
+      name: charts/rsyncd
+      key: $.image.rsyncd.tag
+    scmid: default
+
+actions:
+  default:
+    kind: github/pullrequest
+    scmid: default
+    title: Bump `rsyncd` docker images and helm chart versions
+    spec:
+      labels:
+        - dependencies
+        - rsyncd

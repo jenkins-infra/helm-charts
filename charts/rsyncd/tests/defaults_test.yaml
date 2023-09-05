@@ -1,0 +1,23 @@
+suite: default tests
+# values:
+#   - ../values.yaml
+templates:
+  - configmap.jenkins-motd.yaml
+  - configmap.rsyncd-conf.yaml
+  - deployment.yaml
+  - service.yaml
+tests:
+  - it: should create a deployment by default
+    template: deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+  - it: should create a service by default
+    template: service.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
