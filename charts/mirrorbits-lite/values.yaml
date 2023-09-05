@@ -68,12 +68,12 @@ geoipupdate:
   image:
     repository: maxmindinc/geoipupdate
     tag: v6.0.0
-  # Secret values commented below for reference:
-  #account_id:
-  #license_key:
+  # Secret values, set to empty below for reference:
+  account_id: ""
+  license_key: ""
   editions: GeoLite2-ASN GeoLite2-City GeoLite2-Country
   update_frequency: 24
-# Accept the mirrorbits.conf data
+# mirrorbits.conf data, to be completed as secret with Redis credentials
 conf: |
   Repository: /srv/repo
   Templates: /usr/share/mirrorbits/templates
