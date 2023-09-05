@@ -75,6 +75,11 @@ repository:
     enabled: false
     # data hold secrets data used by persistentVolume
     data: {}
+# httpd.conf data, to be completed as secret with Redis credentials
+conf: |
+  Repository: /srv/repo
+  Templates: /usr/share/mirrorbits/templates
+  RedisAddress: mirrors-redis-master:6379
 nodeSelector: {}
 tolerations: []
 affinity: {}
