@@ -12,7 +12,7 @@ dependencies:
 - name: httpd
   repository: https://jenkins-infra.github.io/helm-charts
   version: 0.0.2
-  condition: httpd.enabled
+  condition: mirrorbits-files.enabled
   alias: mirrorbits-files
 - name: rsyncd
   repository: https://jenkins-infra.github.io/helm-charts
