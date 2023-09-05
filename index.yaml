@@ -3722,6 +3722,15 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/mirrorbits-0.1.1/mirrorbits-0.1.1.tgz
     version: 0.1.1
+  mirrorbits-lite:
+  - apiVersion: v1
+    created: "2023-09-05T07:50:04.285941961Z"
+    description: Mirrobits lite helm chart for Kubernetes
+    digest: b05309cfe9a4e07b6c08906059de6b13d1d7e86d00359a2a975a26aa13e50726
+    name: mirrorbits-lite
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/mirrorbits-lite-0.0.1/mirrorbits-lite-0.0.1.tgz
+    version: 0.0.1
   nginx-proxy:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -5349,4 +5358,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-05T07:33:26.700321929Z"
+generated: "2023-09-05T07:50:04.286850874Z"
