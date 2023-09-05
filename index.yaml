@@ -1436,6 +1436,14 @@ entries:
     version: 0.1.1
   httpd:
   - apiVersion: v1
+    created: "2023-09-05T09:33:49.017932787Z"
+    description: httpd helm chart for Kubernetes
+    digest: d86e468325ee2b8668326db9fde7a8e6bc95db0e436b9872c223f49a87be9e25
+    name: httpd
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/httpd-0.0.2/httpd-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v1
     created: "2023-09-05T07:33:26.699327633Z"
     description: httpd helm chart for Kubernetes
     digest: db06df8d8778e2d3ffcfe03d9dd65c6506bae89597e8034e2e7e85b19bb48965
@@ -5386,4 +5394,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-05T09:08:11.83164274Z"
+generated: "2023-09-05T09:33:49.019013991Z"
