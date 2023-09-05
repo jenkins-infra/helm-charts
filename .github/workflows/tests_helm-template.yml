@@ -1,0 +1,72 @@
+name: Test helm template on charts
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'charts/**'
+  pull_request:
+    paths:
+      - 'charts/**'
+  workflow_dispatch:
+env:
+  UNITTEST_VERSION: v0.3.4
+jobs:
+  run_helm_template_on_modified_charts:
+    runs-on: ubuntu-latest
+    name: Run 'helm template' on modified charts
+    steps:
+      - uses: actions/checkout@v4
+      - id: list_modified_charts
+        name: List modified charts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+            # Retrieve the list of modified chart names in the pull request
+            modifiedChartPaths=$(gh pr view ${{ github.event.pull_request.number }} --json files -q '.files[].path' | xargs dirname | grep "^charts/" | cut -d "/" -f1-2 | sort --unique)
+          else
+            # Retrieve all charts
+            modifiedChartPaths=$(find . -maxdepth 2 -type d | grep "charts/" | cut -d "/" -f2-3 | sort --unique)
+          fi
+
+          # Keep only modified charts
+          modifiedCharts=""
+          while IFS= read -r chartPath; do
+              modifiedCharts+=",$(echo $chartPath | cut -d '/' -f 2)"
+          done <<< "$modifiedChartPaths"
+          # Remove first comma
+          modifiedCharts=${modifiedCharts#,}
+
+          # Return early if there is no modified chart
+          if [ -z "$modifiedCharts" ]; then
+            echo "= no modified chart found."
+          else
+            echo "= modified chart(s): ${modifiedCharts}"
+          fi
+
+          # Store the result
+          echo "modified_charts=${modifiedCharts}" >> "$GITHUB_OUTPUT"
+      - id: tools_versions
+        name: Get Tools Versions
+        if: steps.list_modified_charts.outputs.modified_charts != ''
+        run: |
+          current_helm_version="$(curl --silent --location https://raw.githubusercontent.com/jenkins-infra/docker-helmfile/main/Dockerfile  | grep 'ARG' | grep 'HELM_VERSION=' | sort -u | cut -d'=' -f2)"
+          echo "CURRENT_HELM_VERSION=${current_helm_version}" >> $GITHUB_OUTPUT
+      - id: setup_helm
+        name: Set up Helm
+        if: steps.list_modified_charts.outputs.modified_charts != ''
+        uses: azure/setup-helm@5119fcb9089d432beecbf79bb2c7915207344b78 # v3
+        with:
+          version: "${{ steps.tools_versions.outputs.CURRENT_HELM_VERSION }}"
+      - id: run_helm_template
+        name: run helm template
+        if: steps.list_modified_charts.outputs.modified_charts != ''
+        working-directory: ./charts/
+        run: |
+          # Set IFS to a comma to split the string into an array
+          IFS=',' read -ra chartNames <<< "${{ steps.list_modified_charts.outputs.modified_charts }}"
+
+          for chartName in "${chartNames[@]}"; do
+            helm template "$chartName"
+          done
