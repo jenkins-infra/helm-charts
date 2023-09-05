@@ -27,7 +27,7 @@ jobs:
             modifiedChartPaths=$(gh pr view ${{ github.event.pull_request.number }} --json files -q '.files[].path' | xargs dirname | grep "^charts/" | cut -d "/" -f1-2 | sort --unique)
           else
             # Retrieve all charts
-            modifiedChartPaths=$(find . -maxdepth 2 -type d | grep "^charts/" | cut -d "/" -f2-3 | sort --unique)
+            modifiedChartPaths=$(find . -maxdepth 2 -type d | grep "charts/" | cut -d "/" -f2-3 | sort --unique)
           fi
 
           # Keep only modified charts with unit tests
