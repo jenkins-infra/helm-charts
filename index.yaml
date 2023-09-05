@@ -4416,6 +4416,15 @@ entries:
     urls:
     - https://github.com/jenkins-infra/helm-charts/releases/download/rss2twitter-0.0.1/rss2twitter-0.0.1.tgz
     version: 0.0.1
+  rsyncd:
+  - apiVersion: v1
+    created: "2023-09-05T07:31:24.115984147Z"
+    description: rsyncd helm chart for Kubernetes
+    digest: aa01f0991f8f5d1637fdc3be28d119918ff409e7ae0e6c63d6d626a5de655c89
+    name: rsyncd
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/rsyncd-0.0.1/rsyncd-0.0.1.tgz
+    version: 0.0.1
   rsyncd-mirror:
   - apiVersion: v1
     appVersion: "1.0"
@@ -5331,4 +5340,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-05T07:30:39.460968627Z"
+generated: "2023-09-05T07:31:24.116923256Z"
