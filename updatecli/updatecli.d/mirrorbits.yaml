@@ -21,13 +21,6 @@ sources:
       repository: "docker-mirrorbits"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
-  latestHttpdRelease:
-    name: Get latest digest of the Docker Image for httpd, in version 2.4
-    kind: dockerdigest
-    spec:
-      image: "httpd"
-      tag: "2.4"
-      architecture: "amd64"
   latestGeoIPRelease:
     name: Get latest version of GeoIP
     kind: githubrelease
@@ -55,8 +48,6 @@ conditions:
       architecture: "amd64"
       # Tag comes from sourceid
 
-# no condition to test httpd docker image availability as we're using a digest from docker hub
-
 targets:
   updateMirrorbits:
     name: "Update mirrorbits docker image version"
@@ -66,14 +57,6 @@ targets:
       name: charts/mirrorbits
       key: $.image.mirrorbits.tag
       versionincrement: patch
-    scmid: default
-  updateHttpd:
-    name: "Update httpd docker image version"
-    sourceid: latestHttpdRelease
-    kind: helmchart
-    spec:
-      name: charts/mirrorbits
-      key: $.image.files.tag
     scmid: default
   updateGeoIP:
     name: "Update maxmindinc/geoipupdate docker image version"
@@ -93,5 +76,4 @@ actions:
       labels:
         - dependencies
         - mirrorbits
-        - httpd
         - geoip
