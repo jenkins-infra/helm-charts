@@ -2,13 +2,9 @@
 global: {}
 
 ## Sub charts specific values
-mirrorbits:
-  enabled: true
-  conf: |
-    Repository: /srv/repo
-    Templates: /usr/share/mirrorbits/templates
-    RedisAddress: mirrors-redis-master:6379
-mirrorbits-files:
-  enabled: true
+mirrorbits-lite:
+  enabled: false
+httpd:
+  enabled: false
 rsyncd:
   enabled: false
