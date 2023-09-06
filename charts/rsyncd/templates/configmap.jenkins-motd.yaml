@@ -1,9 +1,0 @@
-{{- if .Values.configurationFiles.jenkinsMotd.override -}}
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ template "rsyncd.fullname" . }}-jenkins-motd
-data:
-  jenkins.motd:
-{{ .Values.configurationFiles.jenkinsMotd.content | indent 4 }}
-{{- end -}}

@@ -1,23 +1,126 @@
-suite: default tests
-# values:
-#   - ../values.yaml
-templates:
-  - configmap.jenkins-motd.yaml
-  - configmap.rsyncd-conf.yaml
-  - deployment.yaml
-  - service.yaml
+suite: Test with no specified values (e.g. "helm template .")
 tests:
-  - it: should create a deployment by default
+  - it: should create the default deployment with expected attributes
     template: deployment.yaml
     asserts:
       - hasDocuments:
           count: 1
       - isKind:
           of: Deployment
-  - it: should create a service by default
+      - equal:
+          path: spec.replicas
+          value: 1
+      # Default pull policy is "IfNotPresent"
+      - equal:
+          path: spec.template.spec.containers[*].imagePullPolicy
+          value: "IfNotPresent"
+      # Check the expected "matched labels" to allow Service to catch this pod with label selectors
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/name"]
+          value: "rsyncd"
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/instance"]
+          value: "RELEASE-NAME"
+      # No security contexts by default
+      - notExists:
+          path: spec.template.spec.securityContext
+      - notExists:
+          path: spec.template.spec.containers[0].securityContext
+      # No node selector by default
+      - notExists:
+          path: spec.template.spec.nodeSelector
+      # No affinity by default
+      - notExists:
+          path: spec.template.spec.affinity
+      # No tolerations by default
+      - notExists:
+          path: spec.template.spec.tolerations
+      # Default exposed port is 873
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].containerPort
+          value: 873
+      # No container resources by default
+      - notExists:
+          path: spec.template.spec.containers[0].resources
+      # Custom rsyncd.inc configuration overlay is mounted from the rsyncd-conf configmap
+      - equal:
+          path: spec.template.spec.volumes[0].name
+          value: rsyncd-conf
+      - equal:
+          path: spec.template.spec.volumes[0].configMap.name
+          value: RELEASE-NAME-rsyncd-conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].name
+          value: rsyncd-conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].subPath
+          value: rsyncd.inc
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].mountPath
+          value: /etc/rsyncd.d/rsyncd.inc
+      # Custom motd mounted
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].name
+          value: rsyncd-conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].subPath
+          value: "jenkins.motd"
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].mountPath
+          value: /etc/rsyncd/jenkins.motd
+      # No Rsyncd component by default mounted by default
+      - notExists:
+          path: spec.template.spec.containers[0].volumeMounts[2]
+      - notExists:
+          path: spec.template.spec.volumes[1]
+      - notExists:
+          path: spec.template.spec.containers[0].volumeMounts[3]
+      - notExists:
+          path: spec.template.spec.volumes[2]
+  - it: should create a default rsyncd-conf config map
+    template: configmap.rsyncd-conf.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ConfigMap
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-rsyncd-conf
+      - matchRegex:
+          path: data["rsyncd.inc"]
+          pattern: motd file = /etc/rsyncd/jenkins.motd
+      - notExists:
+          path: data["jenkins.conf"]
+      - matchRegex:
+          path: data["jenkins.motd"]
+          pattern: JENKINS MIRROR
+  - it: should create the default service
     template: service.yaml
     asserts:
       - hasDocuments:
           count: 1
       - isKind:
           of: Service
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-rsyncd
+      # Internal service by default
+      - equal:
+          path: spec.type
+          value: ClusterIP
+      - notExists:
+          path: spec.loadBalancerIP
+      - notExists:
+          path: spec.loadBalancerSourceRanges
+      # Default port is 873
+      - equal:
+          path: spec.ports[0].port
+          value: 873
+      # Check the expected label selectors to allow Service to catch the pods
+      - equal:
+          path: spec.selector["app.kubernetes.io/name"]
+          value: "rsyncd"
+      - equal:
+          path: spec.selector["app.kubernetes.io/instance"]
+          value: "RELEASE-NAME"

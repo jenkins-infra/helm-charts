@@ -1,23 +1,16 @@
 # Default values for rsyncd.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-replicaCount: 1
 image:
   repository: jenkinsciinfra/rsyncd
-  tag: latest@sha256:8288d9df36c5b62d331736341d7f58b8a78998ace06f2d60fc38f6a4a9d7e6cb
+  tag: 1.0.0
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: false
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: null
 podSecurityContext: {}
 # fsGroup: 2000
-securityContext: {}
+containerSecurityContext: {}
 # capabilities:
 #   drop:
 #   - ALL
@@ -27,7 +20,7 @@ securityContext: {}
 service:
   type: ClusterIP
   port: 873
-  #    IP:
+  # LoadBalancerIP: 1.2.3.4
   whitelisted_sources: []
   # - 52.167.253.43/32
   # - 52.202.51.185/32
@@ -45,29 +38,22 @@ resources: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
-volumes:
-  datadir: {}
-  # emptyDir:
 configuration:
-  datadir: /srv/repo
-  uid: nobody
-  gid: nogroup
-  motd_path: /etc/jenkins.motd
-  port: 873
-  hosts_allow: '*'
-  comment: "Jenkins Read-Only Mirror"
-# Custom configuration files used to override default rsyncd settings defined in https://github.com/jenkins-infra/docker-rsyncd/tree/main/config
-configurationFiles:
-  jenkinsMotd:
-    override: false
-    # content: |-
-    #    [jenkins]
-    #    path = /srv/releases/jenkins
-    #    comment = "Jenkins Read-Only Mirror"
-    #    ========================
-    #    ==== JENKINS MIRROR ====
-    #    ========================
-    #
-    #    **Read Only**
-    #
-    #    Feel free to reach out on https://www.jenkins.io/chat/#jenkins-infra/ with any question you may have
+  motd:
+    path: /etc/rsyncd/jenkins.motd
+    content: |-
+      ========================
+      ==== JENKINS MIRROR ====
+      ========================
+
+      **Read Only**
+
+      Feel free to reach out on https://www.jenkins.io/chat/#jenkins-infra/ with any question you may have
+
+  ## Uncomment to specify a list of "rsyncd" components (rsync://server.name:873/COMPONENT)
+  components: []
+  #   - name: jenkins
+  #     path: /rsyncd/data/jenkins
+  #     comment: "Jenkins Read-Only Mirror"
+  #     volume:
+  #       emptyDir: {}

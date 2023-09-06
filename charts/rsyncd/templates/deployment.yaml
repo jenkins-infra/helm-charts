@@ -5,7 +5,8 @@ metadata:
   labels:
 {{ include "rsyncd.labels" . | indent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  # Rsyncd does not scale horizontally - https://man7.org/linux/man-pages/man5/rsyncd.conf.5.html
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "rsyncd.name" . }}
@@ -16,17 +17,24 @@ spec:
         app.kubernetes.io/name: {{ include "rsyncd.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
-    {{- with .Values.imagePullSecrets }}
+      {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
-      serviceAccountName: {{ template "rsyncd.serviceAccountName" . }}
+      {{- end }}
+      {{- with .Values.podSecurityContext }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: rsyncd
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/tini","--"]
+          args: ["/usr/bin/rsync", "--verbose", "--no-detach","--daemon","--config","/etc/rsyncd.conf"]
+          {{- with .Values.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           ports:
             - name: rsyncd
               containerPort: 873
@@ -37,20 +45,26 @@ spec:
           readinessProbe:
             tcpSocket:
               port: 873
+          {{- with .Values.resources }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           volumeMounts:
-            - name: datadir
-              mountPath: {{ .Values.configuration.datadir }}
-              readOnly: true
             - name: rsyncd-conf
-              mountPath: /etc/rsyncd.conf
-              subPath: rsyncd.conf
-              readOnly: true
-            {{- if .Values.configurationFiles.jenkinsMotd.override }}
-            - name: jenkins-motd
-              mountPath: {{ .Values.configuration.motd_path }}
-              subPath: jenkins-motd
+              mountPath: /etc/rsyncd.d/rsyncd.inc
+              readOnly: true # Default for configmaps
+              subPath: rsyncd.inc
+            - name: rsyncd-conf
+              mountPath: {{ .Values.configuration.motd.path }}
+              subPath: jenkins.motd
+              readOnly: true # Default for configmaps
+            {{- range .Values.configuration.components }}
+            - name: rsyncd-conf
+              mountPath: /etc/rsyncd.d/{{ .name }}.conf
+              readOnly: true # Default for configmaps
+              subPath: {{ .name }}.conf
+            - name: datadir-{{ .name }}
+              mountPath: {{ .path }}
               readOnly: true
             {{- end }}
       {{- with .Values.nodeSelector }}
@@ -66,17 +80,14 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       volumes:
-        - name: datadir
-          {{- if .Values.volumes.datadir }}
-          {{- toYaml .Values.volumes.datadir | nindent 10 }}
-          {{- else }}
-          emptyDir:
-          {{- end }}
         - name: rsyncd-conf
           configMap:
             name: {{ include "rsyncd.fullname" . }}-conf
-        {{- if .Values.configurationFiles.jenkinsMotd.override }}
-        - name: jenkins-motd
-          configMap:
-            name: {{ include "rsyncd.fullname" . }}-jenkins-motd
+        {{- range .Values.configuration.components }}
+        - name: datadir-{{ .name }}
+          {{- if .volume }}
+            {{- toYaml .volume  | nindent 10 }}
+          {{- else }}
+          emptyDir:
+          {{ end }}
         {{- end }}
