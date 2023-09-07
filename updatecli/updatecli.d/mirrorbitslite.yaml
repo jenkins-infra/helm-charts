@@ -1,4 +1,4 @@
-name: Bump `mirrorbitslite` docker images and helm chart versions
+name: Bump `mirrorbits-lite` docker images and helm chart versions
 
 scms:
   default:
@@ -71,10 +71,10 @@ actions:
   default:
     kind: github/pullrequest
     scmid: default
-    title: Bump `mirrorbitslite` docker images and helm chart versions
+    title: Bump `mirrorbits-lite` docker images and helm chart versions
     spec:
       labels:
         - dependencies
-        - mirrorbitslite
+        - mirrorbits-lite
         - mirrorbits
         - geoip
