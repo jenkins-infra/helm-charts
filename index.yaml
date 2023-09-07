@@ -3777,6 +3777,28 @@ entries:
     version: 0.0.1
   mirrorbits-parent:
   - apiVersion: v2
+    created: "2023-09-07T16:51:35.363767259Z"
+    dependencies:
+    - condition: mirrorbits-lite.enabled
+      name: mirrorbits-lite
+      repository: https://jenkins-infra.github.io/helm-charts
+      version: 0.0.2
+    - condition: httpd.enabled
+      name: httpd
+      repository: https://jenkins-infra.github.io/helm-charts
+      version: 0.0.4
+    - condition: rsyncd.enabled
+      name: rsyncd
+      repository: https://jenkins-infra.github.io/helm-charts
+      version: 0.0.3
+    description: A mirrorbits parent chart for Kubernetes
+    digest: 81c0af74d49965e44ffe640190b2ed19b3afcfec0569dafef8d7b18421d42011
+    name: mirrorbits-parent
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/mirrorbits-parent-0.0.3/mirrorbits-parent-0.0.3.tgz
+    version: 0.0.3
+  - apiVersion: v2
     created: "2023-09-07T16:11:21.018192987Z"
     dependencies:
     - condition: mirrorbits-lite.enabled
@@ -4524,6 +4546,14 @@ entries:
     - https://github.com/jenkins-infra/helm-charts/releases/download/rss2twitter-0.0.1/rss2twitter-0.0.1.tgz
     version: 0.0.1
   rsyncd:
+  - apiVersion: v1
+    created: "2023-09-07T16:51:35.496645894Z"
+    description: rsyncd helm chart for Kubernetes
+    digest: f2a512f75302b21f1a03ead204639ab059aee03db324d97e54aecd3101f29672
+    name: rsyncd
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/rsyncd-1.0.0/rsyncd-1.0.0.tgz
+    version: 1.0.0
   - apiVersion: v1
     created: "2023-09-07T15:14:18.727673808Z"
     description: rsyncd helm chart for Kubernetes
@@ -5463,4 +5493,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-07T16:11:21.019207393Z"
+generated: "2023-09-07T16:51:35.497722612Z"
