@@ -6,17 +6,13 @@ version: 0.0.1
 dependencies:
 - name: mirrorbits-lite
   condition: mirrorbits-lite.enabled
-  # repository: https://jenkins-infra.github.io/helm-charts
+  repository: https://jenkins-infra.github.io/helm-charts
   version: 0.0.2
-  # condition: mirrorbits.enabled
-  # alias: mirrorbits
 - name: httpd
   condition: httpd.enabled
-  # repository: https://jenkins-infra.github.io/helm-charts
-  version: 0.0.2
-  # condition: mirrorbits-files.enabled
-  # alias: mirrorbits-files
+  repository: https://jenkins-infra.github.io/helm-charts
+  version: 0.0.4
 - name: rsyncd
   condition: rsyncd.enabled
-  # repository: https://jenkins-infra.github.io/helm-charts
+  repository: https://jenkins-infra.github.io/helm-charts
   version: 0.0.2
