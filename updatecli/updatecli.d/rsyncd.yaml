@@ -30,7 +30,7 @@ targets:
     kind: helmchart
     spec:
       name: charts/rsyncd
-      key: $.image.rsyncd.tag
+      key: $.image.tag
     scmid: default
 
 actions:

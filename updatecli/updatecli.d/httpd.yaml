@@ -30,7 +30,7 @@ targets:
     kind: helmchart
     spec:
       name: charts/httpd
-      key: $.image.files.tag
+      key: $.image.tag
     scmid: default
 
 actions:
