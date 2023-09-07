@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 image:
   repository: jenkinsciinfra/rsyncd
-  tag: 1.0.0
+  tag: 1.0.1@sha256:8288d9df36c5b62d331736341d7f58b8a78998ace06f2d60fc38f6a4a9d7e6cb
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
@@ -49,7 +49,6 @@ configuration:
       **Read Only**
 
       Feel free to reach out on https://www.jenkins.io/chat/#jenkins-infra/ with any question you may have
-
   ## Uncomment to specify a list of "rsyncd" components (rsync://server.name:873/COMPONENT)
   components: []
   #   - name: jenkins
