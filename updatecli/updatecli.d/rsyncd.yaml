@@ -40,6 +40,7 @@ targets:
     spec:
       name: charts/rsyncd
       key: $.image.tag
+      versionincrement: patch
     scmid: default
 
 actions:
