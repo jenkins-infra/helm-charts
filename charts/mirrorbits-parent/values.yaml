@@ -1,0 +1,7 @@
+## Sub charts specific values
+mirrorbits-lite:
+  enabled: false
+httpd:
+  enabled: false
+rsyncd:
+  enabled: false
