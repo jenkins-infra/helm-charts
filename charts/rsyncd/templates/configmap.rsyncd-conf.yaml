@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "rsyncd.fullname" . }}-rsyncd-conf
+  name: {{ template "rsyncd.fullname" . }}-conf
 data:
   rsyncd.conf: |
     # /etc/rsyncd: configuration file for
