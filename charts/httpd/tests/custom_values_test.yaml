@@ -1,6 +1,4 @@
 suite: Tests with custom values
-values:
-  - secrets_default_values.yaml
 templates:
   - deployment.yaml
   - ingress.yaml
@@ -37,7 +35,7 @@ tests:
       - equal:
           path: spec.selector["app.kubernetes.io/instance"]
           value: "RELEASE-NAME"
-  - it: should define a customized "files" deployment
+  - it: should define a customized deployment
     template: deployment.yaml
     set:
       image:
@@ -48,21 +46,61 @@ tests:
       - isKind:
           of: Deployment
       - equal:
-          path: "spec.template.spec.containers[*].imagePullPolicy"
+          path: spec.template.spec.containers[*].imagePullPolicy
           value: Never
-  - it: should define a customized "httpd" deployment
+  - it: should define a "binary" volume if reuseExistingPersistentVolumeClaim is true
     template: deployment.yaml
     set:
-      image:
-        pullPolicy: Always
+      repository:
+        reuseExistingPersistentVolumeClaim: true
     asserts:
       - hasDocuments:
           count: 1
       - isKind:
           of: Deployment
-      - equal:
-          path: spec.template.spec.containers[*].imagePullPolicy
-          value: Always
+      - lengthEqual:
+          path: spec.template.spec.volumes
+          count: 2
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: "binary"
+          any: true
+      - lengthEqual:
+          path: spec.template.spec.containers[0].volumeMounts
+          count: 2
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: "binary"
+          any: true
+  - it: should define a "binary" volume if repository.persistentVolumeClaim.enabled is true
+    template: deployment.yaml
+    set:
+      repository:
+        persistentVolumeClaim:
+          enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - lengthEqual:
+          path: spec.template.spec.volumes
+          count: 2
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: "binary"
+          any: true
+      - lengthEqual:
+          path: spec.template.spec.containers[0].volumeMounts
+          count: 2
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: "binary"
+          any: true
   - it: should create ingress with pathType set to the specified custom value by default
     template: ingress.yaml
     set:

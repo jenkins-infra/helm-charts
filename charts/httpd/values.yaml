@@ -63,6 +63,8 @@ resources: {}
 #   memory: 128Mi
 repository:
   name: httpd-binary
+  # To reuse an existing PVC, ensure repository.name is set to the PVC name, set the value below to true and keep persistentVolumeClaim to false
+  reuseExistingPersistentVolumeClaim: false
   persistentVolumeClaim:
     enabled: false
     # spec hold persistentVolumeClaim spec

@@ -1,7 +1,4 @@
 suite: default tests
-values:
-  - ../values.yaml
-  - secrets_default_values.yaml
 templates:
   - configmap.yaml
   - deployment.yaml
@@ -57,7 +54,7 @@ tests:
       - equal:
           path: spec.template.metadata.labels["app.kubernetes.io/instance"]
           value: "RELEASE-NAME"
-  - it: should define the default "files" deployment with default imagePullPolicy and metadata labels
+  - it: should define the default deployment with default imagePullPolicy and metadata labels, and only a "conf" volume
     template: deployment.yaml
     asserts:
       - hasDocuments:
@@ -71,5 +68,17 @@ tests:
           path: spec.template.metadata.labels["app.kubernetes.io/instance"]
           value: "RELEASE-NAME"
       - equal:
-          path: "spec.template.spec.containers[*].imagePullPolicy"
+          path: spec.template.spec.containers[0].imagePullPolicy
           value: IfNotPresent
+      - lengthEqual:
+          path: spec.template.spec.volumes
+          count: 1
+      - equal:
+          path: spec.template.spec.volumes[0].name
+          value: "conf"
+      - lengthEqual:
+          path: spec.template.spec.containers[0].volumeMounts
+          count: 1
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].name
+          value: "conf"
