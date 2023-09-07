@@ -40,7 +40,7 @@ targets:
     spec:
       name: charts/mirrorbits-parent
       file: Chart.yaml
-      key: $.mirrorbits-lite.version
+      key: $.dependencies[0].version
       versionincrement: patch
     scmid: default
   updateHttpd:
@@ -50,7 +50,7 @@ targets:
     spec:
       name: charts/mirrorbits-parent
       file: Chart.yaml
-      key: $.httpd.version
+      key: $.dependencies[1].version
       versionincrement: patch
     scmid: default
   updateRsyncd:
@@ -60,7 +60,7 @@ targets:
     spec:
       name: charts/mirrorbits-parent
       file: Chart.yaml
-      key: $.rsyncd.version
+      key: $.dependencies[2].version
       versionincrement: patch
     scmid: default
 
