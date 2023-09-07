@@ -1,0 +1,77 @@
+name: Bump `mirrorbits-parent` subchart versions
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
+sources:
+  lastMirrorbitsLiteChartVersion:
+    kind: helmchart
+    name: get last mirrorbits-lite chart version
+    spec:
+      url: https://jenkins-infra.github.io/helm-charts
+      name: mirrorbits-lite
+  lastHttpdChartVersion:
+    kind: helmchart
+    name: get last httpd chart version
+    spec:
+      url: https://jenkins-infra.github.io/helm-charts
+      name: httpd
+  lastRsyncdChartVersion:
+    kind: helmchart
+    name: get last chart version
+    spec:
+      url: https://jenkins-infra.github.io/helm-charts
+      name: rsyncd
+
+targets:
+  updateMirrorbitsLite:
+    name: Update mirrorbits-lite subchart version
+    sourceid: lastMirrorbitsLiteChartVersion
+    kind: helmchart
+    spec:
+      name: charts/mirrorbits-parent
+      file: Chart.yaml
+      key: $.dependencies[0].version
+      versionincrement: patch
+    scmid: default
+  updateHttpd:
+    name: Update httpd subchart version
+    sourceid: lastHttpdChartVersion
+    kind: helmchart
+    spec:
+      name: charts/mirrorbits-parent
+      file: Chart.yaml
+      key: $.dependencies[1].version
+      versionincrement: patch
+    scmid: default
+  updateRsyncd:
+    name: Update rsyncd subchart version
+    sourceid: lastRsyncdChartVersion
+    kind: helmchart
+    spec:
+      name: charts/mirrorbits-parent
+      file: Chart.yaml
+      key: $.dependencies[2].version
+      versionincrement: patch
+    scmid: default
+
+actions:
+  default:
+    kind: github/pullrequest
+    scmid: default
+    title: Bump `mirrorbits-parent` subchart versions
+    spec:
+      labels:
+        - dependencies
+        - mirrorbits-lite
+        - httpd
+        - rsyncd
