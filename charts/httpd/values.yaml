@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: httpd
-  tag: 2.4@sha256:18427eed921af003c951b5c97f0bde8a6df40cc7cb09b9739b9e35041a3c3acd
+  tag: 2.4@sha256:b55dde71414f5e7ef6a3d5b33ce1ff7357a21148fcdc6be3db155ef391b6c663
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
