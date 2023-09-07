@@ -1,6 +1,3 @@
-## Global values if any
-global: {}
-
 ## Sub charts specific values
 mirrorbits-lite:
   enabled: false
