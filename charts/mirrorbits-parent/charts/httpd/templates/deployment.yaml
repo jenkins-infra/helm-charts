@@ -37,13 +37,15 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            - name: binary
-              mountPath: /usr/local/apache2/htdocs
-              readOnly: true
             - name: conf
               mountPath: /usr/local/apache2/conf/httpd.conf
               subPath: httpd.conf
               readOnly: true
+            {{ if .Values.repository.persistentVolumeClaim.enabled -}}
+            - name: binary
+              mountPath: /usr/local/apache2/htdocs
+              readOnly: true
+            {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
