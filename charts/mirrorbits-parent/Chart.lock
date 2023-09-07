@@ -1,18 +1,12 @@
-apiVersion: v2
-name: mirrorbits-parent
-description: A mirrorbits parent chart for Kubernetes
-type: application
-version: 0.0.4
 dependencies:
 - name: mirrorbits-lite
-  condition: mirrorbits-lite.enabled
   repository: https://jenkins-infra.github.io/helm-charts
   version: 0.0.2
 - name: httpd
-  condition: httpd.enabled
   repository: https://jenkins-infra.github.io/helm-charts
   version: 0.0.4
 - name: rsyncd
-  condition: rsyncd.enabled
   repository: https://jenkins-infra.github.io/helm-charts
   version: 1.0.0
+digest: sha256:7367222fb76eac3e9aa3a56089f20318eed64cfb93723e3b812468782e891d52
+generated: "2023-09-07T16:54:05.562615482Z"
