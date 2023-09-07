@@ -1,4 +1,0 @@
-apiVersion: v1
-description: httpd helm chart for Kubernetes
-name: httpd
-version: 0.0.2
