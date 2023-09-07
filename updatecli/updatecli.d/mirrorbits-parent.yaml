@@ -38,8 +38,8 @@ targets:
     sourceid: lastMirrorbitsLiteChartVersion
     kind: helmchart
     spec:
-      file: charts/mirrorbits-parent/Chart.yaml
       name: charts/mirrorbits-parent
+      file: Chart.yaml
       key: $.mirrorbits-lite.version
       versionincrement: patch
     scmid: default
@@ -48,8 +48,8 @@ targets:
     sourceid: lastHttpdChartVersion
     kind: helmchart
     spec:
-      file: charts/mirrorbits-parent/Chart.yaml
       name: charts/mirrorbits-parent
+      file: Chart.yaml
       key: $.httpd.version
       versionincrement: patch
     scmid: default
@@ -58,8 +58,8 @@ targets:
     sourceid: lastRsyncdChartVersion
     kind: helmchart
     spec:
-      file: charts/mirrorbits-parent/Chart.yaml
       name: charts/mirrorbits-parent
+      file: Chart.yaml
       key: $.rsyncd.version
       versionincrement: patch
     scmid: default
