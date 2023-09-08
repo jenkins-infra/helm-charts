@@ -17,8 +17,13 @@ containerSecurityContext: {}
 # readOnlyRootFilesystem: true
 # runAsNonRoot: true
 # runAsUser: 1000
+
+# (privately exposed) port of the pod. Should be > 1024 as the container should run as non root
+port: 1873
+
 service:
   type: ClusterIP
+  # Port published by the "Service". Maps to the pod (privately exposed) port
   port: 873
   # LoadBalancerIP: 1.2.3.4
   whitelisted_sources: []

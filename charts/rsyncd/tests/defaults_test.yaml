@@ -35,10 +35,10 @@ tests:
       # No tolerations by default
       - notExists:
           path: spec.template.spec.tolerations
-      # Default exposed port is 873
+      # Default exposed port is 1873
       - equal:
           path: spec.template.spec.containers[0].ports[0].containerPort
-          value: 873
+          value: 1873
       # No container resources by default
       - notExists:
           path: spec.template.spec.containers[0].resources
@@ -95,6 +95,9 @@ tests:
       - matchRegex:
           path: data["rsyncd.inc"]
           pattern: motd file = /etc/rsyncd/jenkins.motd
+      - matchRegex:
+          path: data["rsyncd.inc"]
+          pattern: port = 1873
       - notExists:
           path: data["jenkins.conf"]
       - matchRegex:
@@ -118,10 +121,14 @@ tests:
           path: spec.loadBalancerIP
       - notExists:
           path: spec.loadBalancerSourceRanges
-      # Default port is 873
+      # Default published port is 873 by default
       - equal:
           path: spec.ports[0].port
           value: 873
+      # Default exposed (pod) port is 1873 by default
+      - equal:
+          path: spec.ports[0].targetPort
+          value: 1873
       # Check the expected label selectors to allow Service to catch the pods
       - equal:
           path: spec.selector["app.kubernetes.io/name"]

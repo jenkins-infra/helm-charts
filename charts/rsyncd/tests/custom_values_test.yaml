@@ -1,47 +1,59 @@
 suite: Tests with custom values
+# Custom values used to test all suites from this file
+set:
+  image:
+    pullPolicy: Always
+  podSecurityContext:
+    fsGroup: 2000
+  containerSecurityContext:
+    runAsNonRoot: true
+  nodeSelector:
+    os: windows-2022
+  affinity:
+    podAntiAffinity:
+      foo: bar
+  tolerations:
+    - key: "kubernetes.io/arch"
+      operator: "Equal"
+      value: "arm64"
+      effect: "NoSchedule"
+  resources:
+    limits:
+      cpu: 500m
+    requests:
+      memory: 1024Mi
+  port: 9999
+  service:
+    port: 2873
+    type: LoadBalancer
+    LoadBalancerIP: 1.2.3.4
+    whitelisted_sources:
+      - 52.167.253.43/32
+      - 52.202.51.185/32
+  configuration:
+    motd:
+      path: /tmp/motd
+      content: |-
+        ==========
+        FOO BAR
+        SUPER MOTD
+        ==========
+    components:
+      - name: jenkins
+        path: /rsyncd/data/jenkins
+        comment: "Jenkins Read-Only Mirror"
+        volume:
+          persistentVolumeClaim:
+            claimName: super-pvc
+      - name: hudson
+        path: /tmp/hudson
+        comment: "Hudson Read-Only Mirror"
+        volume:
+          persistentVolumeClaim:
+            claimName: another-vol
 tests:
   - it: should define a customized "rsyncd" deployment
     template: deployment.yaml
-    set:
-      image:
-        pullPolicy: Always
-      podSecurityContext:
-        fsGroup: 2000
-      containerSecurityContext:
-        runAsNonRoot: true
-      nodeSelector:
-        os: windows-2022
-      affinity:
-        podAntiAffinity:
-          foo: bar
-      tolerations:
-        - key: "kubernetes.io/arch"
-          operator: "Equal"
-          value: "arm64"
-          effect: "NoSchedule"
-      resources:
-        limits:
-          cpu: 500m
-        requests:
-          memory: 1024Mi
-      service:
-        port: 2873
-      configuration:
-        motd:
-          path: /tmp/motd
-        components:
-          - name: jenkins
-            path: /rsyncd/data/jenkins
-            comment: "Jenkins Read-Only Mirror"
-            volume:
-              persistentVolumeClaim:
-                claimName: super-pvc
-          - name: hudson
-            path: /tmp/hudson
-            comment: "Hudson Read-Only Mirror"
-            volume:
-              persistentVolumeClaim:
-                claimName: another-vol
     asserts:
       - hasDocuments:
           count: 1
@@ -77,10 +89,10 @@ tests:
       - equal:
           path: spec.template.spec.tolerations[0].effect
           value: "NoSchedule"
-      # Exposed port is always 873
+      # Custom exposed port
       - equal:
           path: spec.template.spec.containers[0].ports[0].containerPort
-          value: 873
+          value: 9999
       # Custom container resources
       - equal:
           path: spec.template.spec.containers[0].resources.limits.cpu
@@ -175,28 +187,6 @@ tests:
           value: true
   - it: should create a custom rsyncd-conf config map
     template: configmap.rsyncd-conf.yaml
-    set:
-      configuration:
-        motd:
-          path: /tmp/motd
-          content: |-
-            ==========
-            FOO BAR
-            SUPER MOTD
-            ==========
-        components:
-          - name: jenkins
-            path: /rsyncd/data/jenkins
-            comment: "Jenkins Read-Only Mirror"
-            volume:
-              persistentVolumeClaim:
-                claimName: super-pvc
-          - name: hudson
-            path: /tmp/hudson
-            comment: "Hudson Read-Only Mirror"
-            volume:
-              persistentVolumeClaim:
-                claimName: another-vol
     asserts:
       - hasDocuments:
           count: 1
@@ -223,16 +213,11 @@ tests:
       - matchRegex:
           path: data["jenkins.motd"]
           pattern: SUPER MOTD
+      - matchRegex:
+          path: data["rsyncd.inc"]
+          pattern: port = 9999
   - it: should create the default service
     template: service.yaml
-    set:
-      service:
-        port: 2873
-        type: LoadBalancer
-        LoadBalancerIP: 1.2.3.4
-        whitelisted_sources:
-          - 52.167.253.43/32
-          - 52.202.51.185/32
     asserts:
       - hasDocuments:
           count: 1
@@ -251,10 +236,14 @@ tests:
       - equal:
           path: spec.loadBalancerSourceRanges[1]
           value: 52.202.51.185/32
-      # Custom port
+      # Custom published port
       - equal:
           path: spec.ports[0].port
           value: 2873
+      # Default exposed (pod) port is 1873 by default
+      - equal:
+          path: spec.ports[0].targetPort
+          value: 9999
       # Check the expected label selectors to allow Service to catch the pods
       - equal:
           path: spec.selector["app.kubernetes.io/name"]
