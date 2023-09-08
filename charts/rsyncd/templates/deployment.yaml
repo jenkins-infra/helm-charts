@@ -29,22 +29,20 @@ spec:
         - name: rsyncd
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["/bin/tini","--"]
-          args: ["/usr/bin/rsync", "--verbose", "--no-detach","--daemon","--config","/etc/rsyncd.conf"]
           {{- with .Values.containerSecurityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           ports:
             - name: rsyncd
-              containerPort: 873
+              containerPort: {{ .Values.port }}
               protocol: TCP
           livenessProbe:
             tcpSocket:
-              port: 873
+              port: {{ .Values.port }}
           readinessProbe:
             tcpSocket:
-              port: 873
+              port: {{ .Values.port }}
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
