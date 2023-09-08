@@ -68,15 +68,40 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[1].mountPath
           value: /etc/rsyncd/jenkins.motd
-      # No Rsyncd component by default mounted by default
+      # TempFS volume by default
+      -  equal:
+          path: spec.template.spec.volumes[1].name
+          value: ramfs
+      -  equal:
+          path: spec.template.spec.volumes[1].emptyDir.medium
+          value: Memory
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2].name
+          value: ramfs
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2].mountPath
+          value: /tmp
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2].subPath
+          value: tmp
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].name
+          value: ramfs
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].mountPath
+          value: /rsync/run
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].subPath
+          value: run
+      # No Rsyncd component by default
       - notExists:
-          path: spec.template.spec.containers[0].volumeMounts[2]
-      - notExists:
-          path: spec.template.spec.volumes[1]
-      - notExists:
-          path: spec.template.spec.containers[0].volumeMounts[3]
+          path: spec.template.spec.containers[0].volumeMounts[4]
       - notExists:
           path: spec.template.spec.volumes[2]
+      - notExists:
+          path: spec.template.spec.containers[0].volumeMounts[5]
+      - notExists:
+          path: spec.template.spec.volumes[3]
       # No custom entrypoint/command by default
       - notExists:
           path: spec.template.spec.containers[0].command

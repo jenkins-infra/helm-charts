@@ -126,64 +126,91 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[1].mountPath
           value: /tmp/motd
-      # Custom Rsyncd components
-      - equal:
+      # TempFS volumes
+      -  equal:
           path: spec.template.spec.volumes[1].name
-          value: datadir-jenkins
-      - equal:
-          path: spec.template.spec.volumes[1].persistentVolumeClaim.claimName
-          value: super-pvc
+          value: ramfs
+      -  equal:
+          path: spec.template.spec.volumes[1].emptyDir.medium
+          value: Memory
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].name
-          value: rsyncd-conf
+          value: ramfs
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].mountPath
-          value: /etc/rsyncd.d/jenkins.conf
+          value: /tmp
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].subPath
-          value: jenkins.conf
-      - equal:
-          path: spec.template.spec.containers[0].volumeMounts[2].readOnly
-          value: true
+          value: tmp
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].name
-          value: datadir-jenkins
+          value: ramfs
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].mountPath
-          value: /rsyncd/data/jenkins
-      - notExists:
-          path: spec.template.spec.containers[0].volumeMounts[3].subPath
+          value: /rsync/run
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[3].readOnly
-          value: true
+          path: spec.template.spec.containers[0].volumeMounts[3].subPath
+          value: run
+      # Custom Rsyncd components
+      ## jenkins (1 configmap volume mount + 1 data volume and 1 volumemount for data dir)
       - equal:
           path: spec.template.spec.volumes[2].name
-          value: datadir-hudson
+          value: datadir-jenkins
       - equal:
           path: spec.template.spec.volumes[2].persistentVolumeClaim.claimName
-          value: another-vol
+          value: super-pvc
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[4].name
           value: rsyncd-conf
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[4].mountPath
-          value: /etc/rsyncd.d/hudson.conf
+          value: /etc/rsyncd.d/jenkins.conf
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[4].subPath
-          value: hudson.conf
+          value: jenkins.conf
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[4].readOnly
           value: true
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[5].name
-          value: datadir-hudson
+          value: datadir-jenkins
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[5].mountPath
-          value: /tmp/hudson
+          value: /rsyncd/data/jenkins
       - notExists:
           path: spec.template.spec.containers[0].volumeMounts[5].subPath
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[5].readOnly
+          value: true
+      ## hudson (1 configmap volume mount + 1 data volume and 1 volumemount for data dir)
+      - equal:
+          path: spec.template.spec.volumes[3].name
+          value: datadir-hudson
+      - equal:
+          path: spec.template.spec.volumes[3].persistentVolumeClaim.claimName
+          value: another-vol
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[6].name
+          value: rsyncd-conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[6].mountPath
+          value: /etc/rsyncd.d/hudson.conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[6].subPath
+          value: hudson.conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[6].readOnly
+          value: true
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[7].name
+          value: datadir-hudson
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[7].mountPath
+          value: /tmp/hudson
+      - notExists:
+          path: spec.template.spec.containers[0].volumeMounts[7].subPath
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[7].readOnly
           value: true
   - it: should create a custom rsyncd-conf config map
     template: configmap.rsyncd-conf.yaml
