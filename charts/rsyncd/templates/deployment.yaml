@@ -37,14 +37,14 @@ spec:
           {{- end }}
           ports:
             - name: rsyncd
-              containerPort: 873
+              containerPort: {{ .Values.port }}
               protocol: TCP
           livenessProbe:
             tcpSocket:
-              port: 873
+              port: {{ .Values.port }}
           readinessProbe:
             tcpSocket:
-              port: 873
+              port: {{ .Values.port }}
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
