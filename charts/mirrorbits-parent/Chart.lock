@@ -7,6 +7,6 @@ dependencies:
   version: 0.0.4
 - name: rsyncd
   repository: https://jenkins-infra.github.io/helm-charts
-  version: 1.0.0
-digest: sha256:7367222fb76eac3e9aa3a56089f20318eed64cfb93723e3b812468782e891d52
-generated: "2023-09-07T16:54:05.562615482Z"
+  version: 1.1.0
+digest: sha256:e8422ef0e7199a344c377a0d85d1a3e3fa5ba6bbb30495a25b31c62a310a3d73
+generated: "2023-09-07T17:02:15.786897607Z"
