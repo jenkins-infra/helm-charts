@@ -17,7 +17,7 @@ spec:
   {{- end }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: 873
+      targetPort: {{ .Values.port }}
       protocol: TCP
       name: rsyncd
   selector:
