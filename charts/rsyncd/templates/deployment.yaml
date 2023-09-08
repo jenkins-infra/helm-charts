@@ -56,6 +56,12 @@ spec:
               mountPath: {{ .Values.configuration.motd.path }}
               subPath: jenkins.motd
               readOnly: true # Default for configmaps
+            - name: ramfs
+              mountPath: /tmp
+              subPath: tmp
+            - name: ramfs
+              mountPath: /rsync/run
+              subPath: run
             {{- range .Values.configuration.components }}
             - name: rsyncd-conf
               mountPath: /etc/rsyncd.d/{{ .name }}.conf
@@ -81,6 +87,10 @@ spec:
         - name: rsyncd-conf
           configMap:
             name: {{ include "rsyncd.fullname" . }}-conf
+        - name: ramfs
+          emptyDir:
+            medium: Memory
+            sizeLimit: 32Mi
         {{- range .Values.configuration.components }}
         - name: datadir-{{ .name }}
           {{- if .volume }}
