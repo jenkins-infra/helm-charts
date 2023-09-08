@@ -77,6 +77,11 @@ tests:
           path: spec.template.spec.containers[0].volumeMounts[3]
       - notExists:
           path: spec.template.spec.volumes[2]
+      # No custom entrypoint/command by default
+      - notExists:
+          path: spec.template.spec.containers[0].command
+      - notExists:
+          path: spec.template.spec.containers[0].args
   - it: should create a default rsyncd-conf config map
     template: configmap.rsyncd-conf.yaml
     asserts:
