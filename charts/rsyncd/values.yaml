@@ -45,7 +45,7 @@ tolerations: []
 affinity: {}
 configuration:
   motd:
-    path: /etc/rsyncd/jenkins.motd
+    path: /etc/rsyncd.d/jenkins.motd
     content: |-
       ========================
       ==== JENKINS MIRROR ====
