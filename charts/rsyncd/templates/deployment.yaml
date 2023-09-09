@@ -29,22 +29,20 @@ spec:
         - name: rsyncd
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["/bin/tini","--"]
-          args: ["/usr/bin/rsync", "--verbose", "--no-detach","--daemon","--config","/etc/rsyncd.conf"]
           {{- with .Values.containerSecurityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           ports:
             - name: rsyncd
-              containerPort: 873
+              containerPort: {{ .Values.port }}
               protocol: TCP
           livenessProbe:
             tcpSocket:
-              port: 873
+              port: {{ .Values.port }}
           readinessProbe:
             tcpSocket:
-              port: 873
+              port: {{ .Values.port }}
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
@@ -58,6 +56,12 @@ spec:
               mountPath: {{ .Values.configuration.motd.path }}
               subPath: jenkins.motd
               readOnly: true # Default for configmaps
+            - name: ramfs
+              mountPath: /tmp
+              subPath: tmp
+            - name: ramfs
+              mountPath: /rsync/run
+              subPath: run
             {{- range .Values.configuration.components }}
             - name: rsyncd-conf
               mountPath: /etc/rsyncd.d/{{ .name }}.conf
@@ -83,6 +87,10 @@ spec:
         - name: rsyncd-conf
           configMap:
             name: {{ include "rsyncd.fullname" . }}-conf
+        - name: ramfs
+          emptyDir:
+            medium: Memory
+            sizeLimit: 32Mi
         {{- range .Values.configuration.components }}
         - name: datadir-{{ .name }}
           {{- if .volume }}
