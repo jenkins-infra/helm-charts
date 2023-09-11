@@ -31,6 +31,7 @@ targets:
     spec:
       name: charts/httpd
       key: $.image.tag
+      versionincrement: patch
     scmid: default
 
 actions:
