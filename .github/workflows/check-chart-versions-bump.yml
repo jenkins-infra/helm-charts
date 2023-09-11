@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Check version bump on modified charts
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - id: list_modified_charts
         name: List modified charts
         env:
