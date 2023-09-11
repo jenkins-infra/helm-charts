@@ -1,13 +1,59 @@
 suite: Tests with custom values
-templates:
-  - deployment.yaml
-  - configmap.jenkins-motd.yaml
+# Custom values used to test all suites from this file
+set:
+  image:
+    pullPolicy: Always
+  podSecurityContext:
+    fsGroup: 2000
+  containerSecurityContext:
+    runAsNonRoot: true
+  nodeSelector:
+    os: windows-2022
+  affinity:
+    podAntiAffinity:
+      foo: bar
+  tolerations:
+    - key: "kubernetes.io/arch"
+      operator: "Equal"
+      value: "arm64"
+      effect: "NoSchedule"
+  resources:
+    limits:
+      cpu: 500m
+    requests:
+      memory: 1024Mi
+  port: 9999
+  service:
+    port: 2873
+    type: LoadBalancer
+    LoadBalancerIP: 1.2.3.4
+    whitelisted_sources:
+      - 52.167.253.43/32
+      - 52.202.51.185/32
+  configuration:
+    motd:
+      path: /tmp/motd
+      content: |-
+        ==========
+        FOO BAR
+        SUPER MOTD
+        ==========
+    components:
+      - name: jenkins
+        path: /rsyncd/data/jenkins
+        comment: "Jenkins Read-Only Mirror"
+        volume:
+          persistentVolumeClaim:
+            claimName: super-pvc
+      - name: hudson
+        path: /tmp/hudson
+        comment: "Hudson Read-Only Mirror"
+        volume:
+          persistentVolumeClaim:
+            claimName: another-vol
 tests:
   - it: should define a customized "rsyncd" deployment
     template: deployment.yaml
-    set:
-      image:
-        pullPolicy: Always
     asserts:
       - hasDocuments:
           count: 1
@@ -16,21 +62,219 @@ tests:
       - equal:
           path: spec.template.spec.containers[*].imagePullPolicy
           value: Always
-  # - it: should create a jenkins motd configmap if its overriding is activated
-  #   template: configmap.jenkins-motd.yaml
-  #   set:
-  #     configurationFiles:
-  #       jenkinsMotd:
-  #         override: true
-  #         content: |-
-  #           [jenkins]
-  #           path = /srv/releases/jenkins
-  #           comment = "Test"
-  #           ==============
-  #           ==== TEST ====
-  #           ==============  
-  #   asserts:
-  #     - hasDocuments:
-  #         count: 1
-  #     - isKind:
-  #         of: ConfigMap
+      # Check the expected "matched labels" to allow Service to catch this pod with label selectors
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/name"]
+          value: "rsyncd"
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/instance"]
+          value: "RELEASE-NAME"
+      # Custom pod security context
+      - equal:
+          path: spec.template.spec.securityContext.fsGroup
+          value: 2000
+      # Custom container security context
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.runAsNonRoot
+          value: true
+      # Custom node selectors
+      - equal:
+          path: spec.template.spec.nodeSelector.os
+          value: windows-2022
+      # Custom affinity
+      - equal:
+          path: spec.template.spec.affinity.podAntiAffinity.foo
+          value: bar
+      # Custom tolerations
+      - equal:
+          path: spec.template.spec.tolerations[0].effect
+          value: "NoSchedule"
+      # Custom exposed port
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].containerPort
+          value: 9999
+      # Custom container resources
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.cpu
+          value: 500m
+      - equal:
+          path: spec.template.spec.containers[0].resources.requests.memory
+          value: 1024Mi
+      # Custom rsyncd.inc configuration overlay is mounted from the rsyncd-conf configmap
+      - equal:
+          path: spec.template.spec.volumes[0].name
+          value: rsyncd-conf
+      - equal:
+          path: spec.template.spec.volumes[0].configMap.name
+          value: RELEASE-NAME-rsyncd-conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].name
+          value: rsyncd-conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].subPath
+          value: rsyncd.inc
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].mountPath
+          value: /etc/rsyncd.d/rsyncd.inc
+      # Custom motd mounted
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].name
+          value: rsyncd-conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].subPath
+          value: jenkins.motd
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].mountPath
+          value: /tmp/motd
+      # TempFS volumes
+      -  equal:
+          path: spec.template.spec.volumes[1].name
+          value: ramfs
+      -  equal:
+          path: spec.template.spec.volumes[1].emptyDir.medium
+          value: Memory
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2].name
+          value: ramfs
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2].mountPath
+          value: /tmp
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2].subPath
+          value: tmp
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].name
+          value: ramfs
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].mountPath
+          value: /rsync/run
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].subPath
+          value: run
+      # Custom Rsyncd components
+      ## jenkins (1 configmap volume mount + 1 data volume and 1 volumemount for data dir)
+      - equal:
+          path: spec.template.spec.volumes[2].name
+          value: datadir-jenkins
+      - equal:
+          path: spec.template.spec.volumes[2].persistentVolumeClaim.claimName
+          value: super-pvc
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[4].name
+          value: rsyncd-conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[4].mountPath
+          value: /etc/rsyncd.d/jenkins.conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[4].subPath
+          value: jenkins.conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[4].readOnly
+          value: true
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[5].name
+          value: datadir-jenkins
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[5].mountPath
+          value: /rsyncd/data/jenkins
+      - notExists:
+          path: spec.template.spec.containers[0].volumeMounts[5].subPath
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[5].readOnly
+          value: true
+      ## hudson (1 configmap volume mount + 1 data volume and 1 volumemount for data dir)
+      - equal:
+          path: spec.template.spec.volumes[3].name
+          value: datadir-hudson
+      - equal:
+          path: spec.template.spec.volumes[3].persistentVolumeClaim.claimName
+          value: another-vol
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[6].name
+          value: rsyncd-conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[6].mountPath
+          value: /etc/rsyncd.d/hudson.conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[6].subPath
+          value: hudson.conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[6].readOnly
+          value: true
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[7].name
+          value: datadir-hudson
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[7].mountPath
+          value: /tmp/hudson
+      - notExists:
+          path: spec.template.spec.containers[0].volumeMounts[7].subPath
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[7].readOnly
+          value: true
+  - it: should create a custom rsyncd-conf config map
+    template: configmap.rsyncd-conf.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ConfigMap
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-rsyncd-conf
+      - matchRegex:
+          path: data["rsyncd.inc"]
+          pattern: motd file = /tmp/motd
+      - matchRegex:
+          path: data["jenkins.conf"]
+          pattern: "[jenkins]"
+      - matchRegex:
+          path: data["hudson.conf"]
+          pattern: "[hudson]"
+      - matchRegex:
+          path: data["hudson.conf"]
+          pattern: "path = /tmp/hudson"
+      - notMatchRegex:
+          path: data["jenkins.motd"]
+          pattern: JENKINS MIRROR
+      - matchRegex:
+          path: data["jenkins.motd"]
+          pattern: SUPER MOTD
+      - matchRegex:
+          path: data["rsyncd.inc"]
+          pattern: port = 9999
+  - it: should create the default service
+    template: service.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-rsyncd
+      # Internal service by default
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+      - equal:
+          path: spec.loadBalancerIP
+          value: 1.2.3.4
+      - equal:
+          path: spec.loadBalancerSourceRanges[1]
+          value: 52.202.51.185/32
+      # Custom published port
+      - equal:
+          path: spec.ports[0].port
+          value: 2873
+      # Default exposed (pod) port is 1873 by default
+      - equal:
+          path: spec.ports[0].targetPort
+          value: 9999
+      # Check the expected label selectors to allow Service to catch the pods
+      - equal:
+          path: spec.selector["app.kubernetes.io/name"]
+          value: "rsyncd"
+      - equal:
+          path: spec.selector["app.kubernetes.io/instance"]
+          value: "RELEASE-NAME"

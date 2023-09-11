@@ -7,18 +7,17 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   {{- if eq .Values.service.type "LoadBalancer" }}
-  {{- if .Values.service.IP }}
-  loadBalancerIP: {{ .Values.service.IP }}
+  {{- with .Values.service.LoadBalancerIP }}
+  loadBalancerIP: {{ . }}
   {{- end }}
   loadBalancerSourceRanges:
     {{- range .Values.service.whitelisted_sources }}
     - {{ . | quote }}
     {{- end }}
   {{- end }}
-
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: 873
+      targetPort: {{ .Values.port }}
       protocol: TCP
       name: rsyncd
   selector:
