@@ -29,7 +29,9 @@ conditions:
     sourceid: latestRelease
     spec:
       image: "jenkinsciinfra/wiki"
-      architecture: "amd64"
+      architectures:
+        - amd64
+        - arm64
 
 targets:
   updateChart:
