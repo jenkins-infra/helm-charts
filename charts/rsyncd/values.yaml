@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 image:
   repository: jenkinsciinfra/rsyncd
-  tag: 1.0.1@sha256:8288d9df36c5b62d331736341d7f58b8a78998ace06f2d60fc38f6a4a9d7e6cb
+  tag: 1.0.2@sha256:5d80ae9394e9bd8c5b81b3a42028e96bccf726ddcd9804b5ad3522b4ec518c92
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
@@ -17,10 +17,8 @@ containerSecurityContext: {}
 # readOnlyRootFilesystem: true
 # runAsNonRoot: true
 # runAsUser: 1000
-
 # (privately exposed) port of the pod. Should be > 1024 as the container should run as non root
 port: 1873
-
 service:
   type: ClusterIP
   # Port published by the "Service". Maps to the pod (privately exposed) port
@@ -45,7 +43,7 @@ tolerations: []
 affinity: {}
 configuration:
   motd:
-    path: /etc/rsyncd/jenkins.motd
+    path: /etc/rsyncd.d/jenkins.motd
     content: |-
       ========================
       ==== JENKINS MIRROR ====

@@ -67,7 +67,7 @@ tests:
           value: "jenkins.motd"
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[1].mountPath
-          value: /etc/rsyncd/jenkins.motd
+          value: /etc/rsyncd.d/jenkins.motd
       # TempFS volume by default
       -  equal:
           path: spec.template.spec.volumes[1].name
@@ -119,7 +119,7 @@ tests:
           value: RELEASE-NAME-rsyncd-conf
       - matchRegex:
           path: data["rsyncd.inc"]
-          pattern: motd file = /etc/rsyncd/jenkins.motd
+          pattern: motd file = /etc/rsyncd.d/jenkins.motd
       - matchRegex:
           path: data["rsyncd.inc"]
           pattern: port = 1873
