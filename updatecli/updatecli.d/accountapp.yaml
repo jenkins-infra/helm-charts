@@ -29,7 +29,9 @@ conditions:
     spec:
       image: "jenkinsciinfra/account-app"
       ## Tag from source
-      architecture: amd64
+      architectures:
+        - amd64
+        - arm64
 
 targets:
   updateChart:
