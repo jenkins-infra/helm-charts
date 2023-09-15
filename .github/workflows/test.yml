@@ -8,7 +8,7 @@ on:
   pull_request:
     paths:
       - 'charts/**'
-  workflow_dispatch: null
+  workflow_dispatch:
 env:
   UNITTEST_VERSION: v0.3.5
 jobs:
