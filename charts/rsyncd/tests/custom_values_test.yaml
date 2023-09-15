@@ -278,3 +278,32 @@ tests:
       - equal:
           path: spec.selector["app.kubernetes.io/instance"]
           value: "RELEASE-NAME"
+  - it: should create a PV
+    template: persistentVolume.yaml
+    set:
+      persistence:
+        persistentVolume:
+          enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: PersistentVolume
+      - equal:
+          path: metadata.name
+          value: "RELEASE-NAME-rsyncd-binary"
+  - it: should create a PVC with a custom name
+    template: persistentVolumeClaim.yaml
+    set:
+      persistence:
+        name: custom-pvc-name
+        persistentVolumeClaim:
+          enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: PersistentVolumeClaim
+      - equal:
+          path: metadata.name
+          value: "custom-pvc-name"

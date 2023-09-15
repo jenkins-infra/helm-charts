@@ -65,7 +65,8 @@ configuration:
   #         claimName: rsyncd-binary
 
 persistence:
-  name: rsyncd-binary
+  ## Uncomment to override PV & PVC names
+  # name: rsyncd-binary
   persistentVolumeClaim:
     enabled: false
     spec: {}

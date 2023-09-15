@@ -161,3 +161,13 @@ tests:
       - equal:
           path: spec.selector["app.kubernetes.io/instance"]
           value: "RELEASE-NAME"
+  - it: should not create any PV by default
+    template: persistentVolume.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should not create any PVC by default
+    template: persistentVolumeClaim.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
