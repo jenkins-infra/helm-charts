@@ -59,3 +59,16 @@ configuration:
   #     comment: "Jenkins Read-Only Mirror"
   #     volume:
   #       emptyDir: {}
+  ## To use an existing PVC you can define the volume as:
+  #     volume:
+  #       persistentVolumeClaim:
+  #         claimName: rsyncd-binary
+
+persistence:
+  name: rsyncd-binary
+  persistentVolumeClaim:
+    enabled: false
+    spec: {}
+  persistentVolume:
+    enabled: false
+    spec: {}

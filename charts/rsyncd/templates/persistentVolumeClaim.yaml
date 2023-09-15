@@ -1,0 +1,9 @@
+{{ if .Values.persistence.persistentVolume.enabled -}}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.persistence.name | default (printf "%s-binary" (include "rsyncd.fullname" .))  }}
+spec:
+{{ toYaml .Values.persistence.persistentVolumeClaim.spec | nindent 2 }}
+{{- end }}
