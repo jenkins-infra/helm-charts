@@ -10,7 +10,7 @@ on:
       - 'charts/**'
   workflow_dispatch:
 env:
-  UNITTEST_VERSION: v0.3.4
+  UNITTEST_VERSION: v0.3.5
 jobs:
   run_unit_tests_on_modified_charts:
     runs-on: ubuntu-latest
