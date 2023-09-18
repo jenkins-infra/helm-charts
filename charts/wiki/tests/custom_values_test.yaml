@@ -1,9 +1,10 @@
-suite: test pdb.yaml
+suite: Tests with custom values
 templates:
   - pdb.yaml
 tests:
   - it: should ensure the pdb has correct spec
     set:
+      poddisruptionbudget.enabled: true
       poddisruptionbudget.minAvailable: 2
       poddisruptionbudget.maxUnavailable: 1
     asserts:
@@ -14,4 +15,4 @@ tests:
           value: 2
       - equal:
           path: spec.selector.matchLabels.app
-          value: "wiki"
+          value: "RELEASE-NAME-wiki"

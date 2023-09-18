@@ -1,0 +1,9 @@
+suite: default tests
+templates:
+  - pdb.yaml
+tests:
+  - it: should not generate any pdb with default values
+    template: pdb.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
