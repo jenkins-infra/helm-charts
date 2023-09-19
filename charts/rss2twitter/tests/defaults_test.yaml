@@ -1,0 +1,39 @@
+suite: default tests
+values:
+  - ../values.yaml
+  - secrets_default_values.yaml
+templates:
+  - _helper.tpl
+  - deployment.yaml
+  - exclusion-patterns-configmap.yaml
+  - secret.yaml
+tests:
+  - it: should define the default deployment with the image umputun/rss2twitter
+    template: deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: umputun/rss2twitter:v0.7.0
+  - it: should create a Secret with the correct value
+    template: secret.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Secret
+      - equal:
+          path: data.TWI_CONSUMER_KEY
+          value: Y29uc3VtZXIta2V5
+      - equal:
+          path: data.TWI_CONSUMER_SECRET
+          value: Y29uc3VtZXItc2VjcmV0
+      - equal:
+          path: data.TWI_ACCESS_TOKEN
+          value: YWNjZXNzLXRva2Vu
+      - equal:
+          path: data.TWI_ACCESS_SECRET
+          value: YWNjZXNzLXNlY3JldA==
