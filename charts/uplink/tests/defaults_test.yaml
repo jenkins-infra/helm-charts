@@ -1,0 +1,19 @@
+suite: test default behavior of secret.yaml with default values
+templates:
+  - secret.yaml
+tests:
+  - it: should render with default values without error
+    asserts:
+      - isKind:
+          of: Secret
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-uplink
+      - notExists:
+          path: data.postgresql.url
+      - notExists:
+          path: data.client.id
+      - notExists:
+          path: data.client.secret
+      - notExists:
+          path: data.sentry.dsn
