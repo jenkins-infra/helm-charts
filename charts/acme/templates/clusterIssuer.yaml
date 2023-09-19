@@ -9,5 +9,7 @@ spec:
     privateKeySecretRef:
       # Secret resource used to store the account's private key.
       name: {{ .Values.acme.id }}
+    {{- if .Values.acme.solvers }}
     solvers:
       {{- toYaml .Values.acme.solvers | nindent 4 }}
+    {{- end}}

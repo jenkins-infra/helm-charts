@@ -9,8 +9,8 @@ acme:
 
   # Secrets used for dns01 settings
   clientSecrets:
-    - name: 'acme_test_secret'
-      value: 'password'
+    - name: acme-test-secret
+      value: ""
 
   # Accepts any values as defined here https://cert-manager.io/docs/configuration/acme/dns01/
   dns01: {}

@@ -1,0 +1,23 @@
+suite: default tests
+values:
+  - ../values.yaml
+  - secrets_default_values.yaml
+templates:
+  - clusterIssuer.yaml
+  - secret.yaml
+tests:
+  - it: should create a cluster issuer by default
+    template: clusterIssuer.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+  - it: should create a Secret with the correct value
+    template: secret.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Secret
+      - equal:
+          path: data.CLIENT_SECRET
+          value: cGFzc3dvcmQ=
