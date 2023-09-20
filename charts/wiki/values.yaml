@@ -66,3 +66,6 @@ autoscaling:
 nodeSelector: {}
 tolerations: []
 affinity: {}
+poddisruptionbudget:
+  minAvailable: 1
+  maxUnavailable: 1
