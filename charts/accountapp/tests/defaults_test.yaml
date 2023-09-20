@@ -1,7 +1,4 @@
 suite: default tests
-values:
-  - ../values.yaml
-  - secrets_default_values.yaml
 templates:
   - deployment.yaml
   - ingress.yaml

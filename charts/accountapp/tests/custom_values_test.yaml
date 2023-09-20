@@ -1,0 +1,29 @@
+suite: Test with custom values
+templates:
+  - deployment.yaml
+  - ingress.yaml
+  - secret.yaml # Direct dependency of deployment.yaml
+tests:
+  - it: should create a Secret with the correct value
+    set:
+      ldap:
+        password: ldap-password
+      jira:
+        password: jira-password
+      smtp:
+        password: smtp-password
+    template: secret.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Secret
+      - equal:
+          path: data.ldapPassword
+          value: bGRhcC1wYXNzd29yZA==
+      - equal:
+          path: data.jiraPassword
+          value: amlyYS1wYXNzd29yZA==
+      - equal:
+          path: data.smtpPassword
+          value: c210cC1wYXNzd29yZA==
