@@ -1,0 +1,10 @@
+suite: Test with default values
+templates:
+  - clusterIssuer.yaml
+  - secret.yaml
+tests:
+  - it: should create a cluster issuer by default
+    template: clusterIssuer.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
