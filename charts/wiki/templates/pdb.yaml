@@ -1,4 +1,4 @@
-{{- if .Values.poddisruptionbudget.enabled }}
+{{- if gt .Values.replicaCount 1 }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
