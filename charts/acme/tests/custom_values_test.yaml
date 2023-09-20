@@ -1,17 +1,14 @@
-suite: default tests
-values:
-  - ../values.yaml
-  - secrets_default_values.yaml
+suite: Test with custom values
 templates:
   - clusterIssuer.yaml
   - secret.yaml
 tests:
-  - it: should create a cluster issuer by default
-    template: clusterIssuer.yaml
-    asserts:
-      - hasDocuments:
-          count: 1
   - it: should create a Secret with the correct value
+    set:
+      acme:
+        clientSecrets:
+          - name: acme-test-secret
+            value: password
     template: secret.yaml
     asserts:
       - hasDocuments:
