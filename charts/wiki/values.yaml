@@ -6,7 +6,7 @@ image:
   repository: jenkinsciinfra/wiki
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 0.1.7
+  tag: 0.1.8
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -67,6 +67,5 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 poddisruptionbudget:
-  enabled: false
   minAvailable: 1
   maxUnavailable: 1
