@@ -67,6 +67,5 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 poddisruptionbudget:
-  enabled: false
   minAvailable: 1
   maxUnavailable: 1
