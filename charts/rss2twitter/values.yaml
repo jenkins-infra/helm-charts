@@ -16,7 +16,7 @@ podSecurityContext: {}
 securityContext:
   capabilities:
     drop:
-    - ALL
+      - ALL
   readOnlyRootFilesystem: true
   runAsUser: 1001 # app
 resources: {}
@@ -40,3 +40,9 @@ env:
   # disables publishing to twitter and sends updates to logger only
   dryMode: true
   debugMode: false
+
+twitter:
+  consumerKey: ""
+  consumerSecret: ""
+  accessToken: ""
+  accessSecret: ""

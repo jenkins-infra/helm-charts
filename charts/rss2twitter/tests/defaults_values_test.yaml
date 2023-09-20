@@ -1,0 +1,17 @@
+suite: Test with default values
+templates:
+  - _helper.tpl
+  - deployment.yaml
+  - exclusion-patterns-configmap.yaml
+  - secret.yaml
+tests:
+  - it: should define the default deployment with the image umputun/rss2twitter
+    template: deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: umputun/rss2twitter:v0.7.0
