@@ -4,7 +4,7 @@ templates:
 tests:
   - it: should ensure the pdb has correct spec
     set:
-      poddisruptionbudget.enabled: true
+      replicaCount: 2
       poddisruptionbudget.minAvailable: 2
       poddisruptionbudget.maxUnavailable: 1
     asserts:
