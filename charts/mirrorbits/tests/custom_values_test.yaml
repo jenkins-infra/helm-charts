@@ -1,6 +1,5 @@
 suite: Tests with custom values
 set:
-  fullNameOverride: "my-fullNameOverride"
   ingress:
     enabled: true
     hosts:
@@ -34,6 +33,8 @@ templates:
 tests:
   - it: Should set the correct service selector labels when a fullNameOverride is specified
     template: service.files.yaml
+    set:
+      fullNameOverride: "my-fullNameOverride"
     asserts:
       - hasDocuments:
           count: 1
@@ -48,7 +49,6 @@ tests:
   - it: Should set the correct service selector labels when a nameOverride is specified
     template: service.files.yaml
     set:
-      # Overides the fullname overide \o/
       nameOverride: "my-nameOverride"
     asserts:
       - hasDocuments:
