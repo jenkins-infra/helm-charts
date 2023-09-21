@@ -87,4 +87,4 @@ tests:
           value: logs
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].mountPath
-          value: /var/logs/mirrorbits
+          value: /var/log/mirrorbits

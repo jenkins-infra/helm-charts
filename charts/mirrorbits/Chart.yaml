@@ -2,7 +2,7 @@ apiVersion: v1
 appVersion: v0.5.2
 description: Mirrobits helm chart for Kubernetes
 maintainers:
-- email: me@olblak.com
-  name: olblak
+- email: jenkins-infra-team@googlegroups.com
+  name: jenkins-infra-team
 name: mirrorbits
-version: 0.66.0
+version: 0.66.1

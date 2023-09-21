@@ -40,7 +40,7 @@ spec:
             - name: geoipdata
               mountPath: /usr/share/GeoIP
             - name: logs
-              mountPath: /var/logs/mirrorbits
+              mountPath: /var/log/mirrorbits
             {{ if $.Values.repository.persistentVolumeClaim.enabled -}}
             - name: binary
               mountPath: /srv/repo
