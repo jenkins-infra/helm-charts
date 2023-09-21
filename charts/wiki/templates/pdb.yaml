@@ -14,5 +14,5 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      app: {{ include "wiki.fullname" . }}
+      {{- include "wiki.selectorLabels" . | nindent 6 }}
 {{- end }}
