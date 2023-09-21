@@ -46,10 +46,10 @@ ldap:
   url: ldaps://ldap.jenkins.io:636/
   managerDn: cn=admin,dc=jenkins-ci,dc=org
   newUserBaseDn: ou=people,dc=jenkins-ci,dc=org
-  password: null
+  password: ""
 jira:
   username: accountapp
-  password: null
+  password: ""
   url: https://issues.jenkins.io/
 seats: 2
 seniority: 12
@@ -59,7 +59,7 @@ smtp:
   sender: admin@jenkins-ci.org
   port: 587
   user: null
-  password: null
+  password: ""
 appUrl: https://accounts.jenkins.io
 election:
   open: 1970-01-01
