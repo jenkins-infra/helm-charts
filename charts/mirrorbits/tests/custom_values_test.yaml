@@ -93,7 +93,7 @@ tests:
           value: logs
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].mountPath
-          value: /var/logs/mirrorbits
+          value: /var/log/mirrorbits
   - it: should create ingress with pathType set to the specified custom value by default
     template: ingress.yaml
     asserts:
