@@ -89,7 +89,7 @@ mirrorbits:
   logs:
     volume:
       emptyDir: {}
-      ## Volume contains the Pod Volume definition. For an existing PVC for instance:
+      ## Volume contains the Pod Volume definition. Example with an existing PVC:
       # persistentVolumeClaim:
       #   claimName: <PVC name>
   ## mirrorbits.conf data, to be completed as secret with Redis credentials
