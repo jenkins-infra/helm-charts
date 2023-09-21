@@ -14,5 +14,5 @@ tests:
           path: spec.minAvailable
           value: 2
       - equal:
-          path: spec.selector.matchLabels.app
-          value: "RELEASE-NAME-wiki"
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: "wiki"
