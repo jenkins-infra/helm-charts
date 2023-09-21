@@ -1,6 +1,21 @@
 suite: Tests with custom values
-values:
-  - secrets_default_values.yaml
+set:
+  image:
+    pullPolicy: Always
+  logs:
+    volume:
+      persistentVolumeClaim:
+        claimName: foobar
+  geoipupdate:
+    account_id: my-account-id
+    license_key: my-license-key
+  ingress:
+    enabled: true
+    hosts:
+      - host: chart-example.local
+        paths:
+        - path: /
+          pathType: IfNotPresent
 templates:
   - deployment.yaml
   - ingress.yaml
@@ -24,9 +39,6 @@ tests:
           value: "RELEASE-NAME"
   - it: should define a customized "mirrorbits-lite" deployment
     template: deployment.yaml
-    set:
-      image:
-        pullPolicy: Always
     asserts:
       - hasDocuments:
           count: 1
@@ -35,16 +47,21 @@ tests:
       - equal:
           path: spec.template.spec.containers[*].imagePullPolicy
           value: Always
+      # Log volumes is a custom PVC
+      - equal:
+          path: spec.template.spec.volumes[2].name
+          value: logs
+      - equal:
+          path: spec.template.spec.volumes[2].persistentVolumeClaim.claimName
+          value: foobar
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2].name
+          value: logs
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2].mountPath
+          value: /var/log/mirrorbits
   - it: should create ingress with pathType set to the specified custom value by default
     template: ingress.yaml
-    set:
-      ingress:
-        enabled: true
-        hosts:
-          - host: chart-example.local
-            paths:
-            - path: /
-              pathType: IfNotPresent
     asserts:
       - hasDocuments:
           count: 1

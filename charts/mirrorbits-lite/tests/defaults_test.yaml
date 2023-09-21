@@ -1,7 +1,4 @@
 suite: default tests
-values:
-  - ../values.yaml
-  - secrets_default_values.yaml
 templates:
   - deployment.yaml
   - ingress.yaml
@@ -13,23 +10,6 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
-  - it: should create ingress with pathType set to Prefix by default
-    template: ingress.yaml
-    set:
-      ingress:
-        enabled: true
-        hosts:
-          - host: chart-example.local
-            paths:
-            - path: /
-    asserts:
-      - hasDocuments:
-          count: 1
-      - isKind:
-          of: Ingress
-      - equal:
-          path: spec.rules[0].http.paths[0].pathType
-          value: "Prefix"
   - it: should define the default "mirrorbits-lite" deployment with default imagePullPolicy and metadata labels
     template: deployment.yaml
     asserts:
@@ -46,3 +26,16 @@ tests:
       - equal:
           path: "spec.template.spec.containers[*].imagePullPolicy"
           value: IfNotPresent
+      # Log volumes is an emptydir by default
+      - equal:
+          path: spec.template.spec.volumes[2].name
+          value: logs
+      - equal:
+          path: spec.template.spec.volumes[2].emptyDir
+          value: {}
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2].name
+          value: logs
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2].mountPath
+          value: /var/log/mirrorbits

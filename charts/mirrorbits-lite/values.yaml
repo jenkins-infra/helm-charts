@@ -73,6 +73,12 @@ geoipupdate:
   license_key: ""
   editions: GeoLite2-ASN GeoLite2-City GeoLite2-Country
   update_frequency: 24
+logs:
+  volume:
+    emptyDir: {}
+    ## Volume contains the Pod Volume definition. Example with an existing PVC:
+    # persistentVolumeClaim:
+    #   claimName: <PVC name>
 # mirrorbits.conf data, to be completed as secret with Redis credentials
 conf: |
   Repository: /srv/repo
