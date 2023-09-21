@@ -37,12 +37,14 @@ spec:
           volumeMounts:
             - name: conf
               mountPath: /etc/mirrorbits
+            - name: geoipdata
+              mountPath: /usr/share/GeoIP
+            - name: logs
+              mountPath: /var/log/mirrorbits
             {{ if $.Values.repository.persistentVolumeClaim.enabled -}}
             - name: binary
               mountPath: /srv/repo
             {{- end }}
-            - name: geoipdata
-              mountPath: /usr/share/GeoIP
           livenessProbe:
             httpGet:
               path: /?mirrorstats
@@ -89,7 +91,6 @@ spec:
           envFrom:
           - secretRef:
               name: {{ include "mirrorbits-lite.fullname" . }}-geoipupdate
-
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -111,8 +112,10 @@ spec:
                 path: mirrorbits.conf
         - name: geoipdata
           emptyDir: {}
-        {{ if $.Values.repository.persistentVolumeClaim.enabled -}}
+        - name: logs
+          {{- toYaml .Values.logs.volume | nindent 10 }}
+        {{- if $.Values.repository.persistentVolumeClaim.enabled }}
         - name: binary
           persistentVolumeClaim:
             claimName: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits-lite.fullname" .)) }}
-        {{- end -}}
+        {{- end }}
