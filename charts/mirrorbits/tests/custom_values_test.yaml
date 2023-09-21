@@ -1,6 +1,28 @@
 suite: Tests with custom values
-values:
-  - secrets_default_values.yaml
+set:
+  fullNameOverride: "my-fullNameOverride"
+  ingress:
+    enabled: true
+    hosts:
+      - host: chart-example.local
+        paths:
+        - path: /
+          pathType: IfNotPresent
+  image:
+    files:
+      pullPolicy: Never
+    mirrorbits:
+      pullPolicy: Always
+  geoipupdate:
+    account_id: my-account-id
+    license_key: my-license-key
+  rsyncd:
+    enabled: true
+  mirrorbits:
+    logs:
+      volume:
+        persistentVolumeClaim:
+          claimName: foobar
 templates:
   - deployment.yaml
   - deployment.files.yaml
@@ -12,8 +34,6 @@ templates:
 tests:
   - it: Should set the correct service selector labels when a fullNameOverride is specified
     template: service.files.yaml
-    set:
-      fullNameOverride: "my-fullNameOverride"
     asserts:
       - hasDocuments:
           count: 1
@@ -28,6 +48,7 @@ tests:
   - it: Should set the correct service selector labels when a nameOverride is specified
     template: service.files.yaml
     set:
+      # Overides the fullname overide \o/
       nameOverride: "my-nameOverride"
     asserts:
       - hasDocuments:
@@ -42,10 +63,6 @@ tests:
           value: "RELEASE-NAME-files"
   - it: should define a customized "files" deployment
     template: deployment.files.yaml
-    set:
-      image:
-        files:
-          pullPolicy: Never
     asserts:
       - hasDocuments:
           count: 1
@@ -56,10 +73,6 @@ tests:
           value: Never
   - it: should define a customized "mirrorbits" deployment
     template: deployment.yaml
-    set:
-      image:
-        mirrorbits:
-          pullPolicy: Always
     asserts:
       - hasDocuments:
           count: 1
@@ -68,16 +81,21 @@ tests:
       - equal:
           path: spec.template.spec.containers[*].imagePullPolicy
           value: Always
+      # Log volumes is a custom PVC
+      - equal:
+          path: spec.template.spec.volumes[2].name
+          value: logs
+      - equal:
+          path: spec.template.spec.volumes[2].persistentVolumeClaim.claimName
+          value: foobar
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2].name
+          value: logs
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2].mountPath
+          value: /var/logs/mirrorbits
   - it: should create ingress with pathType set to the specified custom value by default
     template: ingress.yaml
-    set:
-      ingress:
-        enabled: true
-        hosts:
-          - host: chart-example.local
-            paths:
-            - path: /
-              pathType: IfNotPresent
     asserts:
       - hasDocuments:
           count: 1
@@ -86,25 +104,8 @@ tests:
       - equal:
           path: spec.rules[0].http.paths[0].pathType
           value: "IfNotPresent"
-  - it: should define a customized "mirrorbits" deployment
-    template: deployment.yaml
-    set:
-      image:
-        mirrorbits:
-          pullPolicy: Always
-    asserts:
-      - hasDocuments:
-          count: 1
-      - isKind:
-          of: Deployment
-      - equal:
-          path: spec.template.spec.containers[*].imagePullPolicy
-          value: Always
   - it: should create rsyncd deployment if rsyncd is enabled
     template: deployment.rsyncd.yaml
-    set:
-      rsyncd:
-        enabled: true
     asserts:
       - hasDocuments:
           count: 1
@@ -112,9 +113,6 @@ tests:
           of: Deployment
   - it: should create rsyncd service if rsyncd is enabled
     template: service.rsyncd.yaml
-    set:
-      rsyncd:
-        enabled: true
     asserts:
       - hasDocuments:
           count: 1
