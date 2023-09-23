@@ -1,0 +1,185 @@
+suite: Tests with custom values
+set:
+  ## Mock subcharts default values
+  mirrorbits-lite:
+    enabled: true
+    service:
+      port: 7777
+  httpd:
+    enabled: true
+    service:
+      port: 8080
+  ## End of subchart mocked values
+  ingress:
+    enabled: true
+    hosts:
+      - host: company.org
+        paths:
+          - path: /
+            backendService: mirrorbits
+templates:
+  - ingress.yaml
+tests:
+  - it: should create ingress with a single HTTP host and defaults ingress values
+    template: ingress.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Ingress
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-parent
+      - notExists:
+          path: metadata.annotations
+      - notExists:
+          path: spec.ingressClassName
+      - notExists:
+          path: spec.tls
+      - equal:
+          path: spec.rules[0].host
+          value: company.org
+      - equal:
+          path: spec.rules[0].http.paths[0].path
+          value: /
+      - equal:
+          path: spec.rules[0].http.paths[0].pathType
+          value: Prefix
+      - notExists:
+          path: spec.rules[1]
+      - equal:
+          path: spec.rules[0].http.paths[0].backend.service.name
+          value: RELEASE-NAME-mirrorbits-lite
+      - equal:
+          path: spec.rules[0].http.paths[0].backend.service.port.number
+          value: 7777
+  - it: should create ingress with multiple hosts and multiple paths with full customized values
+    template: ingress.yaml
+    set:
+      ingress:
+        className: my-ingress-class
+        annotations:
+          'app.kubernetes/whatever-with-chars': 'same/here-right'
+        hosts:
+          - host: company.org
+            paths:
+              - path: /.*[.](deb|hpi|war|rpm|msi|pkg|sha256|md5sum|zip|gz|pdf|json|svg|sh|jpeg|ico|png|html)$
+                backendService: httpd
+              - path: /
+                backendService: mirrorbits
+                pathType: ImplementationSpecific
+          - host: fallback.company.org
+            paths:
+              - path: /
+                backendService: httpd
+        tls:
+          - secretName: ingress-tls
+            hosts:
+              - company.org
+              - fallback.company.org
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Ingress
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-parent
+      - equal:
+          path: metadata.annotations['app.kubernetes/whatever-with-chars']
+          value: same/here-right
+      - equal:
+          path: spec.ingressClassName
+          value: my-ingress-class
+      - equal:
+          path: spec.tls[0].secretName
+          value: ingress-tls
+      - equal:
+          path: spec.tls[0].hosts[1]
+          value: fallback.company.org
+      - equal:
+          path: spec.rules[0].host
+          value: company.org
+      - equal:
+          path: spec.rules[0].http.paths[0].path
+          value: /.*[.](deb|hpi|war|rpm|msi|pkg|sha256|md5sum|zip|gz|pdf|json|svg|sh|jpeg|ico|png|html)$
+      - equal:
+          path: spec.rules[0].http.paths[0].pathType
+          value: Prefix
+      - equal:
+          path: spec.rules[0].http.paths[0].backend.service.name
+          value: RELEASE-NAME-httpd
+      - equal:
+          path: spec.rules[0].http.paths[0].backend.service.port.number
+          value: 8080
+      - equal:
+          path: spec.rules[0].http.paths[1].path
+          value: /
+      - equal:
+          path: spec.rules[0].http.paths[1].pathType
+          value: ImplementationSpecific
+      - equal:
+          path: spec.rules[0].http.paths[1].backend.service.name
+          value: RELEASE-NAME-mirrorbits-lite
+      - equal:
+          path: spec.rules[0].http.paths[1].backend.service.port.number
+          value: 7777
+      - equal:
+          path: spec.rules[1].host
+          value: fallback.company.org
+      - equal:
+          path: spec.rules[1].http.paths[0].path
+          value: /
+      - notExists:
+          path: spec.rules[2]
+  - it: should fail the ingress when a host's path does not have backendService
+    template: ingress.yaml
+    set:
+      ingress:
+        hosts:
+          - host: company.org
+            paths:
+              - path: /
+    asserts:
+      - failedTemplate:
+          errorMessage: "Required key: backendService for ingress.hosts[].paths[] objects must have the value 'httpd' or 'mirrorbits'."
+  - it: should fail the ingress when a host's path has an unknown backendService
+    template: ingress.yaml
+    set:
+      ingress:
+        hosts:
+          - host: company.org
+            paths:
+              - path: /
+                backendService: yipikai
+    asserts:
+      - failedTemplate:
+          errorMessage: "Required key: backendService for ingress.hosts[].paths[] objects must have the value 'httpd' or 'mirrorbits'."
+  - it: should fail the ingress when referencing httpd as backend but it is disabled
+    template: ingress.yaml
+    set:
+      httpd:
+        enabled: false
+      ingress:
+        hosts:
+          - host: company.org
+            paths:
+              - path: /
+                backendService: httpd
+    asserts:
+      - failedTemplate:
+          errorMessage: "Cannot use httpd as backend if it is disabled."
+  - it: should fail the ingress when referencing mirrorbits as backend but it is disabled
+    template: ingress.yaml
+    set:
+      mirrorbits-lite:
+        enabled: false
+      ingress:
+        hosts:
+          - host: company.org
+            paths:
+              - path: /
+                backendService: mirrorbits
+    asserts:
+      - failedTemplate:
+          errorMessage: "Cannot use mirrorbits(-lite) as backend if it is disabled."

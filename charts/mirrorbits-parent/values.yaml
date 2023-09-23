@@ -1,3 +1,32 @@
+## Global ingress
+ingress:
+  enabled: false
+  ## Specify a custom Ingress Class (default: unspecified to rely on your cluster default)
+  # className: my-ingress-class
+
+  ## Define custom annotations on the Ingress object (default: undefined)
+  # annotations:
+  #  foo: bar
+
+  ## Define custom hosts for this ingress (default: undefined)
+  ## Note: the "path" objects allows defining which path matches which backend webservice component (possible values: mirrorbits or httpd)
+  # hosts:
+  #   - host: company.org
+  #     paths:
+  #       # Send requests matching the pattern defined for 'path' to the http backend service
+  #       - path: /.*[.](deb|hpi|war|rpm|msi|pkg|sha256|md5sum|zip|gz|pdf|json|svg|sh|jpeg|ico|png|html)$
+  #         ## Note: the "path" objects allows defining which path matches which backend webservice component (possible values: mirrorbits or httpd)
+  #         backendService: httpd
+  #       # Send requests matching the pattern '/' (e.g. default fallback for most ingresses) to the mirrorbits backend service
+  #       - path: /
+  #         ## Note: the "path" objects allows defining which path matches which backend webservice component (possible values: mirrorbits or httpd)
+  #         backendService: mirrorbits
+  ## Define ingress TLS management for HTTPS
+  # tls:
+  #   - secretName: ingress-tls
+  #     hosts:
+  #       - company.org
+
 ## Sub charts specific values
 mirrorbits-lite:
   enabled: false
