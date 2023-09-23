@@ -58,8 +58,7 @@ This chart requires a redis database which can be deployed with the redis helm [
 
 ## HowTo
 
-Mirrorbits is configured using its cli. The configuration is stored in the redis database which means that you can either store a configuration
-locally and run the cli from your machine or you can connect inside one of the pod running to use the cli.
+Mirrorbits is configured using its cli. The configuration is stored in the redis database which means that you can either store a configuration locally and run the cli from your machine or you can connect inside one of the pod running to use the cli.
 
 ### Access mirrobits cli
 
