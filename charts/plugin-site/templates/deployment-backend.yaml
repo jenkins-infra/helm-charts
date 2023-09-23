@@ -16,6 +16,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels: {{ include "plugin-site.labels" . | nindent 8 }}
     spec:
+      automountServiceAccountToken: false
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
