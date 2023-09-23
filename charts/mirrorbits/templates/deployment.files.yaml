@@ -16,6 +16,7 @@ spec:
         app.kubernetes.io/name: {{ include "mirrorbits.name" . }}-files
         app.kubernetes.io/instance: {{ .Release.Name }}-files
     spec:
+      automountServiceAccountToken: false
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}

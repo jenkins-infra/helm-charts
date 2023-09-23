@@ -30,7 +30,4 @@ plugin-site-issues
 | securityContext | object | `{}` |  |
 | service.port | int | `8080` |  |
 | service.type | string | `"ClusterIP"` |  |
-| serviceAccount.create | bool | `true` |  |
-| serviceAccount.name | string | `nil` |  |
 | tolerations | list | `[]` |  |
-

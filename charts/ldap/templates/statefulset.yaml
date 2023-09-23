@@ -19,11 +19,11 @@ spec:
         app.kubernetes.io/name: {{ include "ldap.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      automountServiceAccountToken: false
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-      serviceAccountName: {{ template "ldap.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       terminationGracePeriodSeconds: 20
@@ -35,7 +35,7 @@ spec:
             - name: OPENLDAP_ADMIN_DN
               value: {{ .Values.ldap.admin.dn }}
             - name: OPENLDAP_ADMIN_PASSWORD
-              valueFrom: 
+              valueFrom:
                 secretKeyRef:
                   name: {{ include "ldap.fullname" . }}
                   key: ldap.admin.password
@@ -69,7 +69,7 @@ spec:
               readOnly: true
           lifecycle:
             preStop:
-              exec: 
+              exec:
                 command: ["/bin/bash", "-c", "sleep 10 && /entrypoint/backup"]
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -78,7 +78,7 @@ spec:
             - name: OPENLDAP_ADMIN_DN
               value: {{ .Values.ldap.admin.dn }}
             - name: OPENLDAP_ADMIN_PASSWORD
-              valueFrom: 
+              valueFrom:
                 secretKeyRef:
                   name: {{ include "ldap.fullname" . }}
                   key: ldap.admin.password

@@ -17,11 +17,11 @@ spec:
         app.kubernetes.io/name: {{ include "mirrorbits.name" . }}-rsyncd
         app.kubernetes.io/instance: {{ .Release.Name }}-rsyncd
     spec:
+      automountServiceAccountToken: false
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-      serviceAccountName: {{ template "mirrorbits.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:

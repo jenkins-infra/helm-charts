@@ -50,14 +50,3 @@ Selector labels
 app.kubernetes.io/name: {{ include "plugin-health-scoring.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
-
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "plugin-health-scoring.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "plugin-health-scoring.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
