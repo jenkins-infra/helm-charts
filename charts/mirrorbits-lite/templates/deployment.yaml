@@ -17,11 +17,11 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum | trunc 63 }}
     spec:
+      automountServiceAccountToken: false
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-      serviceAccountName: {{ template "mirrorbits-lite.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
