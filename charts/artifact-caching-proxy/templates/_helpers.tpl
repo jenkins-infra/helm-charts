@@ -49,14 +49,3 @@ Selector labels
 app.kubernetes.io/name: {{ include "artifact-caching-proxy.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
-
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "artifact-caching-proxy.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "artifact-caching-proxy.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}

@@ -49,14 +49,3 @@ Selector labels
 app.kubernetes.io/name: {{ include "basic-helm-chart-example.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
-
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "basic-helm-chart-example.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "basic-helm-chart-example.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
