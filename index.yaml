@@ -5038,6 +5038,17 @@ entries:
   reports:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2023-09-24T07:02:22.41312291Z"
+    description: A Helm chart for reports.jenkins.io
+    digest: c36e5b19376d0dc0f1b609eaa7a52c04b20ac7cbbbc0afff726b29f590c4c5c4
+    maintainers:
+    - name: timja
+    name: reports
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/reports-0.3.1/reports-0.3.1.tgz
+    version: 0.3.1
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2023-09-23T10:42:43.119929955Z"
     description: A Helm chart for reports.jenkins.io
     digest: 4885394f6395c04b401921a98559de928c3d33d319a65ec599a33f18b551d6d2
@@ -6310,4 +6321,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-23T16:53:18.131886531Z"
+generated: "2023-09-24T07:02:22.414141031Z"
