@@ -1,0 +1,64 @@
+suite: tests for the storager with defaults
+templates:
+  - persistentvolume.yaml
+  - persistentvolumeclaim.yaml
+  - persistentvolumesecret.yaml
+## Only enable storage
+set:
+  storage:
+    enabled: true
+tests:
+  - it: should not create any persistent volume secret
+    template: persistentvolumesecret.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should provide a PV with default values
+    template: persistentvolume.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: PersistentVolume
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-parent
+      - equal:
+          path: spec.accessModes[0]
+          value: ReadOnlyMany
+      - notExists:
+          path: spec.accessModes[1]
+      - equal:
+          path: spec.storageClassName
+          value: default
+      - equal:
+          path: spec.capacity.storage
+          value: 1Gi
+      - notExists:
+          path: spec.csi
+  - it: should provide a PVC with default values
+    template: persistentvolumeclaim.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: PersistentVolumeClaim
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-parent
+      - equal:
+          path: spec.accessModes[0]
+          value: ReadOnlyMany
+      - notExists:
+          path: spec.accessModes[1]
+      - equal:
+          path: spec.resources.requests.storage
+          value: 1Gi
+      - equal:
+          path: spec.storageClassName
+          value: default
+      - equal:
+          path: spec.volumeName
+          value: RELEASE-NAME-mirrorbits-parent
+      - notExists:
+          path: spec.volumeMode

@@ -1,0 +1,20 @@
+{{- if .Values.storage.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "mirrorbits-parent.name" . }}
+  labels:
+{{- include "mirrorbits-parents.labels" . | nindent 4 }}
+spec:
+  volumeName: {{ include "mirrorbits-parent.name" . }}
+  accessModes:
+    {{- toYaml .Values.storage.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ .Values.storage.storageSize }}
+  storageClassName: {{ .Values.storage.storageClassName }}
+  {{- with .Values.storage.persistentVolumeClaim.additionalSpec }}
+    {{- toYaml . | nindent 2 }}
+  {{- end }}
+{{- end }}

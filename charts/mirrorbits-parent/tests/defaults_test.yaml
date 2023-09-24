@@ -1,9 +1,21 @@
 suite: default tests
 templates:
   - ingress.yaml
+  - persistentvolume.yaml
+  - persistentvolumeclaim.yaml
 tests:
   - it: should not provide an ingress by default
     template: ingress.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should not provide a PV by default
+    template: persistentvolume.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should not provide a PVC by default
+    template: persistentvolumeclaim.yaml
     asserts:
       - hasDocuments:
           count: 0
