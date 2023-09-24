@@ -1,0 +1,9 @@
+suite: default tests
+templates:
+  - ingress.yaml
+tests:
+  - it: should not provide an ingress by default
+    template: ingress.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
