@@ -5,13 +5,25 @@ kind: PersistentVolume
 metadata:
   name: {{ include "mirrorbits-parent.name" . }}
   labels:
-{{ include "mirrorbits-parents.labels" . | nindent 4 }}
+{{- include "mirrorbits-parents.labels" . | nindent 4 }}
 spec:
   accessModes:
     {{- toYaml .Values.storage.accessModes | nindent 4 }}
   capacity:
     storage: {{ .Values.storage.storageSize }}
   storageClassName: {{ .Values.storage.storageClassName }}
+  {{- with .Values.storage.persistentVolume.azureFile }}
+  csi:
+    driver: file.csi.azure.com
+    nodeStageSecretRef:
+      name: {{ include "mirrorbits-parent.name" $ }}-persistentvolume-secret
+      namespace: {{ $.Release.Namespace }}
+    volumeAttributes:
+      resourceGroup: {{ .resourceGroup }}
+      shareName: {{ .shareName }}
+    volumeHandle: {{ include "mirrorbits-parent.name" $ }}
+    readOnly: {{ .readOnly | default false }}
+  {{- end }}
   {{- with .Values.storage.persistentVolume.additionalSpec }}
     {{- toYaml . | nindent 2 }}
   {{- end }}

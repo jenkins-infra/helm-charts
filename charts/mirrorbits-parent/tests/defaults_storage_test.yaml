@@ -2,11 +2,17 @@ suite: tests for the storager with defaults
 templates:
   - persistentvolume.yaml
   - persistentvolumeclaim.yaml
+  - persistentvolumesecret.yaml
 ## Only enable storage
 set:
   storage:
     manage: true
 tests:
+  - it: should not create any persistent volume secret
+    template: persistentvolumesecret.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
   - it: should provide a PV with default values
     template: persistentvolume.yaml
     asserts:

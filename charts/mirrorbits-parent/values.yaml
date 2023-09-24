@@ -40,14 +40,19 @@ storage:
   accessModes:
     - ReadOnlyMany
   persistentVolume:
+    ## Generate Azurefile CSI definition in the PV spec
+    azureFile: {}
+    # azureFile:
+    #   resourceGroup: storage-rg
+    #   storageAccountName: storage-account
+    #   shareName: storage-share
+    #   storageAccountKey: StorageAccountSuperSecretKey
+    #   readOnly: false
     ## Additional custom spec added at the end of the generated PV `spec` section.
     ## User is responsible to not duplicate existing (helm template is your friend).
     additionalSpec: {}
     # additionalSpec:
     #  persistentVolumeReclaimPolicy: Retain
-    #  csi:
-    #    driver: file.csi.azure.com
-    #    ...
     #  mountOptions:
     #    - dir_mode=0755
     #    - ...
