@@ -1,0 +1,89 @@
+suite: Tests with custom values
+set:
+  storage:
+    manage: true
+    storageClassName: super-fast-storage
+    storageSize: 510Gi
+    accessModes:
+      - ReadWriteMany
+      - ReadOnlyMany
+      - ReadWriteOnce
+    persistentVolume:
+      additionalSpec:
+        persistentVolumeReclaimPolicy: Retain
+        mountOptions:
+          - dir_mode=0755
+        csi:
+          driver: file.csi.azure.com
+    persistentVolumeClaim:
+      additionalSpec:
+        volumeMode: Block
+templates:
+  - persistentvolume.yaml
+  - persistentvolumeclaim.yaml
+tests:
+  - it: should provide a PV with customized values
+    template: persistentvolume.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: PersistentVolume
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-parent
+      - equal:
+          path: spec.accessModes[0]
+          value: ReadWriteMany
+      - equal:
+          path: spec.accessModes[1]
+          value: ReadOnlyMany
+      - equal:
+          path: spec.accessModes[2]
+          value: ReadWriteOnce
+      - equal:
+          path: spec.storageClassName
+          value: super-fast-storage
+      - equal:
+          path: spec.capacity.storage
+          value: 510Gi
+      - equal:
+          path: spec.csi.driver
+          value: file.csi.azure.com
+      - equal:
+          path: spec.mountOptions[0]
+          value: dir_mode=0755
+      - equal:
+          path: spec.persistentVolumeReclaimPolicy
+          value: Retain
+  - it: should provide a PVC with customized values
+    template: persistentvolumeclaim.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: PersistentVolumeClaim
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-parent
+      - equal:
+          path: spec.accessModes[0]
+          value: ReadWriteMany
+      - equal:
+          path: spec.accessModes[1]
+          value: ReadOnlyMany
+      - equal:
+          path: spec.accessModes[2]
+          value: ReadWriteOnce
+      - equal:
+          path: spec.resources.requests.storage
+          value: 510Gi
+      - equal:
+          path: spec.storageClassName
+          value: super-fast-storage
+      - equal:
+          path: spec.volumeName
+          value: RELEASE-NAME-mirrorbits-parent
+      - equal:
+          path: spec.volumeMode
+          value: Block

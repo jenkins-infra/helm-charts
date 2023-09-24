@@ -1,9 +1,8 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "mirrorbits-parent.name" . -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ include "mirrorbits-parent.name" . }}
   labels:
 {{ include "mirrorbits-parents.labels" . | indent 4 }}
   {{- with .Values.ingress.annotations }}

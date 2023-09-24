@@ -27,6 +27,39 @@ ingress:
   #     hosts:
   #       - company.org
 
+## Persistent Storage used across components
+storage:
+  ## Manage (and reuse) PV + PVC for all components
+  manage: false
+  ## Define a custom storage class
+  storageClassName: default
+  # storageClassName: azurefile-csi-premium
+  ## Define a custom storage size (both PV and PVC)
+  storageSize: 1Gi
+  ## Define the set of access modes available for the persistent volume and its claim
+  accessModes:
+    - ReadOnlyMany
+  persistentVolume:
+    ## Additional custom spec added at the end of the generated PV `spec` section.
+    ## User is responsible to not duplicate existing (helm template is your friend).
+    additionalSpec: {}
+    # additionalSpec:
+    #  persistentVolumeReclaimPolicy: Retain
+    #  csi:
+    #    driver: file.csi.azure.com
+    #    ...
+    #  mountOptions:
+    #    - dir_mode=0755
+    #    - ...
+
+  persistentVolumeClaim:
+    ## Additional custom spec added at the end of the generated PVC `spec` section.
+    ## User is responsible to not duplicate existing (helm template is your friend).
+    additionalSpec: {}
+    # additionalSpec:
+    #   volumeMode: Filesystem
+    #   ...
+
 ## Sub charts specific values
 mirrorbits-lite:
   enabled: false
