@@ -153,3 +153,21 @@ tests:
       - equal:
           path: data.azurestorageaccountkey
           value: U3RvcmFnZUFjY291bnRTdXBlclNlY3JldEtleSEyMDIz # base64 of 'StorageAccountSuperSecretKey!2023'
+  - it: should not create any persistent volume secret
+    template: persistentvolumesecret.yaml
+    release:
+      name: rindfleischetikettierunguberwachungsaufgabenubertrags # 53 chars is the longest possible release name
+    set:
+      storage:
+        persistentVolume:
+          azureFile:
+            storageAccountName: storage-account
+            storageAccountKey: 'StorageAccountSuperSecretKey!2023'
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Secret
+      - equal:
+          path: metadata.name
+          value: rindfleischetikettierunguberwachungsaufgabe-persistentvolume-secret

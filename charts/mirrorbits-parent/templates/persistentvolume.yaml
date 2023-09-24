@@ -16,7 +16,7 @@ spec:
   csi:
     driver: file.csi.azure.com
     nodeStageSecretRef:
-      name: {{ include "mirrorbits-parent.name" $ }}-persistentvolume-secret
+      name: {{ include "mirrorbits-parent.pv-secretname" $ }}
       namespace: {{ $.Release.Namespace }}
     volumeAttributes:
       resourceGroup: {{ .resourceGroup }}
