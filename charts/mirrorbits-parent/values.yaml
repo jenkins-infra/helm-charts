@@ -41,7 +41,7 @@ storage:
     - ReadOnlyMany
   persistentVolume:
     ## This chart usually runs on Azure with an Azurefile as a persistent volume.
-    ## Use the following section to help you define the secret and CSI specificatoion for the PV.
+    ## Use the following section to define the secret and CSI specification for the PV.
     # azureFile:
     #   resourceGroup: storage-rg
     #   storageAccountName: storage-account
