@@ -55,8 +55,7 @@ httpd:
 This chart is usually deployed with the same persistent storage for all sub-services.
 As such you can manage a common persistent volume (and associated claims) once and for all instead of delegating to the sub-charts.
 
-Since the chart was initially designed to run on AKS with an Azurefile volume, part of the PV/PVC configuration can be managed (CSI setup, Azurefile secret for the access key)
-through the `storage.persistentVolume.azureFile` value.
+Since the chart was initially designed to run on AKS with an Azurefile volume, part of the PV/PVC configuration can be managed (CSI setup, Azurefile secret for the access key) through the `storage.persistentVolume.azureFile` value.
 
 Example with an Azure file PV and associated PVC mounted in read only:
 
