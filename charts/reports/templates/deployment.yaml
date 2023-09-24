@@ -66,10 +66,10 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       volumes:
-      {{- with .Values.htmlVolume  }}
-      - name: html
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      - name: config
-        configMap:
-          name: {{ include "reports.fullname" . }}
+        {{- with .Values.htmlVolume  }}
+        - name: html
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        - name: config
+          configMap:
+            name: {{ include "reports.fullname" . }}
