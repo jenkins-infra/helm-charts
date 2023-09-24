@@ -6,7 +6,7 @@ templates:
 ## Only enable storage
 set:
   storage:
-    manage: true
+    enabled: true
 tests:
   - it: should not create any persistent volume secret
     template: persistentvolumesecret.yaml

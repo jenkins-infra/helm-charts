@@ -1,7 +1,7 @@
 suite: Tests with custom values
 set:
   storage:
-    manage: true
+    enabled: true
     storageClassName: super-fast-storage
     storageSize: 510Gi
     accessModes:

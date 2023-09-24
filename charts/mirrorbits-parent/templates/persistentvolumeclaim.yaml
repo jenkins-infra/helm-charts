@@ -1,4 +1,4 @@
-{{- if .Values.storage.manage }}
+{{- if .Values.storage.enabled }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

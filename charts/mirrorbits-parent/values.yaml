@@ -30,7 +30,7 @@ ingress:
 ## Persistent Storage used across components
 storage:
   ## Manage (and reuse) PV + PVC for all components
-  manage: false
+  enabled: false
   ## Define a custom storage class
   storageClassName: default
   # storageClassName: azurefile-csi-premium
