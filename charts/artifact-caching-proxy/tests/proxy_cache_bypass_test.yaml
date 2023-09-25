@@ -20,7 +20,7 @@ tests:
           path: data["vhost-proxy.conf"]
           pattern: set \$bypass 0;
 
-  - it: Should include proxy_cache_bypass
+  - it: Should NOT include proxy_cache_bypass
     template: nginx-proxy-configmap.yaml
     set:
       proxy:
