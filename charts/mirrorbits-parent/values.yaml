@@ -40,8 +40,8 @@ storage:
   accessModes:
     - ReadOnlyMany
   persistentVolume:
-    ## Generate Azurefile CSI definition in the PV spec
-    azureFile: {}
+    ## This chart usually runs on Azure with an Azurefile as a persistent volume.
+    ## Use the following section to define the secret and CSI specification for the PV.
     # azureFile:
     #   resourceGroup: storage-rg
     #   storageAccountName: storage-account

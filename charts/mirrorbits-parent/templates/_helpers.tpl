@@ -1,6 +1,7 @@
 {{/* vim: set filetype=mustache: */}}
 {{/*
-Expand the name of the chart.
+Define the full "release" (e.g. chart installation) name.
+Must be 63 chars. maximum.
 */}}
 {{- define "mirrorbits-parent.name" -}}
 {{- $name := .Chart.Name -}}
@@ -13,13 +14,14 @@ Expand the name of the chart.
 
 {{/*
 Create chart name and version as used by the chart label.
+Must be 63 chars. maximum.
 */}}
 {{- define "mirrorbits-parent.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
-Common labels
+Define the common labels.
 */}}
 {{- define "mirrorbits-parents.labels" -}}
 app.kubernetes.io/name: {{ include "mirrorbits-parent.name" . }}
@@ -32,7 +34,8 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
 {{/*
-Create chart name and version as used by the chart label.
+Define the azure file persistent volume's secret name (if enabled).
+Must be 63 chars. maximum.
 */}}
 {{- define "mirrorbits-parent.pv-secretname" -}}
 {{- printf "%s-%s" (include "mirrorbits-parent.name" . | trunc 43 ) "persistentvolume-secret" -}}
