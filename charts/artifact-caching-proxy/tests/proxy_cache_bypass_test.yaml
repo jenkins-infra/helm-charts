@@ -1,0 +1,39 @@
+suite: Tests using proxyBypass
+templates:
+  - nginx-proxy-configmap.yaml
+tests:
+  - it: Should include proxy_cache_bypass
+    template: nginx-proxy-configmap.yaml
+    set:
+      proxy:
+        proxyBypass:
+          enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ConfigMap
+      - matchRegex:
+          path: data["vhost-proxy.conf"]
+          pattern: proxy_cache_bypass
+      - matchRegex:
+          path: data["vhost-proxy.conf"]
+          pattern: set \$bypass 0;
+
+  - it: Should include proxy_cache_bypass
+    template: nginx-proxy-configmap.yaml
+    set:
+      proxy:
+        proxyBypass:
+          enabled: false
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ConfigMap
+      - notMatchRegex:
+          path: data["vhost-proxy.conf"]
+          pattern: proxy_cache_bypass
+      - notMatchRegex:
+          path: data["vhost-proxy.conf"]
+          pattern: set \$bypass 0;
