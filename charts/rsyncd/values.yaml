@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 image:
   repository: jenkinsciinfra/rsyncd
-  tag: 1.0.3@sha256:396aef6910b08f7d980ecb10c0519067bac6d466be05293082dab2fa8f11a654
+  tag: 1.0.4@sha256:46d1b5f19716b647b0490339680eb408815e343e485c27f26ccb5b50c5d56c46
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
