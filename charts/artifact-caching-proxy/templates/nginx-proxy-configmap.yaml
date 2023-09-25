@@ -47,6 +47,16 @@ data:
             set $http_x_forwarded_proto  $scheme;
         }
 
+{{- if .Values.proxy.proxyBypass.enabled -}}
+        # include bypass option from local ip only
+        # e.g. curl -H 'Cache-Purge: true' -I http://127.0.0.1:8080/...
+        # https://bluegrid.io/edu/how-to-purge-the-nginx-cache/
+        set $bypass 0;
+        if ($remote_addr ~ "^(127.0.0.1)$") {
+          set $bypass $http_cache_purge;
+        }
+{{- end }}
+
         # In-memory requests tuning for buffering content
         chunked_transfer_encoding on;
         client_max_body_size 0;
@@ -61,6 +71,10 @@ data:
 
         # Default location for cached requests
         location / {
+{{- if .Values.proxy.proxyBypass.enabled -}}
+            add_header Cache $upstream_cache_status;
+            proxy_cache_bypass $bypass;
+{{- end }}
             proxy_pass          https://$remote_repo$request_uri;
             proxy_cache_key     $uri;
             include /etc/nginx/conf.d/common-proxy.conf;
