@@ -152,7 +152,9 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
               strategyId(1) // 1-Merging the pull request with the current target branch revision
             }
             pruneStaleBranchTrait()
+            {{- if not .disableTagDiscovery }}
             gitHubTagDiscovery()
+            {{- end }}
             pullRequestLabelsBlackListFilterTrait {
               labels('on-hold,ci-skip,skip-ci')
             }
@@ -177,10 +179,12 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
                 {{- end }}
               }
               buildRegularBranches()
+              {{- if not .disableTagDiscovery }}
               buildTags {
                 atLeastDays('-1')
                 atMostDays('3')
               }
+              {{- end }}
             }
           }
         }

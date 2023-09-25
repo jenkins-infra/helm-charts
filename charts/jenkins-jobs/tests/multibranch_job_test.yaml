@@ -342,6 +342,7 @@ tests:
           allowUntrustedChanges: true
           jenkinsfilePath: Jenkinsfile
           branchIncludes: "prod dev MR-*"
+          disableTagDiscovery: true
     asserts:
       - equal:
           path: data["jobs-definition.yaml"]
@@ -386,7 +387,6 @@ tests:
                                 strategyId(1) // 1-Merging the pull request with the current target branch revision
                               }
                               pruneStaleBranchTrait()
-                              gitHubTagDiscovery()
                               pullRequestLabelsBlackListFilterTrait {
                                 labels('on-hold,ci-skip,skip-ci')
                               }
@@ -407,10 +407,6 @@ tests:
                                   ignoreUntrustedChanges(false)
                                 }
                                 buildRegularBranches()
-                                buildTags {
-                                  atLeastDays('-1')
-                                  atMostDays('3')
-                                }
                               }
                             }
                           }
