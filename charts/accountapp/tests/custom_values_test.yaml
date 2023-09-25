@@ -27,3 +27,27 @@ tests:
       - equal:
           path: data.smtpPassword
           value: c210cC1wYXNzd29yZA==
+  - it: should create a Deployment with the customized values
+    set:
+      image:
+        pullPolicy: Always
+      resources:
+        limits:
+          memory: 1024Mi
+        requests:
+          cpu: 500m
+    template: deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].imagePullPolicy
+          value: Always
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.memory
+          value: 1024Mi
+      - equal:
+          path: spec.template.spec.containers[0].resources.requests.cpu
+          value: 500m
