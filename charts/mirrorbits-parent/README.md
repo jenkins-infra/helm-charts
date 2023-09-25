@@ -21,7 +21,7 @@ Look at the [`values.yaml` source file](./values.yaml) to get the possible confi
 If you need to provide an ingress to route request to a mix of the sub services, then you can specify the ingress configuration through this parent chart (instead of the subcharts).
 
 Example to define a nginx ingress on the domain `downloads.company.org` with TLS enabled (managed by Let's Encrypt),
-where all URLs ending with a `zip` or `gz` string are redirected to the mirrorbits backend,
+where all request URLs ending with a `zip` or `gz` string are redirected to the mirrorbits backend,
 and the other requests to the httpd backend:
 
 ```yaml
