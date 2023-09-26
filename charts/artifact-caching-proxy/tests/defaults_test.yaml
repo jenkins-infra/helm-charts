@@ -3,6 +3,8 @@ templates:
   - ingress.yaml
   - ingress-health.yaml
   - nginx-proxy-configmap.yaml
+  - nginx-default-configmap.yaml
+  - statefulset.yaml
 tests:
   - it: should not generate any ingress with default values
     template: ingress.yaml
@@ -21,7 +23,16 @@ tests:
           count: 1
       - isKind:
           of: ConfigMap
-      - isNotNull:
+      - isNotNullOrEmpty:
           path: data["vhost-proxy.conf"]
-      - isNotNull:
+      - isNotNullOrEmpty:
           path: data["vhost-status.conf"]
+  - it: Should generate a statefulset with the default values
+    template: statefulset.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: StatefulSet
+      - notExists:
+          path: spec.affinity

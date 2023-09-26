@@ -7,6 +7,10 @@ metadata:
 spec:
   serviceName: {{ include "artifact-caching-proxy.fullname" . }}
   replicas: {{ .Values.replicaCount }}
+  {{- with .Values.affinity }}
+  affinity:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "artifact-caching-proxy.selectorLabels" . | nindent 6 }}
