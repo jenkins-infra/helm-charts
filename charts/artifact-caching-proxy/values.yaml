@@ -86,3 +86,6 @@ proxy:
   proxyPass: "repo.jenkins-ci.org"
   proxyCacheValidCode: "200 206"
   proxyCacheValidCodeDuration: "1M"
+  # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_bypass
+  proxyBypass:
+    enabled: false
