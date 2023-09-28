@@ -32,23 +32,22 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
-Common labels
-*/}}
-{{- define "accountapp.labels" -}}
-app.kubernetes.io/name: {{ include "accountapp.name" . }}
-helm.sh/chart: {{ include "accountapp.chart" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-jenkins.io/maintainer: {{ (index .Chart.Maintainers 0).Name }}
-{{- end -}}
-
-{{/*
 Selector labels
 */}}
 {{- define "accountapp.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "accountapp.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{/*
+Common labels
+*/}}
+{{- define "accountapp.labels" -}}
+{{ include "accountapp.selectorLabels" . }}
+helm.sh/chart: {{ include "accountapp.chart" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+jenkins.io/maintainer: {{ (index .Chart.Maintainers 0).Name }}
+{{- end -}}
