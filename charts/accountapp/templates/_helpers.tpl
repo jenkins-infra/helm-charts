@@ -44,3 +44,11 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 jenkins.io/maintainer: {{ (index .Chart.Maintainers 0).Name }}
 {{- end -}}
+
+{{/*
+Selector labels
+*/}}
+{{- define "accountapp.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "accountapp.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
