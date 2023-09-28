@@ -3,6 +3,7 @@ templates:
   - deployment.yaml
   - ingress.yaml
   - secret.yaml # Direct dependency of deployment.yaml
+  - pdb.yaml
 tests:
   - it: should create an ingress by default
     template: ingress.yaml
@@ -21,3 +22,14 @@ tests:
           value: IfNotPresent
       - notExists:
           path: spec.template.spec.containers[0].resources
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: accountapp
+      - equal:
+          path: metadata.labels["app.kubernetes.io/managed-by"]
+          value: Helm
+  - it: should not generate any pdb with default values
+    template: pdb.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
