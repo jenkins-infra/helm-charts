@@ -20,6 +20,8 @@ tests:
           value: html
       - exists:
           path: spec.template.spec.volumes[0].emptyDir
+      - notExists:
+          path: spec.template.spec.affinity
   - it: should create a deployment for zh.jenkins.io with default values
     template: zh-deployment.yaml
     asserts:
@@ -30,3 +32,5 @@ tests:
       - equal:
           path: metadata.name
           value: RELEASE-NAME-jenkinsio-zh
+      - notExists:
+          path: spec.template.spec.affinity
