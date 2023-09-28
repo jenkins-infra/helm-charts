@@ -1,0 +1,18 @@
+{{- if (gt (int .Values.replicaCount) 1) }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "artifact-caching-proxy.fullname" . }}
+  labels:
+    {{- include "artifact-caching-proxy.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.poddisruptionbudget.minAvailable }}
+  minAvailable: {{ . }}
+  {{- end }}
+  {{- with .Values.poddisruptionbudget.maxUnavailable }}
+  maxUnavailable: {{ . }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "artifact-caching-proxy.selectorLabels" . | nindent 6 }}
+{{- end }}
