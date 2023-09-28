@@ -2351,6 +2351,17 @@ entries:
     version: 0.5.0
   jenkinsio:
   - apiVersion: v1
+    created: "2023-09-28T16:07:17.551571995Z"
+    description: A Helm chart for jenkins.io
+    digest: 0c00873322d2ccae528a9f2f362e397252e014db438ed2d9937b7f1dc590a328
+    maintainers:
+    - name: timja
+    - name: dduportal
+    name: jenkinsio
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/jenkinsio-0.6.2/jenkinsio-0.6.2.tgz
+    version: 0.6.2
+  - apiVersion: v1
     created: "2023-09-28T15:27:31.809872686Z"
     description: A Helm chart for jenkins.io
     digest: 85cc4eeb0295fa5ff9d75a2c1b91ac4a311ac87b7c0e04db402b39426d7201cd
@@ -6561,4 +6572,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-28T15:27:31.812382437Z"
+generated: "2023-09-28T16:07:17.552616502Z"
