@@ -1,0 +1,30 @@
+suite: Test with custom values
+# templates:
+#   - deployment.yaml
+#   - ingress.yaml
+#   - nginx-configmap.yaml # Direct dependency of deployment.yaml
+tests:
+#   - it: should create an ingress when ingress.enabled is true
+#     set:
+#       ingress:
+#         enabled: true
+#     template: ingress.yaml
+#     asserts:
+#       - hasDocuments:
+#           count: 1
+#   - it: should mount the html volume when htmlVolume is set
+#     template: deployment.yaml
+#     set:
+#       htmlVolume:
+#         hostPath: /host
+#     asserts:
+#       - hasDocuments:
+#           count: 1
+#       - isKind:
+#           of: Deployment
+#       - equal:
+#           path: spec.template.spec.volumes[0].name
+#           value: html
+#       - equal:
+#           path: spec.template.spec.volumes[0].hostPath
+#           value: /host

@@ -1,0 +1,27 @@
+suite: Test with default values
+templates:
+  - deployment.yaml
+  - zh-deployment.yaml
+  - zh-configmap.yaml
+  - nginx-configmap.yaml
+tests:
+  - it: should create a deployment for jenkins.io with default values
+    template: deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-jenkinsio
+  - it: should create a deployment for zh.jenkins.io with default values
+    template: zh-deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-jenkinsio-zh
