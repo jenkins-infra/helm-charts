@@ -1,11 +1,17 @@
-suite: Test with default values
+suite: Test with custom values
 templates:
   - deployment.yaml
   - zh-deployment.yaml
   - zh-configmap.yaml
   - nginx-configmap.yaml
+set:
+  htmlVolume:
+    azureFile:
+      secretName: jenkinsio
+      shareName: jenkinsio
+      readOnly: true
 tests:
-  - it: should create a deployment for jenkins.io with default values
+  - it: should create a deployment for jenkins.io with specified custom values
     template: deployment.yaml
     asserts:
       - hasDocuments:
@@ -18,9 +24,12 @@ tests:
       - equal:
           path: spec.template.spec.volumes[0].name
           value: html
-      - exists:
+      - notExists:
           path: spec.template.spec.volumes[0].emptyDir
-  - it: should create a deployment for zh.jenkins.io with default values
+      - equal:
+          path: spec.template.spec.volumes[0].azureFile.shareName
+          value: jenkinsio
+  - it: should create a deployment for zh.jenkins.io with specified custom values
     template: zh-deployment.yaml
     asserts:
       - hasDocuments:
