@@ -66,3 +66,5 @@ election:
   close: 1970-01-02
   logDir: /var/log/accountapp/elections
   candidates: bob,alice
+poddisruptionbudget:
+  minAvailable: 1

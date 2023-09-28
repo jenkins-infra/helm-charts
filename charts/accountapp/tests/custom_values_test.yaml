@@ -3,6 +3,7 @@ templates:
   - deployment.yaml
   - ingress.yaml
   - secret.yaml # Direct dependency of deployment.yaml
+  - pdb.yaml
 tests:
   - it: should create a Secret with the correct value
     set:
@@ -51,3 +52,18 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].resources.requests.cpu
           value: 500m
+  - it: should ensure the pdb has correct spec
+    template: pdb.yaml
+    set:
+      replicaCount: 2
+      poddisruptionbudget.minAvailable: 2
+      poddisruptionbudget.maxUnavailable: 1
+    asserts:
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.minAvailable
+          value: 2
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: "accountapp"
