@@ -66,7 +66,11 @@ spec:
     {{- end }}
       volumes:
         - name: html
-{{ toYaml .Values.zhHtmlVolume | indent 10 }}
+{{- if .Values.zhHtmlVolume -}}
+{{- toYaml .Values.zhHtmlVolume | nindent 10 }}
+{{- else }}
+          emptyDir: {}
+{{- end }}
         - name: config
           configMap:
             name: jenkinsio

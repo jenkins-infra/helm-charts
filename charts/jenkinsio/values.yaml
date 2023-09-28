@@ -49,8 +49,6 @@ resources: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
-htmlVolume:
-  emptyDir: {}
-zhHtmlVolume:
-  emptyDir: {}
+htmlVolume: {}
+zhHtmlVolume: {}
 forceJenkinsIoHost: false
