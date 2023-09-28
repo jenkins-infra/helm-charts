@@ -2,6 +2,7 @@ suite: Tests with custom values
 templates:
   - ingress-health.yaml
   - ingress.yaml
+  - pdb.yaml
 tests:
   - it: Should set a custom health check path when specified by values
     template: ingress.yaml
@@ -50,3 +51,19 @@ tests:
           path: metadata.annotations
           value:
             a-custom/annotation: "hello world"
+
+  - it: should ensure the pdb has correct spec
+    template: pdb.yaml
+    set:
+      replicaCount: 2
+      poddisruptionbudget.minAvailable: 2
+      poddisruptionbudget.maxUnavailable: 1
+    asserts:
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.minAvailable
+          value: 2
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: "artifact-caching-proxy"

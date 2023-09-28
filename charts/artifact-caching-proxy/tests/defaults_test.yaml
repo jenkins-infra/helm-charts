@@ -5,6 +5,7 @@ templates:
   - nginx-proxy-configmap.yaml
   - nginx-default-configmap.yaml
   - statefulset.yaml
+  - pdb.yaml
 tests:
   - it: should not generate any ingress with default values
     template: ingress.yaml
@@ -36,3 +37,14 @@ tests:
           of: StatefulSet
       - notExists:
           path: spec.affinity
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: artifact-caching-proxy
+      - equal:
+          path: metadata.labels["app.kubernetes.io/managed-by"]
+          value: Helm
+  - it: should not generate any pdb with default values
+    template: pdb.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
