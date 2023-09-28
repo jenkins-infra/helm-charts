@@ -48,7 +48,9 @@ resources: {}
 #   memory: 128Mi
 nodeSelector: {}
 tolerations: []
-affinity: {}
+affinity:
+  jenkinsio: {}
+  jenkinsio-zh: {}
 htmlVolume: {}
 zhHtmlVolume: {}
 forceJenkinsIoHost: false

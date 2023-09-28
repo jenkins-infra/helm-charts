@@ -10,6 +10,27 @@ set:
       secretName: jenkinsio
       shareName: jenkinsio
       readOnly: true
+  affinity:
+    jenkinsio:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: "app.kubernetes.io/name"
+                  operator: In
+                  values:
+                    - jenkinsio
+            topologyKey: "kubernetes.io/hostname"
+    jenkinsio-zh:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: "app.kubernetes.io/name"
+                  operator: In
+                  values:
+                    - jenkinsio-zh
+            topologyKey: "kubernetes.io/hostname"
 tests:
   - it: should create a deployment for jenkins.io with specified custom values
     template: deployment.yaml
@@ -29,6 +50,9 @@ tests:
       - equal:
           path: spec.template.spec.volumes[0].azureFile.shareName
           value: jenkinsio
+      - equal:
+          path: spec.template.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].labelSelector.matchExpressions[0].values[0]
+          value: jenkinsio
   - it: should create a deployment for zh.jenkins.io with specified custom values
     template: zh-deployment.yaml
     asserts:
@@ -39,3 +63,6 @@ tests:
       - equal:
           path: metadata.name
           value: RELEASE-NAME-jenkinsio-zh
+      - equal:
+          path: spec.template.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].labelSelector.matchExpressions[0].values[0]
+          value: jenkinsio-zh
