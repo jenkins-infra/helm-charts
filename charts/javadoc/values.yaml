@@ -53,3 +53,5 @@ htmlVolume:
 azureStorageAccountName:
 # key for accessing the azure storage account
 azureStorageAccountKey:
+poddisruptionbudget:
+  minAvailable: 1

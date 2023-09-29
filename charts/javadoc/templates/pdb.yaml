@@ -1,0 +1,18 @@
+{{- if (gt (int .Values.replicaCount) 1) }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "javadoc.fullname" . }}
+  labels:
+    {{- include "javadoc.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.poddisruptionbudget.minAvailable }}
+  minAvailable: {{ . }}
+  {{- end }}
+  {{- with .Values.poddisruptionbudget.maxUnavailable }}
+  maxUnavailable: {{ . }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "javadoc.selectorLabels" . | nindent 6 }}
+{{- end }}
