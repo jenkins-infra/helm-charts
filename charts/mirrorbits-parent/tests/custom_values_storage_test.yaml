@@ -1,21 +1,22 @@
 suite: Tests with custom values
 set:
-  storage:
-    enabled: true
-    storageClassName: super-fast-storage
-    storageSize: 510Gi
-    accessModes:
-      - ReadWriteMany
-      - ReadOnlyMany
-      - ReadWriteOnce
-    persistentVolume:
-      additionalSpec:
-        persistentVolumeReclaimPolicy: Retain
-        mountOptions:
-          - dir_mode=0755
-    persistentVolumeClaim:
-      additionalSpec:
-        volumeMode: Block
+  global:
+    storage:
+      enabled: true
+      storageClassName: super-fast-storage
+      storageSize: 510Gi
+      accessModes:
+        - ReadWriteMany
+        - ReadOnlyMany
+        - ReadWriteOnce
+      persistentVolume:
+        additionalSpec:
+          persistentVolumeReclaimPolicy: Retain
+          mountOptions:
+            - dir_mode=0755
+      persistentVolumeClaim:
+        additionalSpec:
+          volumeMode: Block
 templates:
   - persistentvolume.yaml
   - persistentvolumeclaim.yaml
@@ -30,7 +31,7 @@ tests:
           of: PersistentVolumeClaim
       - equal:
           path: metadata.name
-          value: RELEASE-NAME-mirrorbits-parent
+          value: RELEASE-NAME-mirrorbits-parent-data
       - equal:
           path: spec.accessModes[0]
           value: ReadWriteMany
@@ -88,14 +89,15 @@ tests:
   - it: should provide an azurefile CSI PV with customized values if specified
     template: persistentvolume.yaml
     set:
-      storage:
-        persistentVolume:
-          azureFile:
-            resourceGroup: storage-rg
-            storageAccountName: storage-account
-            shareName: storage-share
-            storageAccountKey: StorageAccountSuperSecretKey
-            readOnly: true
+      global:
+        storage:
+          persistentVolume:
+            azureFile:
+              resourceGroup: storage-rg
+              storageAccountName: storage-account
+              shareName: storage-share
+              storageAccountKey: StorageAccountSuperSecretKey
+              readOnly: true
     asserts:
       - hasDocuments:
           count: 1
@@ -131,14 +133,15 @@ tests:
   - it: should not create any persistent volume secret
     template: persistentvolumesecret.yaml
     set:
-      storage:
-        persistentVolume:
-          azureFile:
-            resourceGroup: storage-rg
-            storageAccountName: storage-account
-            shareName: storage-share
-            storageAccountKey: 'StorageAccountSuperSecretKey!2023'
-            readOnly: true
+      global:
+        storage:
+          persistentVolume:
+            azureFile:
+              resourceGroup: storage-rg
+              storageAccountName: storage-account
+              shareName: storage-share
+              storageAccountKey: 'StorageAccountSuperSecretKey!2023'
+              readOnly: true
     asserts:
       - hasDocuments:
           count: 1
@@ -158,11 +161,12 @@ tests:
     release:
       name: rindfleischetikettierunguberwachungsaufgabenubertrags # 53 chars is the longest possible release name
     set:
-      storage:
-        persistentVolume:
-          azureFile:
-            storageAccountName: storage-account
-            storageAccountKey: 'StorageAccountSuperSecretKey!2023'
+      global:
+        storage:
+          persistentVolume:
+            azureFile:
+              storageAccountName: storage-account
+              storageAccountKey: 'StorageAccountSuperSecretKey!2023'
     asserts:
       - hasDocuments:
           count: 1

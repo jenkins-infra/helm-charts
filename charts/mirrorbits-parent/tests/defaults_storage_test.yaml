@@ -5,8 +5,9 @@ templates:
   - persistentvolumesecret.yaml
 ## Only enable storage
 set:
-  storage:
-    enabled: true
+  global:
+    storage:
+      enabled: true
 tests:
   - it: should not create any persistent volume secret
     template: persistentvolumesecret.yaml
@@ -45,7 +46,7 @@ tests:
           of: PersistentVolumeClaim
       - equal:
           path: metadata.name
-          value: RELEASE-NAME-mirrorbits-parent
+          value: RELEASE-NAME-mirrorbits-parent-data
       - equal:
           path: spec.accessModes[0]
           value: ReadOnlyMany

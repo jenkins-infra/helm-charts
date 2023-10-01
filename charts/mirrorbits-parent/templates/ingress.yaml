@@ -1,21 +1,21 @@
-{{- if .Values.ingress.enabled -}}
+{{- if .Values.global.ingress.enabled -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "mirrorbits-parent.name" . }}
   labels:
 {{ include "mirrorbits-parents.labels" . | indent 4 }}
-  {{- with .Values.ingress.annotations }}
+  {{- with .Values.global.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-{{- if .Values.ingress.className }}
-  ingressClassName: {{ .Values.ingress.className }}
+{{- if .Values.global.ingress.className }}
+  ingressClassName: {{ .Values.global.ingress.className }}
 {{- end }}
-{{- if .Values.ingress.tls }}
+{{- if .Values.global.ingress.tls }}
   tls:
-  {{- range .Values.ingress.tls }}
+  {{- range .Values.global.ingress.tls }}
     - hosts:
       {{- range .hosts }}
         - {{ . | quote }}
@@ -24,7 +24,7 @@ spec:
   {{- end }}
 {{- end }}
   rules:
-  {{- range .Values.ingress.hosts }}
+  {{- range .Values.global.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
@@ -32,27 +32,10 @@ spec:
           - path: {{ .path }}
             pathType: {{ .pathType | default "Prefix" }}
             backend:
-            {{- if eq .backendService "mirrorbits" }}
-              {{- if not (index $.Values "mirrorbits-lite" "enabled") }}
-                {{- fail "Cannot use mirrorbits(-lite) as backend if it is disabled." }}
-              {{- end }}
               service:
-                # TODO: update child chart to use a global value to let the parent-chart defined/get the value
-                name: {{ $.Release.Name | trunc 63 | trimSuffix "-" -}}-mirrorbits-lite
+                name: {{ include "mirrorbits-parent.ingressBackendName" (dict "currentBackendService" .backendService "rootContext" $) }}
                 port:
-                  number: {{ index $.Values "mirrorbits-lite" "service" "port" }}
-            {{- else if eq .backendService "httpd" }}
-              {{- if not $.Values.httpd.enabled }}
-                {{- fail "Cannot use httpd as backend if it is disabled." }}
-              {{- end }}
-              service:
-              # TODO: update child chart to use a global value to let the parent-chart defined/get the value
-                name: {{ $.Release.Name | trunc 63 | trimSuffix "-" -}}-httpd
-                port:
-                  number: {{ $.Values.httpd.service.port }}
-            {{- else }}
-              {{- fail "Required key: backendService for ingress.hosts[].paths[] objects must have the value 'httpd' or 'mirrorbits'." }}
-            {{- end }}
+                  number: {{ include "mirrorbits-parent.ingressBackendPort" (dict "currentBackendService" .backendService "rootContext" $) }}
         {{- end }}
   {{- end }}
 {{- end }}

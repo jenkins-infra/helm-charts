@@ -1,4 +1,4 @@
-{{- if .Values.storage.enabled }}
+{{- if .Values.global.storage.enabled }}
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -8,11 +8,11 @@ metadata:
 {{- include "mirrorbits-parents.labels" . | nindent 4 }}
 spec:
   accessModes:
-    {{- toYaml .Values.storage.accessModes | nindent 4 }}
+    {{- toYaml .Values.global.storage.accessModes | nindent 4 }}
   capacity:
-    storage: {{ .Values.storage.storageSize }}
-  storageClassName: {{ .Values.storage.storageClassName }}
-  {{- with .Values.storage.persistentVolume.azureFile }}
+    storage: {{ .Values.global.storage.storageSize }}
+  storageClassName: {{ .Values.global.storage.storageClassName }}
+  {{- with .Values.global.storage.persistentVolume.azureFile }}
   csi:
     driver: file.csi.azure.com
     nodeStageSecretRef:
@@ -24,7 +24,7 @@ spec:
     volumeHandle: {{ include "mirrorbits-parent.name" $ }}
     readOnly: {{ .readOnly | default false }}
   {{- end }}
-  {{- with .Values.storage.persistentVolume.additionalSpec }}
+  {{- with .Values.global.storage.persistentVolume.additionalSpec }}
     {{- toYaml . | nindent 2 }}
   {{- end }}
 {{- end }}

@@ -1,74 +1,80 @@
-## Global ingress
-ingress:
-  enabled: false
-  ## Specify a custom Ingress Class (default: unspecified to rely on your cluster default)
-  # className: my-ingress-class
+# The top-level keyword 'global' is required to share data to subcharts
+global:
+  ## Global ingress
+  ingress:
+    enabled: false
+    ## Specify a custom Ingress Class (default: unspecified to rely on your cluster default)
+    # className: my-ingress-class
 
-  ## Define custom annotations on the Ingress object (default: undefined)
-  # annotations:
-  #  foo: bar
+    ## Define custom annotations on the Ingress object (default: undefined)
+    # annotations:
+    #  foo: bar
 
-  ## Define custom hosts for this ingress (default: undefined)
-  ## Note: the "path" objects allows defining which path matches which backend webservice component (possible values: mirrorbits or httpd)
-  # hosts:
-  #   - host: company.org
-  #     paths:
-  #       # Send requests matching the pattern defined for 'path' to the http backend service
-  #       - path: /.*[.](deb|hpi|war|rpm|msi|pkg|sha256|md5sum|zip|gz|pdf|json|svg|sh|jpeg|ico|png|html)$
-  #         ## Note: the "path" objects allows defining which path matches which backend webservice component (possible values: mirrorbits or httpd)
-  #         backendService: httpd
-  #       # Send requests matching the pattern '/' (e.g. default fallback for most ingresses) to the mirrorbits backend service
-  #       - path: /
-  #         ## Note: the "path" objects allows defining which path matches which backend webservice component (possible values: mirrorbits or httpd)
-  #         backendService: mirrorbits
-  ## Define ingress TLS management for HTTPS
-  # tls:
-  #   - secretName: ingress-tls
-  #     hosts:
-  #       - company.org
+    ## Define custom hosts for this ingress (default: undefined)
+    ## Note: the "path" objects allows defining which path matches which backend webservice component (possible values: mirrorbits or httpd)
+    # hosts:
+    #   - host: company.org
+    #     paths:
+    #       # Send requests matching the pattern defined for 'path' to the http backend service
+    #       - path: /.*[.](deb|hpi|war|rpm|msi|pkg|sha256|md5sum|zip|gz|pdf|json|svg|sh|jpeg|ico|png|html)$
+    #         ## Note: the "path" objects allows defining which path matches which backend webservice component (possible values: mirrorbits or httpd)
+    #         backendService: httpd
+    #       # Send requests matching the pattern '/' (e.g. default fallback for most ingresses) to the mirrorbits backend service
+    #       - path: /
+    #         ## Note: the "path" objects allows defining which path matches which backend webservice component (possible values: mirrorbits or httpd)
+    #         backendService: mirrorbits
+    ## Define ingress TLS management for HTTPS
+    # tls:
+    #   - secretName: ingress-tls
+    #     hosts:
+    #       - company.org
 
-## Persistent Storage used across components
-storage:
-  ## Manage (and reuse) PV + PVC for all components
-  enabled: false
-  ## Define a custom storage class
-  storageClassName: default
-  # storageClassName: azurefile-csi-premium
-  ## Define a custom storage size (both PV and PVC)
-  storageSize: 1Gi
-  ## Define the set of access modes available for the persistent volume and its claim
-  accessModes:
-    - ReadOnlyMany
-  persistentVolume:
-    ## This chart usually runs on Azure with an Azurefile as a persistent volume.
-    ## Use the following section to define the secret and CSI specification for the PV.
-    # azureFile:
-    #   resourceGroup: storage-rg
-    #   storageAccountName: storage-account
-    #   shareName: storage-share
-    #   storageAccountKey: StorageAccountSuperSecretKey
-    #   readOnly: false
-    ## Additional custom spec added at the end of the generated PV `spec` section.
-    ## User is responsible to not duplicate existing (helm template is your friend).
-    additionalSpec: {}
-    # additionalSpec:
-    #  persistentVolumeReclaimPolicy: Retain
-    #  mountOptions:
-    #    - dir_mode=0755
-    #    - ...
+  ## Persistent Storage used across components
+  storage:
+    ## Manage (and reuse) PV + PVC for all components
+    enabled: false
+    ## Use this value to specify a custom template consumed by subcharts to retrieve the name of the PVC
+    claimNameTpl: '{{ include "mirrorbits-parent.pvc-name" $ }}'
+    ## Define a custom storage class
+    storageClassName: default
+    # storageClassName: azurefile-csi-premium
+    ## Define a custom storage size (both PV and PVC)
+    storageSize: 1Gi
+    ## Define the set of access modes available for the persistent volume and its claim
+    accessModes:
+      - ReadOnlyMany
+    persistentVolume:
+      ## This chart usually runs on Azure with an Azurefile as a persistent volume.
+      ## Use the following section to define the secret and CSI specification for the PV.
+      # azureFile:
+      #   resourceGroup: storage-rg
+      #   storageAccountName: storage-account
+      #   shareName: storage-share
+      #   storageAccountKey: StorageAccountSuperSecretKey
+      #   readOnly: false
+      ## Additional custom spec added at the end of the generated PV `spec` section.
+      ## User is responsible to not duplicate existing (helm template is your friend).
+      additionalSpec: {}
+      # additionalSpec:
+      #  persistentVolumeReclaimPolicy: Retain
+      #  mountOptions:
+      #    - dir_mode=0755
+      #    - ...
 
-  persistentVolumeClaim:
-    ## Additional custom spec added at the end of the generated PVC `spec` section.
-    ## User is responsible to not duplicate existing (helm template is your friend).
-    additionalSpec: {}
-    # additionalSpec:
-    #   volumeMode: Filesystem
-    #   ...
+    persistentVolumeClaim:
+      ## Additional custom spec added at the end of the generated PVC `spec` section.
+      ## User is responsible to not duplicate existing (helm template is your friend).
+      additionalSpec: {}
+      # additionalSpec:
+      #   volumeMode: Filesystem
+      #   ...
 
 ## Sub charts specific values
 mirrorbits-lite:
   enabled: false
+  backendServiceNameTpl: '{{ include "mirrorbits-lite.fullname" (index $.Subcharts "mirrorbits-lite")}}'
 httpd:
   enabled: false
+  backendServiceNameTpl: '{{ include "httpd.fullname" (index $.Subcharts "httpd")}}'
 rsyncd:
   enabled: false
