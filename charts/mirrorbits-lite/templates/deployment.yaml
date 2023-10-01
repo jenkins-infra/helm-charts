@@ -41,10 +41,8 @@ spec:
               mountPath: /usr/share/GeoIP
             - name: logs
               mountPath: /var/log/mirrorbits
-            {{ if $.Values.repository.persistentVolumeClaim.enabled -}}
-            - name: binary
+            - name: data
               mountPath: /srv/repo
-            {{- end }}
           livenessProbe:
             httpGet:
               path: /?mirrorstats
@@ -114,8 +112,5 @@ spec:
           emptyDir: {}
         - name: logs
           {{- toYaml .Values.logs.volume | nindent 10 }}
-        {{- if $.Values.repository.persistentVolumeClaim.enabled }}
-        - name: binary
-          persistentVolumeClaim:
-            claimName: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits-lite.fullname" .)) }}
-        {{- end }}
+        - name: data
+          {{- include "mirrorbits-lite.data-volume" . | nindent 10}}

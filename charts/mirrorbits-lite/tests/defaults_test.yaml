@@ -4,6 +4,9 @@ templates:
   - ingress.yaml
   - secret.yaml # Direct dependency of deployment(.*).yaml
   - service.yaml
+  - persistentVolume.yaml
+  - persistentVolumeClaim.yaml
+  - tests/mock_parent_helpers.tpl
 tests:
   - it: should not create any ingress by default
     template: ingress.yaml
@@ -39,3 +42,26 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].mountPath
           value: /var/log/mirrorbits
+      # Data Volume is an emptyDir by default
+      - equal:
+          path: spec.template.spec.volumes[3].name
+          value: data
+      - equal:
+          path: spec.template.spec.volumes[3].emptyDir
+          value: {}
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].name
+          value: data
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].mountPath
+          value: /srv/repo
+  - it: should not define any persistent volume
+    template: persistentVolume.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should not define any PV claim
+    template: persistentVolumeClaim.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
