@@ -1,0 +1,34 @@
+suite: default tests
+templates:
+  - pdb.yaml
+  - deployment.yaml
+  - nginx-configmap.yaml
+tests:
+  - it: should not generate any pdb with default values
+    template: pdb.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: Should generate a deployment with the default values
+    template: deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - notExists:
+          path: spec.affinity
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: javadoc
+      - equal:
+          path: metadata.labels["app.kubernetes.io/managed-by"]
+          value: Helm
+      - equal:
+          path: spec.template.spec.volumes[0].name
+          value: html
+      - equal:
+          path: spec.template.spec.volumes[0].emptyDir
+          value: {}
+      - notExists:
+          path: spec.template.spec.containers[0].resources
