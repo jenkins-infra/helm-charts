@@ -32,12 +32,19 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
+Selector labels
+*/}}
+{{- define "javadoc.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "javadoc.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "javadoc.labels" -}}
-app.kubernetes.io/name: {{ include "javadoc.name" . }}
+{{ include "javadoc.selectorLabels" . }}
 helm.sh/chart: {{ include "javadoc.chart" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}

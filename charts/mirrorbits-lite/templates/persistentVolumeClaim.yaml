@@ -1,9 +1,9 @@
-{{ if $.Values.repository.persistentVolumeClaim.enabled -}}
+{{ if and .Values.repository.persistentVolumeClaim.enabled (not (dig "global" "ingress" "enabled" false .Values.AsMap)) -}}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ $.Values.repository.name | default (printf "%s-binary" (include "mirrorbits-lite.fullname" .))  }}
+  name: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits-lite.fullname" .))  }}
 spec:
-{{ toYaml $.Values.repository.persistentVolumeClaim.spec | nindent 2 }}
+{{ toYaml .Values.repository.persistentVolumeClaim.spec | nindent 2 }}
 {{- end -}}

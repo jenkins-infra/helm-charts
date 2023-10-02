@@ -1,17 +1,18 @@
-suite: Tests with custom values
+suite: Tests with values from parent (umbrella ingress and umbrella PVC)
 templates:
   - deployment.yaml
   - ingress.yaml
   - secret.yaml # Direct dependency of deployment.yaml
-  - service.yaml
   - persistentVolume.yaml
   - persistentVolumeClaim.yaml
 set:
-  image:
-    pullPolicy: Always
-  geoipupdate:
-    account_id: my-account-id
-    license_key: my-license-key
+  # Mock chart parent inherited global values passed to subcharts
+  global:
+    storage:
+      enabled: true
+    ingress:
+      enabled: true
+  # Try to specify a ingress which must be ignored (parent prevails)
   ingress:
     enabled: true
     hosts:
@@ -19,10 +20,7 @@ set:
         paths:
         - path: /
           pathType: IfNotPresent
-  logs:
-    volume:
-      persistentVolumeClaim:
-        claimName: foobar
+  # Try to specify a PV which must be ignored (parent prevails)
   repository:
     name: mirrorbits-binary
     persistentVolumeClaim:
@@ -57,21 +55,6 @@ set:
         mountOptions:
           - dir_mode=0755
 tests:
-  - it: Should set the correct service selector labels when a fullNameOverride is specified
-    template: service.yaml
-    set:
-      fullNameOverride: "my-fullNameOverride"
-    asserts:
-      - hasDocuments:
-          count: 1
-      - isKind:
-          of: Service
-      - equal:
-          path: spec.selector["app.kubernetes.io/name"]
-          value: "mirrorbits-lite"
-      - equal:
-          path: spec.selector["app.kubernetes.io/instance"]
-          value: "RELEASE-NAME"
   - it: should define a customized "mirrorbits-lite" deployment
     template: deployment.yaml
     asserts:
@@ -79,56 +62,31 @@ tests:
           count: 1
       - isKind:
           of: Deployment
-      - equal:
-          path: spec.template.spec.containers[*].imagePullPolicy
-          value: Always
-      # Log volumes is a custom PVC
-      - equal:
-          path: spec.template.spec.volumes[2].name
-          value: logs
-      - equal:
-          path: spec.template.spec.volumes[2].persistentVolumeClaim.claimName
-          value: foobar
-      - equal:
-          path: spec.template.spec.containers[0].volumeMounts[2].name
-          value: logs
-      - equal:
-          path: spec.template.spec.containers[0].volumeMounts[2].mountPath
-          value: /var/log/mirrorbits
-      # Data Volume
+      # Data Volume (references a claim from parent chart)
       - equal:
           path: spec.template.spec.volumes[3].name
           value: data
       - equal:
           path: spec.template.spec.volumes[3].persistentVolumeClaim.claimName
-          value: mirrorbits-binary
+          value: parent-chart-shared-data
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].name
           value: data
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].mountPath
           value: /srv/repo
-  - it: should create ingress with pathType set to the specified custom value by default
+  - it: should not create any ingress
     template: ingress.yaml
     asserts:
       - hasDocuments:
-          count: 1
-      - isKind:
-          of: Ingress
-      - equal:
-          path: spec.rules[0].http.paths[0].pathType
-          value: "IfNotPresent"
-  - it: should define a customized "mirrorbits-lite" persistent volume
+          count: 0
+  - it: should not define any persistent volume
     template: persistentVolume.yaml
     asserts:
       - hasDocuments:
-          count: 1
-      - isKind:
-          of: PersistentVolume
-  - it: should define a customized "mirrorbits-lite" PV claim
+          count: 0
+  - it: should not define any PV claim
     template: persistentVolumeClaim.yaml
     asserts:
       - hasDocuments:
-          count: 1
-      - isKind:
-          of: PersistentVolumeClaim
+          count: 0
