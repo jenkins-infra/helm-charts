@@ -2,7 +2,7 @@ suite: Tests with custom values
 templates:
   - deployment.yaml
   - ingress.yaml
-  - secret.yaml # Direct dependency of deployment(.*).yaml
+  - secret.yaml # Direct dependency of deployment.yaml
   - service.yaml
   - persistentVolume.yaml
   - persistentVolumeClaim.yaml
