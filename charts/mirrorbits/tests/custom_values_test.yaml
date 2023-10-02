@@ -22,6 +22,46 @@ set:
       volume:
         persistentVolumeClaim:
           claimName: foobar
+  affinity:
+    mirrorbits:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: "app.kubernetes.io/name"
+                  operator: In
+                  values:
+                    - mirrorbits
+            topologyKey: "kubernetes.io/hostname"
+    files:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: "app.kubernetes.io/name"
+                  operator: In
+                  values:
+                    - mirrorbits-files
+            topologyKey: "kubernetes.io/hostname"
+    rsyncd:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: "app.kubernetes.io/name"
+                  operator: In
+                  values:
+                    - mirrorbits-rsyncd
+            topologyKey: "kubernetes.io/hostname"
+  poddisruptionbudget:
+    mirrorbits:
+      minAvailable: 1
+    mirrorbitsFiles:
+      minAvailable: 1
+    mirrorbitsRsyncd:
+      minAvailable: 1
+
+
 templates:
   - deployment.yaml
   - deployment.files.yaml
@@ -94,6 +134,9 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].mountPath
           value: /var/log/mirrorbits
+      - equal:
+          path: spec.template.spec.affinity.mirrorbits.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].topologyKey
+          value: "kubernetes.io/hostname"
   - it: should create ingress with pathType set to the specified custom value by default
     template: ingress.yaml
     asserts:
