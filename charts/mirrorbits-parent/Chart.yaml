@@ -7,7 +7,7 @@ dependencies:
 - name: mirrorbits-lite
   condition: mirrorbits-lite.enabled
   repository: https://jenkins-infra.github.io/helm-charts
-  version: 0.2.1
+  version: 0.3.0
 - name: httpd
   condition: httpd.enabled
   repository: https://jenkins-infra.github.io/helm-charts

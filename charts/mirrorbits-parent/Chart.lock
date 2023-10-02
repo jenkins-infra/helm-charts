@@ -1,12 +1,12 @@
 dependencies:
 - name: mirrorbits-lite
   repository: https://jenkins-infra.github.io/helm-charts
-  version: 0.2.1
+  version: 0.3.0
 - name: httpd
   repository: https://jenkins-infra.github.io/helm-charts
   version: 0.1.0
 - name: rsyncd
   repository: https://jenkins-infra.github.io/helm-charts
   version: 1.3.2
-digest: sha256:5e67b2ebfcb3b462b5cc6ae4b78bca39f7ef37d3d0205ad0dc655d86b2495387
-generated: "2023-10-02T15:02:28.392072904Z"
+digest: sha256:9cf11370cdbed50b554291fd4bfffd79b55a6e26c8147c7e29373d4c4f002e24
+generated: "2023-10-02T16:05:56.833429193Z"
