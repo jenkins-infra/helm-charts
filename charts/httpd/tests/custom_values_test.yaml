@@ -4,6 +4,20 @@ templates:
   - ingress.yaml
   - secret.yaml # Direct dependency of deployment.yaml
   - service.yaml
+  - persistentVolume.yaml
+  - persistentVolumeClaim.yaml
+set:
+  image:
+    pullPolicy: Never
+  repository:
+    reuseExistingPersistentVolumeClaim: true
+  ingress:
+    enabled: true
+    hosts:
+      - host: chart-example.local
+        paths:
+        - path: /
+          pathType: IfNotPresent
 tests:
   - it: Should set the correct service selector labels when a fullNameOverride is specified
     template: service.yaml
@@ -37,9 +51,6 @@ tests:
           value: "RELEASE-NAME"
   - it: should define a customized deployment
     template: deployment.yaml
-    set:
-      image:
-        pullPolicy: Never
     asserts:
       - hasDocuments:
           count: 1
@@ -48,33 +59,39 @@ tests:
       - equal:
           path: spec.template.spec.containers[*].imagePullPolicy
           value: Never
-  - it: should define a "binary" volume if reuseExistingPersistentVolumeClaim is true
+  - it: should define a volume 'html' if reuseExistingPersistentVolumeClaim is true
     template: deployment.yaml
-    set:
-      repository:
-        reuseExistingPersistentVolumeClaim: true
     asserts:
       - hasDocuments:
           count: 1
       - isKind:
           of: Deployment
-      - lengthEqual:
-          path: spec.template.spec.volumes
-          count: 2
-      - contains:
-          path: spec.template.spec.volumes
-          content:
-            name: "binary"
-          any: true
-      - lengthEqual:
-          path: spec.template.spec.containers[0].volumeMounts
-          count: 2
-      - contains:
-          path: spec.template.spec.containers[0].volumeMounts
-          content:
-            name: "binary"
-          any: true
-  - it: should define a "binary" volume if repository.persistentVolumeClaim.enabled is true
+      - equal:
+          path: spec.template.spec.volumes[0].name
+          value: conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].name
+          value: conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].readOnly
+          value: true
+      # HTML volume uses an existing PVC (specified by values)
+      - equal:
+          path: spec.template.spec.volumes[1].name
+          value: html
+      - equal:
+          path: spec.template.spec.volumes[1].persistentVolumeClaim.claimName
+          value: httpd-binary
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].name
+          value: html
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].readOnly
+          value: true
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].mountPath
+          value: /usr/local/apache2/htdocs
+  - it: should define a managed "html" volume if repository.persistentVolumeClaim.enabled is true
     template: deployment.yaml
     set:
       repository:
@@ -85,32 +102,33 @@ tests:
           count: 1
       - isKind:
           of: Deployment
-      - lengthEqual:
-          path: spec.template.spec.volumes
-          count: 2
-      - contains:
-          path: spec.template.spec.volumes
-          content:
-            name: "binary"
-          any: true
-      - lengthEqual:
-          path: spec.template.spec.containers[0].volumeMounts
-          count: 2
-      - contains:
-          path: spec.template.spec.containers[0].volumeMounts
-          content:
-            name: "binary"
-          any: true
+      - equal:
+          path: spec.template.spec.volumes[0].name
+          value: conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].name
+          value: conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].readOnly
+          value: true
+      # HTML volume uses an existing PVC (specified by values)
+      - equal:
+          path: spec.template.spec.volumes[1].name
+          value: html
+      - equal:
+          path: spec.template.spec.volumes[1].persistentVolumeClaim.claimName
+          value: httpd-binary
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].name
+          value: html
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].readOnly
+          value: true
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].mountPath
+          value: /usr/local/apache2/htdocs
   - it: should create ingress with pathType set to the specified custom value by default
     template: ingress.yaml
-    set:
-      ingress:
-        enabled: true
-        hosts:
-          - host: chart-example.local
-            paths:
-            - path: /
-              pathType: IfNotPresent
     asserts:
       - hasDocuments:
           count: 1
