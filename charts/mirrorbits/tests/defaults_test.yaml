@@ -88,3 +88,5 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].mountPath
           value: /var/log/mirrorbits
+      - notExists:
+          path: spec.template.spec.affinity
