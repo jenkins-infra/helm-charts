@@ -111,6 +111,9 @@ tests:
       - equal:
           path: "spec.template.spec.containers[*].imagePullPolicy"
           value: Never
+      - equal:
+          path: spec.template.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].topologyKey
+          value: "kubernetes.io/hostname"
   - it: should define a customized "mirrorbits" deployment
     template: deployment.yaml
     asserts:
@@ -135,7 +138,7 @@ tests:
           path: spec.template.spec.containers[0].volumeMounts[2].mountPath
           value: /var/log/mirrorbits
       - equal:
-          path: spec.template.spec.affinity.mirrorbits.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].topologyKey
+          path: spec.template.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].topologyKey
           value: "kubernetes.io/hostname"
   - it: should create ingress with pathType set to the specified custom value by default
     template: ingress.yaml
@@ -154,6 +157,9 @@ tests:
           count: 1
       - isKind:
           of: Deployment
+      - equal:
+          path: spec.template.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].topologyKey
+          value: "kubernetes.io/hostname"
   - it: should create rsyncd service if rsyncd is enabled
     template: service.rsyncd.yaml
     asserts:
