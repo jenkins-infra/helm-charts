@@ -6,7 +6,6 @@ templates:
   - service.yaml
   - persistentVolume.yaml
   - persistentVolumeClaim.yaml
-  - tests/mock_parent_helpers.tpl
 tests:
   - it: should not create any ingress by default
     template: ingress.yaml
