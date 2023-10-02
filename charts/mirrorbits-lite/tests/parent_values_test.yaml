@@ -2,7 +2,7 @@ suite: Tests with values from parent (umbrella ingress and umbrella PVC)
 templates:
   - deployment.yaml
   - ingress.yaml
-  - secret.yaml # Direct dependency of deployment(.*).yaml
+  - secret.yaml # Direct dependency of deployment.yaml
   - persistentVolume.yaml
   - persistentVolumeClaim.yaml
 set:
