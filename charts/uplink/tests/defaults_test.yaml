@@ -1,8 +1,10 @@
 suite: test default behavior of secret.yaml with default values
 templates:
   - secret.yaml
+  - pdb.yaml
 tests:
   - it: should render with default values without error
+    template: secret.yaml
     asserts:
       - isKind:
           of: Secret
@@ -17,3 +19,8 @@ tests:
           path: data.client.secret
       - notExists:
           path: data.sentry.dsn
+  - it: should not generate any pdb with default values
+    template: pdb.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
