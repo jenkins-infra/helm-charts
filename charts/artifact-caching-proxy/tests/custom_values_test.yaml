@@ -51,19 +51,34 @@ tests:
           path: metadata.annotations
           value:
             a-custom/annotation: "hello world"
-
-  - it: should ensure the pdb has correct spec
+  - it: should create a PDB with defaults when multiple replicas are set
+    template: pdb.yaml
+    set:
+      replicaCount: 2
+    asserts:
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.minAvailable
+          value: 1
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: "artifact-caching-proxy"
+  - it: should create a PDB with the custom setup when custom values are set
     template: pdb.yaml
     set:
       replicaCount: 2
       poddisruptionbudget.minAvailable: 2
-      poddisruptionbudget.maxUnavailable: 1
+      poddisruptionbudget.maxUnavailable: 3
     asserts:
       - isKind:
           of: PodDisruptionBudget
       - equal:
           path: spec.minAvailable
           value: 2
+      - equal:
+          path: spec.maxUnavailable
+          value: 3
       - equal:
           path: spec.selector.matchLabels['app.kubernetes.io/name']
           value: "artifact-caching-proxy"
