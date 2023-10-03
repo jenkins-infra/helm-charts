@@ -51,8 +51,10 @@ spec:
               mountPath: /usr/share/nginx/html
             - name: config
               mountPath: /etc/nginx/conf.d
+          {{- with .Values.resources }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          {{- end}}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -66,9 +68,11 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       volumes:
-        {{- with .Values.htmlVolume  }}
         - name: html
-          {{- toYaml . | nindent 10 }}
+        {{- if .Values.htmlVolume }}
+{{ toYaml .Values.htmlVolume | indent 10 }}
+        {{- else }}
+          emptyDir: {}
         {{- end }}
         - name: config
           configMap:
