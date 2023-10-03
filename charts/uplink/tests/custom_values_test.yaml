@@ -45,3 +45,6 @@ tests:
       - equal:
           path: spec.selector.matchLabels['app.kubernetes.io/name']
           value: "uplink"
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: uplink
