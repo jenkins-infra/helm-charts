@@ -69,7 +69,10 @@ resources: {}
 #   memory: 128Mi
 nodeSelector: {}
 tolerations: []
-affinity: {}
+affinity:
+  mirrorbits: {}
+  files: {}
+  rsyncd: {}
 geoipupdate:
   image:
     repository: maxmindinc/geoipupdate
