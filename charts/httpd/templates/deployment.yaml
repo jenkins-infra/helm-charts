@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -38,14 +39,12 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            {{ if or .Values.repository.persistentVolumeClaim.enabled .Values.repository.reuseExistingPersistentVolumeClaim -}}
-            - name: binary
-              mountPath: /usr/local/apache2/htdocs
-              readOnly: true
-            {{- end }}
             - name: conf
               mountPath: /usr/local/apache2/conf/httpd.conf
               subPath: httpd.conf
+              readOnly: true
+            - name: html
+              mountPath: /usr/local/apache2/htdocs
               readOnly: true
       {{- with .Values.nodeSelector }}
       nodeSelector:
@@ -63,8 +62,5 @@ spec:
         - name: conf
           configMap:
             name: {{ include "httpd.fullname" . }}
-        {{ if or .Values.repository.persistentVolumeClaim.enabled .Values.repository.reuseExistingPersistentVolumeClaim -}}
-        - name: binary
-          persistentVolumeClaim:
-            claimName: {{ .Values.repository.name | default (printf "%s-binary" (include "httpd.fullname" .)) }}
-        {{- end }}
+        - name: html
+          {{- include "httpd.html-volume" . | nindent 10}}

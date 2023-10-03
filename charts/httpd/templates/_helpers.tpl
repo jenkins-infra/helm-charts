@@ -43,3 +43,21 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
+
+{{/*
+Data directory volume definition. Might be defined from parent chart templates or autonomously
+based on the presence of the global value provided by the parent chart.
+*/}}
+{{- define "httpd.html-volume" -}}
+{{- if (dig "global" "storage" "enabled" false .Values.AsMap) -}}
+persistentVolumeClaim:
+  claimName: {{ include "mirrorbits-parent.pvc-name" . }}
+{{- else }}
+  {{- if or .Values.repository.persistentVolumeClaim.enabled .Values.repository.reuseExistingPersistentVolumeClaim }}
+persistentVolumeClaim:
+  claimName: {{ .Values.repository.name | default (printf "%s-binary" (include "httpd.fullname" .)) }}
+  {{- else }}
+emptyDir: {}
+  {{- end -}}
+{{- end -}}
+{{- end -}}

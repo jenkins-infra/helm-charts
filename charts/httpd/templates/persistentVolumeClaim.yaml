@@ -1,4 +1,4 @@
-{{ if .Values.repository.persistentVolumeClaim.enabled -}}
+{{ if and .Values.repository.persistentVolumeClaim.enabled (not (dig "global" "ingress" "enabled" false .Values.AsMap)) -}}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

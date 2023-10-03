@@ -1,4 +1,4 @@
-{{ if $.Values.repository.persistentVolume.enabled -}}
+{{ if and .Values.repository.persistentVolume.enabled (not (dig "global" "ingress" "enabled" false .Values.AsMap)) -}}
 ---
 apiVersion: v1
 kind: PersistentVolume
