@@ -1,8 +1,11 @@
 suite: test default behavior of secret.yaml with default values
 templates:
   - secret.yaml
+  - pdb.yaml
+  - deployment.yaml
 tests:
   - it: should render with default values without error
+    template: secret.yaml
     asserts:
       - isKind:
           of: Secret
@@ -17,3 +20,29 @@ tests:
           path: data.client.secret
       - notExists:
           path: data.sentry.dsn
+  - it: should not generate any pdb with default values
+    template: pdb.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: Should generate a deployment with the default values
+    template: deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - notExists:
+          path: spec.affinity
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: uplink
+      - equal:
+          path: metadata.labels["app.kubernetes.io/managed-by"]
+          value: Helm
+      - equal:
+          path: spec.template.spec.containers[0].name
+          value: uplink
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.cpu
+          value: 200m
