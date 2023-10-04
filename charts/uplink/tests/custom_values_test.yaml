@@ -1,6 +1,7 @@
 suite: test secret.yaml
 templates:
   - secret.yaml
+  - pdb.yaml
 set:
   postgresql:
     url: "example-url"
@@ -10,6 +11,7 @@ set:
   sentry.dsn: "example-dsn"
 tests:
   - it: should ensure the secret is created with custom credentials
+    template: secret.yaml
     asserts:
       - isKind:
           of: Secret
@@ -28,3 +30,37 @@ tests:
       - equal:
           path: data['sentry.dsn']
           value: "ZXhhbXBsZS1kc24="  # Base64 encoded value of "example-dsn"
+  - it: should create a PDB with defaults when multiple replicas are set
+    template: pdb.yaml
+    set:
+      replicaCount: 2
+    asserts:
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.minAvailable
+          value: 1
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: "uplink"
+  - it: should ensure the pdb has correct spec
+    template: pdb.yaml
+    set:
+      replicaCount: 2
+      poddisruptionbudget.minAvailable: 2
+      poddisruptionbudget.maxUnavailable: 3
+    asserts:
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.minAvailable
+          value: 2
+      - equal:
+          path: spec.maxUnavailable
+          value: 3
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: "uplink"
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: uplink
