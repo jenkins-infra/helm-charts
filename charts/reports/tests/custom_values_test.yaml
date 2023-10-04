@@ -18,6 +18,8 @@ tests:
     set:
       htmlVolume:
         hostPath: /host
+      resources:
+        cpu: 100ms
     asserts:
       - hasDocuments:
           count: 1
@@ -29,6 +31,9 @@ tests:
       - equal:
           path: spec.template.spec.volumes[0].hostPath
           value: /host
+      - equal:
+          path: spec.template.spec.containers[0].resources.cpu
+          value: 100ms
   - it: should create a PDB with defaults when multiple replicas are set
     template: pdb.yaml
     set:
