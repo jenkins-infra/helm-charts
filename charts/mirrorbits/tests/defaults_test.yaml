@@ -10,6 +10,9 @@ templates:
   - configmap.rsyncd.rsyncd-conf.yaml
   - configmap.rsyncd.jenkins-motd.yaml
   - service.rsyncd.yaml
+  - pdb.yaml
+  - pdb.files.yaml
+  - pdb.rsyncd.yaml
 tests:
   - it: should not create any ingress by default
     template: ingress.yaml
@@ -90,3 +93,18 @@ tests:
           value: /var/log/mirrorbits
       - notExists:
           path: spec.template.spec.affinity
+  - it: should not generate any pdb with default values
+    template: pdb.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should not generate any pdb with default values
+    template: pdb.files.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should not generate any pdb with default values
+    template: pdb.rsyncd.yaml
+    asserts:
+      - hasDocuments:
+          count: 0

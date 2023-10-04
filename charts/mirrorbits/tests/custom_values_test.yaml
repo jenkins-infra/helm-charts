@@ -70,6 +70,9 @@ templates:
   - secret.yaml # Direct dependency of deployment(.*).yaml
   - service.files.yaml
   - service.rsyncd.yaml
+  - pdb.yaml
+  - pdb.files.yaml
+  - pdb.rsyncd.yaml
 tests:
   - it: Should set the correct service selector labels when a fullNameOverride is specified
     template: service.files.yaml
@@ -167,3 +170,57 @@ tests:
           count: 1
       - isKind:
           of: Service
+  - it: should ensure the pdb has correct spec
+    template: pdb.yaml
+    set:
+      replicaCount.mirrorbits: 2
+      poddisruptionbudget.mirrorbits.minAvailable: 2
+      poddisruptionbudget.mirrorbits.maxUnavailable: 3
+    asserts:
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.minAvailable
+          value: 2
+      - equal:
+          path: spec.maxUnavailable
+          value: 3
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: "mirrorbits"
+  - it: should ensure the pdb.files has correct spec
+    template: pdb.files.yaml
+    set:
+      replicaCount.files: 2
+      poddisruptionbudget.files.minAvailable: 2
+      poddisruptionbudget.files.maxUnavailable: 3
+    asserts:
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.minAvailable
+          value: 2
+      - equal:
+          path: spec.maxUnavailable
+          value: 3
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: "mirrorbits-files"
+  - it: should ensure the pdb.rsyncd has correct spec
+    template: pdb.rsyncd.yaml
+    set:
+      replicaCount.rsyncd: 2
+      poddisruptionbudget.rsyncd.minAvailable: 2
+      poddisruptionbudget.rsyncd.maxUnavailable: 3
+    asserts:
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.minAvailable
+          value: 2
+      - equal:
+          path: spec.maxUnavailable
+          value: 3
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: "mirrorbits-rsyncd"
