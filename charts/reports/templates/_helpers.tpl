@@ -32,12 +32,19 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
+Selector labels
+*/}}
+{{- define "reports.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "reports.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "reports.labels" -}}
-app.kubernetes.io/name: {{ include "reports.name" . }}
+{{ include "reports.selectorLabels" . }}
 helm.sh/chart: {{ include "reports.chart" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
