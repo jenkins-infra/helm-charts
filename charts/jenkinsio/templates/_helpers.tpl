@@ -32,12 +32,19 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
+Selector labels
+*/}}
+{{- define "jenkinsio.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "jenkinsio.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "jenkinsio.labels" -}}
-app.kubernetes.io/name: {{ include "jenkinsio.name" . }}
+{{ include "jenkinsio.selectorLabels" . }}
 helm.sh/chart: {{ include "jenkinsio.chart" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -47,12 +54,19 @@ jenkins.io/maintainer: {{ (index .Chart.Maintainers 0).Name }}
 
 
 {{/*
+Selector labels
+*/}}
+{{- define "jenkinsio-zh.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "jenkinsio.name" . }}-zh
+app.kubernetes.io/instance: {{ .Release.Name }}-zh
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "zh-jenkinsio.labels" -}}
-app.kubernetes.io/name: {{ include "jenkinsio.name" . }}-zh
+{{ include "jenkinsio-zh.selectorLabels" . }}
 helm.sh/chart: {{ include "jenkinsio.chart" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}-zh
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}

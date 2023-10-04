@@ -4,6 +4,7 @@ templates:
   - zh-deployment.yaml
   - zh-configmap.yaml
   - nginx-configmap.yaml
+  - pdb.yaml
 tests:
   - it: should create a deployment for jenkins.io with default values
     template: deployment.yaml
@@ -18,6 +19,12 @@ tests:
       - equal:
           path: spec.template.spec.volumes[0].name
           value: html
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: jenkinsio
+      - equal:
+          path: metadata.labels["app.kubernetes.io/managed-by"]
+          value: Helm
       - exists:
           path: spec.template.spec.volumes[0].emptyDir
       - notExists:
@@ -34,3 +41,8 @@ tests:
           value: RELEASE-NAME-jenkinsio-zh
       - notExists:
           path: spec.template.spec.affinity
+  - it: should not generate any pdb with default values
+    template: pdb.yaml
+    asserts:
+      - hasDocuments:
+          count: 0

@@ -54,3 +54,8 @@ affinity:
 htmlVolume: {}
 zhHtmlVolume: {}
 forceJenkinsIoHost: false
+poddisruptionbudget:
+  jenkinsio:
+    minAvailable: 1
+  jenkinsiozh:
+    minAvailable: 1
