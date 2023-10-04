@@ -50,7 +50,7 @@ Must be 63 chars. maximum.
 {{- end -}}
 
 {{/*
-This template method checks the current ingress path and fail with a user facing message if needed or return empty.
+This template method checks the current ingress path and fails with a user facing message if needed or returns empty.
 Expected argument: map{
   "currentBackendService": <string>,
   "rootContext": { },
