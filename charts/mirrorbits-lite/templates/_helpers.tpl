@@ -49,14 +49,14 @@ Data directory volume definition. Might be defined from parent chart templates o
 based on the presence of the global value provided by the parent chart.
 */}}
 {{- define "mirrorbits-lite.data-volume" -}}
-{{- if (dig "global" "storage" "enabled" false .Values.AsMap) -}}
+{{- if and (dig "global" "storage" "enabled" false .Values.AsMap) .Values.global.storage.claimNameTpl -}}
 persistentVolumeClaim:
-  claimName: {{ include "mirrorbits-parent.pvc-name" . }}
-{{- else }}
-  {{- if .Values.repository.persistentVolumeClaim.enabled }}
+  claimName: {{ printf "%s" (tpl .Values.global.storage.claimNameTpl $) | trim | trunc 63 }}
+{{- else -}}
+  {{- if .Values.repository.persistentVolumeClaim.enabled -}}
 persistentVolumeClaim:
   claimName: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits-lite.fullname" .)) }}
-  {{- else }}
+  {{- else -}}
 emptyDir: {}
   {{- end -}}
 {{- end -}}

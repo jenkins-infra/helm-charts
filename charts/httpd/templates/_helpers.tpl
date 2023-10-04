@@ -49,14 +49,14 @@ Data directory volume definition. Might be defined from parent chart templates o
 based on the presence of the global value provided by the parent chart.
 */}}
 {{- define "httpd.html-volume" -}}
-{{- if (dig "global" "storage" "enabled" false .Values.AsMap) -}}
+{{- if and (dig "global" "storage" "enabled" false .Values.AsMap) .Values.global.storage.claimNameTpl -}}
 persistentVolumeClaim:
-  claimName: {{ include "mirrorbits-parent.pvc-name" . }}
-{{- else }}
-  {{- if or .Values.repository.persistentVolumeClaim.enabled .Values.repository.reuseExistingPersistentVolumeClaim }}
+  claimName: {{ printf "%s" (tpl .Values.global.storage.claimNameTpl $) | trim | trunc 63 }}
+{{- else -}}
+  {{- if or .Values.repository.persistentVolumeClaim.enabled .Values.repository.reuseExistingPersistentVolumeClaim -}}
 persistentVolumeClaim:
-  claimName: {{ .Values.repository.name | default (printf "%s-binary" (include "httpd.fullname" .)) }}
-  {{- else }}
+  claimName: {{ .Values.repository.name | default (printf "%s-binary" (include "httpd.fullname" .)) -}}
+  {{- else -}}
 emptyDir: {}
   {{- end -}}
 {{- end -}}
