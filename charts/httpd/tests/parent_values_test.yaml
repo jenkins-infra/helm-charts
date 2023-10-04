@@ -10,6 +10,7 @@ set:
   global:
     storage:
       enabled: true
+      claimNameTpl: '{{ default "parent-chart-shared-data" }}'
     ingress:
       enabled: true
   # Try to specify a ingress which must be ignored (parent prevails)
