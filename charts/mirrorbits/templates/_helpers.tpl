@@ -50,3 +50,19 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
+
+{{/*
+Selector labels
+*/}}
+{{- define "mirrorbits.files.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "mirrorbits.name" . }}-files
+app.kubernetes.io/instance: {{ .Release.Name }}-files
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "mirrorbits.rsyncd.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "mirrorbits.name" . }}-rsyncd
+app.kubernetes.io/instance: {{ .Release.Name }}-rsyncd
+{{- end }}
