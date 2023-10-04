@@ -4,6 +4,8 @@ templates:
   - zh-deployment.yaml
   - zh-configmap.yaml
   - nginx-configmap.yaml
+  - pdb.yaml
+  - pdb-zh.yaml
 set:
   htmlVolume:
     azureFile:
@@ -66,3 +68,45 @@ tests:
       - equal:
           path: spec.template.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].labelSelector.matchExpressions[0].values[0]
           value: jenkinsio-zh
+  - it: should ensure the pdb has correct spec for jenkinsio
+    template: pdb.yaml
+    set:
+      replicaCount: 2
+      poddisruptionbudget.jenkinsio.minAvailable: 2
+      poddisruptionbudget.jenkinsio.maxUnavailable: 3
+    asserts:
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.minAvailable
+          value: 2
+      - equal:
+          path: spec.maxUnavailable
+          value: 3
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: "jenkinsio"
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: jenkinsio
+  - it: should ensure the pdb has correct spec for jenkinsio-zh
+    template: pdb-zh.yaml
+    set:
+      replicaCount: 2
+      poddisruptionbudget.jenkinsiozh.minAvailable: 3
+      poddisruptionbudget.jenkinsiozh.maxUnavailable: 4
+    asserts:
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.minAvailable
+          value: 3
+      - equal:
+          path: spec.maxUnavailable
+          value: 4
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: "jenkinsio-zh"
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: jenkinsio

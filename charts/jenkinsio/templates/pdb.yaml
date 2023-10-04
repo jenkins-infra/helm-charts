@@ -1,0 +1,18 @@
+{{- if (gt (int .Values.replicaCount) 1) }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "jenkinsio.fullname" . }}
+  labels:
+    {{- include "jenkinsio.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.poddisruptionbudget.jenkinsio.minAvailable }}
+  minAvailable: {{ . }}
+  {{- end }}
+  {{- with .Values.poddisruptionbudget.jenkinsio.maxUnavailable }}
+  maxUnavailable: {{ . }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "jenkinsio.selectorLabels" . | nindent 6 }}
+{{- end }}
