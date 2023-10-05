@@ -44,7 +44,6 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
-
 {{/*
 Data directory volume definition. Might be defined from parent chart templates or autonomously
 based on the presence of the global value provided by the parent chart.

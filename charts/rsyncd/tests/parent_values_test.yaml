@@ -66,7 +66,7 @@ tests:
           path: spec.template.spec.containers[0].volumeMounts[3].subPath
           value: run
       # Custom Rsyncd components
-      ## jenkins (1 configmap volume mount + 1 data volume and 1 volumemount for data dir)
+      ## jenkins (1 configmap volume mount + 1 data volume and 1 volume mount for data directory)
       - equal:
           path: spec.template.spec.volumes[2].name
           value: datadir-jenkins
@@ -96,7 +96,7 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[5].readOnly
           value: true
-      ## hudson (1 configmap volume mount + 1 data volume and 1 volumemount for data dir)
+      ## hudson (1 configmap volume mount + 1 data volume and 1 volume mount for data directory)
       - equal:
           path: spec.template.spec.volumes[3].name
           value: datadir-hudson
