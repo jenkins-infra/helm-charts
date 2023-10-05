@@ -52,7 +52,7 @@ Expected argument: dict{
   "rootContext": { },
 }
 */}}
-{{- define "rsync.datadir-volumedef" -}}
+{{- define "rsync.datadir-volumedefinition" -}}
 {{- if .currentRsyncComponent.volumeTpl -}}
 persistentVolumeClaim:
   claimName: {{ printf "%s" (tpl .currentRsyncComponent.volumeTpl .rootContext) | trim | trunc 63 -}}
