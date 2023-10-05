@@ -3,20 +3,23 @@ set:
   ## Mock subcharts default values
   mirrorbits-lite:
     enabled: true
+    backendServiceNameTpl: '{{ default "RELEASE-NAME-mirrorbits-lite" }}'
     service:
       port: 7777
   httpd:
     enabled: true
+    backendServiceNameTpl: '{{ default "RELEASE-NAME-httpd" }}'
     service:
       port: 8080
   ## End of subchart mocked values
-  ingress:
-    enabled: true
-    hosts:
-      - host: company.org
-        paths:
-          - path: /
-            backendService: mirrorbits
+  global:
+    ingress:
+      enabled: true
+      hosts:
+        - host: company.org
+          paths:
+            - path: /
+              backendService: mirrorbits
 templates:
   - ingress.yaml
 tests:
@@ -56,27 +59,28 @@ tests:
   - it: should create ingress with multiple hosts and multiple paths with full customized values
     template: ingress.yaml
     set:
-      ingress:
-        className: my-ingress-class
-        annotations:
-          'app.kubernetes/whatever-with-chars': 'same/here-right'
-        hosts:
-          - host: company.org
-            paths:
-              - path: /.*[.](deb|hpi|war|rpm|msi|pkg|sha256|md5sum|zip|gz|pdf|json|svg|sh|jpeg|ico|png|html)$
-                backendService: httpd
-              - path: /
-                backendService: mirrorbits
-                pathType: ImplementationSpecific
-          - host: fallback.company.org
-            paths:
-              - path: /
-                backendService: httpd
-        tls:
-          - secretName: ingress-tls
-            hosts:
-              - company.org
-              - fallback.company.org
+      global:
+        ingress:
+          className: my-ingress-class
+          annotations:
+            'app.kubernetes/whatever-with-chars': 'same/here-right'
+          hosts:
+            - host: company.org
+              paths:
+                - path: /.*[.](deb|hpi|war|rpm|msi|pkg|sha256|md5sum|zip|gz|pdf|json|svg|sh|jpeg|ico|png|html)$
+                  backendService: httpd
+                - path: /
+                  backendService: mirrorbits
+                  pathType: ImplementationSpecific
+            - host: fallback.company.org
+              paths:
+                - path: /
+                  backendService: httpd
+          tls:
+            - secretName: ingress-tls
+              hosts:
+                - company.org
+                - fallback.company.org
     asserts:
       - hasDocuments:
           count: 1
@@ -135,23 +139,25 @@ tests:
   - it: should fail the ingress when a host's path does not have backendService
     template: ingress.yaml
     set:
-      ingress:
-        hosts:
-          - host: company.org
-            paths:
-              - path: /
+      global:
+        ingress:
+          hosts:
+            - host: company.org
+              paths:
+                - path: /
     asserts:
       - failedTemplate:
           errorMessage: "Required key: backendService for ingress.hosts[].paths[] objects must have the value 'httpd' or 'mirrorbits'."
   - it: should fail the ingress when a host's path has an unknown backendService
     template: ingress.yaml
     set:
-      ingress:
-        hosts:
-          - host: company.org
-            paths:
-              - path: /
-                backendService: yipikai
+      global:
+        ingress:
+          hosts:
+            - host: company.org
+              paths:
+                - path: /
+                  backendService: yipikai
     asserts:
       - failedTemplate:
           errorMessage: "Required key: backendService for ingress.hosts[].paths[] objects must have the value 'httpd' or 'mirrorbits'."
@@ -160,12 +166,13 @@ tests:
     set:
       httpd:
         enabled: false
-      ingress:
-        hosts:
-          - host: company.org
-            paths:
-              - path: /
-                backendService: httpd
+      global:
+        ingress:
+          hosts:
+            - host: company.org
+              paths:
+                - path: /
+                  backendService: httpd
     asserts:
       - failedTemplate:
           errorMessage: "Cannot use httpd as backend if it is disabled."
@@ -174,12 +181,13 @@ tests:
     set:
       mirrorbits-lite:
         enabled: false
-      ingress:
-        hosts:
-          - host: company.org
-            paths:
-              - path: /
-                backendService: mirrorbits
+      global:
+        ingress:
+          hosts:
+            - host: company.org
+              paths:
+                - path: /
+                  backendService: mirrorbits
     asserts:
       - failedTemplate:
-          errorMessage: "Cannot use mirrorbits(-lite) as backend if it is disabled."
+          errorMessage: "Cannot use mirrorbits-lite as backend if it is disabled."

@@ -40,3 +40,70 @@ Must be 63 chars. maximum.
 {{- define "mirrorbits-parent.pv-secretname" -}}
 {{- printf "%s-%s" (include "mirrorbits-parent.name" . | trunc 43 ) "persistentvolume-secret" -}}
 {{- end -}}
+
+{{/*
+Define the azure file persistent volume claim name (if enabled).
+Must be 63 chars. maximum.
+*/}}
+{{- define "mirrorbits-parent.pvc-name" -}}
+{{- printf "%s-%s" .Release.Name "mirrorbits-parent-data" -}}
+{{- end -}}
+
+{{/*
+This template method checks the current ingress path and fails with a user facing message if needed, or returns empty.
+Expected argument: dict{
+  "currentBackendService": <string>,
+  "rootContext": { },
+}
+ */}}
+{{- define "mirrorbits-parent.validateIngressBackend" -}}
+{{- if eq .currentBackendService "mirrorbits" -}}
+  {{- if not (index .rootContext.Values "mirrorbits-lite" "enabled") -}}
+    {{- fail "Cannot use mirrorbits-lite as backend if it is disabled." }}
+  {{- end -}}
+  {{- if not (index .rootContext.Values "mirrorbits-lite" "backendServiceNameTpl") -}}
+    {{- fail "Cannot determine mirrorbits backend service due to missing value 'mirrorbits-lite.currentBackendServiceNameTpl." }}
+  {{- end -}}
+{{- else if eq .currentBackendService "httpd" -}}
+  {{- if not (index .rootContext.Values "httpd" "enabled") -}}
+    {{- fail "Cannot use httpd as backend if it is disabled." }}
+  {{- end -}}
+  {{- if not (index .rootContext.Values "httpd" "backendServiceNameTpl") -}}
+    {{- fail "Cannot determine httpd backend service due to missing value 'httpd.currentBackendServiceNameTpl." }}
+  {{- end -}}
+{{- else -}}
+  {{- fail "Required key: backendService for ingress.hosts[].paths[] objects must have the value 'httpd' or 'mirrorbits'." }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+This template method returns the name of the current path backend service. It includes validation and checks of the context.
+Expected argument: dict{
+  "currentBackendService": <string>,
+  "rootContext": { },
+}
+ */}}
+{{- define "mirrorbits-parent.ingressBackendName" -}}
+{{- include "mirrorbits-parent.validateIngressBackend" . }}
+{{- if eq .currentBackendService "mirrorbits" -}}
+  {{ printf "%s" (tpl (index .rootContext.Values "mirrorbits-lite" "backendServiceNameTpl") .rootContext) | trim | trunc 63 }}
+{{- else if eq .currentBackendService "httpd" -}}
+  {{ printf "%s" (tpl (index .rootContext.Values "httpd" "backendServiceNameTpl") .rootContext) | trim | trunc 63 }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+This template method returns the name of the current path backend service. It includes validation and checks of the context.
+Expected argument: dict{
+  "currentBackendService": <string>,
+  "rootContext": { },
+}
+ */}}
+{{- define "mirrorbits-parent.ingressBackendPort" -}}
+{{- include "mirrorbits-parent.validateIngressBackend" . }}
+{{- if eq .currentBackendService "mirrorbits" -}}
+  {{ index .rootContext.Values "mirrorbits-lite" "service" "port" }}
+{{- else if eq .currentBackendService "httpd" -}}
+  {{ index .rootContext.Values "httpd" "service" "port" }}
+{{- end -}}
+{{- end -}}
