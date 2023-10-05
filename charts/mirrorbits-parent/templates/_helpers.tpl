@@ -51,7 +51,7 @@ Must be 63 chars. maximum.
 
 {{/*
 This template method checks the current ingress path and fails with a user facing message if needed, or returns empty.
-Expected argument: map{
+Expected argument: dict{
   "currentBackendService": <string>,
   "rootContext": { },
 }
@@ -78,7 +78,7 @@ Expected argument: map{
 
 {{/*
 This template method returns the name of the current path backend service. It includes validation and checks of the context.
-Expected argument: map{
+Expected argument: dict{
   "currentBackendService": <string>,
   "rootContext": { },
 }
@@ -94,7 +94,7 @@ Expected argument: map{
 
 {{/*
 This template method returns the name of the current path backend service. It includes validation and checks of the context.
-Expected argument: map{
+Expected argument: dict{
   "currentBackendService": <string>,
   "rootContext": { },
 }
