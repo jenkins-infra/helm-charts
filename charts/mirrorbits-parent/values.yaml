@@ -53,7 +53,7 @@ global:
       #   storageAccountKey: StorageAccountSuperSecretKey
       #   readOnly: false
       ## Additional custom spec added at the end of the generated PV `spec` section.
-      ## User is responsible to not duplicate existing (helm template is your friend).
+      ## User is responsible to not duplicate existing spec directives (helm template is your friend).
       additionalSpec: {}
       # additionalSpec:
       #  persistentVolumeReclaimPolicy: Retain
@@ -63,7 +63,7 @@ global:
 
     persistentVolumeClaim:
       ## Additional custom spec added at the end of the generated PVC `spec` section.
-      ## User is responsible to not duplicate existing (helm template is your friend).
+      ## User is responsible to not duplicate existing spec directives (helm template is your friend).
       additionalSpec: {}
       # additionalSpec:
       #   volumeMode: Filesystem

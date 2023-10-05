@@ -50,7 +50,7 @@ Must be 63 chars. maximum.
 {{- end -}}
 
 {{/*
-This template method checks the current ingress path and fails with a user facing message if needed or returns empty.
+This template method checks the current ingress path and fails with a user facing message if needed, or returns empty.
 Expected argument: map{
   "currentBackendService": <string>,
   "rootContext": { },
@@ -59,7 +59,7 @@ Expected argument: map{
 {{- define "mirrorbits-parent.validateIngressBackend" -}}
 {{- if eq .currentBackendService "mirrorbits" -}}
   {{- if not (index .rootContext.Values "mirrorbits-lite" "enabled") -}}
-    {{- fail "Cannot use mirrorbits(-lite) as backend if it is disabled." }}
+    {{- fail "Cannot use mirrorbits-lite as backend if it is disabled." }}
   {{- end -}}
   {{- if not (index .rootContext.Values "mirrorbits-lite" "backendServiceNameTpl") -}}
     {{- fail "Cannot determine mirrorbits backend service due to missing value 'mirrorbits-lite.currentBackendServiceNameTpl." }}
