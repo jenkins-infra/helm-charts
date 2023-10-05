@@ -190,4 +190,4 @@ tests:
                   backendService: mirrorbits
     asserts:
       - failedTemplate:
-          errorMessage: "Cannot use mirrorbits(-lite) as backend if it is disabled."
+          errorMessage: "Cannot use mirrorbits-lite as backend if it is disabled."
