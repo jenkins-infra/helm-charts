@@ -43,3 +43,23 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
+
+
+{{/*
+Data directory volume definition. Might be defined from parent chart templates or autonomously
+based on the presence of the global value provided by the parent chart.
+Expected argument: dict{
+  "currentRsyncComponent": <string>,
+  "rootContext": { },
+}
+*/}}
+{{- define "rsync.datadir-volumedef" -}}
+{{- if .currentRsyncComponent.volumeTpl -}}
+persistentVolumeClaim:
+  claimName: {{ printf "%s" (tpl .currentRsyncComponent.volumeTpl .rootContext) | trim | trunc 63 -}}
+{{- else if .currentRsyncComponent.volume -}}
+  {{- toYaml .currentRsyncComponent.volume -}}
+{{- else -}}
+emptyDir: {}
+{{- end -}}
+{{- end -}}

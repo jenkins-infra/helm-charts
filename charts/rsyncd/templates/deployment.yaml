@@ -94,9 +94,5 @@ spec:
             sizeLimit: 32Mi
         {{- range .Values.configuration.components }}
         - name: datadir-{{ .name }}
-          {{- if .volume }}
-            {{- toYaml .volume  | nindent 10 }}
-          {{- else }}
-          emptyDir:
-          {{ end }}
+          {{- include "rsync.datadir-volumedef" (dict "currentRsyncComponent" . "rootContext" $) | nindent 10 }}
         {{- end }}
