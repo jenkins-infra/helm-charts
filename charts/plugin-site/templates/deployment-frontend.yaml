@@ -2,16 +2,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "plugin-site.fullname" . }}-frontend
-  labels: {{ include "plugin-site.labels" . | nindent 4 }}
+  labels: {{ include "plugin-site-frontend.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.frontend.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "plugin-site.name" . }}
+      app.kubernetes.io/name: {{ include "plugin-site.name" . }}-frontend
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
-      labels: {{ include "plugin-site.labels" . | nindent 8 }}
+      labels: {{ include "plugin-site-frontend.labels" . | nindent 8 }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/nginx-configmap.yaml") . | sha256sum }}
     spec:
