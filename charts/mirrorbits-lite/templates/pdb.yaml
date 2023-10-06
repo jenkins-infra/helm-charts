@@ -1,0 +1,18 @@
+{{- if (gt (int .Values.replicaCount) 1) }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "mirrorbits-lite.fullname" . }}
+  labels:
+    {{- include "mirrorbits-lite.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.poddisruptionbudget.minAvailable }}
+  minAvailable: {{ . }}
+  {{- end }}
+  {{- with .Values.poddisruptionbudget.maxUnavailable }}
+  maxUnavailable: {{ . }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "mirrorbits-lite.selectorLabels" . | nindent 6 }}
+{{- end }}
