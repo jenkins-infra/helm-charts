@@ -4,6 +4,7 @@ templates:
   - ingress.yaml
   - secret.yaml # Direct dependency of deployment(.*).yaml
   - service.yaml
+  - pdb.yaml
   - persistentVolume.yaml
   - persistentVolumeClaim.yaml
 tests:
@@ -28,6 +29,9 @@ tests:
       - equal:
           path: "spec.template.spec.containers[*].imagePullPolicy"
           value: IfNotPresent
+      - equal:
+          path: spec.replicas
+          value: 1
       # Log volumes is an emptydir by default
       - equal:
           path: spec.template.spec.volumes[2].name
@@ -61,6 +65,11 @@ tests:
           count: 0
   - it: should not define any PV claim
     template: persistentVolumeClaim.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should not generate any pdb with default values
+    template: pdb.yaml
     asserts:
       - hasDocuments:
           count: 0
