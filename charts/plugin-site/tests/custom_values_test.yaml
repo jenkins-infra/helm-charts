@@ -1,0 +1,72 @@
+suite: Test with custom values
+templates:
+  - deployment-frontend.yaml
+  - ingress.yaml
+  - pdb-frontend.yaml
+  - nginx-configmap.yaml # Direct dependency of deployment.yaml
+tests:
+  - it: should create an ingress when ingress.enabled is true
+    set:
+      ingress:
+        enabled: true
+    template: ingress.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+  - it: should mount the html volume when htmlVolume is set
+    template: deployment-frontend.yaml
+    set:
+      htmlVolume:
+        hostPath: /host
+      frontend:
+        resources:
+          limits:
+            cpu: 300ms
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.volumes[0].name
+          value: html
+      - equal:
+          path: spec.template.spec.volumes[0].hostPath
+          value: /host
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.cpu
+          value: 300ms
+  - it: should create a PDB with defaults when multiple replicas are set
+    template: pdb-frontend.yaml
+    set:
+      frontend:
+        replicaCount: 4
+    asserts:
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.minAvailable
+          value: 1
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: "plugin-site-frontend"
+  - it: should ensure the pdb has correct spec
+    template: pdb-frontend.yaml
+    set:
+      frontend:
+        replicaCount: 3
+        poddisruptionbudget:
+          minAvailable: 2
+          maxUnavailable: 3
+    asserts:
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.minAvailable
+          value: 2
+      - equal:
+          path: spec.maxUnavailable
+          value: 3
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: "plugin-site-frontend"
