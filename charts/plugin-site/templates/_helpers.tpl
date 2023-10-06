@@ -40,6 +40,19 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Common labels frontend
+*/}}
+{{- define "plugin-site-frontend.labels" -}}
+{{ include "plugin-site-frontend.selectorLabels" . }}
+helm.sh/chart: {{ include "plugin-site.chart" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+jenkins.io/maintainer: {{ (index .Chart.Maintainers 0).Name }}
+{{- end -}}
+
+{{/*
 Selector labels
 */}}
 {{- define "plugin-site.selectorLabels" -}}

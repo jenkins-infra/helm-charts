@@ -22,7 +22,7 @@ tests:
           value: IfNotPresent
       - equal:
           path: metadata.labels["app.kubernetes.io/name"]
-          value: plugin-site
+          value: plugin-site-frontend
       - equal:
           path: metadata.labels["app.kubernetes.io/managed-by"]
           value: Helm
