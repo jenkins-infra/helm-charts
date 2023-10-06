@@ -2,7 +2,7 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ include "plugin-site.fullname" . }}-frontend
+  name: {{ include "plugin-site-frontend.fullname" . }}
   labels:
     {{- include "plugin-site.labels" . | nindent 4 }}
 spec:
