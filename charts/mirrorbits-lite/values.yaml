@@ -92,3 +92,6 @@ repository:
     enabled: false
     # data hold secrets data used by persistentVolume
     data: {}
+
+poddisruptionbudget:
+  minAvailable: 1

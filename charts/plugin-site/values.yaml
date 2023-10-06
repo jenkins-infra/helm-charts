@@ -30,6 +30,8 @@ frontend:
     requests:
       cpu: 100m
       memory: 32Mi
+  poddisruptionbudget:
+    minAvailable: 1
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""

@@ -4,9 +4,11 @@ templates:
   - ingress.yaml
   - secret.yaml # Direct dependency of deployment.yaml
   - service.yaml
+  - pdb.yaml
   - persistentVolume.yaml
   - persistentVolumeClaim.yaml
 set:
+  replicaCount: 2
   image:
     pullPolicy: Always
   geoipupdate:
@@ -82,6 +84,9 @@ tests:
       - equal:
           path: spec.template.spec.containers[*].imagePullPolicy
           value: Always
+      - equal:
+          path: spec.replicas
+          value: 2
       # Log volumes is a custom PVC
       - equal:
           path: spec.template.spec.volumes[2].name
@@ -132,3 +137,36 @@ tests:
           count: 1
       - isKind:
           of: PersistentVolumeClaim
+  - it: create a default pdb when replicated
+    template: pdb.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.minAvailable
+          value: 1
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: mirrorbits-lite
+  - it: create a customized pdb when custom values are set
+    template: pdb.yaml
+    set:
+      poddisruptionbudget:
+        minAvailable: 2
+        maxUnavailable: 3
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.minAvailable
+          value: 2
+      - equal:
+          path: spec.maxUnavailable
+          value: 3
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: mirrorbits-lite

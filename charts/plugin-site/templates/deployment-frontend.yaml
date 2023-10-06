@@ -67,7 +67,11 @@ spec:
     {{- end }}
       volumes:
         - name: html
+        {{- if .Values.htmlVolume }}
 {{ toYaml .Values.htmlVolume | indent 10 }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
         - name: config
           configMap:
             name: {{ include "plugin-site.fullname" . }}-nginx
