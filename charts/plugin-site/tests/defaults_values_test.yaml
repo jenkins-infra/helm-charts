@@ -35,8 +35,16 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].resources.limits.cpu
           value: 100m
-  - it: should generate a pdb with default values
+  - it: should create a pdb with default values as the frontend service is replicated to 2 by default
     template: pdb-frontend.yaml
     asserts:
       - hasDocuments:
           count: 1
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.minAvailable
+          value: 1
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: "plugin-site-frontend"

@@ -36,21 +36,7 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].resources.limits.cpu
           value: 300ms
-  - it: should create a PDB with defaults when multiple replicas are set
-    template: pdb-frontend.yaml
-    set:
-      frontend:
-        replicaCount: 4
-    asserts:
-      - isKind:
-          of: PodDisruptionBudget
-      - equal:
-          path: spec.minAvailable
-          value: 1
-      - equal:
-          path: spec.selector.matchLabels['app.kubernetes.io/name']
-          value: "plugin-site-frontend"
-  - it: should ensure the pdb has correct spec
+  - it: should create a customized PDB with the provided spec
     template: pdb-frontend.yaml
     set:
       frontend:
