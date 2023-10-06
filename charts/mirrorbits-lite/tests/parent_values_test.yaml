@@ -96,7 +96,7 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
-  - it: should not create only create the mirrorbits conf secret (global storage overrides local PVC secrets)
+  - it: should only create the mirrorbits conf secret (global storage overrides local PVC secrets)
     template: secrets.yaml
     asserts:
       - hasDocuments:

@@ -73,7 +73,7 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
-  - it: should not create only create the mirrorbits conf secret by default
+  - it: should only create the mirrorbits conf secret by default
     template: secrets.yaml
     asserts:
       - hasDocuments:
