@@ -2,7 +2,7 @@ suite: Tests with values from parent (umbrella ingress and umbrella PVC)
 templates:
   - deployment.yaml
   - ingress.yaml
-  - secret.yaml # Direct dependency of deployment.yaml
+  - secrets.yaml
   - persistentVolume.yaml
   - persistentVolumeClaim.yaml
 set:
@@ -55,6 +55,11 @@ set:
             namespace: mirrorbits
         mountOptions:
           - dir_mode=0755
+    secrets:
+      enabled: true
+      data:
+        azurestorageaccountkey: 'SuperSecretKey!'
+        azurestorageaccountname: storage-account-in-az
 tests:
   - it: should define a customized "mirrorbits-lite" deployment
     template: deployment.yaml
@@ -91,3 +96,13 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
+  - it: should not create only create the mirrorbits conf secret (global storage overrides local PVC secrets)
+    template: secrets.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Secret
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-lite
