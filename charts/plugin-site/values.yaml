@@ -45,9 +45,11 @@ ingress:
     - path: /api/(.*)
       svcName: backend
       svcPort: 8080
+      prefix: ImplementationSpecific
     - path: /(.*)
       svcName: frontend
       svcPort: 80
+      prefix: ImplementationSpecific
   annotations:
     # rewrite target is important to get the path regexes to work
     nginx.ingress.kubernetes.io/rewrite-target: /$1

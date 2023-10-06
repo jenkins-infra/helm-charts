@@ -1,17 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "plugin-site.fullname" . }}-frontend
-  labels: {{ include "plugin-site-frontend.labels" . | nindent 4 }}
+  name: {{ include "plugin-site-frontend.fullname" . }}
+  labels:
+    {{- include "plugin-site-frontend.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.frontend.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "plugin-site.name" . }}-frontend
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      {{- include "plugin-site-frontend.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      labels: {{ include "plugin-site-frontend.labels" . | nindent 8 }}
+      labels:
+        {{- include "plugin-site-frontend.labels" . | nindent 8 }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/nginx-configmap.yaml") . | sha256sum }}
     spec:
@@ -25,7 +26,7 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       containers:
-        - name: {{ .Chart.Name }}-frontend
+        - name: {{ include "plugin-site-frontend.name" .}}
           image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
           imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
           ports:

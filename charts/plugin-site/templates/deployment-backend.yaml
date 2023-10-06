@@ -2,13 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "plugin-site.fullname" . }}-backend
-  labels: {{ include "plugin-site.labels" . | nindent 4 }}
+  labels:
+    {{- include "plugin-site.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.backend.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "plugin-site.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      {{- include "plugin-site.selectorLabels" . | nindent 6}}
   template:
     metadata:
       annotations:
@@ -47,13 +47,13 @@ spec:
                 secretKeyRef:
                   name: {{ include "plugin-site.fullname" . }}
                   key: jira_password
- {{- if .Values.sentry.dsn }}
+            {{- if .Values.sentry.dsn }}
             - name: SENTRY_DSN
               valueFrom:
                 secretKeyRef:
                   name: {{ include "plugin-site.fullname" . }}
                   key: sentry_dsn
- {{- end }}
+            {{- end }}
             - name: DATA_FILE_URL
               value: {{ .Values.dataFileUrl }}
           volumeMounts:

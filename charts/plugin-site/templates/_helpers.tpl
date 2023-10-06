@@ -7,6 +7,13 @@ Expand the name of the chart.
 {{- end -}}
 
 {{/*
+Expand the name of the chart.
+*/}}
+{{- define "plugin-site-frontend.name" -}}
+{{- include "plugin-site.name" . -}}-frontend
+{{- end -}}
+
+{{/*
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
@@ -23,6 +30,16 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Create a default fully qualified app name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+If release name contains chart name it will be used as a full name.
+*/}}
+{{- define "plugin-site-frontend.fullname" -}}
+{{ include "plugin-site.fullname" . }}-frontend
+{{- end -}}
+
 
 {{/*
 Create chart name and version as used by the chart label.
