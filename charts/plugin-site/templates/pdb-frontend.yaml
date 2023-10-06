@@ -1,0 +1,18 @@
+{{- if (gt (int .Values.frontend.replicaCount) 1) }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "plugin-site.fullname" . }}-frontend
+  labels:
+    {{- include "plugin-site.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.frontend.poddisruptionbudget.minAvailable }}
+  minAvailable: {{ . }}
+  {{- end }}
+  {{- with .Values.frontend.poddisruptionbudget.maxUnavailable }}
+  maxUnavailable: {{ . }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "plugin-site-frontend.selectorLabels" . | nindent 6 }}
+{{- end }}

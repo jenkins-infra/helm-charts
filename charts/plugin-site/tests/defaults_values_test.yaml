@@ -1,0 +1,50 @@
+suite: Test with default values
+templates:
+  - deployment-frontend.yaml
+  - ingress.yaml
+  - pdb-frontend.yaml
+  - nginx-configmap.yaml
+tests:
+  - it: should  not create an ingress by default
+    template: ingress.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should define the default deployment with default imagePullPolicy
+    template: deployment-frontend.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].imagePullPolicy
+          value: IfNotPresent
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: plugin-site
+      - equal:
+          path: metadata.labels["app.kubernetes.io/managed-by"]
+          value: Helm
+      - equal:
+          path: spec.template.spec.volumes[0].name
+          value: html
+      - equal:
+          path: spec.template.spec.volumes[0].emptyDir
+          value: {}
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.cpu
+          value: 100m
+  - it: should create a pdb with default values as the frontend service is replicated to 2 by default
+    template: pdb-frontend.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.minAvailable
+          value: 1
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: "plugin-site-frontend"

@@ -32,12 +32,27 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
+Selector labels frontend
+*/}}
+{{- define "plugin-site-frontend.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "plugin-site.name" . }}-frontend
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "plugin-site.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "plugin-site.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "plugin-site.labels" -}}
-app.kubernetes.io/name: {{ include "plugin-site.name" . }}
+{{ include "plugin-site.selectorLabels" . }}
 helm.sh/chart: {{ include "plugin-site.chart" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
