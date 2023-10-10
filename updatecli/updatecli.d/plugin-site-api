@@ -1,4 +1,4 @@
-name: Bump `plugin-site-api` docker image and helm chart versions
+name: Bump `plugin-site-api` docker image and `plugin-site` helm chart versions
 
 scms:
   default:
