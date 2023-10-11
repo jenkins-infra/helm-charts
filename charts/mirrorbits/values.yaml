@@ -8,7 +8,7 @@ replicaCount:
 image:
   mirrorbits:
     repository: jenkinsciinfra/mirrorbits
-    tag: 0.1.102
+    tag: 0.1.103
     pullPolicy: IfNotPresent
   files:
     repository: httpd
@@ -158,7 +158,6 @@ rsyncd:
       #    **Read Only**
       #
       #    Feel free to reach out on https://www.jenkins.io/chat/#jenkins-infra/ with any question you may have
-
 poddisruptionbudget:
   mirrorbits:
     minAvailable: 1
