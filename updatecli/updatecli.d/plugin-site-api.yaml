@@ -14,20 +14,8 @@ scms:
 
 sources:
   latestRelease:
-    kind: githubrelease
-    name: "Get latest jenkins-infra/plugin-site-api latest version"
-    spec:
-      owner: "jenkins-infra"
-      repository: "docker-plugin-site-issues"
-      token: "{{ requiredEnv .github.token }}"
-      username: "{{ .github.username }}"
-
-conditions:
-  checkDockerImagePublished:
-    name: |
-      Test jenkinsciinfra/docker-plugin-site-api:{{ source `latestRelease` }} docker image tag
     kind: dockerimage
-    sourceid: latestRelease
+    name: "Get latest jenkinsciinfra/plugin-site-api version"
     spec:
       image: "jenkinsciinfra/plugin-site-api"
       architecture: "amd64"
