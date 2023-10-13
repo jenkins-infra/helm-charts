@@ -19,8 +19,7 @@ sources:
     spec:
       image: "jenkinsciinfra/plugin-site-api"
       architecture: "amd64"
-      versionfilter:
-        pattern: "^\\d+-\\d+"
+      tagfilter: "^\\d+-[a-z0-9]+$"
 
 targets:
   updateChart:
