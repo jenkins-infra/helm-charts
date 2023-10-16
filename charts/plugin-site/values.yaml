@@ -1,12 +1,11 @@
 # Default values for plugins.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
 backend:
   replicaCount: 2
   image:
     repository: jenkinsciinfra/plugin-site-api
-    tag: 295-d7103b
+    tag: 297-6eb2d0
     pullPolicy: IfNotPresent
   port: 8080
   resources:
@@ -66,7 +65,6 @@ ingress:
 #    - secretName: plugins-tls
 #      hosts:
 #        - plugins.jenkins.io
-
 nodeSelector: {}
 tolerations: []
 affinity: {}
@@ -84,8 +82,7 @@ jira:
 #     path: /host
 htmlVolume: {}
 # name of the azure storage account to be used
-azureStorageAccountName:
-# key for accessing the azure storage account
-azureStorageAccountKey:
+azureStorageAccountName: null # key for accessing the azure storage account
+azureStorageAccountKey: null
 sentry:
   dsn: ""
