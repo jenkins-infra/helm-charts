@@ -1,0 +1,42 @@
+name: Bump `plugin-site-api` docker image and `plugin-site` helm chart versions
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
+sources:
+  latestRelease:
+    kind: dockerimage
+    name: "Get latest jenkinsciinfra/plugin-site-api version"
+    spec:
+      image: "jenkinsciinfra/plugin-site-api"
+      architecture: "amd64"
+      tagfilter: "^\\d+-[a-z0-9]+$"
+
+targets:
+  updateChart:
+    name: Update rating helm chart
+    kind: helmchart
+    spec:
+      name: charts/plugin-site
+      key: $.backend.image.tag
+      versionincrement: patch
+    scmid: default
+
+actions:
+  default:
+    kind: github/pullrequest
+    scmid: default
+    title: Bump `plugin-site-api` docker image version to {{ source "latestRelease" }}
+    spec:
+      labels:
+        - dependencies
+        - plugin-site-api
