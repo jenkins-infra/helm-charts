@@ -6052,6 +6052,17 @@ entries:
     version: 0.0.1
   rsyncd:
   - apiVersion: v1
+    created: "2023-10-17T16:22:24.255097035Z"
+    description: rsyncd helm chart for Kubernetes
+    digest: a2ad92e38220549d4bb02b5e001ec4c89dba6ca5a8ac73add2b9c9f01c35d7ea
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: rsyncd
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/rsyncd-1.4.3/rsyncd-1.4.3.tgz
+    version: 1.4.3
+  - apiVersion: v1
     created: "2023-10-16T13:27:46.630367317Z"
     description: rsyncd helm chart for Kubernetes
     digest: 9ed5b186361730efd3dcd4217e1d102240df68fef406cc58f167c8eeac170f55
@@ -7286,4 +7297,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2023-10-16T14:40:37.373070024Z"
+generated: "2023-10-17T16:22:24.256551047Z"
