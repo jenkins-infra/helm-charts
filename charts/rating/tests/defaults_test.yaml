@@ -1,0 +1,13 @@
+suite: test default behavior of deployment.yaml with default values
+templates:
+  - deployment.yaml
+  - secret.yaml
+tests:
+  - it: should render with default values without error
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-rating
