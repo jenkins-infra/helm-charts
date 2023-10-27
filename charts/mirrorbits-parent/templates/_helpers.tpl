@@ -112,6 +112,3 @@ Expected argument: dict{
 {{- define "mirrorbits-parent.serviceAccountName" -}}
   {{- "mirrorbits" -}}
 {{- end -}}
-{{- define "mirrorbits-parent.serviceAccountNamespace" -}}
-    {{- .Release.Namespace -}}
-{{- end -}}
