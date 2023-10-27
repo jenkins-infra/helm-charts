@@ -78,3 +78,7 @@ httpd:
   backendServiceNameTpl: '{{ include "httpd.fullname" (index $.Subcharts "httpd")}}'
 rsyncd:
   enabled: false
+serviceaccount:
+  enabled: false
+  ## uncomment to reuse an existing service account
+  # existingServiceAccount: jenkins-infra:mirrorbits

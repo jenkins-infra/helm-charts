@@ -107,3 +107,20 @@ Expected argument: dict{
   {{ index .rootContext.Values "httpd" "service" "port" }}
 {{- end -}}
 {{- end -}}
+
+
+{{- define "jenkins.serviceAccountName" -}}
+  {{- if .Values.serviceaccount.existingServiceAccount -}}
+    {{- splitList ":" .Values.serviceaccount.existingServiceAccount | last -}}
+  {{- else -}}
+    {{- "mirrorbits" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- define "jenkins.serviceAccountNamespace" -}}
+  {{- if .Values.serviceaccount.existingServiceAccount -}}
+    {{- splitList ":" .Values.serviceaccount.existingServiceAccount | first -}}
+  {{- else -}}
+    {{- .Release.Namespace -}}
+  {{- end -}}
+{{- end -}}
