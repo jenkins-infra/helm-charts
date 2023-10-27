@@ -80,5 +80,3 @@ rsyncd:
   enabled: false
 serviceaccount:
   enabled: false
-  ## uncomment to reuse an existing service account
-  # existingServiceAccount: jenkins-infra:mirrorbits

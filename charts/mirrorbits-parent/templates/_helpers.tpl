@@ -109,18 +109,9 @@ Expected argument: dict{
 {{- end -}}
 
 
-{{- define "jenkins.serviceAccountName" -}}
-  {{- if .Values.serviceaccount.existingServiceAccount -}}
-    {{- splitList ":" .Values.serviceaccount.existingServiceAccount | last -}}
-  {{- else -}}
-    {{- "mirrorbits" -}}
-  {{- end -}}
+{{- define "mirrorbits-parent.serviceAccountName" -}}
+  {{- "mirrorbits" -}}
 {{- end -}}
-
-{{- define "jenkins.serviceAccountNamespace" -}}
-  {{- if .Values.serviceaccount.existingServiceAccount -}}
-    {{- splitList ":" .Values.serviceaccount.existingServiceAccount | first -}}
-  {{- else -}}
+{{- define "mirrorbits-parent.serviceAccountNamespace" -}}
     {{- .Release.Namespace -}}
-  {{- end -}}
 {{- end -}}
