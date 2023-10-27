@@ -107,3 +107,8 @@ Expected argument: dict{
   {{ index .rootContext.Values "httpd" "service" "port" }}
 {{- end -}}
 {{- end -}}
+
+
+{{- define "mirrorbits-parent.serviceAccountName" -}}
+  {{- "mirrorbits" -}}
+{{- end -}}

@@ -3,6 +3,7 @@ templates:
   - ingress.yaml
   - persistentvolume.yaml
   - persistentvolumeclaim.yaml
+  - serviceaccount.yaml
 tests:
   - it: should not provide an ingress by default
     template: ingress.yaml
@@ -16,6 +17,11 @@ tests:
           count: 0
   - it: should not provide a PVC by default
     template: persistentvolumeclaim.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should not provide a service account by default
+    template: serviceaccount.yaml
     asserts:
       - hasDocuments:
           count: 0
