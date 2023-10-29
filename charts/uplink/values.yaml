@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: jenkinsciinfra/uplink@sha256
-  tag: 8ce6d37e3021909ecde8593bc4a9e88f4b00c63896340ddba8505c9bf632911c
+  tag: 3326b2b6fbf58f01a103b82001bac8bde502f1e79cf7905b13edb03157676e4e
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
