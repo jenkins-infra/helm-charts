@@ -20,7 +20,6 @@ sources:
       image: "jenkinsciinfra/uplink"
       tag: "latest"
       architecture: "amd64"
-      hidetag: true
     transformers:
       - trimprefix: '@sha256:'
 
