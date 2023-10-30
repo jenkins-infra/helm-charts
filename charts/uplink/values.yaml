@@ -50,7 +50,7 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 postgresql:
-  url: null
+  url: ""
 client:
   id: ""
   secret: ""
