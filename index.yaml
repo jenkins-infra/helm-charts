@@ -6541,6 +6541,20 @@ entries:
   uplink:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2023-10-30T14:19:05.818677764Z"
+    description: A Helm chart for uplink.jenkins.io
+    digest: 73b7f45ad1343444a1928f369d90bd14d637987f05d903321bb1ee6caf4a6d6a
+    maintainers:
+    - name: olblak
+    - name: dduportal
+    - name: hlemeur
+    - name: smerle
+    name: uplink
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/uplink-0.3.1/uplink-0.3.1.tgz
+    version: 0.3.1
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2023-10-03T13:34:26.121610296Z"
     description: A Helm chart for uplink.jenkins.io
     digest: 6c0bffd30440d833878e6eaefe7f3af93d8781f187f394e047536692db4f6c7b
@@ -7646,4 +7660,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2023-10-30T09:40:58.254724597Z"
+generated: "2023-10-30T14:19:05.819920884Z"
