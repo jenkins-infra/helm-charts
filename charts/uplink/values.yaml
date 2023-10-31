@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: jenkinsciinfra/uplink@sha256
+  repository: jenkinsciinfra/uplink
   tag: 0.0.2
   pullPolicy: IfNotPresent
 imagePullSecrets: []
