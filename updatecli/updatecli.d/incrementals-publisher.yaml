@@ -29,7 +29,10 @@ conditions:
     sourceid: latestRelease
     spec:
       image: "jenkinsciinfra/incrementals-publisher"
-      architecture: "amd64"
+      ## Tag from source
+      architectures:
+        - amd64
+        - arm64
 
 targets:
   updateChart:

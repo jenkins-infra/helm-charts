@@ -19,7 +19,10 @@ sources:
     spec:
       image: "httpd"
       tag: "2.4"
-      architecture: "amd64"
+      ## Tag from source
+      architectures:
+        - amd64
+        - arm64
 
 # no condition to test httpd docker image availability as we're using a digest from docker hub
 

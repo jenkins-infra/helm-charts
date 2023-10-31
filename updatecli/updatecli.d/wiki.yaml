@@ -29,6 +29,7 @@ conditions:
     sourceid: latestRelease
     spec:
       image: "jenkinsciinfra/wiki"
+      ## Tag from source
       architectures:
         - amd64
         - arm64

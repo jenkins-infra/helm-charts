@@ -30,7 +30,10 @@ conditions:
     sourceid: latestRelease
     spec:
       image: "jenkinsciinfra/rating"
-      architecture: "amd64"
+      ## Tag from source
+      architectures:
+        - amd64
+        - arm64
 
 targets:
   updateChart:

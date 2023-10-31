@@ -38,8 +38,10 @@ conditions:
     sourceid: latestRelease
     spec:
       image: "nginx"
-      architecture: amd64
-      # tag comes from the source input value
+      ## Tag from source
+      architectures:
+        - amd64
+        - arm64
 
 targets:
   updateJavadocChart:
