@@ -3,11 +3,7 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'charts/**'
   pull_request:
-    paths:
-      - 'charts/**'
   workflow_dispatch:
 env:
   UNITTEST_VERSION: v0.3.5
