@@ -35,12 +35,21 @@ conditions:
 
 targets:
   updateHttpd:
-    name: "Update httpd docker image version"
+    name: "Update httpd docker image version in httpd chart"
     sourceid: latestRelease
     kind: helmchart
     spec:
       name: charts/httpd
       key: $.image.tag
+      versionincrement: patch
+    scmid: default
+  updateHttpdInMirrorbits:
+    name: "Update httpd docker image version in mirrorbits chart"
+    sourceid: latestRelease
+    kind: helmchart
+    spec:
+      name: charts/mirrorbits
+      key: $.image.files.tag
       versionincrement: patch
     scmid: default
 
