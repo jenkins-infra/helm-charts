@@ -1,0 +1,45 @@
+suite: Test with default values
+templates:
+- certificate.yaml
+- persistentVolumeClaim.yaml
+tests:
+  - it: should create a certificate for the dns ldap.jenkins.io
+    template: certificate.yaml
+    asserts:
+    - hasDocuments:
+        count: 1
+    - contains:
+        path: spec.dnsNames
+        content:
+          ldap.jenkins.io
+    - isKind:
+        of: Certificate
+  - it: should create 2 PVC, one for data, one for backup
+    template: persistentVolumeClaim.yaml
+    asserts:
+    - hasDocuments:
+        count: 2
+    - isKind:
+        of: PersistentVolumeClaim
+      documentIndex: 0
+    - isKind:
+        of: PersistentVolumeClaim
+      documentIndex: 1
+  - it: should create 1 PVC for backup
+    template: persistentVolumeClaim.yaml
+    asserts:
+    - equal:
+        path: spec.selector.matchLabels.role
+        value: ldap-backup
+      documentIndex: 0
+    - equal:
+        path: metadata.name
+        value: RELEASE-NAME-ldap-backup
+      documentIndex: 0
+  - it: should create 1 PVC for data
+    template: persistentVolumeClaim.yaml
+    asserts:
+    - equal:
+        path: metadata.name
+        value: RELEASE-NAME-ldap-data
+      documentIndex: 1
