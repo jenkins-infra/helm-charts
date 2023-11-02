@@ -1,8 +1,6 @@
 name: Check chart version bump
 on:
   pull_request:
-    paths:
-      - 'charts/**'
 jobs:
   check_version_bump_on_modified_charts:
     runs-on: ubuntu-latest

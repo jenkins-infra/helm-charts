@@ -13,27 +13,43 @@ scms:
       branch: "{{ .github.branch }}"
 
 sources:
-  latestHttpdRelease:
-    name: Get latest digest of the Docker Image for httpd, in version 2.4
-    kind: dockerdigest
+  latestRelease:
+    kind: githubrelease
+    name: "Get latest apache/httpd release"
+    spec:
+      owner: "apache"
+      repository: "httpd"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+
+conditions:
+  checkDockerImagePublished:
+    name: "Test httpd:<latest_version> docker image tag"
+    kind: dockerimage
     spec:
       image: "httpd"
-      tag: "2.4"
       ## Tag from source
       architectures:
         - amd64
         - arm64
 
-# no condition to test httpd docker image availability as we're using a digest from docker hub
-
 targets:
   updateHttpd:
-    name: "Update httpd docker image version"
-    sourceid: latestHttpdRelease
+    name: "Update httpd docker image version in httpd chart"
+    sourceid: latestRelease
     kind: helmchart
     spec:
       name: charts/httpd
       key: $.image.tag
+      versionincrement: patch
+    scmid: default
+  updateHttpdInMirrorbits:
+    name: "Update httpd docker image version in mirrorbits chart"
+    sourceid: latestRelease
+    kind: helmchart
+    spec:
+      name: charts/mirrorbits
+      key: $.image.files.tag
       versionincrement: patch
     scmid: default
 
@@ -41,7 +57,7 @@ actions:
   default:
     kind: github/pullrequest
     scmid: default
-    title: Bump `httpd` docker images and helm chart versions
+    title: Bump `httpd` docker image version to {{ source "latestRelease" }}
     spec:
       labels:
         - dependencies
