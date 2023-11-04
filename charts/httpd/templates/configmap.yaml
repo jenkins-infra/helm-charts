@@ -157,8 +157,8 @@ data:
     #LoadModule speling_module modules/mod_speling.so
     #LoadModule userdir_module modules/mod_userdir.so
     LoadModule alias_module modules/mod_alias.so
-    #LoadModule rewrite_module modules/mod_rewrite.so
-    
+    LoadModule rewrite_module modules/mod_rewrite.so
+
     <IfModule unixd_module>
     #
     # If you wish httpd to run as a different user or group, you must run
