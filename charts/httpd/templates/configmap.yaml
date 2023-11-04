@@ -184,14 +184,14 @@ data:
     # in which case these default settings will be overridden for the
     # virtual host being defined.
     #
-    
+
     #
     # ServerAdmin: Your address, where problems with the server should be
     # e-mailed.  This address appears on some server-generated pages, such
     # as error documents.  e.g. admin@your-domain.com
     #
-    ServerAdmin me@olblak.com
-    
+    ServerAdmin jenkins-infra-team@googlegroups.com
+
     #
     # ServerName gives the name and port that the server uses to identify itself.
     # This can often be determined automatically, but we recommend you specify
