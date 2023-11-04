@@ -1,0 +1,22 @@
+suite: Test with custom values
+templates:
+  - secret.yaml
+tests:
+  - it: should create a Secret with the correct value
+    set:
+      ldap:
+        storage:
+          accountname: name
+          accountkey: key 
+    template: secret.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Secret
+      - equal:
+          path: data.azurestorageaccountname
+          value: bmFtZQ==
+      - equal:
+          path: data.azurestorageaccountkey
+          value: a2V5
