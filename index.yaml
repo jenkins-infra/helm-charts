@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   accountapp:
   - apiVersion: v1
+    created: "2023-11-06T08:04:22.467091477Z"
+    description: A Helm chart for accounts.jenkins.io
+    digest: 251e107889fd479fe8a08873793bac9ffc653a0bdb5ffe38c709ffc39d87c6b1
+    maintainers:
+    - name: timja
+    name: accountapp
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/accountapp-0.8.19/accountapp-0.8.19.tgz
+    version: 0.8.19
+  - apiVersion: v1
     created: "2023-11-04T10:37:53.174749125Z"
     description: A Helm chart for accounts.jenkins.io
     digest: dab95868370e21b7b59941462edb67f4d3c58fd56d65c4bffcf04a0a7bcaac94
@@ -1786,6 +1796,18 @@ entries:
   httpd:
   - apiVersion: v1
     appVersion: v2.4
+    created: "2023-11-06T09:21:33.154356493Z"
+    description: httpd helm chart for Kubernetes
+    digest: 2c87dd3194b88be23ea4bbda07214dda3600630ec5b24254198e7789e13aec61
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: httpd
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/httpd-0.3.0/httpd-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v1
+    appVersion: v2.4
     created: "2023-11-01T10:19:39.266970209Z"
     description: httpd helm chart for Kubernetes
     digest: d1f40e2d2e0820bc9d3265bf578c6e835028af4a70864ea7e4c6c0111c66bb7b
@@ -2839,6 +2861,16 @@ entries:
     version: 0.1.0
   ldap:
   - apiVersion: v1
+    created: "2023-11-04T11:47:08.387162062Z"
+    description: A Helm chart for ldap.jenkins.io
+    digest: 4969685f3ebe02c743547d7f62dcc5accf53ee658910baf102b6a921218d2e7b
+    maintainers:
+    - name: olblak
+    name: ldap
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/ldap-0.2.1/ldap-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v1
     created: "2023-09-23T10:42:41.898827396Z"
     description: A Helm chart for ldap.jenkins.io
     digest: 411ebee7c94af4aa63fa3abbee436a7a0b7edd46ecd1e4744f62ff637327a886
@@ -2931,6 +2963,18 @@ entries:
     - https://github.com/jenkins-infra/helm-charts/releases/download/mirror-0.1.23/mirror-0.1.23.tgz
     version: 0.1.23
   mirrorbits:
+  - apiVersion: v1
+    appVersion: v0.5.2
+    created: "2023-11-08T06:48:09.020016783Z"
+    description: Mirrobits helm chart for Kubernetes
+    digest: 74ca7fa7d4101fe8609289037dd20425d221269dd91cbab0b72d680cecda763a
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: mirrorbits
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/mirrorbits-1.1.9/mirrorbits-1.1.9.tgz
+    version: 1.1.9
   - apiVersion: v1
     appVersion: v0.5.2
     created: "2023-11-02T08:07:20.72713801Z"
@@ -4726,6 +4770,31 @@ entries:
     version: 0.0.1
   mirrorbits-parent:
   - apiVersion: v2
+    created: "2023-11-06T09:41:18.050862101Z"
+    dependencies:
+    - condition: mirrorbits-lite.enabled
+      name: mirrorbits-lite
+      repository: https://jenkins-infra.github.io/helm-charts
+      version: 0.4.1
+    - condition: httpd.enabled
+      name: httpd
+      repository: https://jenkins-infra.github.io/helm-charts
+      version: 0.3.0
+    - condition: rsyncd.enabled
+      name: rsyncd
+      repository: https://jenkins-infra.github.io/helm-charts
+      version: 1.4.6
+    description: A mirrorbits parent chart for Kubernetes
+    digest: a24843734219073a30cc1ecd0ba7e9c67e650a9f7fcdce57d7bc1ef9cbcf4163
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: mirrorbits-parent
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/mirrorbits-parent-1.1.4/mirrorbits-parent-1.1.4.tgz
+    version: 1.1.4
+  - apiVersion: v2
     created: "2023-11-02T10:05:00.9412218Z"
     dependencies:
     - condition: mirrorbits-lite.enabled
@@ -6475,6 +6544,17 @@ entries:
     version: 0.0.1
   rsyncd:
   - apiVersion: v1
+    created: "2023-11-06T08:04:57.017896219Z"
+    description: rsyncd helm chart for Kubernetes
+    digest: d8d39373783917eb57e020b87163287b1e0809ce3ae10d61642de0c2392474b0
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: rsyncd
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/rsyncd-1.4.6/rsyncd-1.4.6.tgz
+    version: 1.4.6
+  - apiVersion: v1
     created: "2023-10-30T08:27:19.488594859Z"
     description: rsyncd helm chart for Kubernetes
     digest: 9e301dfddbc96209e7fac1090f987660f00bdad79b0f933ac06f7fb0df908485
@@ -7814,4 +7894,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2023-11-04T10:37:53.175848387Z"
+generated: "2023-11-08T06:48:09.021654203Z"
