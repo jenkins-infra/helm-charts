@@ -1,13 +1,14 @@
 suite: Test with custom values
 templates:
   - secret.yaml
+  - service.yaml
 tests:
   - it: should create a Secret with the correct value
     set:
       ldap:
         storage:
           accountname: name
-          accountkey: key 
+          accountkey: key
     template: secret.yaml
     asserts:
       - hasDocuments:
@@ -20,3 +21,62 @@ tests:
       - equal:
           path: data.azurestorageaccountkey
           value: a2V5
+  - it: should create a custom service of type loadbalancer with legacy loadbalancerIP field
+    template: service.yaml
+    set:
+      service:
+        IP: 128.129.0.12
+    asserts:
+    - hasDocuments:
+        count: 1
+    - isKind:
+        of: Service
+    - equal:
+        path: metadata.name
+        value: RELEASE-NAME-ldap
+    - equal:
+        path: spec.type
+        value: LoadBalancer
+    - equal:
+        path: spec.ports[0].port
+        value: 636
+    - equal:
+        path: spec.ports[0].targetPort
+        value: 636
+    - equal:
+        path: spec.selector["app.kubernetes.io/name"]
+        value: ldap
+    - equal:
+        path: spec.selector["app.kubernetes.io/instance"]
+        value: RELEASE-NAME
+    - equal:
+        path: spec.loadBalancerIP
+        value: 128.129.0.12
+    - notExists:
+        path: metadata.annotations
+  - it: should create a custom service of type loadbalancer with modern AKS annotation for public IP
+    template: service.yaml
+    set:
+      service:
+        azurePip:
+          name: myAKSPublicIP
+          resourceGroup: myNetworkResourceGroup
+    asserts:
+    - hasDocuments:
+        count: 1
+    - isKind:
+        of: Service
+    - equal:
+        path: metadata.name
+        value: RELEASE-NAME-ldap
+    - equal:
+        path: spec.type
+        value: LoadBalancer
+    - notExists:
+        path: spec.loadBalancerIP
+    - equal:
+        path: metadata.annotations["service.beta.kubernetes.io/azure-load-balancer-resource-group"]
+        value: myNetworkResourceGroup
+    - equal:
+        path: metadata.annotations["service.beta.kubernetes.io/azure-pip-name"]
+        value: myAKSPublicIP

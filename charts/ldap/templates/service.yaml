@@ -4,13 +4,22 @@ metadata:
   name: {{ include "ldap.fullname" . }}
   labels:
 {{ include "ldap.labels" . | indent 4 }}
+  {{- if and .Values.service.azurePip (or .Values.service.azurePip.name .Values.service.azurePip.resourceGroup)}}
+  annotations:
+    {{- if and .Values.service.azurePip .Values.service.azurePip.name }}
+    service.beta.kubernetes.io/azure-pip-name: {{ .Values.service.azurePip.name }}
+    {{- end }}
+    {{- if and .Values.service.azurePip .Values.service.azurePip.resourceGroup }}
+    service.beta.kubernetes.io/azure-load-balancer-resource-group: {{ .Values.service.azurePip.resourceGroup }}
+    {{- end }}
+  {{- end }}
 spec:
   type: {{ .Values.service.type }}
   {{- if eq .Values.service.type "LoadBalancer" }}
   {{- if .Values.service.IP }}
   loadBalancerIP: {{ .Values.service.IP }}
   {{- end }}
-  loadBalancerSourceRanges: 
+  loadBalancerSourceRanges:
     {{- range .Values.service.whitelisted_sources }}
     - {{ . | quote }}
     {{- end }}

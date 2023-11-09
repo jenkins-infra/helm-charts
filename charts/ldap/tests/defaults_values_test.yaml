@@ -1,7 +1,8 @@
 suite: Test with default values
 templates:
-- certificate.yaml
-- persistentVolumeClaim.yaml
+  - certificate.yaml
+  - persistentVolumeClaim.yaml
+  - service.yaml
 tests:
   - it: should create a certificate for the dns ldap.jenkins.io
     template: certificate.yaml
@@ -43,3 +44,33 @@ tests:
         path: metadata.name
         value: RELEASE-NAME-ldap-data
       documentIndex: 1
+  - it: should create a service of type loadbalancer with defaults
+    template: service.yaml
+    asserts:
+    - hasDocuments:
+        count: 1
+    - isKind:
+        of: Service
+    - equal:
+        path: metadata.name
+        value: RELEASE-NAME-ldap
+    - equal:
+        path: spec.type
+        value: LoadBalancer
+    - equal:
+        path: spec.ports[0].port
+        value: 636
+    - equal:
+        path: spec.ports[0].targetPort
+        value: 636
+    - equal:
+        path: spec.selector["app.kubernetes.io/name"]
+        value: ldap
+    - equal:
+        path: spec.selector["app.kubernetes.io/instance"]
+        value: RELEASE-NAME
+    - notExists:
+        path: spec.loadBalancerIP
+    - notExists:
+        path: metadata.annotations
+
