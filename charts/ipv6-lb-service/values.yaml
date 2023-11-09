@@ -1,4 +1,5 @@
-ipv6: ""
+ipv6PipName: ""
+resourceGroup: ""
 app:
   name: ""
   component: ""
