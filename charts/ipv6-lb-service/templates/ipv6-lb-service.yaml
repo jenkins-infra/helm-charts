@@ -3,7 +3,12 @@ kind: Service
 metadata:
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "false"
-    service.beta.kubernetes.io/azure-load-balancer-ipv6: {{ .Values.ipv6 | quote }}
+    {{- if .Values.ipv6PipName }}
+    service.beta.kubernetes.io/azure-pip-name: {{ .Values.ipv6PipName | quote }}
+    {{- end }}
+    {{- if .Values.resourceGroup }}
+    service.beta.kubernetes.io/azure-load-balancer-resource-group: {{ .Values.resourceGroup }}
+    {{- end }}
   labels:
     app.kubernetes.io/component: {{ .Values.app.component }}
     app.kubernetes.io/instance: {{ .Values.app.instance }}
