@@ -14,12 +14,13 @@ scms:
 
 sources:
   latestRelease:
-    kind: dockerimage
-    name: "Get latest jenkinsciinfra/plugin-site-api version"
+    kind: githubrelease
+    name: Get jenkins-infra/incrementals-publish latest version
     spec:
-      image: "jenkinsciinfra/plugin-site-api"
-      architecture: "amd64"
-      tagfilter: "^\\d+-[a-z0-9]+$"
+      owner: "jenkins-infra"
+      repository: "plugin-site-api"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
 
 targets:
   updateChart:
