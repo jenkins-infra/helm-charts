@@ -15,12 +15,24 @@ scms:
 sources:
   latestRelease:
     kind: githubrelease
-    name: Get jenkins-infra/incrementals-publish latest version
+    name: Get jenkins-infra/plugin-site-api latest version
     spec:
       owner: "jenkins-infra"
       repository: "plugin-site-api"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
+
+conditions:
+  checkDockerImagePublished:
+    name: Test if jenkinsciinfra/plugin-site-api docker image is published
+    kind: dockerimage
+    sourceid: latestRelease
+    spec:
+      image: "jenkinsciinfra/plugin-site-api"
+      ## Tag from source
+      architectures:
+        - amd64
+        - arm64
 
 targets:
   updateChart:
