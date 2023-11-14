@@ -6088,6 +6088,18 @@ entries:
   plugin-site:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2023-11-14T14:43:33.95642752Z"
+    description: A Helm chart for plugins.jenkins.io
+    digest: 7b7140afa6e0e6b26604a6517067145034bd8937be397c40c371490c69245eeb
+    maintainers:
+    - name: timja
+    - name: halkeye
+    name: plugin-site
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/plugin-site-0.4.4/plugin-site-0.4.4.tgz
+    version: 0.4.4
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2023-10-19T14:37:24.239495367Z"
     description: A Helm chart for plugins.jenkins.io
     digest: f3ec765d3e1f7b35175a26501662b10fa2d25d4dcf3e3c2376d2f3ac2622b57d
@@ -7995,4 +8007,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2023-11-13T08:42:21.294497048Z"
+generated: "2023-11-14T14:43:33.957336941Z"
