@@ -91,3 +91,11 @@ proxy:
     enabled: false
 poddisruptionbudget:
   minAvailable: 1
+env: []
+# - name: http_proxy
+#   value: "http://my-nginx-forward-proxy:3128"
+# - name: no_proxy
+#   value: "localhost,127.0.0.1,172.17.0.1"
+envFrom: []
+# - secretRef:
+#     name: my-nginx-proxy-secrets

@@ -3,7 +3,33 @@ templates:
   - ingress-health.yaml
   - ingress.yaml
   - pdb.yaml
+  - statefulset.yaml
+  - nginx-default-configmap.yaml
+  - nginx-proxy-configmap.yaml
 tests:
+  - it: Should set a custom env and envFrom when specified by values
+    template: statefulset.yaml
+    set:
+      env:
+        - name: DEMO_GREETING
+          value: "Hello from the environment"
+      envFrom:
+        - secretRef:
+            name: demo-greeting
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: StatefulSet
+      - equal:
+          path: spec.template.spec.containers[0].env[0].name
+          value: "DEMO_GREETING"
+      - equal:
+          path: spec.template.spec.containers[0].env[0].value
+          value: "Hello from the environment"
+      - equal:
+          path: spec.template.spec.containers[0].envFrom[0].secretRef.name
+          value: "demo-greeting"
   - it: Should set a custom health check path when specified by values
     template: ingress.yaml
     set:

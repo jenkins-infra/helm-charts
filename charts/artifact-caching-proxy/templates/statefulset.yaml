@@ -69,9 +69,13 @@ spec:
       containers:
       - name: {{ .Chart.Name }}
         securityContext:
-          {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- toYaml .Values.securityContext | nindent 10 }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+          {{- toYaml .Values.env | nindent 10 }}
+        envFrom:
+          {{- toYaml .Values.envFrom | nindent 10 }}
         ports:
           - name: http
             containerPort:  {{ .Values.service.port }}

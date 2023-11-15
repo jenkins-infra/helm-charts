@@ -38,6 +38,12 @@ tests:
       - notExists:
           path: spec.affinity
       - equal:
+          path: spec.template.spec.containers[0].env
+          value: []
+      - equal:
+          path: spec.template.spec.containers[0].envFrom
+          value: []
+      - equal:
           path: metadata.labels["app.kubernetes.io/name"]
           value: artifact-caching-proxy
       - equal:
