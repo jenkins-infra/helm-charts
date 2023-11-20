@@ -13,29 +13,26 @@ scms:
       branch: "{{ .github.branch }}"
 
 sources:
-  latestDockerRsyncdRelease:
-    kind: githubrelease
-    name: Get latest docker-rsyncd released version
-    spec:
-      owner: jenkins-infra
-      repository: docker-rsyncd
-      token: "{{ requiredEnv .github.token }}"
-  latestDockerRsyncdDigest:
-    kind: dockerdigest
-    name: "Get jenkinsciinfra/rsyncd:latest docker image digest"
-    dependson:
-      - latestDockerRsyncdRelease
+  latestDockerRsyncdImage:
+    kind: dockerimage
+    name: "Get jenkinsciinfra/rsyncd:latest docker image version (arm64/amd64)"
     spec:
       image: "jenkinsciinfra/rsyncd"
-      tag: '{{ source "latestDockerRsyncdRelease" }}'
-      architecture: "amd64"
+      versionfilter:
+        kind: "semver"
 
-# no condition to test rsyncd docker image availability as we're using a digest from docker hub
+conditions:
+   docker:
+    name: "Docker Image Published on Registry"
+    kind: dockerimage
+    spec:
+      image: "jenkinsciinfra/rsyncd"
+      architectures: ["linux/amd64","linux/arm64"]
 
 targets:
   updateRsyncd:
     name: "Update rsyncd docker image version"
-    sourceid: latestDockerRsyncdDigest
+    sourceid: latestDockerRsyncdImage
     kind: helmchart
     spec:
       name: charts/rsyncd
