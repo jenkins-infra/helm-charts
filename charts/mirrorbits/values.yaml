@@ -8,7 +8,7 @@ replicaCount:
 image:
   mirrorbits:
     repository: jenkinsciinfra/mirrorbits
-    tag: 0.2.5
+    tag: 0.2.6
     pullPolicy: IfNotPresent
   files:
     repository: httpd
