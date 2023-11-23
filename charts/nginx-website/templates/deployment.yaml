@@ -76,4 +76,4 @@ spec:
         {{- end }}
         - name: config
           configMap:
-            name: nginx-website
+            name: {{ include "nginx-website.fullname" . }}
