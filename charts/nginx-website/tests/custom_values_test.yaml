@@ -1,0 +1,20 @@
+---
+suite: Test with custom values
+templates:
+  - pdb.yaml
+tests:
+  - it: should ensure the pdb has correct spec
+    template: pdb.yaml
+    set:
+      replicaCount: 2
+      podDisruptionBudget.minAvailable: 2
+      podDisruptionBudget.maxUnavailable: 1
+    asserts:
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.minAvailable
+          value: 2
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: "nginx-website"
