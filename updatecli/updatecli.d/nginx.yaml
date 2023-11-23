@@ -92,6 +92,14 @@ targets:
       key: $.image.tag
       versionincrement: patch
     scmid: default
+  updateNginxWebsite:
+    name: "Update nginx stable docker image version for nginx-website chart"
+    kind: helmchart
+    spec:
+      name: charts/nginx-website
+      key: $.image.tag
+      versionincrement: patch
+    scmid: default
 
 actions:
   default:
@@ -107,3 +115,4 @@ actions:
         - plugin-site
         - reports
         - artifact-caching-proxy
+        - nginx-website
