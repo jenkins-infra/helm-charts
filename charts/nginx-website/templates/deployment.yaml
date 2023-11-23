@@ -29,23 +29,23 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-              - name: http
-                containerPort: 80
-                protocol: TCP
+            - name: http
+              containerPort: 80
+              protocol: TCP
           livenessProbe:
-              httpGet:
-                  path: /
-                  port: 80
-                  scheme: HTTP
-              initialDelaySeconds: 20
-              timeoutSeconds: 5
+            httpGet:
+              path: /
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 20
+            timeoutSeconds: 5
           readinessProbe:
-              httpGet:
-                  path: /
-                  port: 80
-                  scheme: HTTP
-              initialDelaySeconds: 20
-              timeoutSeconds: 5
+            httpGet:
+              path: /
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 20
+            timeoutSeconds: 5
           volumeMounts:
             - name: html
               mountPath: /usr/share/nginx/html
