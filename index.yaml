@@ -5819,6 +5819,18 @@ entries:
     urls:
     - https://github.com/jenkins-infra/helm-charts/releases/download/nginx-proxy-0.1.0/nginx-proxy-0.1.0.tgz
     version: 0.1.0
+  nginx-website:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2023-11-23T14:11:10.484476289Z"
+    description: A Helm chart for serving website with nginx
+    digest: ced7882e689ff06744bafbb3cf6683a3eb4c9913d0b15f552fa6eff7278cfe64
+    maintainers:
+    - name: lemeurherve
+    name: nginx-website
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/nginx-website-0.1.0/nginx-website-0.1.0.tgz
+    version: 0.1.0
   plugin-health-scoring:
   - apiVersion: v2
     created: "2023-11-15T07:55:54.724960385Z"
@@ -8181,4 +8193,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2023-11-23T00:11:23.573626375Z"
+generated: "2023-11-23T14:11:10.485485551Z"
