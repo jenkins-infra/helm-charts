@@ -2,7 +2,7 @@
 
 This chart allows to deploys up to three services:
 
-* [mirrorbits](https://github.com/etix/mirrorbits) through the subchart <https://github.com/jenkins-infra/helm-charts/tree/main/charts/mirrorbits-lite>
+* [mirrorbits](https://github.com/etix/mirrorbits) through the subchart <https://github.com/jenkins-infra/helm-charts/tree/main/charts/mirrorbits>
 * [httpd (Apache2)](https://httpd.apache.org/) through the subchart <https://github.com/jenkins-infra/helm-charts/tree/main/charts/httpd>
 * [rsyncd](https://linux.die.net/man/1/rsync) through the subchart <https://github.com/jenkins-infra/helm-charts/tree/main/charts/rsyncd>
 
@@ -43,7 +43,7 @@ ingress:
       hosts:
         - downloads.company.org
 
-mirrorbits-lite:
+mirrorbits:
   enabled: true
 
 httpd:
@@ -60,7 +60,7 @@ Since the chart was initially designed to run on AKS with an Azurefile volume, p
 Example with an Azure file PV and associated PVC mounted in read only:
 
 ```yaml
-mirrorbits-lite:
+mirrorbits:
   enabled: true
   repository:
     name: <name of the PVC>

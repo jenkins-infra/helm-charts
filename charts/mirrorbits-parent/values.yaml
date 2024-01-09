@@ -70,9 +70,9 @@ global:
       #   ...
 
 ## Sub charts specific values
-mirrorbits-lite:
+mirrorbits:
   enabled: false
-  backendServiceNameTpl: '{{ include "mirrorbits-lite.fullname" (index $.Subcharts "mirrorbits-lite")}}'
+  backendServiceNameTpl: '{{ include "mirrorbits.fullname" (index $.Subcharts "mirrorbits")}}'
 httpd:
   enabled: false
   backendServiceNameTpl: '{{ include "httpd.fullname" (index $.Subcharts "httpd")}}'

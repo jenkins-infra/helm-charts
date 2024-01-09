@@ -43,15 +43,6 @@ targets:
       key: $.image.tag
       versionincrement: patch
     scmid: default
-  updateHttpdInMirrorbits:
-    name: "Update httpd docker image version in mirrorbits chart"
-    sourceid: latestRelease
-    kind: helmchart
-    spec:
-      name: charts/mirrorbits
-      key: $.image.files.tag
-      versionincrement: patch
-    scmid: default
 
 actions:
   default:
