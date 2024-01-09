@@ -1,9 +1,9 @@
 suite: Tests with custom values
 set:
   ## Mock subcharts default values
-  mirrorbits-lite:
+  mirrorbits:
     enabled: true
-    backendServiceNameTpl: '{{ default "RELEASE-NAME-mirrorbits-lite" }}'
+    backendServiceNameTpl: '{{ default "RELEASE-NAME-mirrorbits" }}'
     service:
       port: 7777
   httpd:
@@ -52,7 +52,7 @@ tests:
           path: spec.rules[1]
       - equal:
           path: spec.rules[0].http.paths[0].backend.service.name
-          value: RELEASE-NAME-mirrorbits-lite
+          value: RELEASE-NAME-mirrorbits
       - equal:
           path: spec.rules[0].http.paths[0].backend.service.port.number
           value: 7777
@@ -124,7 +124,7 @@ tests:
           value: ImplementationSpecific
       - equal:
           path: spec.rules[0].http.paths[1].backend.service.name
-          value: RELEASE-NAME-mirrorbits-lite
+          value: RELEASE-NAME-mirrorbits
       - equal:
           path: spec.rules[0].http.paths[1].backend.service.port.number
           value: 7777
@@ -179,7 +179,7 @@ tests:
   - it: should fail the ingress when referencing mirrorbits as backend but it is disabled
     template: ingress.yaml
     set:
-      mirrorbits-lite:
+      mirrorbits:
         enabled: false
       global:
         ingress:
@@ -190,4 +190,4 @@ tests:
                   backendService: mirrorbits
     asserts:
       - failedTemplate:
-          errorMessage: "Cannot use mirrorbits-lite as backend if it is disabled."
+          errorMessage: "Cannot use mirrorbits as backend if it is disabled."

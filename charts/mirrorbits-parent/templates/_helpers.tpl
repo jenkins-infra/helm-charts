@@ -58,11 +58,11 @@ Expected argument: dict{
  */}}
 {{- define "mirrorbits-parent.validateIngressBackend" -}}
 {{- if eq .currentBackendService "mirrorbits" -}}
-  {{- if not (index .rootContext.Values "mirrorbits-lite" "enabled") -}}
-    {{- fail "Cannot use mirrorbits-lite as backend if it is disabled." }}
+  {{- if not (index .rootContext.Values "mirrorbits" "enabled") -}}
+    {{- fail "Cannot use mirrorbits as backend if it is disabled." }}
   {{- end -}}
-  {{- if not (index .rootContext.Values "mirrorbits-lite" "backendServiceNameTpl") -}}
-    {{- fail "Cannot determine mirrorbits backend service due to missing value 'mirrorbits-lite.currentBackendServiceNameTpl." }}
+  {{- if not (index .rootContext.Values "mirrorbits" "backendServiceNameTpl") -}}
+    {{- fail "Cannot determine mirrorbits backend service due to missing value 'mirrorbits.currentBackendServiceNameTpl." }}
   {{- end -}}
 {{- else if eq .currentBackendService "httpd" -}}
   {{- if not (index .rootContext.Values "httpd" "enabled") -}}
@@ -86,7 +86,7 @@ Expected argument: dict{
 {{- define "mirrorbits-parent.ingressBackendName" -}}
 {{- include "mirrorbits-parent.validateIngressBackend" . }}
 {{- if eq .currentBackendService "mirrorbits" -}}
-  {{ printf "%s" (tpl (index .rootContext.Values "mirrorbits-lite" "backendServiceNameTpl") .rootContext) | trim | trunc 63 }}
+  {{ printf "%s" (tpl (index .rootContext.Values "mirrorbits" "backendServiceNameTpl") .rootContext) | trim | trunc 63 }}
 {{- else if eq .currentBackendService "httpd" -}}
   {{ printf "%s" (tpl (index .rootContext.Values "httpd" "backendServiceNameTpl") .rootContext) | trim | trunc 63 }}
 {{- end -}}
@@ -102,7 +102,7 @@ Expected argument: dict{
 {{- define "mirrorbits-parent.ingressBackendPort" -}}
 {{- include "mirrorbits-parent.validateIngressBackend" . }}
 {{- if eq .currentBackendService "mirrorbits" -}}
-  {{ index .rootContext.Values "mirrorbits-lite" "service" "port" }}
+  {{ index .rootContext.Values "mirrorbits" "service" "port" }}
 {{- else if eq .currentBackendService "httpd" -}}
   {{ index .rootContext.Values "httpd" "service" "port" }}
 {{- end -}}
