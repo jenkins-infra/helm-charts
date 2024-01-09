@@ -75,11 +75,11 @@ tests:
           of: Service
       - equal:
           path: spec.selector["app.kubernetes.io/name"]
-          value: "mirrorbits-lite"
+          value: "mirrorbits"
       - equal:
           path: spec.selector["app.kubernetes.io/instance"]
           value: "RELEASE-NAME"
-  - it: should define a customized "mirrorbits-lite" deployment
+  - it: should define a customized "mirrorbits" deployment
     template: deployment.yaml
     asserts:
       - hasDocuments:
@@ -128,14 +128,14 @@ tests:
       - equal:
           path: spec.rules[0].http.paths[0].pathType
           value: "IfNotPresent"
-  - it: should define a customized "mirrorbits-lite" persistent volume
+  - it: should define a customized "mirrorbits" persistent volume
     template: persistentVolume.yaml
     asserts:
       - hasDocuments:
           count: 1
       - isKind:
           of: PersistentVolume
-  - it: should define a customized "mirrorbits-lite" PV claim
+  - it: should define a customized "mirrorbits" PV claim
     template: persistentVolumeClaim.yaml
     asserts:
       - hasDocuments:
@@ -154,7 +154,7 @@ tests:
           value: 1
       - equal:
           path: spec.selector.matchLabels['app.kubernetes.io/name']
-          value: mirrorbits-lite
+          value: mirrorbits
   - it: create a customized pdb when custom values are set
     template: pdb.yaml
     set:
@@ -174,7 +174,7 @@ tests:
           value: 3
       - equal:
           path: spec.selector.matchLabels['app.kubernetes.io/name']
-          value: mirrorbits-lite
+          value: mirrorbits
   - it: should create all secrets
     template: secrets.yaml
     asserts:
@@ -186,18 +186,18 @@ tests:
       - documentIndex: 0
         equal:
           path: metadata.name
-          value: RELEASE-NAME-mirrorbits-lite
+          value: RELEASE-NAME-mirrorbits
       - documentIndex: 1
         isKind:
           of: Secret
       - documentIndex: 1
         equal:
           path: metadata.name
-          value: RELEASE-NAME-mirrorbits-lite-geoipupdate
+          value: RELEASE-NAME-mirrorbits-geoipupdate
       - documentIndex: 2
         isKind:
           of: Secret
       - documentIndex: 2
         equal:
           path: metadata.name
-          value: RELEASE-NAME-mirrorbits-lite-binary
+          value: RELEASE-NAME-mirrorbits-binary

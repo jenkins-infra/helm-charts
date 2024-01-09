@@ -3,9 +3,9 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits-lite.fullname" .)) }}
+  name: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits.fullname" .)) }}
   labels:
-    data: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits-lite.fullname" . )) }}
+    data: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits.fullname" . )) }}
 spec:
 {{ toYaml .Values.repository.persistentVolume.spec | nindent 2 }}
 {{- end -}}

@@ -2,9 +2,9 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ include "mirrorbits-lite.fullname" . }}
+  name: {{ include "mirrorbits.fullname" . }}
   labels:
-    {{- include "mirrorbits-lite.labels" . | nindent 4 }}
+    {{- include "mirrorbits.labels" . | nindent 4 }}
 spec:
   {{- with .Values.poddisruptionbudget.minAvailable }}
   minAvailable: {{ . }}
@@ -14,5 +14,5 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      {{- include "mirrorbits-lite.selectorLabels" . | nindent 6 }}
+      {{- include "mirrorbits.selectorLabels" . | nindent 6 }}
 {{- end }}

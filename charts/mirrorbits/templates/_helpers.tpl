@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "mirrorbits-lite.name" -}}
+{{- define "mirrorbits.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "mirrorbits-lite.fullname" -}}
+{{- define "mirrorbits.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -27,24 +27,24 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "mirrorbits-lite.chart" -}}
+{{- define "mirrorbits.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
-{{- define "mirrorbits-lite.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "mirrorbits-lite.name" . }}
+{{- define "mirrorbits.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "mirrorbits.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "mirrorbits-lite.labels" -}}
-{{ include "mirrorbits-lite.selectorLabels" . }}
-helm.sh/chart: {{ include "mirrorbits-lite.chart" . }}
+{{- define "mirrorbits.labels" -}}
+{{ include "mirrorbits.selectorLabels" . }}
+helm.sh/chart: {{ include "mirrorbits.chart" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -55,14 +55,14 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Data directory volume definition. Might be defined from parent chart templates or autonomously
 based on the presence of the global value provided by the parent chart.
 */}}
-{{- define "mirrorbits-lite.data-volume" -}}
+{{- define "mirrorbits.data-volume" -}}
 {{- if and (dig "global" "storage" "enabled" false .Values.AsMap) .Values.global.storage.claimNameTpl -}}
 persistentVolumeClaim:
   claimName: {{ printf "%s" (tpl .Values.global.storage.claimNameTpl $) | trim | trunc 63 }}
 {{- else -}}
   {{- if .Values.repository.persistentVolumeClaim.enabled -}}
 persistentVolumeClaim:
-  claimName: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits-lite.fullname" .)) }}
+  claimName: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits.fullname" .)) }}
   {{- else -}}
 emptyDir: {}
   {{- end -}}

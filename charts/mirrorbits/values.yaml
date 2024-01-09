@@ -79,7 +79,7 @@ conf: |
   Templates: /usr/share/mirrorbits/templates
   RedisAddress: mirrors-redis-master:6379
 repository:
-  name: mirrorbits-lite-binary
+  name: mirrorbits-binary
   persistentVolumeClaim:
     enabled: false
     # spec hold persistentVolumeClaim spec
