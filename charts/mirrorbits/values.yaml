@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: jenkinsciinfra/mirrorbits
-  tag: 0.1.97
+  tag: 0.2.12
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
@@ -92,6 +92,5 @@ repository:
     enabled: false
     # data hold secrets data used by persistentVolume
     data: {}
-
 poddisruptionbudget:
   minAvailable: 1
