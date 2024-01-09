@@ -1,23 +1,11 @@
 # Default values for mirrorbits.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-replicaCount:
-  mirrorbits: 1
-  files: 1
-  rsyncd: 1
+replicaCount: 1
 image:
-  mirrorbits:
-    repository: jenkinsciinfra/mirrorbits
-    tag: 0.2.12
-    pullPolicy: IfNotPresent
-  files:
-    repository: httpd
-    tag: 2.4.58
-    pullPolicy: IfNotPresent
-  rsyncd:
-    repository: jenkinsciinfra/rsyncd
-    tag: latest@sha256:8288d9df36c5b62d331736341d7f58b8a78998ace06f2d60fc38f6a4a9d7e6cb
-    pullPolicy: IfNotPresent
+  repository: jenkinsciinfra/mirrorbits
+  tag: 0.1.97
+  pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -69,10 +57,7 @@ resources: {}
 #   memory: 128Mi
 nodeSelector: {}
 tolerations: []
-affinity:
-  mirrorbits: {}
-  files: {}
-  rsyncd: {}
+affinity: {}
 geoipupdate:
   image:
     repository: maxmindinc/geoipupdate
@@ -82,18 +67,17 @@ geoipupdate:
   license_key: ""
   editions: GeoLite2-ASN GeoLite2-City GeoLite2-Country
   update_frequency: 24
-mirrorbits:
-  logs:
-    volume:
-      emptyDir: {}
-      ## Volume contains the Pod Volume definition. Example with an existing PVC:
-      # persistentVolumeClaim:
-      #   claimName: <PVC name>
-  ## mirrorbits.conf data, to be completed as secret with Redis credentials
-  conf: |
-    Repository: /srv/repo
-    Templates: /usr/share/mirrorbits/templates
-    RedisAddress: mirrors-redis-master:6379
+logs:
+  volume:
+    emptyDir: {}
+    ## Volume contains the Pod Volume definition. Example with an existing PVC:
+    # persistentVolumeClaim:
+    #   claimName: <PVC name>
+# mirrorbits.conf data, to be completed as secret with Redis credentials
+conf: |
+  Repository: /srv/repo
+  Templates: /usr/share/mirrorbits/templates
+  RedisAddress: mirrors-redis-master:6379
 repository:
   name: mirrorbits-binary
   persistentVolumeClaim:
@@ -108,60 +92,6 @@ repository:
     enabled: false
     # data hold secrets data used by persistentVolume
     data: {}
-rsyncd:
-  enabled: false
-  volumes:
-    datadir: {}
-    # emptyDir:
-  service:
-    type: ClusterIP
-    port: 873
-    #    IP:
-    whitelisted_sources: []
-    # - 52.167.253.43/32
-    # - 52.202.51.185/32
-  ingress:
-    enabled: false
-    # annotations:
-    #   "cert-manager.io/cluster-issuer": "letsencrypt-staging"
-    # hosts:
-    #   - host: rsyncd.mirror.jenkins.io
-    # tls:
-    #   - secretName: rsyncd-releasemirror-tls
-  resources:
-    limits:
-      cpu: 100m
-      memory: 128Mi
-    requests:
-      cpu: 50m
-      memory: 64Mi
-  configuration:
-    datadir: /srv/repo
-    uid: nobody
-    gid: nogroup
-    motd_path: /etc/jenkins.motd
-    port: 873
-    hosts_allow: '*'
-    comment: "Jenkins Read-Only Mirror"
-  # Custom configuration files used to override default rsyncd settings defined in https://github.com/jenkins-infra/docker-rsyncd/tree/main/config
-  configurationFiles:
-    jenkinsMotd:
-      override: false
-      # content: |-
-      #    [jenkins]
-      #    path = /srv/releases/jenkins
-      #    comment = "Jenkins Read-Only Mirror"
-      #    ========================
-      #    ==== JENKINS MIRROR ====
-      #    ========================
-      #
-      #    **Read Only**
-      #
-      #    Feel free to reach out on https://www.jenkins.io/chat/#jenkins-infra/ with any question you may have
+
 poddisruptionbudget:
-  mirrorbits:
-    minAvailable: 1
-  files:
-    minAvailable: 1
-  rsyncd:
-    minAvailable: 1
+  minAvailable: 1

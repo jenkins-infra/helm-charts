@@ -13,12 +13,12 @@ scms:
       branch: "{{ .github.branch }}"
 
 sources:
-  lastMirrorbitsLiteChartVersion:
+  lastMirrorbitsChartVersion:
     kind: helmchart
-    name: get last mirrorbits-lite chart version
+    name: get last mirrorbits chart version
     spec:
       url: https://jenkins-infra.github.io/helm-charts
-      name: mirrorbits-lite
+      name: mirrorbits
   lastHttpdChartVersion:
     kind: helmchart
     name: get last httpd chart version
@@ -33,9 +33,9 @@ sources:
       name: rsyncd
 
 targets:
-  updateMirrorbitsLite:
-    name: Update mirrorbits-lite subchart version
-    sourceid: lastMirrorbitsLiteChartVersion
+  updateMirrorbits:
+    name: Update `mirrorbits`` subchart version
+    sourceid: lastMirrorbitsChartVersion
     kind: helmchart
     spec:
       name: charts/mirrorbits-parent
@@ -72,6 +72,6 @@ actions:
     spec:
       labels:
         - dependencies
-        - mirrorbits-lite
+        - mirrorbits
         - httpd
         - rsyncd

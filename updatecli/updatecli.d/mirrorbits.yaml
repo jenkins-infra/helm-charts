@@ -55,7 +55,7 @@ targets:
     kind: helmchart
     spec:
       name: charts/mirrorbits
-      key: $.image.mirrorbits.tag
+      key: $.image.tag
       versionincrement: patch
     scmid: default
   updateGeoIP:

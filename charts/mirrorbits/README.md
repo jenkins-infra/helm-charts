@@ -1,5 +1,7 @@
 # Mirrorbits
+<!-- TODO: update -->
 
+<!--
 This chart deploys two services [mirrorbits](https://github.com/etix/mirrorbits) and a simple httpd (Apache2) service that return every file
 
 A "Quick Start" is available on [etix/mirrorbits](repository)
@@ -31,3 +33,4 @@ kubectl exec --interactive --tty --container=mirrorbits <POD_NAME> -- bash`
 
 * [Mirrorbits](https://github.com/etix/mirrorbits) - Upstream project
 * [Mirrorbits](https://github.com/jenkins-infra/docker-mirrorbits) - Docker Image
+-->

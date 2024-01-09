@@ -52,17 +52,19 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
 {{/*
-Selector labels
+Data directory volume definition. Might be defined from parent chart templates or autonomously
+based on the presence of the global value provided by the parent chart.
 */}}
-{{- define "mirrorbits.files.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "mirrorbits.name" . }}-files
-app.kubernetes.io/instance: {{ .Release.Name }}-files
-{{- end }}
-
-{{/*
-Selector labels
-*/}}
-{{- define "mirrorbits.rsyncd.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "mirrorbits.name" . }}-rsyncd
-app.kubernetes.io/instance: {{ .Release.Name }}-rsyncd
-{{- end }}
+{{- define "mirrorbits.data-volume" -}}
+{{- if and (dig "global" "storage" "enabled" false .Values.AsMap) .Values.global.storage.claimNameTpl -}}
+persistentVolumeClaim:
+  claimName: {{ printf "%s" (tpl .Values.global.storage.claimNameTpl $) | trim | trunc 63 }}
+{{- else -}}
+  {{- if .Values.repository.persistentVolumeClaim.enabled -}}
+persistentVolumeClaim:
+  claimName: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits.fullname" .)) }}
+  {{- else -}}
+emptyDir: {}
+  {{- end -}}
+{{- end -}}
+{{- end -}}

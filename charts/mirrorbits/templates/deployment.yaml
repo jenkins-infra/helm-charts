@@ -5,7 +5,7 @@ metadata:
   labels:
 {{ include "mirrorbits.labels" . | indent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount.mirrorbits }}
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "mirrorbits.name" . }}
@@ -15,7 +15,7 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "mirrorbits.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum | trunc 63 }}
+        checksum/config: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum | trunc 63 }}
     spec:
       automountServiceAccountToken: false
     {{- with .Values.imagePullSecrets }}
@@ -28,8 +28,8 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.mirrorbits.repository }}:{{ .Values.image.mirrorbits.tag }}"
-          imagePullPolicy: {{ .Values.image.mirrorbits.pullPolicy }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
               containerPort: 8080
@@ -41,10 +41,8 @@ spec:
               mountPath: /usr/share/GeoIP
             - name: logs
               mountPath: /var/log/mirrorbits
-            {{ if $.Values.repository.persistentVolumeClaim.enabled -}}
-            - name: binary
+            - name: data
               mountPath: /srv/repo
-            {{- end }}
           livenessProbe:
             httpGet:
               path: /?mirrorstats
@@ -54,17 +52,17 @@ spec:
               path: /?mirrorstats
               port: 8080
           resources:
-            {{- toYaml .Values.resources.mirrorbits | nindent 12 }}
+            {{- toYaml .Values.resources | nindent 12 }}
         - name: geoipupdate
           image: "{{ .Values.geoipupdate.image.repository }}:{{ .Values.geoipupdate.image.tag }}"
-          imagePullPolicy: {{ .Values.image.mirrorbits.pullPolicy }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           securityContext:
             allowPrivilegeEscalation: false
           volumeMounts:
             - name: geoipdata
               mountPath: /usr/share/GeoIP
           resources:
-            {{- toYaml .Values.resources.mirrorbits | nindent 12 }}
+            {{- toYaml .Values.resources | nindent 12 }}
           env:
             - name: GEOIPUPDATE_EDITION_IDS
               value: {{ .Values.geoipupdate.editions }}
@@ -77,26 +75,25 @@ spec:
         # we need to ensure the geoip data is in place before mirrorbits starts
         - name: geoipupdate-init
           image: "{{ .Values.geoipupdate.image.repository }}:{{ .Values.geoipupdate.image.tag }}"
-          imagePullPolicy: {{ .Values.image.mirrorbits.pullPolicy }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           securityContext:
             allowPrivilegeEscalation: false
           volumeMounts:
             - name: geoipdata
               mountPath: /usr/share/GeoIP
           resources:
-            {{- toYaml .Values.resources.mirrorbits | nindent 12 }}
+            {{- toYaml .Values.resources | nindent 12 }}
           env:
             - name: GEOIPUPDATE_EDITION_IDS
               value: {{ .Values.geoipupdate.editions }}
           envFrom:
           - secretRef:
               name: {{ include "mirrorbits.fullname" . }}-geoipupdate
-
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-    {{- with .Values.affinity.mirrorbits }}
+    {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
     {{- end }}
@@ -114,9 +111,6 @@ spec:
         - name: geoipdata
           emptyDir: {}
         - name: logs
-          {{- toYaml .Values.mirrorbits.logs.volume | nindent 10 }}
-        {{- if $.Values.repository.persistentVolumeClaim.enabled }}
-        - name: binary
-          persistentVolumeClaim:
-            claimName: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits.fullname" .)) }}
-        {{- end }}
+          {{- toYaml .Values.logs.volume | nindent 10 }}
+        - name: data
+          {{- include "mirrorbits.data-volume" . | nindent 10}}

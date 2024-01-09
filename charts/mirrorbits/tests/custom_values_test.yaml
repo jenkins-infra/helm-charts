@@ -1,5 +1,19 @@
 suite: Tests with custom values
+templates:
+  - deployment.yaml
+  - ingress.yaml
+  - secrets.yaml
+  - service.yaml
+  - pdb.yaml
+  - persistentVolume.yaml
+  - persistentVolumeClaim.yaml
 set:
+  replicaCount: 2
+  image:
+    pullPolicy: Always
+  geoipupdate:
+    account_id: my-account-id
+    license_key: my-license-key
   ingress:
     enabled: true
     hosts:
@@ -7,75 +21,51 @@ set:
         paths:
         - path: /
           pathType: IfNotPresent
-  image:
-    files:
-      pullPolicy: Never
-    mirrorbits:
-      pullPolicy: Always
-  geoipupdate:
-    account_id: my-account-id
-    license_key: my-license-key
-  rsyncd:
-    enabled: true
-  mirrorbits:
-    logs:
-      volume:
-        persistentVolumeClaim:
-          claimName: foobar
-  affinity:
-    mirrorbits:
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-                - key: "app.kubernetes.io/name"
-                  operator: In
-                  values:
-                    - mirrorbits
-            topologyKey: "kubernetes.io/hostname"
-    files:
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-                - key: "app.kubernetes.io/name"
-                  operator: In
-                  values:
-                    - mirrorbits-files
-            topologyKey: "kubernetes.io/hostname"
-    rsyncd:
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-                - key: "app.kubernetes.io/name"
-                  operator: In
-                  values:
-                    - mirrorbits-rsyncd
-            topologyKey: "kubernetes.io/hostname"
-  poddisruptionbudget:
-    mirrorbits:
-      minAvailable: 1
-    mirrorbitsFiles:
-      minAvailable: 1
-    mirrorbitsRsyncd:
-      minAvailable: 1
-
-
-templates:
-  - deployment.yaml
-  - deployment.files.yaml
-  - deployment.rsyncd.yaml
-  - ingress.yaml
-  - secret.yaml # Direct dependency of deployment(.*).yaml
-  - service.files.yaml
-  - service.rsyncd.yaml
-  - pdb.yaml
-  - pdb.files.yaml
-  - pdb.rsyncd.yaml
+  logs:
+    volume:
+      persistentVolumeClaim:
+        claimName: foobar
+  repository:
+    name: mirrorbits-binary
+    persistentVolumeClaim:
+      enabled: true
+      spec:
+        accessModes:
+          - ReadWriteMany
+        storageClassName: azurefile-csi-premium
+        resources:
+          requests:
+            storage: 1000Gi
+        volumeName: mirrorbits-binary
+    persistentVolume:
+      enabled: true
+      spec:
+        capacity:
+          storage: 1000Gi
+        storageClassName: azurefile-csi-premium
+        accessModes:
+          - ReadWriteMany
+        persistentVolumeReclaimPolicy: Retain
+        csi:
+          driver: file.csi.azure.com
+          readOnly: false
+          volumeHandle: mirrorbits-binary  # make sure this volumeid is unique for every identical share in the cluster
+          volumeAttributes:
+            resourceGroup: prod-core-releases
+            shareName: mirrorbits
+          nodeStageSecretRef:
+            name: mirrorbits-binary
+            namespace: mirrorbits
+        mountOptions:
+          - dir_mode=0755
+    secrets:
+      enabled: true
+      data:
+        azurestorageaccountkey: 'SuperSecretKey!'
+        azurestorageaccountname: storage-account-in-az
 tests:
   - it: Should set the correct service selector labels when a fullNameOverride is specified
-    template: service.files.yaml
+    template: service.yaml
     set:
       fullNameOverride: "my-fullNameOverride"
     asserts:
@@ -85,38 +75,10 @@ tests:
           of: Service
       - equal:
           path: spec.selector["app.kubernetes.io/name"]
-          value: "mirrorbits-files"
+          value: "mirrorbits"
       - equal:
           path: spec.selector["app.kubernetes.io/instance"]
-          value: "RELEASE-NAME-files"
-  - it: Should set the correct service selector labels when a nameOverride is specified
-    template: service.files.yaml
-    set:
-      nameOverride: "my-nameOverride"
-    asserts:
-      - hasDocuments:
-          count: 1
-      - isKind:
-          of: Service
-      - equal:
-          path: spec.selector["app.kubernetes.io/name"]
-          value: "my-nameOverride-files"
-      - equal:
-          path: spec.selector["app.kubernetes.io/instance"]
-          value: "RELEASE-NAME-files"
-  - it: should define a customized "files" deployment
-    template: deployment.files.yaml
-    asserts:
-      - hasDocuments:
-          count: 1
-      - isKind:
-          of: Deployment
-      - equal:
-          path: "spec.template.spec.containers[*].imagePullPolicy"
-          value: Never
-      - equal:
-          path: spec.template.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].topologyKey
-          value: "kubernetes.io/hostname"
+          value: "RELEASE-NAME"
   - it: should define a customized "mirrorbits" deployment
     template: deployment.yaml
     asserts:
@@ -127,6 +89,9 @@ tests:
       - equal:
           path: spec.template.spec.containers[*].imagePullPolicy
           value: Always
+      - equal:
+          path: spec.replicas
+          value: 2
       # Log volumes is a custom PVC
       - equal:
           path: spec.template.spec.volumes[2].name
@@ -140,9 +105,19 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].mountPath
           value: /var/log/mirrorbits
+      # Data Volume
       - equal:
-          path: spec.template.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].topologyKey
-          value: "kubernetes.io/hostname"
+          path: spec.template.spec.volumes[3].name
+          value: data
+      - equal:
+          path: spec.template.spec.volumes[3].persistentVolumeClaim.claimName
+          value: mirrorbits-binary
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].name
+          value: data
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].mountPath
+          value: /srv/repo
   - it: should create ingress with pathType set to the specified custom value by default
     template: ingress.yaml
     asserts:
@@ -153,30 +128,42 @@ tests:
       - equal:
           path: spec.rules[0].http.paths[0].pathType
           value: "IfNotPresent"
-  - it: should create rsyncd deployment if rsyncd is enabled
-    template: deployment.rsyncd.yaml
+  - it: should define a customized "mirrorbits" persistent volume
+    template: persistentVolume.yaml
     asserts:
       - hasDocuments:
           count: 1
       - isKind:
-          of: Deployment
+          of: PersistentVolume
+  - it: should define a customized "mirrorbits" PV claim
+    template: persistentVolumeClaim.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: PersistentVolumeClaim
+  - it: create a default pdb when replicated
+    template: pdb.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: PodDisruptionBudget
       - equal:
-          path: spec.template.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].topologyKey
-          value: "kubernetes.io/hostname"
-  - it: should create rsyncd service if rsyncd is enabled
-    template: service.rsyncd.yaml
-    asserts:
-      - hasDocuments:
-          count: 1
-      - isKind:
-          of: Service
-  - it: should ensure the pdb has correct spec
+          path: spec.minAvailable
+          value: 1
+      - equal:
+          path: spec.selector.matchLabels['app.kubernetes.io/name']
+          value: mirrorbits
+  - it: create a customized pdb when custom values are set
     template: pdb.yaml
     set:
-      replicaCount.mirrorbits: 2
-      poddisruptionbudget.mirrorbits.minAvailable: 2
-      poddisruptionbudget.mirrorbits.maxUnavailable: 3
+      poddisruptionbudget:
+        minAvailable: 2
+        maxUnavailable: 3
     asserts:
+      - hasDocuments:
+          count: 1
       - isKind:
           of: PodDisruptionBudget
       - equal:
@@ -187,40 +174,30 @@ tests:
           value: 3
       - equal:
           path: spec.selector.matchLabels['app.kubernetes.io/name']
-          value: "mirrorbits"
-  - it: should ensure the pdb.files has correct spec
-    template: pdb.files.yaml
-    set:
-      replicaCount.files: 2
-      poddisruptionbudget.files.minAvailable: 2
-      poddisruptionbudget.files.maxUnavailable: 3
+          value: mirrorbits
+  - it: should create all secrets
+    template: secrets.yaml
     asserts:
-      - isKind:
-          of: PodDisruptionBudget
-      - equal:
-          path: spec.minAvailable
-          value: 2
-      - equal:
-          path: spec.maxUnavailable
-          value: 3
-      - equal:
-          path: spec.selector.matchLabels['app.kubernetes.io/name']
-          value: "mirrorbits-files"
-  - it: should ensure the pdb.rsyncd has correct spec
-    template: pdb.rsyncd.yaml
-    set:
-      replicaCount.rsyncd: 2
-      poddisruptionbudget.rsyncd.minAvailable: 2
-      poddisruptionbudget.rsyncd.maxUnavailable: 3
-    asserts:
-      - isKind:
-          of: PodDisruptionBudget
-      - equal:
-          path: spec.minAvailable
-          value: 2
-      - equal:
-          path: spec.maxUnavailable
-          value: 3
-      - equal:
-          path: spec.selector.matchLabels['app.kubernetes.io/name']
-          value: "mirrorbits-rsyncd"
+      - hasDocuments:
+          count: 3
+      - documentIndex: 0
+        isKind:
+          of: Secret
+      - documentIndex: 0
+        equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits
+      - documentIndex: 1
+        isKind:
+          of: Secret
+      - documentIndex: 1
+        equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-geoipupdate
+      - documentIndex: 2
+        isKind:
+          of: Secret
+      - documentIndex: 2
+        equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-binary

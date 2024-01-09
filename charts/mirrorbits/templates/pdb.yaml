@@ -1,4 +1,4 @@
-{{- if (gt (int .Values.replicaCount.mirrorbits) 1) }}
+{{- if (gt (int .Values.replicaCount) 1) }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
@@ -6,10 +6,10 @@ metadata:
   labels:
     {{- include "mirrorbits.labels" . | nindent 4 }}
 spec:
-  {{- with .Values.poddisruptionbudget.mirrorbits.minAvailable }}
+  {{- with .Values.poddisruptionbudget.minAvailable }}
   minAvailable: {{ . }}
   {{- end }}
-  {{- with .Values.poddisruptionbudget.mirrorbits.maxUnavailable }}
+  {{- with .Values.poddisruptionbudget.maxUnavailable }}
   maxUnavailable: {{ . }}
   {{- end }}
   selector:

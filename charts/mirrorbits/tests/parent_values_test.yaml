@@ -61,7 +61,7 @@ set:
         azurestorageaccountkey: 'SuperSecretKey!'
         azurestorageaccountname: storage-account-in-az
 tests:
-  - it: should define a customized "mirrorbits-lite" deployment
+  - it: should define a customized "mirrorbits" deployment
     template: deployment.yaml
     asserts:
       - hasDocuments:
@@ -105,4 +105,4 @@ tests:
           of: Secret
       - equal:
           path: metadata.name
-          value: RELEASE-NAME-mirrorbits-lite
+          value: RELEASE-NAME-mirrorbits
