@@ -1965,6 +1965,18 @@ entries:
   httpd:
   - apiVersion: v1
     appVersion: v2.4
+    created: "2024-01-09T08:24:25.693784009Z"
+    description: httpd helm chart for Kubernetes
+    digest: abe66389b6270d5af537cef4e2791527feead42c8e986f2f163f5fbc7716ed4d
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: httpd
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/httpd-0.3.1/httpd-0.3.1.tgz
+    version: 0.3.1
+  - apiVersion: v1
+    appVersion: v2.4
     created: "2023-11-06T09:21:33.154356493Z"
     description: httpd helm chart for Kubernetes
     digest: 2c87dd3194b88be23ea4bbda07214dda3600630ec5b24254198e7789e13aec61
@@ -3152,6 +3164,18 @@ entries:
     - https://github.com/jenkins-infra/helm-charts/releases/download/mirror-0.1.23/mirror-0.1.23.tgz
     version: 0.1.23
   mirrorbits:
+  - apiVersion: v1
+    appVersion: v0.5.1
+    created: "2024-01-09T08:24:25.844196563Z"
+    description: Mirrobits helm chart for Kubernetes
+    digest: e13f4649ec5b374af07c3957552a0de8167b809ce67935fa9283155e0effdbc7
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: mirrorbits
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/mirrorbits-2.0.0/mirrorbits-2.0.0.tgz
+    version: 2.0.0
   - apiVersion: v1
     appVersion: v0.5.2
     created: "2024-01-03T06:50:35.790546806Z"
@@ -8708,4 +8732,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2024-01-08T08:17:02.49683612Z"
+generated: "2024-01-09T08:24:25.845254909Z"
