@@ -1,5 +1,5 @@
-# Mirrorbits Lite
-<!-- TODO: update to lite -->
+# Mirrorbits
+<!-- TODO: update -->
 
 <!--
 This chart deploys two services [mirrorbits](https://github.com/etix/mirrorbits) and a simple httpd (Apache2) service that return every file

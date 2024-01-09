@@ -56,7 +56,7 @@ set:
         mountOptions:
           - dir_mode=0755
 tests:
-  - it: should define a customized "mirrorbits-lite" deployment
+  - it: should define a customized "httpd" deployment
     template: deployment.yaml
     asserts:
       - hasDocuments:
