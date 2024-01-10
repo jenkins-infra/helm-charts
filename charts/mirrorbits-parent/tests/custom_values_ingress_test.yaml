@@ -1,25 +1,6 @@
 suite: Tests with custom values
-set:
-  ## Mock subcharts default values
-  mirrorbits:
-    enabled: true
-    backendServiceNameTpl: '{{ default "RELEASE-NAME-mirrorbits" }}'
-    service:
-      port: 7777
-  httpd:
-    enabled: true
-    backendServiceNameTpl: '{{ default "RELEASE-NAME-httpd" }}'
-    service:
-      port: 8080
-  ## End of subchart mocked values
-  global:
-    ingress:
-      enabled: true
-      hosts:
-        - host: company.org
-          paths:
-            - path: /
-              backendService: mirrorbits
+values:
+  - values/custom.yaml
 templates:
   - ingress.yaml
 tests:
