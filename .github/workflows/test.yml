@@ -18,12 +18,19 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          allChartsPaths=$(find . -maxdepth 2 -type d | grep "charts/" | cut -d "/" -f2-3 | sort --unique)
           if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
             # Retrieve the list of modified chart names in the pull request
             modifiedChartPaths=$(gh pr view ${{ github.event.pull_request.number }} --json files -q '.files[].path' | xargs dirname | grep "^charts/" | cut -d "/" -f1-2 | sort --unique)
           else
             # Retrieve all charts
-            modifiedChartPaths=$(find . -maxdepth 2 -type d | grep "charts/" | cut -d "/" -f2-3 | sort --unique)
+            modifiedChartPaths=$allChartsPaths
+          fi
+
+          # Test all charts if this workflow is modified
+          modifiedWorkflow=$(gh pr view ${{ github.event.pull_request.number }} --json files -q '.files[].path' | grep ".github/workflows/test.yml")
+          if [ -n "${modifiedWorkflow}" ]; then
+            modifiedChartPaths=$allChartsPaths
           fi
 
           # Keep only modified charts with unit tests
