@@ -34,7 +34,7 @@ sources:
 
 targets:
   updateMirrorbits:
-    name: Update `mirrorbits`` subchart version
+    name: Update `mirrorbits` subchart version
     sourceid: lastMirrorbitsChartVersion
     kind: helmchart
     spec:
