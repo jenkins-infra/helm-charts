@@ -26,12 +26,14 @@ jobs:
             # Retrieve all charts
             modifiedChartPaths=$allChartsPaths
           fi
+          echo "= modifiedChartPaths: $modifiedChartPaths"
 
           # Test all charts if this workflow is modified
           modifiedWorkflow=$(gh pr view ${{ github.event.pull_request.number }} --json files -q '.files[].path' | grep ".github/workflows/test.yml")
           if [ -n "${modifiedWorkflow}" ]; then
             modifiedChartPaths=$allChartsPaths
           fi
+          echo "= modifiedChartPaths: $modifiedChartPaths"
 
           # Keep only modified charts with unit tests
           modifiedChartsWithUnitTests=""
@@ -42,6 +44,7 @@ jobs:
           done <<< "$modifiedChartPaths"
           # Remove first comma
           modifiedChartsWithUnitTests=${modifiedChartsWithUnitTests#,}
+          echo "= modifiedChartsWithUnitTests: $modifiedChartsWithUnitTests"
 
           # Return early if there is no modified chart with unit tests
           if [ -z "$modifiedChartsWithUnitTests" ]; then
