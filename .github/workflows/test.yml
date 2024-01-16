@@ -17,29 +17,35 @@ jobs:
         name: List modified charts with unit tests
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           # Retrieve all charts by default
           allChartsPaths=$(find . -maxdepth 2 -type d | grep "charts/" | cut -d "/" -f2-3 | sort --unique)
           modifiedChartPaths=$allChartsPaths
           if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
-            # Retrieve the list of modified chart names in the pull request
-            modifiedChartPaths=$(gh pr view ${{ github.event.pull_request.number }} --json files -q '.files[].path' | xargs dirname | grep "^charts/" | cut -d "/" -f1-2 | sort --unique)
-            echo "= list of modified chart names from the pull request: $modifiedChartPaths"
-          fi
+            # Retrieve the list of modified paths
+            modifiedPaths=$(gh pr view $GH_PR_NUMBER --json files -q '.files[].path')
+            echo "= list of modified path(s) from the pull request: $modifiedPaths"
 
-          # Test all charts if this workflow is modified
-          modifiedWorkflow=$(gh pr view ${{ github.event.pull_request.number }} --json files -q '.files[].path' | grep ".github/workflows/test.yml")
-          if [ -n "${modifiedWorkflow}" ]; then
-            modifiedChartPaths=$allChartsPaths
-            echo "= workflow modified, including all charts"
+            # Retrieve chart names from modified files
+            modifiedChartPaths=$(echo ${modifiedPaths} | xargs dirname | grep "^charts/" | cut -d "/" -f1-2 | sort --unique)
+
+            # Test all charts if this workflow has been modified
+            modifiedWorkflow=$(echo ${modifiedPaths} | grep ".github/workflows/test.yml")
+            if [ -n "${modifiedWorkflow}" ]; then
+              modifiedChartPaths=$allChartsPaths
+              echo "= workflow modified, including all charts"
+            fi
+
+            echo "= list of modified chart name(s) from the pull request: $modifiedChartPaths"
           fi
 
           # Keep only modified charts with unit tests
           modifiedChartsWithUnitTests=""
           while IFS= read -r chartPath; do
-              if [ -d "${chartPath}/tests" ]; then
-                  modifiedChartsWithUnitTests+=",$(echo $chartPath | cut -d '/' -f 2)"
-              fi
+            if [ -d "${chartPath}/tests" ]; then
+              modifiedChartsWithUnitTests+=",$(echo $chartPath | cut -d '/' -f 2)"
+            fi
           done <<< "$modifiedChartPaths"
           # Remove first comma
           modifiedChartsWithUnitTests=${modifiedChartsWithUnitTests#,}
