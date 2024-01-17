@@ -31,13 +31,13 @@ jobs:
             modifiedChartPaths=$(echo ${modifiedPaths} | xargs dirname | grep "^charts/" | cut -d "/" -f1-2 | sort --unique)
 
             # Test all charts if this workflow has been modified
-            modifiedWorkflow=$(echo ${modifiedPaths} | grep ".github/workflows/test.yml")
+            modifiedWorkflow=$(echo ${modifiedPaths} | grep ".github/workflows/test.yml" || echo "")
             if [ -n "${modifiedWorkflow}" ]; then
               modifiedChartPaths=$allChartsPaths
               echo "= workflow modified, including all charts"
             fi
 
-            echo "= list of modified chart name(s) from the pull request: $modifiedChartPaths"
+            echo "= list of modified chart(s) from the pull request: $modifiedChartPaths"
           fi
 
           # Keep only modified charts with unit tests
