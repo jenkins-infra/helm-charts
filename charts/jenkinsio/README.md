@@ -6,13 +6,20 @@ This chart deploys https://jenkins.io
 
 This guide assumes you're running minikube, adjust accordingly if you're using something else to run it.
 
-First you need to download the latest jenkins.io site build, the files will be git ignored.
+First you need to build the latest jenkins.io site from source.
+```bash
+# clone the jenkins.io repo: 
+git clone https://github.com/jenkins-infra/jenkins.io.git
+# build archive file
+cd jenkins.io
+make archive
+```
 
-Navigate to: `https://ci.jenkins.io/job/Infra/job/jenkins.io/job/master/`
-Download the latest `jenkins.io-<number>.zip`
+`make archive` should generate a `jenkins.io-<number>.zip` in `build/archives`.
+
 
 ```bash
-cd charts/jenkins.io
+cd charts/jenkinsio
 unzip jenkins.io-<number>.zip
 mv jenkins.io-* site/
 mkdir -p site-zh/
@@ -22,7 +29,7 @@ minikube mount site-zh:/hostzh
 ```
 
 ```yaml
-helm install -f values.yaml -f values.local.yaml --name jenkinsio .
+helm install -f values.yaml -f values.local.yaml jenkinsio .
 ```
 
 ```yaml
