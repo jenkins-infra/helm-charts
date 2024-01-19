@@ -5,7 +5,7 @@ replicaCount: 1
 image:
   slapd:
     repository: jenkinsciinfra/ldap
-    tag: 1.0.2
+    tag: 1.1.0
     pullPolicy: IfNotPresent
   crond:
     repository: jenkinsciinfra/ldap
