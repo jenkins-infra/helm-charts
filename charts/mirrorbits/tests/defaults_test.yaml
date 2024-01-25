@@ -32,7 +32,23 @@ tests:
       - equal:
           path: spec.replicas
           value: 1
-      # Log volumes is an emptydir by default
+      # Configuration is a read-only mount of a secret
+      - equal:
+          path: spec.template.spec.volumes[0].name
+          value: conf
+      - equal:
+          path: spec.template.spec.volumes[0].secret.secretName
+          value: RELEASE-NAME-mirrorbits
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].name
+          value: conf
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].mountPath
+          value: /etc/mirrorbits
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].readOnly
+          value: true
+      # Log volumes is an emptydir by default (and you can write in it)
       - equal:
           path: spec.template.spec.volumes[2].name
           value: logs
@@ -45,7 +61,10 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].mountPath
           value: /var/log/mirrorbits
-      # Data Volume is an emptyDir by default
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2].readOnly
+          value: false
+      # Data Volume is an emptyDir by default (but readonly)
       - equal:
           path: spec.template.spec.volumes[3].name
           value: data
@@ -58,6 +77,9 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].mountPath
           value: /srv/repo
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].readOnly
+          value: true
   - it: should not define any persistent volume
     template: persistentVolume.yaml
     asserts:

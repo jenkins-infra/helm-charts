@@ -37,12 +37,16 @@ spec:
           volumeMounts:
             - name: conf
               mountPath: /etc/mirrorbits
+              readOnly: true
             - name: geoipdata
               mountPath: /usr/share/GeoIP
+              readOnly: true
             - name: logs
               mountPath: /var/log/mirrorbits
+              readOnly: false
             - name: data
               mountPath: /srv/repo
+              readOnly: true
           livenessProbe:
             httpGet:
               path: /?mirrorstats
