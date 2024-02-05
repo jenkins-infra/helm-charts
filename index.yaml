@@ -3277,6 +3277,18 @@ entries:
   mirrorbits:
   - apiVersion: v1
     appVersion: v0.5.1
+    created: "2024-02-05T07:44:34.374334849Z"
+    description: Mirrobits helm chart for Kubernetes
+    digest: 1a5a2f73297eb9f732ebc07de505c1b13ea15edd2810760a4dc0b42a1ca1618f
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: mirrorbits
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/mirrorbits-2.3.2/mirrorbits-2.3.2.tgz
+    version: 2.3.2
+  - apiVersion: v1
+    appVersion: v0.5.1
     created: "2024-02-04T15:05:35.65300712Z"
     description: Mirrobits helm chart for Kubernetes
     digest: 5bb5c16ce24b9321670bd56f3c6bff62cb92e982c8ff2860ee4d79b5434f6782
@@ -7549,6 +7561,17 @@ entries:
     version: 0.0.1
   rsyncd:
   - apiVersion: v1
+    created: "2024-02-05T07:44:34.484193944Z"
+    description: rsyncd helm chart for Kubernetes
+    digest: b37eb3d42e06eaa4c957c6789b6d377a762b79460c1faa312e61cbe65335656a
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: rsyncd
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/rsyncd-1.4.19/rsyncd-1.4.19.tgz
+    version: 1.4.19
+  - apiVersion: v1
     created: "2024-02-04T15:05:02.05028264Z"
     description: rsyncd helm chart for Kubernetes
     digest: e630aa654907c0e09fbd20b5800684e10b64627db4ecccf02c05936427128b81
@@ -9151,4 +9174,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2024-02-05T07:44:17.051262257Z"
+generated: "2024-02-05T07:44:34.48556132Z"
