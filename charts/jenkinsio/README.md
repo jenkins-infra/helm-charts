@@ -46,15 +46,9 @@ ingress:
     - host: local.jenkins.io
       paths:
         - path: /
-          service:
-            name: jenkinsio
-            port:
-              number: 80
+          serviceName: jenkinsio
         - path: /zh/
-          service:
-            name: jenkinsio-zh
-            port:
-              number: 80
+          serviceName: jenkinsio-zh
 
 htmlVolume:
   hostPath:
