@@ -45,6 +45,8 @@ resources: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
+# permissions_url -- URL to the JSON file providing permissions from the Repository Permission Updater system
+permissions_url: ''
 artifactory:
   # artifactory.key -- key to upload to artifactory
   key: ''

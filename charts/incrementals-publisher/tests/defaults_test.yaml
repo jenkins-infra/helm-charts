@@ -1,0 +1,32 @@
+suite: Default values
+templates:
+  - deployment.yaml
+  - secret.yaml # dependency of deployment.yaml
+values:
+  # These values are required by the template "secret.yaml"
+  - secret-values.yaml
+tests:
+  - it: should define a deployment with the default settings
+    template: deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: incrementals-publisher
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: PRESHARED_KEY
+            valueFrom:
+              secretKeyRef:
+                key: preshared_key
+                name: RELEASE-NAME-incrementals-publisher
+          any: true
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: PERMISSIONS_URL
+          any: true

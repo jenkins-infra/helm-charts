@@ -77,6 +77,10 @@ spec:
                 secretKeyRef:
                   name: {{ include "incrementals-publisher.fullname" . }}
                   key: preshared_key
+            {{- if .Values.permissions_url }}
+            - name: PERMISSIONS_URL
+              value: {{ .Values.permissions_url }}
+            {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
