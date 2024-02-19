@@ -45,6 +45,9 @@ resources: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
+# permissions_url -- URL to the JSON file providing permissions from the Repository Permission Updater system
+# See default value at https://github.com/jenkins-infra/incrementals-publisher/?tab=readme-ov-file#environment-variables
+permissions_url: ''
 artifactory:
   # artifactory.key -- key to upload to artifactory
   key: ''
