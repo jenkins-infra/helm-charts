@@ -50,12 +50,14 @@ affinity: {}
 permissions_url: ''
 artifactory:
   # artifactory.key -- key to upload to artifactory
-  key: ''
+  key: 'testingArtifactoryKey'
 github:
   # github.token -- token to update github checks and look up commits
-  token: ''
+  token: 'customSuperSecretToken'
+  appId: 'customSuperSecretAppId'
+  privateKey: 'customSuperSecretPrivateKey'
 jenkins:
   # jenkins.auth -- username:accesskey to  talk to jenkins apis to pull build metadata
-  auth: ''
+  auth: 'customSecretJenkinsUser:customSecretJenkinsPassword'
 # preshared_key -- The token needed to be provided for autherization
-preshared_key: ''
+preshared_key: 'customSuperSecretPreSharedKey'
