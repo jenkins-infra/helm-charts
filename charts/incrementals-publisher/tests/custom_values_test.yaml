@@ -48,7 +48,7 @@ tests:
                 key: jenkins_auth
                 name: RELEASE-NAME-incrementals-publisher
 
-  - it: should define a secret with the provided custom settings
+  - it: should create a Secret with the correct value
     template: secret.yaml
     asserts:
       - hasDocuments:

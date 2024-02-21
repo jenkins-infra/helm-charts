@@ -2,10 +2,15 @@ suite: Default values
 templates:
   - deployment.yaml
   - secret.yaml # dependency of deployment.yaml
-values:
-  # These values are required by the template "secret.yaml"
-  - secret-values.yaml
+# values:
+#   # These values are required by the template "secret.yaml"
+#   - secret-values.yaml
 tests:
+  - it: should create an secret with default values
+    template: secret.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
   - it: should define a deployment with the default settings
     template: deployment.yaml
     asserts:
@@ -30,71 +35,3 @@ tests:
           content:
             name: PERMISSIONS_URL
           any: true
-      - contains:
-          path: spec.template.spec.containers[0].env
-          content:
-            name: JENKINS_AUTH
-            valueFrom:
-              secretKeyRef:
-                key: jenkins_auth
-                name: RELEASE-NAME-incrementals-publisher
-      - contains:
-          path: spec.template.spec.containers[0].env
-          content:
-            name: GITHUB_TOKEN
-            valueFrom:
-              secretKeyRef:
-                key: github_token
-                name: RELEASE-NAME-incrementals-publisher
-      - contains:
-          path: spec.template.spec.containers[0].env
-          content:
-            name: GITHUB_APP_ID
-            valueFrom:
-              secretKeyRef:
-                key: github_app_id
-                name: RELEASE-NAME-incrementals-publisher
-          any: true
-      - contains:
-          path: spec.template.spec.containers[0].env
-          content:
-            name: GITHUB_APP_PRIVATE_KEY
-            valueFrom:
-              secretKeyRef:
-                key: github_app_private_key
-                name: RELEASE-NAME-incrementals-publisher
-          any: true
-      - contains:
-          path: spec.template.spec.containers[0].env
-          content:
-            name: ARTIFACTORY_KEY
-            valueFrom:
-              secretKeyRef:
-                key: artifactory_key
-                name: RELEASE-NAME-incrementals-publisher
-          any: true      
-  - it: should define a secret with the provided custom settings
-    template: secret.yaml
-    asserts:
-      - hasDocuments:
-          count: 1
-      - isKind:
-          of: Secret
-      - equal:
-          path: data.artifactory_key
-          value: c3VwZXJTZWNyZXRLZXk=
-      - equal:
-          path: data.github_token
-          value: c3VwZXJTZWNyZXRUb2tlbg==
-      - equal:
-          path: data.github_app_id
-          value: c3VwZXJTZWNyZXRJRA==
-      - equal:
-          path: data.github_app_private_key
-          value: c3VwZXJTZWNyZXRLZXk=
-      - equal:
-          path: data.jenkins_auth
-          value: c2VjcmV0SmVua2luc1VzZXI6c3VwZXJTZWNyZXRKZW5raW5zVXNlclBhc3M=
-      - equal:
-          path: data.preshared_key
-          value: c3VwZXJTZWNyZXRQcmVTaGFyZWRLZXk=
