@@ -2,10 +2,12 @@ suite: Default values
 templates:
   - deployment.yaml
   - secret.yaml # dependency of deployment.yaml
-values:
-  # These values are required by the template "secret.yaml"
-  - secret-values.yaml
 tests:
+  - it: should create a secret with default values
+    template: secret.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
   - it: should define a deployment with the default settings
     template: deployment.yaml
     asserts:

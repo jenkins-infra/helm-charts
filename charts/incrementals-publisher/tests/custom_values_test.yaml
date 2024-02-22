@@ -2,11 +2,17 @@ suite: Custom values
 templates:
   - deployment.yaml
   - secret.yaml # dependency of deployment.yaml
-values:
-  # These values are required by the template "secret.yaml"
-  - secret-values.yaml
 set:
   permissions_url: https://somewhere.jenkins.io/github.json
+  artifactory:
+    key: testingArtifactoryKey
+  github:
+      token: customSuperSecretToken
+      appId: customSuperSecretAppId
+      privateKey: customSuperSecretPrivateKey
+  jenkins:
+    auth: customSecretJenkinsUser:customSecretJenkinsPassword
+  preshared_key: customSuperSecretPreSharedKey
 tests:
   - it: should define a deployment with the provided custom settings
     template: deployment.yaml
@@ -33,3 +39,37 @@ tests:
             name: PERMISSIONS_URL
             value: https://somewhere.jenkins.io/github.json
           any: true
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: JENKINS_AUTH
+            valueFrom:
+              secretKeyRef:
+                key: jenkins_auth
+                name: RELEASE-NAME-incrementals-publisher
+
+  - it: should create a Secret with the correct value
+    template: secret.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Secret
+      - equal:
+          path: data.artifactory_key
+          value: dGVzdGluZ0FydGlmYWN0b3J5S2V5
+      - equal:
+          path: data.github_token
+          value: Y3VzdG9tU3VwZXJTZWNyZXRUb2tlbg==
+      - equal:
+          path: data.github_app_id
+          value: Y3VzdG9tU3VwZXJTZWNyZXRBcHBJZA==
+      - equal:
+          path: data.github_app_private_key
+          value: Y3VzdG9tU3VwZXJTZWNyZXRQcml2YXRlS2V5
+      - equal:
+          path: data.jenkins_auth
+          value: Y3VzdG9tU2VjcmV0SmVua2luc1VzZXI6Y3VzdG9tU2VjcmV0SmVua2luc1Bhc3N3b3Jk
+      - equal:
+          path: data.preshared_key
+          value: Y3VzdG9tU3VwZXJTZWNyZXRQcmVTaGFyZWRLZXk=
