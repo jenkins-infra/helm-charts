@@ -39,6 +39,10 @@ tests:
                             repoOwner('jenkins-infra')
                             repository('default-job')
                             traits {
+                              gitHubNotificationContextTrait {
+                                contextLabel('jenkins/localhost/default-job')
+                                typeSuffix(true)
+                              }
                               gitHubSCMSourceStatusChecksTrait {
                                 // Note: changing this name might have impact on github branch protections if they specify status names
                                 name('jenkins')
@@ -117,6 +121,7 @@ tests:
                   }
   - it: should generate a multibranch job with custom name, description and explicit kind
     set:
+      jenkinsFqdn: jenkins.company.com
       jobsDefinition:
         joba:
           name: Job A
@@ -146,6 +151,10 @@ tests:
                             repoOwner('jenkins-infra')
                             repository('joba')
                             traits {
+                              gitHubNotificationContextTrait {
+                                contextLabel('jenkins/jenkins.company.com/joba')
+                                typeSuffix(true)
+                              }
                               gitHubSCMSourceStatusChecksTrait {
                                 // Note: changing this name might have impact on github branch protections if they specify status names
                                 name('jenkins')
@@ -256,6 +265,10 @@ tests:
                             repoOwner('obiwankenobi')
                             repository('lightsaber')
                             traits {
+                              gitHubNotificationContextTrait {
+                                contextLabel('jenkins/localhost/job-b')
+                                typeSuffix(true)
+                              }
                               gitHubSCMSourceStatusChecksTrait {
                                 // Note: changing this name might have impact on github branch protections if they specify status names
                                 name('jenkins')
@@ -367,6 +380,10 @@ tests:
                             repoOwner('jenkins-infra')
                             repository('job-c')
                             traits {
+                              gitHubNotificationContextTrait {
+                                contextLabel('jenkins/localhost/job-c')
+                                typeSuffix(true)
+                              }
                               gitHubSCMSourceStatusChecksTrait {
                                 // Note: changing this name might have impact on github branch protections if they specify status names
                                 name('untrusted-ci')
