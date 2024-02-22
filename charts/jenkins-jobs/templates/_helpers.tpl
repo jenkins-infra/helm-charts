@@ -3,15 +3,16 @@
 Generate the job-dsl configuration from specified values
 */}}
 {{- define "jobs-dsl-config" -}}
+  {{- $root := . }}
   {{- range $jobId, $jobDef := .Values.jobsDefinition }}
 - script: >
-{{- include "generic-job-dsl-definition" (merge $jobDef (dict "id" $jobId)) | indent 4 }}
+{{- include "generic-job-dsl-definition" (merge $jobDef (dict "id" $jobId "root" $root)) | indent 4 }}
     {{- range $childId, $childDef := $jobDef.children }}
       {{- /*  Jenkins + Job DSL allow to define job children by concatenating their id with the parent id, separated by a / */}}
       {{- $childFullId := printf "%s/%s" $jobId $childId }}
-      {{- $child := (dict "id" $childId "fullId" $childFullId ) }}
+      {{- $child := (dict "id" $childId "fullId" $childFullId "root" $root) }}
       {{- if $childDef }}
-      {{- $child = (merge $childDef (dict "id" $childId "fullId" $childFullId )) }}
+      {{- $child = (merge $childDef (dict "id" $childId "fullId" $childFullId "root" $root)) }}
       {{- end }}
 {{ include "generic-job-dsl-definition" $child | indent 4 }}
     {{- end -}}
@@ -128,6 +129,10 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
           repoOwner('{{ $repositoryOwner }}')
           repository('{{ $repository }}')
           traits {
+            gitHubNotificationContextTrait {
+              contextLabel('jenkins/{{ .root.Values.jenkinsFqdn | default "localhost" }}/{{ .fullId | default .id }}')
+              typeSuffix(true)
+            }
             gitHubSCMSourceStatusChecksTrait {
               // Note: changing this name might have impact on github branch protections if they specify status names
               name({{ .githubCheckName | default "jenkins" | squote }})
