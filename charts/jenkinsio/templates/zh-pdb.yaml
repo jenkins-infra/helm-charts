@@ -1,3 +1,4 @@
+{{- if .Values.zhJenkinsioEnabled }}
 {{- if (gt (int .Values.replicaCount) 1) }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
@@ -15,4 +16,5 @@ spec:
   selector:
     matchLabels:
       {{- include "jenkinsio-zh.selectorLabels" . | nindent 6 }}
+{{- end }}
 {{- end }}

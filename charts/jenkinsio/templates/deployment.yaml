@@ -1,3 +1,4 @@
+{{- if .Values.jenkinsioEnabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -13,7 +14,7 @@ spec:
     metadata:
       labels: {{include "jenkinsio.labels" . | nindent 8}}
       annotations:
-        checksum/config: {{include (print $.Template.BasePath "/nginx-configmap.yaml") . | sha256sum}}
+        checksum/config: {{include (print $.Template.BasePath "/configmap.yaml") . | sha256sum}}
     spec:
       automountServiceAccountToken: false
     {{- with .Values.imagePullSecrets }}
@@ -75,3 +76,4 @@ spec:
         - name: config
           configMap:
             name: {{ include "jenkinsio.fullname" . }}
+{{- end }}

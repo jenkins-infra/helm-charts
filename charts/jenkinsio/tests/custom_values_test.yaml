@@ -2,10 +2,10 @@ suite: Test with custom values
 templates:
   - deployment.yaml
   - zh-deployment.yaml
+  - configmap.yaml
   - zh-configmap.yaml
-  - nginx-configmap.yaml
   - pdb.yaml
-  - pdb-zh.yaml
+  - zh-pdb.yaml
 set:
   htmlVolume:
     azureFile:
@@ -90,7 +90,7 @@ tests:
           path: metadata.labels["app.kubernetes.io/name"]
           value: jenkinsio
   - it: should ensure the pdb has correct spec for jenkinsio-zh
-    template: pdb-zh.yaml
+    template: zh-pdb.yaml
     set:
       replicaCount: 2
       poddisruptionbudget.jenkinsiozh.minAvailable: 3
@@ -110,3 +110,19 @@ tests:
       - equal:
           path: metadata.labels["app.kubernetes.io/name"]
           value: jenkinsio
+  - it: should not deploy jenkinsio if disabled
+    templates:
+      - deployment.yaml
+    set:
+      jenkinsioEnabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should not deploy jenkinsio-zh if disabled
+    templates:
+      - zh-deployment.yaml
+    set:
+      zhJenkinsioEnabled: false
+    asserts:
+      - hasDocuments:
+          count: 0

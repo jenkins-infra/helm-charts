@@ -2,8 +2,8 @@ suite: Test with default values
 templates:
   - deployment.yaml
   - zh-deployment.yaml
+  - configmap.yaml
   - zh-configmap.yaml
-  - nginx-configmap.yaml
   - pdb.yaml
 tests:
   - it: should create a deployment for jenkins.io with default values
