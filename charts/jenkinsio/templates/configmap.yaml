@@ -1,3 +1,4 @@
+{{- if .Values.jenkinsioEnabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -110,3 +111,4 @@ data:
       rewrite ^/jep/([0-9]+) https://github.com/jenkinsci/jep/blob/master/jep/$1/README.adoc permanent;
       rewrite ^/iep/([0-9]+) https://github.com/jenkins-infra/iep/blob/master/iep/$1/README.adoc permanent;
     }
+{{- end }}

@@ -53,6 +53,8 @@ affinity:
   jenkinsio-zh: {}
 htmlVolume: {}
 zhHtmlVolume: {}
+jenkinsioEnabled: true
+zhJenkinsioEnabled: true
 forceJenkinsIoHost: false
 poddisruptionbudget:
   jenkinsio:
