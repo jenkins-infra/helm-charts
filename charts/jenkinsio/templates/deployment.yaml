@@ -74,4 +74,4 @@ spec:
 {{- end }}
         - name: config
           configMap:
-            name: jenkinsio
+            name: {{ include "jenkinsio.fullname" . }}
