@@ -5477,6 +5477,31 @@ entries:
     version: 0.0.1
   mirrorbits-parent:
   - apiVersion: v2
+    created: "2024-03-05T19:06:42.912785968Z"
+    dependencies:
+    - condition: mirrorbits.enabled
+      name: mirrorbits
+      repository: https://jenkins-infra.github.io/helm-charts
+      version: 2.3.6
+    - condition: httpd.enabled
+      name: httpd
+      repository: https://jenkins-infra.github.io/helm-charts
+      version: 0.3.1
+    - condition: rsyncd.enabled
+      name: rsyncd
+      repository: https://jenkins-infra.github.io/helm-charts
+      version: 1.4.22
+    description: A mirrorbits parent chart for Kubernetes
+    digest: 410b6f12e616e0c41073d2e0c0777d016739157584cf22d926f76cfdb25d3abc
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: mirrorbits-parent
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/mirrorbits-parent-2.0.12/mirrorbits-parent-2.0.12.tgz
+    version: 2.0.12
+  - apiVersion: v2
     created: "2024-02-21T14:26:54.172714675Z"
     dependencies:
     - condition: mirrorbits.enabled
@@ -8424,6 +8449,16 @@ entries:
   wiki:
   - apiVersion: v2
     appVersion: 0.0.7
+    created: "2024-03-05T19:06:43.030066439Z"
+    description: A Helm chart for wiki static content
+    digest: 9e9914b1297302997a2decbea8d7e1eac4cfd308df3a2e2d175e792275fc2f80
+    name: wiki
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/wiki-0.6.25/wiki-0.6.25.tgz
+    version: 0.6.25
+  - apiVersion: v2
+    appVersion: 0.0.7
     created: "2024-02-23T08:43:05.127784231Z"
     description: A Helm chart for wiki static content
     digest: 222f6ea8db26223b51ddce5b038acfaca63e7cce217965b2b25fb9b4e6cdd6da
@@ -9622,4 +9657,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2024-03-05T17:52:26.55968863Z"
+generated: "2024-03-05T19:06:43.031311238Z"
