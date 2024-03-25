@@ -6,7 +6,7 @@ on:
   pull_request: null
   workflow_dispatch: null
 env:
-  UNITTEST_VERSION: v0.4.3
+  UNITTEST_VERSION: v0.4.4
 jobs:
   run_unit_tests_on_modified_charts:
     runs-on: ubuntu-latest
