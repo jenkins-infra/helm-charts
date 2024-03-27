@@ -1,0 +1,49 @@
+suite: Tests using proxy_cache setups
+templates:
+  - nginx-proxy-configmap.yaml
+tests:
+  - it: Should include set proxy_cache with default setup
+    template: nginx-proxy-configmap.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ConfigMap
+      - matchRegex:
+          path: data["cache.conf"]
+          pattern: proxy_cache_path /data/nginx-cache levels=1 keys_zone=nginx_cache:200m max_size=50g inactive=1M use_temp_path=off;
+      - matchRegex:
+          path: data["proxy-cache.conf"]
+          pattern: proxy_cache         nginx_cache;
+      - matchRegex:
+          path: data["proxy-cache.conf"]
+          pattern: proxy_cache_valid 200 206 1M;
+  - it: Should include set proxy_cache with default setup
+    template: nginx-proxy-configmap.yaml
+    set:
+      cache:
+        path: /CACHE
+        keysZoneSize: "500m"
+        inactive: "2H"
+        useTempPath: "on"
+      persistence:
+        enabled: true
+        size: 200
+      proxy:
+        proxyPass: "repo.jenkins-ci.org"
+        proxyCacheValidCode: "201 204"
+        proxyCacheValidCodeDuration: "3H"
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ConfigMap
+      - matchRegex:
+          path: data["cache.conf"]
+          pattern: proxy_cache_path /CACHE levels=1 keys_zone=nginx_cache:500m max_size=200g inactive=2H use_temp_path=on;
+      - matchRegex:
+          path: data["proxy-cache.conf"]
+          pattern: proxy_cache         nginx_cache;
+      - matchRegex:
+          path: data["proxy-cache.conf"]
+          pattern: proxy_cache_valid 201 204 3H;
