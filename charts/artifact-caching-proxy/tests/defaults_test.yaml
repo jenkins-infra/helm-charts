@@ -25,6 +25,12 @@ tests:
       - isKind:
           of: ConfigMap
       - isNotNullOrEmpty:
+          path: data["cache.conf"]
+      - isNotNullOrEmpty:
+          path: data["common-proxy.conf"]
+      - isNotNullOrEmpty:
+          path: data["proxy-cache.conf"]
+      - isNotNullOrEmpty:
           path: data["vhost-proxy.conf"]
       - isNotNullOrEmpty:
           path: data["vhost-status.conf"]

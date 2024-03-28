@@ -7,12 +7,6 @@ data:
   cache.conf: |
     proxy_cache_path {{ .Values.cache.path }} levels=1 keys_zone=nginx_cache:{{ .Values.cache.keysZoneSize }} max_size={{ .Values.persistence.size }}g inactive={{ .Values.cache.inactive }} use_temp_path={{ .Values.cache.useTempPath }};
   common-proxy.conf: |
-    # Enable caching
-    proxy_cache         nginx_cache;
-
-    # Specify HTTP code of responses to cache
-    proxy_cache_valid {{ .Values.proxy.proxyCacheValidCode }} {{ .Values.proxy.proxyCacheValidCodeDuration }};
-
     # Ensure that no authentication header are sent to the upstreams
     proxy_set_header    Authorization     "";
 
@@ -28,8 +22,12 @@ data:
 
     # Remove any cookie in the requests to upstream
     proxy_cookie_path   ~*^/.* /;
+  proxy-cache.conf: |
+    # Enable caching
+    proxy_cache         nginx_cache;
 
-    proxy_read_timeout  900;
+    # Specify HTTP code of responses to cache
+    proxy_cache_valid {{ .Values.proxy.proxyCacheValidCode }} {{ .Values.proxy.proxyCacheValidCodeDuration }};
   vhost-proxy.conf: |
     include /etc/nginx/conf.d/cache.conf;
 
@@ -39,9 +37,11 @@ data:
 
         # Specify a DNS resolver to ensure upstream DNS are dynamically resolved
         # Ref. https://github.com/DmitryFillo/nginx-proxy-pitfalls
-        resolver 9.9.9.9 valid=60s;
-        # Specify the upstream URL as a variable to ensure dynamic resolution
-        set $remote_repo {{ .Values.proxy.proxyPass }};
+        # and disable IPv6 resolution to ensure only IPv4 hosts are used for upstreams
+        resolver 9.9.9.9 valid=60s ipv6=off;
+        # Specify the upstream URLs as a variables to ensure dynamic name resolution
+        set $jenkins_repo {{ .Values.proxy.proxyPass }};
+        set $central_repo repo1.maven.org;
 
         if ($http_x_forwarded_proto = '') {
             set $http_x_forwarded_proto  $scheme;
@@ -64,20 +64,83 @@ data:
         # Headers added to responses to the client
         add_header          X-Cache-Status    $upstream_cache_status;
 
-        # Location for the non-cached requests
+        # Allow chaining upstreams fallbacks (using proxy_intercept_errors + error_page) up to 10 redirects per request
+        # See http://nginx.org/en/docs/http/ngx_http_core_module.html#recursive_error_pages and http://nginx.org/en/docs/http/ngx_http_core_module.html#internal
+        recursive_error_pages on;
+
+        # Non-cached requests
+        ## Default location which tries the following chain: "jenkins public" -> "jenkins incrementals" -> "maven central"
         location ~* (maven-metadata.xml) {
-            proxy_pass          https://$remote_repo$request_uri;
+            include             /etc/nginx/conf.d/common-proxy.conf;
+            proxy_pass          https://$jenkins_repo/public$request_uri;
+
+            proxy_intercept_errors on;
+            # If the file is not found, then fallback the search in the "non-cached jenkins incrementals" upstream server
+            error_page 404 = @fallback_noncached_jenkins_incrementals;
+        }
+        location @fallback_noncached_jenkins_incrementals {
+            include             /etc/nginx/conf.d/common-proxy.conf;
+            proxy_pass          https://$jenkins_repo/incrementals$request_uri;
+
+            proxy_intercept_errors on;
+            # If the file is not found, then fallback the search in the "non-cached maven central" upstream server
+            error_page 404 = @fallback_noncached_maven_central;
+        }
+        location @fallback_noncached_maven_central {
+            include             /etc/nginx/conf.d/common-proxy.conf;
+            proxy_pass          https://$central_repo/maven2$request_uri;
+
+            # Stop chaining requests
+            proxy_intercept_errors off;
         }
 
-        # Default location for cached requests
+        # Cached requests
+        ## Default location which tries the following chain: "jenkins public" -> "jenkins incrementals" -> "maven central"
         location / {
 {{- if .Values.proxy.proxyBypass.enabled -}}
             add_header Cache $upstream_cache_status;
             proxy_cache_bypass $bypass;
 {{- end }}
-            proxy_pass          https://$remote_repo$request_uri;
+            proxy_pass          https://$jenkins_repo/public$request_uri;
             proxy_cache_key     $uri;
-            include /etc/nginx/conf.d/common-proxy.conf;
+            include             /etc/nginx/conf.d/common-proxy.conf;
+            include             /etc/nginx/conf.d/proxy-cache.conf;
+
+            proxy_intercept_errors on;
+            # If the file is not found, then fallback the search in the "jenkins incrementals" upstream server
+            error_page 404 = @fallback_jenkins_incrementals;
+            # If upstream respond with "HTTP 30x Redirect" then Nginx must re-emit a proxy request to the new location (see location @handle_redirects)
+            error_page 307 302 301 = @handle_redirects;
+        }
+
+        ## Fallback location to "jenkins incrementals" repository
+        location @fallback_jenkins_incrementals {
+{{- if .Values.proxy.proxyBypass.enabled -}}
+            add_header Cache $upstream_cache_status;
+            proxy_cache_bypass $bypass;
+{{- end }}
+            proxy_pass          https://$jenkins_repo/incrementals$request_uri;
+            proxy_cache_key     $uri;
+            include             /etc/nginx/conf.d/common-proxy.conf;
+            include             /etc/nginx/conf.d/proxy-cache.conf;
+
+            proxy_intercept_errors on;
+            # If the file is not found, then fallback the search in the "maven central" upstream server
+            error_page 404 = @fallback_maven_central;
+            # If upstream respond with "HTTP 30x Redirect" then Nginx must re-emit a proxy request to the new location (see location @handle_redirects)
+            error_page 307 302 301 = @handle_redirects;
+        }
+
+        ## Fallback location to maven central
+        location @fallback_maven_central {
+{{- if .Values.proxy.proxyBypass.enabled -}}
+            add_header Cache $upstream_cache_status;
+            proxy_cache_bypass $bypass;
+{{- end }}
+            proxy_pass          https://$central_repo/maven2$request_uri;
+            proxy_cache_key     $uri;
+            include             /etc/nginx/conf.d/common-proxy.conf;
+            include             /etc/nginx/conf.d/proxy-cache.conf;
 
             # If upstream respond with "HTTP 30x Redirect"
             # then this section will be used to follow the redirect
