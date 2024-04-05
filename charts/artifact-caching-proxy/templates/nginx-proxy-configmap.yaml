@@ -22,6 +22,12 @@ data:
 
     # Remove any cookie in the requests to upstream
     proxy_cookie_path   ~*^/.* /;
+
+    # Compress request/respons with upstream
+    # Requires '--with-http_gunzip_module' in 'nginx -V'
+    gunzip on;
+    proxy_set_header Accept-Encoding "gzip";
+    gzip_proxied any;
   proxy-cache.conf: |
     # Enable caching
     proxy_cache         nginx_cache;

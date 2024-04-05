@@ -41,6 +41,12 @@ data:
         directio            10m;
         directio_alignment 4096;
 
+        # Tune proxy buffering to ensure large files are handled
+        # Inspired by https://jfrog.com/help/r/artifactory-how-to-enable-tls-within-the-jfrog-platform/artifactory-nginx-configuration
+        proxy_buffer_size          128k;
+        proxy_buffers              4 256k;
+        proxy_busy_buffers_size    256k;
+
         keepalive_timeout  65;
 
         gzip  on;
