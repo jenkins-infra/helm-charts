@@ -4,6 +4,9 @@ metadata:
   name: {{ include "httpd.fullname" . }}
 data:
   httpd.conf: |
+{{- if .Values.httpdConf }}
+{{- .Values.httpdConf | nindent 4 }}
+{{- else }}
     # Security
     ServerTokens Prod
     ServerSignature Off
@@ -518,3 +521,4 @@ data:
     SSLRandomSeed startup builtin
     SSLRandomSeed connect builtin
     </IfModule>
+{{- end }}

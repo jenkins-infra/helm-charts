@@ -1,5 +1,6 @@
 suite: Tests with custom values
 templates:
+  - configmap.yaml
   - deployment.yaml
   - ingress.yaml
   - secret.yaml # Direct dependency of deployment.yaml
@@ -18,6 +19,8 @@ set:
         paths:
         - path: /
           pathType: IfNotPresent
+  httpdConf: |
+    ServerName example.com
 tests:
   - it: Should set the correct service selector labels when a fullNameOverride is specified
     template: service.yaml
@@ -137,3 +140,14 @@ tests:
       - equal:
           path: spec.rules[0].http.paths[0].pathType
           value: "IfNotPresent"
+  - it: should create a config map with custom httpd conf
+    template: configmap.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ConfigMap
+      - equal:
+          path: data["httpd.conf"]
+          value: |
+            ServerName example.com
