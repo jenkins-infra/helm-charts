@@ -71,6 +71,8 @@ repository:
     enabled: false
     # data hold secrets data used by persistentVolume
     data: {}
+# To override the default httpd.conf data tailored for mirrorbits, set the following value
+httpdConf: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
