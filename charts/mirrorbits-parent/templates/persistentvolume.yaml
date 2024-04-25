@@ -27,4 +27,69 @@ spec:
   {{- with .Values.global.storage.persistentVolume.additionalSpec }}
     {{- toYaml . | nindent 2 }}
   {{- end }}
+{{- else }}
+{{- if .Values.global.storageMirrorbits.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "mirrorbits-parent.name" . }}-mirrorbits
+  labels:
+{{- include "mirrorbits-parents.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    {{- toYaml .Values.global.storageMirrorbits.accessModes | nindent 4 }}
+  capacity:
+    storage: {{ .Values.global.storageMirrorbits.storageSize }}
+  storageClassName: {{ .Values.global.storageMirrorbits.storageClassName }}
+  {{- if .Values.global.storageMirrorbits.persistentVolume }}
+  {{- with .Values.global.storageMirrorbits.persistentVolume.azureFile }}
+  csi:
+    driver: file.csi.azure.com
+    nodeStageSecretRef:
+      name: {{ include "mirrorbits-parent.pv-secretname" $ }}-mirrorbits
+      namespace: {{ $.Release.Namespace }}
+    volumeAttributes:
+      resourceGroup: {{ .resourceGroup }}
+      shareName: {{ .shareName }}
+    volumeHandle: {{ include "mirrorbits-parent.name" . }}-mirrorbits
+    readOnly: {{ .readOnly | default false }}
+  {{- end }}
+  {{- with .Values.global.storageMirrorbits.persistentVolume.additionalSpec }}
+    {{- toYaml . | nindent 2 }}
+  {{- end }}
+  {{- end }}
+{{- end }}
+{{- if .Values.global.storageHttpd.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "mirrorbits-parent.name" . }}-httpd
+  labels:
+{{- include "mirrorbits-parents.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    {{- toYaml .Values.global.storageHttpd.accessModes | nindent 4 }}
+  capacity:
+    storage: {{ .Values.global.storageHttpd.storageSize }}
+  storageClassName: {{ .Values.global.storageHttpd.storageClassName }}
+  {{- if .Values.global.storageHttpd.persistentVolume }}
+  {{- with .Values.global.storageHttpd.persistentVolume.azureFile }}
+  csi:
+    driver: file.csi.azure.com
+    nodeStageSecretRef:
+      name: {{ include "mirrorbits-parent.pv-secretname" $ }}-httpd
+      namespace: {{ $.Release.Namespace }}
+    volumeAttributes:
+      resourceGroup: {{ .resourceGroup }}
+      shareName: {{ .shareName }}
+    volumeHandle: {{ include "mirrorbits-parent.name" $ }}-httpd
+    readOnly: {{ .readOnly | default false }}
+  {{- end }}
+  {{- with .Values.global.storageHttpd.persistentVolume.additionalSpec }}
+    {{- toYaml . | nindent 2 }}
+  {{- end }}
+  {{- end }}
+{{- end }}
 {{- end }}

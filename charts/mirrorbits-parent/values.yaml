@@ -29,7 +29,7 @@ global:
     #     hosts:
     #       - company.org
 
-  ## Persistent Storage used across components
+  ## If using a unique persistent Storage used across components
   storage:
     ## Manage (and reuse) PV + PVC for all components
     enabled: false
@@ -50,6 +50,88 @@ global:
       #   resourceGroup: storage-rg
       #   storageAccountName: storage-account
       #   shareName: storage-share
+      #   storageAccountKey: StorageAccountSuperSecretKey
+      #   readOnly: false
+      ## Additional custom spec added at the end of the generated PV `spec` section.
+      ## User is responsible to not duplicate existing spec directives (helm template is your friend).
+      additionalSpec: {}
+      # additionalSpec:
+      #  persistentVolumeReclaimPolicy: Retain
+      #  mountOptions:
+      #    - dir_mode=0755
+      #    - ...
+
+    persistentVolumeClaim:
+      ## Additional custom spec added at the end of the generated PVC `spec` section.
+      ## User is responsible to not duplicate existing spec directives (helm template is your friend).
+      additionalSpec: {}
+      # additionalSpec:
+      #   volumeMode: Filesystem
+      #   ...
+
+  ## Persistent Storage used for mirrorbits components only
+  # Implies storage.enabled: false
+  storageMirrorbits:
+    ## Manage (and reuse) PV + PVC for all components
+    enabled: false
+    ## Use this value to specify a custom template consumed by subcharts to retrieve the name of the PVC
+    claimNameTpl: '{{ include "mirrorbits-parent.pvc-name" $ }}-mirrorbits'
+    ## Define a custom storage class
+    storageClassName: default
+    # storageClassName: azurefile-csi-premium
+    ## Define a custom storage size (both PV and PVC)
+    storageSize: 1Gi
+    ## Define the set of access modes available for the persistent volume and its claim
+    accessModes:
+      - ReadOnlyMany
+    persistentVolume:
+      ## This chart usually runs on Azure with an Azurefile as a persistent volume.
+      ## Use the following section to define the secret and CSI specification for the PV.
+      # azureFile:
+      #   resourceGroup: storage-rg
+      #   storageAccountName: storage-account
+      #   shareName: storage-share-mirrorbits
+      #   storageAccountKey: StorageAccountSuperSecretKey
+      #   readOnly: false
+      ## Additional custom spec added at the end of the generated PV `spec` section.
+      ## User is responsible to not duplicate existing spec directives (helm template is your friend).
+      additionalSpec: {}
+      # additionalSpec:
+      #  persistentVolumeReclaimPolicy: Retain
+      #  mountOptions:
+      #    - dir_mode=0755
+      #    - ...
+
+    persistentVolumeClaim:
+      ## Additional custom spec added at the end of the generated PVC `spec` section.
+      ## User is responsible to not duplicate existing spec directives (helm template is your friend).
+      additionalSpec: {}
+      # additionalSpec:
+      #   volumeMode: Filesystem
+      #   ...
+
+  ## Persistent Storage used for httpd components only
+  # Implies storage.enabled: false
+  storageHttpd:
+    ## Manage (and reuse) PV + PVC for all components
+    enabled: false
+    ## Use this value to specify a custom template consumed by subcharts to retrieve the name of the PVC
+    claimNameTpl: '{{ include "mirrorbits-parent.pvc-name" $ }}-httpd'
+    ## Define a custom storage class
+    storageClassName: default
+    # storageClassName: azurefile-csi-premium
+    ## Define a custom storage size (both PV and PVC)
+    storageSize: 1Gi
+    ## Define the set of access modes available for the persistent volume and its claim
+    accessModes:
+      - ReadOnlyMany
+    persistentVolume:
+      ## This chart usually runs on Azure with an Azurefile as a persistent volume.
+      ## Use the following section to define the secret and CSI specification for the PV.
+      # azureFile:
+      #   resourceGroup: storage-rg
+      #   storageAccountName: storage-account
+      #   shareName: storage-share-httpd
       #   storageAccountKey: StorageAccountSuperSecretKey
       #   readOnly: false
       ## Additional custom spec added at the end of the generated PV `spec` section.

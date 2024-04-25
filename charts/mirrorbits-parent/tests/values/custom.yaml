@@ -19,18 +19,18 @@ global:
           - path: /
             backendService: mirrorbits
   storage:
-      enabled: true
-      storageClassName: super-fast-storage
-      storageSize: 510Gi
-      accessModes:
-        - ReadWriteMany
-        - ReadOnlyMany
-        - ReadWriteOnce
-      persistentVolume:
-        additionalSpec:
-          persistentVolumeReclaimPolicy: Retain
-          mountOptions:
-            - dir_mode=0755
-      persistentVolumeClaim:
-        additionalSpec:
-          volumeMode: Block
+    enabled: true
+    storageClassName: super-fast-storage
+    storageSize: 510Gi
+    accessModes:
+      - ReadWriteMany
+      - ReadOnlyMany
+      - ReadWriteOnce
+    persistentVolume:
+      additionalSpec:
+        persistentVolumeReclaimPolicy: Retain
+        mountOptions:
+          - dir_mode=0755
+    persistentVolumeClaim:
+      additionalSpec:
+        volumeMode: Block

@@ -17,4 +17,45 @@ spec:
   {{- with .Values.global.storage.persistentVolumeClaim.additionalSpec }}
     {{- toYaml . | nindent 2 }}
   {{- end }}
+{{- else }}
+{{- if .Values.global.storageMirrorbits.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "mirrorbits-parent.pvc-name" . }}-mirrorbits
+  labels:
+{{- include "mirrorbits-parents.labels" . | nindent 4 }}
+spec:
+  volumeName: {{ include "mirrorbits-parent.name" . }}-mirrorbits
+  accessModes:
+    {{- toYaml .Values.global.storageMirrorbits.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ .Values.global.storageMirrorbits.storageSize }}
+  storageClassName: {{ .Values.global.storageMirrorbits.storageClassName }}
+  {{- with .Values.global.storageMirrorbits.persistentVolumeClaim.additionalSpec }}
+    {{- toYaml . | nindent 2 }}
+  {{- end }}
+{{- end }}
+{{- if .Values.global.storageHttpd.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.global.storageHttpd.claimNameTpl }}-httpd
+  labels:
+{{- include "mirrorbits-parents.labels" . | nindent 4 }}
+spec:
+  volumeName: {{ include "mirrorbits-parent.name" . }}-httpd
+  accessModes:
+    {{- toYaml .Values.global.storageHttpd.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ .Values.global.storageHttpd.storageSize }}
+  storageClassName: {{ .Values.global.storageHttpd.storageClassName }}
+  {{- with .Values.global.storageHttpd.persistentVolumeClaim.additionalSpec }}
+    {{- toYaml . | nindent 2 }}
+  {{- end }}
+{{- end }}
 {{- end }}
