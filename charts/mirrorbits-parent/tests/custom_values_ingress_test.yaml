@@ -128,7 +128,7 @@ tests:
                 - path: /
     asserts:
       - failedTemplate:
-          errorMessage: "Required key: backendService for ingress.hosts[].paths[] objects must have the value 'httpd' or 'mirrorbits'."
+          errorMessage: "backendService for ingress.hosts[].paths[] objects must have the value 'httpd' or 'mirrorbits'."
   - it: should fail the ingress when a host's path has an unknown backendService
     template: ingress.yaml
     set:
@@ -141,7 +141,7 @@ tests:
                   backendService: yipikai
     asserts:
       - failedTemplate:
-          errorMessage: "Required key: backendService for ingress.hosts[].paths[] objects must have the value 'httpd' or 'mirrorbits'."
+          errorMessage: "backendService for ingress.hosts[].paths[] objects must have the value 'httpd' or 'mirrorbits'."
   - it: should fail the ingress when referencing httpd as backend but it is disabled
     template: ingress.yaml
     set:
