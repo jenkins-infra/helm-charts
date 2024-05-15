@@ -16,6 +16,32 @@ tests:
       envFrom:
         - secretRef:
             name: demo-greeting
+      podSecurityContext:
+        fsGroup: 2000
+      containerSecurityContext:
+        runAsNonRoot: true
+      nodeSelector:
+        os: windows-2022
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app.kubernetes.io/name"
+                    operator: In
+                    values:
+                      - artifact-caching-proxy
+              topologyKey: "kubernetes.io/hostname"
+      tolerations:
+        - key: "kubernetes.io/arch"
+          operator: "Equal"
+          value: "arm64"
+          effect: "NoSchedule"
+      resources:
+        limits:
+          cpu: 500m
+        requests:
+          memory: 1024Mi
     asserts:
       - hasDocuments:
           count: 1
@@ -30,6 +56,33 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].envFrom[0].secretRef.name
           value: "demo-greeting"
+      # Custom pod security context
+      - equal:
+          path: spec.template.spec.securityContext.fsGroup
+          value: 2000
+      # Custom container security context
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.runAsNonRoot
+          value: true
+      # Custom node selectors
+      - equal:
+          path: spec.template.spec.nodeSelector.os
+          value: windows-2022
+      # Custom affinity
+      - equal:
+          path: spec.template.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].topologyKey
+          value: "kubernetes.io/hostname"
+      # Custom tolerations
+      - equal:
+          path: spec.template.spec.tolerations[0].effect
+          value: "NoSchedule"
+      # Custom container resources
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.cpu
+          value: 500m
+      - equal:
+          path: spec.template.spec.containers[0].resources.requests.memory
+          value: 1024Mi
   - it: Should set a custom health check path when specified by values
     template: ingress.yaml
     set:
