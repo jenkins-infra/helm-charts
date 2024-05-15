@@ -7,10 +7,6 @@ metadata:
 spec:
   serviceName: {{ include "artifact-caching-proxy.fullname" . }}
   replicas: {{ .Values.replicaCount }}
-  {{- with .Values.affinity }}
-  affinity:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
   selector:
     matchLabels:
       {{- include "artifact-caching-proxy.selectorLabels" . | nindent 6 }}
@@ -55,8 +51,22 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.podSecurityContext }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{ if .Values.initContainers.enabled }}
       initContainers:
       - name: permission-fix
@@ -68,8 +78,10 @@ spec:
       {{- end}}
       containers:
       - name: {{ .Chart.Name }}
+        {{- with .Values.containerSecurityContext }}
         securityContext:
-          {{- toYaml .Values.securityContext | nindent 10 }}
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
@@ -91,8 +103,10 @@ spec:
           httpGet:
             path: {{ .Values.ingress.healthPath }}
             port: http
+        {{- with .Values.resources }}
         resources:
-          {{- toYaml .Values.resources | nindent 12 }}
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
         volumeMounts:
         - name: nginx-default-config
           mountPath: /etc/nginx/nginx.conf

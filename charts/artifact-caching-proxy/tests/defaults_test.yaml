@@ -41,8 +41,23 @@ tests:
           count: 1
       - isKind:
           of: StatefulSet
+      # No security contexts by default
       - notExists:
-          path: spec.affinity
+          path: spec.template.spec.securityContext
+      - notExists:
+          path: spec.template.spec.containers[0].securityContext
+      # No node selector by default
+      - notExists:
+          path: spec.template.spec.nodeSelector
+      # No affinity by default
+      - notExists:
+          path: spec.template.spec.affinity
+      # No tolerations by default
+      - notExists:
+          path: spec.template.spec.tolerations
+      # No container resources by default
+      - notExists:
+          path: spec.template.spec.containers[0].resources
       - equal:
           path: spec.template.spec.containers[0].env
           value: []
