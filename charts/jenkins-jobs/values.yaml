@@ -40,7 +40,7 @@ jobsDefinition: {}
 #              username: ${SSH_CHARTS_SECRETS_USERNAME}
 #              description: "SSH privkey used to access jenkins-infra/charts-secrets"
 #              privateKey: "${SSH_CHARTS_SECRETS_PRIVKEY}"
-#            kubeconfig-cik8s:
+#            kubeconfig-cluster-1:
 #              fileName: "kubeconfig"
-#              description: "Kubeconfig file for cik8s"
-#              secretBytes: "${base64:${KUBECONFIG_CIK8S}}"
+#              description: "Kubeconfig file for cluster-1"
+#              secretBytes: "${base64:${KUBECONFIG_CLUSTER_1}}"
