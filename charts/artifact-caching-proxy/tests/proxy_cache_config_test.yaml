@@ -18,6 +18,10 @@ tests:
       - matchRegex:
           path: data["proxy-cache.conf"]
           pattern: proxy_cache_valid 200 206 1M;
+      - matchRegex:
+          path: data["vhost-proxy.conf"]
+          pattern: set \$initial_proxy_location /public;
+
   - it: Should include set proxy_cache with default setup
     template: nginx-proxy-configmap.yaml
     set:
@@ -33,6 +37,7 @@ tests:
         proxyPass: "repo.jenkins-ci.org"
         proxyCacheValidCode: "201 204"
         proxyCacheValidCodeDuration: "3H"
+        initialProxyLocationPath: /
     asserts:
       - hasDocuments:
           count: 1
@@ -47,3 +52,6 @@ tests:
       - matchRegex:
           path: data["proxy-cache.conf"]
           pattern: proxy_cache_valid 201 204 3H;
+      - matchRegex:
+          path: data["vhost-proxy.conf"]
+          pattern: set \$initial_proxy_location /;
