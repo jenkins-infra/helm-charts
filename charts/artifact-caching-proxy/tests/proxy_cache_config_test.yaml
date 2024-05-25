@@ -18,6 +18,9 @@ tests:
       - matchRegex:
           path: data["proxy-cache.conf"]
           pattern: proxy_cache_valid 200 206 1M;
+      - matchRegex:
+          path: data["common-proxy.conf"]
+          pattern: proxy_set_header    Authorization     "";
   - it: Should include set proxy_cache with default setup
     template: nginx-proxy-configmap.yaml
     set:
@@ -33,6 +36,7 @@ tests:
         proxyPass: "repo.jenkins-ci.org"
         proxyCacheValidCode: "201 204"
         proxyCacheValidCodeDuration: "3H"
+        authorizationHeader: "Bearer 123456"
     asserts:
       - hasDocuments:
           count: 1
@@ -47,3 +51,6 @@ tests:
       - matchRegex:
           path: data["proxy-cache.conf"]
           pattern: proxy_cache_valid 201 204 3H;
+      - matchRegex:
+          path: data["common-proxy.conf"]
+          pattern: proxy_set_header    Authorization     "Bearer 123456";
