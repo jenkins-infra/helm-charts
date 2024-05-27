@@ -85,6 +85,8 @@ proxy:
   # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_bypass
   proxyBypass:
     enabled: false
+  # Allows to set the Authorization header to be sent to the upstream, e.g. "Bearer 123"
+  authorizationHeader: ""
 poddisruptionbudget:
   minAvailable: 1
 env: []
