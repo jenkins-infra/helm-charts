@@ -8,7 +8,7 @@ data:
     proxy_cache_path {{ .Values.cache.path }} levels=1 keys_zone=nginx_cache:{{ .Values.cache.keysZoneSize }} max_size={{ .Values.persistence.size }}g inactive={{ .Values.cache.inactive }} use_temp_path={{ .Values.cache.useTempPath }};
   common-proxy.conf: |
     # Ensure that no authentication header are sent to the upstreams
-    proxy_set_header    Authorization     "";
+    proxy_set_header    Authorization     {{ .Values.proxy.authorizationHeader | quote }};
 
     # Pass headers to allow HTTP/30x responses from upstream to be followed
     proxy_set_header    X-Artifactory-Override-Base-Url $http_x_forwarded_proto://$host:$server_port/;

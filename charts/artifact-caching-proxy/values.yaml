@@ -87,6 +87,8 @@ proxy:
     enabled: false
   # Allows the configuration of the initial proxy location (e.g. setting to '/' will proxy all requests to the upstream)
   initialProxyLocationPath: /public
+  # Allows to set the Authorization header to be sent to the upstream, e.g. "Bearer 123"
+  authorizationHeader: ""
 poddisruptionbudget:
   minAvailable: 1
 env: []

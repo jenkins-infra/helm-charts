@@ -21,7 +21,9 @@ tests:
       - matchRegex:
           path: data["vhost-proxy.conf"]
           pattern: set \$initial_proxy_location /public;
-
+      - matchRegex:
+          path: data["common-proxy.conf"]
+          pattern: proxy_set_header    Authorization     "";
   - it: Should include set proxy_cache with default setup
     template: nginx-proxy-configmap.yaml
     set:
@@ -38,6 +40,7 @@ tests:
         proxyCacheValidCode: "201 204"
         proxyCacheValidCodeDuration: "3H"
         initialProxyLocationPath: /
+        authorizationHeader: "Bearer 123456"
     asserts:
       - hasDocuments:
           count: 1
@@ -55,3 +58,6 @@ tests:
       - matchRegex:
           path: data["vhost-proxy.conf"]
           pattern: set \$initial_proxy_location /;
+      - matchRegex:
+          path: data["common-proxy.conf"]
+          pattern: proxy_set_header    Authorization     "Bearer 123456";
