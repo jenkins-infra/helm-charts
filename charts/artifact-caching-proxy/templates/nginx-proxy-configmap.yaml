@@ -44,7 +44,7 @@ data:
         # Specify a DNS resolver to ensure upstream DNS are dynamically resolved
         # Ref. https://github.com/DmitryFillo/nginx-proxy-pitfalls
         # and disable IPv6 resolution to ensure only IPv4 hosts are used for upstreams
-        resolver 9.9.9.9 valid=60s ipv6=off;
+        resolver {{ .Values.proxy.dnsResolver }} valid=60s ipv6=off;
         # Specify the upstream URLs as a variables to ensure dynamic name resolution
         set $jenkins_repo {{ .Values.proxy.proxyPass }};
         set $central_repo repo1.maven.org;
