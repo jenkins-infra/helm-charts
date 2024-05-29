@@ -1589,6 +1589,15 @@ entries:
     version: 0.1.0
   artifact-caching-proxy:
   - apiVersion: v2
+    created: "2024-05-29T15:14:58.729290248Z"
+    description: artifact-caching-proxy is a Nginx caching proxy in front of repo.jenkins-ci.org
+    digest: dafe407d9d7f0c34f5387b8a7e8d2c4253b97206d616451d4d7b12737329eddf
+    name: artifact-caching-proxy
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/artifact-caching-proxy-1.4.0/artifact-caching-proxy-1.4.0.tgz
+    version: 1.4.0
+  - apiVersion: v2
     created: "2024-05-27T06:58:28.301458655Z"
     description: artifact-caching-proxy is a Nginx caching proxy in front of repo.jenkins-ci.org
     digest: 92212ee5dde8dc27decb5826ef4ad8a0dc4346b7618957a88fca47f619b3e540
@@ -10621,4 +10630,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2024-05-27T08:46:53.652291868Z"
+generated: "2024-05-29T15:14:58.730602563Z"
