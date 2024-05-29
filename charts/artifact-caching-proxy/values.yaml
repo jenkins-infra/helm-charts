@@ -89,6 +89,8 @@ proxy:
   initialProxyLocationPath: /public
   # Allows to set the Authorization header to be sent to the upstream, e.g. "Bearer 123"
   authorizationHeader: ""
+  # Allows to set the DNS resolver to be used for upstreams
+  dnsResolver: 9.9.9.9
 poddisruptionbudget:
   minAvailable: 1
 env: []
