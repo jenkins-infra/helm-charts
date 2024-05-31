@@ -19,7 +19,7 @@ frontend:
   replicaCount: 2
   image:
     repository: nginx
-    tag: 1.26.0-alpine
+    tag: 1.26.1-alpine
     pullPolicy: IfNotPresent
   port: 80
   resources:
