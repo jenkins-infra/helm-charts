@@ -1,7 +1,7 @@
 apiVersion: v1
 description: rsyncd helm chart for Kubernetes
 name: rsyncd
-version: 1.4.33
+version: 1.4.34
 maintainers:
 - email: jenkins-infra-team@googlegroups.com
   name: jenkins-infra-team
