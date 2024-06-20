@@ -25,6 +25,9 @@ tests:
           path: data["vhost-proxy.conf"]
           pattern: resolver 9.9.9.9 valid=60s ipv6=off;
       - matchRegex:
+          path: data["vhost-proxy.conf"]
+          pattern: location ~\* \(maven-metadata.xml\) {
+      - matchRegex:
           path: data["common-proxy.conf"]
           pattern: proxy_set_header    Authorization     "";
   - it: Should include set proxy_cache with default setup
@@ -42,7 +45,8 @@ tests:
         proxyPass: "repo.jenkins-ci.org"
         proxyCacheValidCode: "201 204"
         proxyCacheValidCodeDuration: "3H"
-        initialProxyLocationPath: /
+        initialProxyLocationPath: '""'
+        initialProxyLocationRegex: pi$
         authorizationHeader: "Bearer 123456"
         dnsResolver: 8.8.8.8
     asserts:
@@ -61,7 +65,10 @@ tests:
           pattern: proxy_cache_valid 201 204 3H;
       - matchRegex:
           path: data["vhost-proxy.conf"]
-          pattern: set \$initial_proxy_location /;
+          pattern: set \$initial_proxy_location "";
+      - matchRegex:
+          path: data["vhost-proxy.conf"]
+          pattern: location ~\* \(pi\$\) {
       - matchRegex:
           path: data["vhost-proxy.conf"]
           pattern: resolver 8.8.8.8 valid=60s ipv6=off;

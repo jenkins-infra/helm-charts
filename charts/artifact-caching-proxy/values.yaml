@@ -87,6 +87,8 @@ proxy:
     enabled: false
   # Allows the configuration of the initial proxy location (e.g. setting to '/' will proxy all requests to the upstream)
   initialProxyLocationPath: /public
+  # Allows the configuration of the initial proxy location regex (e.g. setting to 'pi$' will proxy all *.hpi or *.jpi to the upstream)
+  initialProxyLocationRegex: maven-metadata.xml
   # Allows to set the Authorization header to be sent to the upstream, e.g. "Bearer 123"
   authorizationHeader: ""
   # Allows to set the DNS resolver to be used for upstreams

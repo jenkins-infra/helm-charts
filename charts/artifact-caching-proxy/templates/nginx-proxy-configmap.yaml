@@ -77,7 +77,7 @@ data:
 
         # Non-cached requests
         ## Default location which tries the following chain: "jenkins public" -> "jenkins incrementals" -> "maven central"
-        location ~* (maven-metadata.xml) {
+        location ~* ({{ .Values.proxy.initialProxyLocationRegex }}) {
             include             /etc/nginx/conf.d/common-proxy.conf;
             proxy_pass          https://$jenkins_repo$initial_proxy_location$request_uri;
 
