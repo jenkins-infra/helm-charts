@@ -355,6 +355,7 @@ tests:
           allowUntrustedChanges: true
           jenkinsfilePath: Jenkinsfile
           branchIncludes: "prod dev MR-*"
+          branchExcludes: "excluded"
           disableTagDiscovery: true
     asserts:
       - equal:
@@ -410,7 +411,7 @@ tests:
                               // Select branches and tags to build based on these filters
                               headWildcardFilterWithPR {
                                 includes('prod dev MR-*') // only branches listed here
-                                excludes('')
+                                excludes('excluded')
                                 tagIncludes('*')
                                 tagExcludes('')
                               }
