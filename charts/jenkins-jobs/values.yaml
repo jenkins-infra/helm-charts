@@ -35,6 +35,7 @@ jobsDefinition: {}
 #          allowUntrustedChanges: true
 #          jenkinsfilePath: Jenkinsfile
 #          branchIncludes: "prod dev MR-*"
+#          branchExcludes: "excluded"
 #         credentials:
 #            ssh-deploy-key:
 #              username: ${SSH_CHARTS_SECRETS_USERNAME}
