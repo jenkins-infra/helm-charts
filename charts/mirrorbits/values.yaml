@@ -61,7 +61,7 @@ affinity: {}
 geoipupdate:
   image:
     repository: maxmindinc/geoipupdate
-    tag: v6.1.0
+    tag: v7.0.1
   # Secret values, set to empty below for reference:
   account_id: ""
   license_key: ""
