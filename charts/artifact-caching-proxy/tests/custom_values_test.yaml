@@ -42,6 +42,12 @@ tests:
           cpu: 500m
         requests:
           memory: 1024Mi
+      persistence:
+        enabled: true
+        storageClass: x-wing
+        claimPrefix: wookie
+        existingVolumeName: death-star
+        accessMode: ReadManyWrite
     asserts:
       - hasDocuments:
           count: 1
@@ -83,6 +89,20 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].resources.requests.memory
           value: 1024Mi
+      - notExists:
+          path: spec.template.spec.volumes[3]
+      - equal:
+          path: spec.volumeClaimTemplates[0].metadata.name
+          value: wookie
+      - equal:
+          path: spec.volumeClaimTemplates[0].spec.storageClassName
+          value: x-wing
+      - equal:
+          path: spec.volumeClaimTemplates[0].spec.accessModes[0]
+          value: ReadManyWrite
+      - equal:
+          path: spec.volumeClaimTemplates[0].spec.resources.requests.storage
+          value: 50Gi
   - it: Should set a custom health check path when specified by values
     template: ingress.yaml
     set:

@@ -129,9 +129,11 @@ spec:
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
-      name: nginx-cache
+      name: {{ .Values.persistence.claimPrefix }}
     spec:
-      storageClassName: {{ .Values.persistence.storageClass }}
+      {{- with .Values.persistence.storageClass }}
+      storageClassName: {{ . }}
+      {{- end }}
       accessModes:
       - {{ .Values.persistence.accessMode }}
       resources:
