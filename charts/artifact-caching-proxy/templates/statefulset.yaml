@@ -74,7 +74,7 @@ spec:
         command: ['chown', '-R', 'nginx:nginx', '{{ .Values.cache.path }}']
         volumeMounts:
           - mountPath: {{ .Values.cache.path }}
-            name: nginx-cache
+            name: {{ .Values.persistence.claimPrefix }}
       {{- end}}
       containers:
       - name: {{ .Chart.Name }}

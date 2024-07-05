@@ -106,6 +106,9 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].name
           value: wookie
+      - equal:
+          path: spec.template.spec.initContainers[0].volumeMounts[0].name
+          value: wookie
   - it: Should set a custom health check path when specified by values
     template: ingress.yaml
     set:
