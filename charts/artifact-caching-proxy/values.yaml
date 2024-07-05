@@ -66,6 +66,7 @@ auth:
   basicAuth: ""
 persistence:
   enabled: false
+  claimPrefix: nginx-cache
   # cache size (in gigabyte)
   size: 50
   storageClass: ""
