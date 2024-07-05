@@ -67,3 +67,8 @@ tolerations: []
 affinity: {}
 dnsNames:
   - ldap.jenkins.io
+persistence:
+  ## Uncomment to specify an existing PVC for backups
+  customBackupClaimName: ""
+  ## Uncomment to specify an existing PVC for data
+  customDataClaimName: ""

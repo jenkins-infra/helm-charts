@@ -2,6 +2,9 @@ suite: Test with custom values
 templates:
   - secret.yaml
   - service.yaml
+  - statefulset.yaml
+  - persistentVolumeClaim.yaml
+  - persistentVolume.yaml
 tests:
   - it: should create a Secret with the correct value
     set:
@@ -80,3 +83,44 @@ tests:
     - equal:
         path: metadata.annotations["service.beta.kubernetes.io/azure-pip-name"]
         value: myAKSPublicIP
+  - it: should create a statefulset with custom settings
+    template: statefulset.yaml
+    set:
+      persistence:
+        customBackupClaimName: superBackup
+        customDataClaimName: batData
+    asserts:
+    - hasDocuments:
+        count: 1
+    - isKind:
+        of: StatefulSet
+    - equal:
+        path: spec.template.spec.volumes[0].name
+        value: backup
+    - equal:
+        path: spec.template.spec.volumes[0].persistentVolumeClaim.claimName
+        value: superBackup
+    - equal:
+        path: spec.template.spec.volumes[1].name
+        value: data
+    - equal:
+        path: spec.template.spec.volumes[1].persistentVolumeClaim.claimName
+        value: batData
+  - it: should not create any PVs or PVCs when specifying custom claim names
+    template: persistentVolumeClaim.yaml
+    set:
+      persistence:
+        customBackupClaimName: superBackup
+        customDataClaimName: batData
+    asserts:
+    - hasDocuments:
+        count: 0
+  - it: should not create any PV when specifying custom claim names
+    template: persistentVolume.yaml
+    set:
+      persistence:
+        customBackupClaimName: superBackup
+        customDataClaimName: batData
+    asserts:
+    - hasDocuments:
+        count: 0
