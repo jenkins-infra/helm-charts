@@ -115,7 +115,7 @@ spec:
           mountPath: /etc/nginx/conf.d/
         - name: nginx-tmp
           mountPath: /var/tmp/
-        - name: nginx-cache
+        - name: {{ .Values.persistence.claimPrefix }}
           mountPath: {{ .Values.cache.path }}
       volumes:
       - name: nginx-default-config
@@ -140,6 +140,6 @@ spec:
         requests:
           storage: "{{ .Values.persistence.size }}Gi"
   {{- else }}
-      - name: nginx-cache
+      - name: {{ .Values.persistence.claimPrefix }}
         emptyDir: {}
   {{- end }}

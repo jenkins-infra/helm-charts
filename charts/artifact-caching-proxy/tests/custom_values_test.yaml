@@ -103,6 +103,9 @@ tests:
       - equal:
           path: spec.volumeClaimTemplates[0].spec.resources.requests.storage
           value: 50Gi
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].name
+          value: wookie
   - it: Should set a custom health check path when specified by values
     template: ingress.yaml
     set:

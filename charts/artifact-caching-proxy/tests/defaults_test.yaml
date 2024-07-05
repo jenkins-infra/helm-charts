@@ -75,6 +75,9 @@ tests:
           value: nginx-cache
       - exists:
           path: spec.template.spec.volumes[3].emptyDir
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].name
+          value: nginx-cache
   - it: should not generate any pdb with default values
     template: pdb.yaml
     asserts:
