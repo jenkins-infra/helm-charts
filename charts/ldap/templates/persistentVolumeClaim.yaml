@@ -1,3 +1,4 @@
+{{- if not .Values.persistence.customBackupClaimName }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -13,6 +14,8 @@ spec:
   selector:
     matchLabels:
       role: ldap-backup
+{{- end }}
+{{- if not .Values.persistence.customDataClaimName }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -24,4 +27,4 @@ spec:
   resources:
     requests:
       storage: 50Gi
-
+{{- end }}

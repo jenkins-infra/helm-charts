@@ -1,8 +1,10 @@
 suite: Test with default values
 templates:
   - certificate.yaml
+  - persistentVolume.yaml
   - persistentVolumeClaim.yaml
   - service.yaml
+  - statefulset.yaml
 tests:
   - it: should create a certificate for the dns ldap.jenkins.io
     template: certificate.yaml
@@ -26,9 +28,6 @@ tests:
     - isKind:
         of: PersistentVolumeClaim
       documentIndex: 1
-  - it: should create 1 PVC for backup
-    template: persistentVolumeClaim.yaml
-    asserts:
     - equal:
         path: spec.selector.matchLabels.role
         value: ldap-backup
@@ -37,13 +36,20 @@ tests:
         path: metadata.name
         value: RELEASE-NAME-ldap-backup
       documentIndex: 0
-  - it: should create 1 PVC for data
-    template: persistentVolumeClaim.yaml
-    asserts:
     - equal:
         path: metadata.name
         value: RELEASE-NAME-ldap-data
       documentIndex: 1
+  - it: should create 1 PV for backup
+    template: persistentVolume.yaml
+    asserts:
+    - hasDocuments:
+        count: 1
+    - isKind:
+        of: PersistentVolume
+    - equal:
+        path: metadata.name
+        value: RELEASE-NAME-ldap-backup
   - it: should create a service of type loadbalancer with defaults
     template: service.yaml
     asserts:
@@ -73,4 +79,25 @@ tests:
         path: spec.loadBalancerIP
     - notExists:
         path: metadata.annotations
-
+  - it: should create a statefulset with default settings
+    template: statefulset.yaml
+    asserts:
+    - hasDocuments:
+        count: 1
+    - isKind:
+        of: StatefulSet
+    - equal:
+        path: spec.template.spec.volumes[0].name
+        value: backup
+    - equal:
+        path: spec.template.spec.volumes[0].persistentVolumeClaim.claimName
+        value: RELEASE-NAME-ldap-backup
+    - equal:
+        path: spec.template.spec.volumes[1].name
+        value: data
+    - equal:
+        path: spec.template.spec.volumes[1].persistentVolumeClaim.claimName
+        value: RELEASE-NAME-ldap-data
+    - equal:
+        path: spec.template.spec.volumes[2].name
+        value: tls

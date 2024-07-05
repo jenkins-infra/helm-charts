@@ -118,10 +118,10 @@ spec:
       volumes:
         - name: backup
           persistentVolumeClaim:
-            claimName: {{ include "ldap.fullname" . }}-backup
+            claimName: {{ default (printf "%s-backup" (include "ldap.fullname" .)) .Values.persistence.customBackupClaimName }}
         - name: data
           persistentVolumeClaim:
-            claimName: {{ include "ldap.fullname" . }}-data
+            claimName: {{ default (printf "%s-data" (include "ldap.fullname" .)) .Values.persistence.customDataClaimName }}
         - name: tls
           secret:
             secretName: ldap-tls
