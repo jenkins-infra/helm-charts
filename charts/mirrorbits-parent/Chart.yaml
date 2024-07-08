@@ -18,4 +18,4 @@ dependencies:
 - name: rsyncd
   condition: rsyncd.enabled
   repository: https://jenkins-infra.github.io/helm-charts
-  version: 1.4.38
+  version: 1.4.39
