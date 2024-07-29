@@ -71,8 +71,11 @@ repository:
     enabled: false
     # data hold secrets data used by persistentVolume
     data: {}
-# To override the default httpd.conf data tailored for mirrorbits, set the following value
-httpdConf: {}
+httpdConf:
+  # Overrides the default httpd.conf data with this multi-line string
+  override: ""
+  # Provides a custom ServerName directive
+  serverName: ""
 nodeSelector: {}
 tolerations: []
 affinity: {}

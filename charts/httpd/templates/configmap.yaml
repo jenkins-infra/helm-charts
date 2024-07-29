@@ -4,8 +4,8 @@ metadata:
   name: {{ include "httpd.fullname" . }}
 data:
   httpd.conf: |
-{{- if .Values.httpdConf }}
-{{- .Values.httpdConf | nindent 4 }}
+{{- if .Values.httpdConf.override }}
+{{- .Values.httpdConf.override | nindent 4 }}
 {{- else }}
     # Security
     ServerTokens Prod
@@ -203,6 +203,9 @@ data:
     # If your host doesn't have a registered DNS name, enter its IP address here.
     #
     #ServerName www.example.com:80
+    {{- with .Values.httpdConf.serverName }}
+    ServerName {{ . }}
+    {{- end }}
 
     #
     # Deny access to the entirety of your server's filesystem. You must

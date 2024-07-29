@@ -19,8 +19,6 @@ set:
         paths:
         - path: /
           pathType: IfNotPresent
-  httpdConf: |
-    ServerName example.com
 tests:
   - it: Should set the correct service selector labels when a fullNameOverride is specified
     template: service.yaml
@@ -140,8 +138,14 @@ tests:
       - equal:
           path: spec.rules[0].http.paths[0].pathType
           value: "IfNotPresent"
-  - it: should create a config map with custom httpd conf
+  - it: should create a config map with custom (overridden) httpd conf
     template: configmap.yaml
+    set:
+      httpdConf:
+        override: |
+          ServerName example.com
+        # The following line should be ignored as per the override
+        serverName: https://death.star:8443
     asserts:
       - hasDocuments:
           count: 1
@@ -151,3 +155,20 @@ tests:
           path: data["httpd.conf"]
           value: |
             ServerName example.com
+  - it: should create a config map with custom ServerName from values
+    template: configmap.yaml
+    set:
+      httpdConf:
+        serverName: https://death.star:8443
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ConfigMap
+      - notEqual:
+          path: data["httpd.conf"]
+          value: |
+            ServerName https://death.star:8443
+      - matchRegex:
+          path: data["httpd.conf"]
+          pattern: "ServerName https://death.star:8443"
