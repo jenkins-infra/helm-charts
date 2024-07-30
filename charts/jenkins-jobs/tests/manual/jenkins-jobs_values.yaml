@@ -1,0 +1,12 @@
+# Maps to the Jenkins statefulset name to ensure automount of the configmap (automatic linking with labels)
+jenkinsName: jenkins
+# Used for GH checks
+jenkinsFqdn: localhost
+# YOu can change this at your convenience
+jobsDefinition:
+  docker-jobs:
+    name: Docker Jobs
+    description: Folder hosting all the Docker jobs
+    kind: folder
+    children:
+      docker-404:
