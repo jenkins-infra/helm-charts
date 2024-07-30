@@ -1,0 +1,38 @@
+persistence:
+  enabled: false
+controller:
+  testEnabled: false
+  JCasC:
+    enabled: true
+    defaultConfig: false
+    configScripts:
+      agent-settings: |
+        jenkins:
+          numExecutors: 0
+      security: |
+        security:
+          gitHostKeyVerificationConfiguration:
+            sshHostKeyVerificationStrategy:
+              manuallyProvidedKeyVerificationStrategy:
+                approvedHostKeys: "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl"
+      system-settings: |
+        unclassified:
+          defaultFolderConfiguration:
+            # Keep healthMetrics an empty list to ensure weather is disabled
+            healthMetrics: []
+          location:
+            url: "http://localhost/"
+        jenkins:
+          quietPeriod: 0 # No need to wait between build scheduling
+  # If JCasC fails with a "no method found for <...>" error, compare this list with the required plugins in the "Usage" section of the README
+  additionalPlugins:
+    - basic-branch-build-strategies  # Required by the chart jenkins-jobs
+    - github-branch-source  # Required by the chart jenkins-jobs
+    - github-checks  # Required by the chart jenkins-jobs
+    - github-label-filter  # Required by the chart jenkins-jobs
+    - github-scm-trait-notification-context  # Required by the chart jenkins-jobs
+    - job-dsl  # Required to support the `jobs` key of JCasC
+    - scm-filter-branch-pr  # Required by the chart jenkins-jobs
+  ingress:
+    enabled: true
+    hostName: localhost

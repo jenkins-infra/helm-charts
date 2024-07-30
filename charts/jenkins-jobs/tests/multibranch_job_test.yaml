@@ -79,6 +79,7 @@ tests:
                           buildStrategies {
                             buildAnyBranches {
                               strategies {
+                                skipInitialBuildOnFirstBranchIndexing()
                                 buildChangeRequests {
                                   ignoreTargetOnlyChanges(true)
                                   ignoreUntrustedChanges(true)
@@ -191,6 +192,7 @@ tests:
                           buildStrategies {
                             buildAnyBranches {
                               strategies {
+                                skipInitialBuildOnFirstBranchIndexing()
                                 buildChangeRequests {
                                   ignoreTargetOnlyChanges(true)
                                   ignoreUntrustedChanges(true)
@@ -305,6 +307,7 @@ tests:
                           buildStrategies {
                             buildAnyBranches {
                               strategies {
+                                skipInitialBuildOnFirstBranchIndexing()
                                 buildChangeRequests {
                                   ignoreTargetOnlyChanges(true)
                                   ignoreUntrustedChanges(true)
@@ -357,6 +360,7 @@ tests:
           branchIncludes: "prod dev MR-*"
           branchExcludes: "excluded"
           disableTagDiscovery: true
+          buildOnFirstIndexing: true
     asserts:
       - equal:
           path: data["jobs-definition.yaml"]
