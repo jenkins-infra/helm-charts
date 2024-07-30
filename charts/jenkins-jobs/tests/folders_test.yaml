@@ -149,6 +149,7 @@ tests:
                           buildStrategies {
                             buildAnyBranches {
                               strategies {
+                                skipInitialBuildOnFirstBranchIndexing()
                                 buildChangeRequests {
                                   ignoreTargetOnlyChanges(true)
                                   ignoreUntrustedChanges(true)

@@ -175,6 +175,9 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
         buildStrategies {
           buildAnyBranches {
             strategies {
+              {{- if eq (.buildOnFirstIndexing | toString) "<nil>" }}
+              skipInitialBuildOnFirstBranchIndexing()
+              {{- end }}
               buildChangeRequests {
                 ignoreTargetOnlyChanges(true)
                 {{- if eq (.allowUntrustedChanges | toString) "<nil>" }}
