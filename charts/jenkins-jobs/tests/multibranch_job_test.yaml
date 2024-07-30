@@ -101,11 +101,11 @@ tests:
                       }
                     }
                     orphanedItemStrategy {
-                      // Remove unused items as soon as possible
-                      discardOldItems {
-                        // Keep removed SCM heads/branch/PRs only for 1 day (not 0 days to be sure that jobs are all finished/timeouted when deleting)
-                        // Does not apply to the build history of kept branches(use Pipeline for that)
-                        daysToKeep(1)
+                      defaultOrphanedItemStrategy {
+                        pruneDeadBranches(true)
+                        daysToKeepStr("")
+                        numToKeepStr("")
+                        abortBuilds(true)
                       }
                     }
                     configure { node ->
@@ -214,11 +214,11 @@ tests:
                       }
                     }
                     orphanedItemStrategy {
-                      // Remove unused items as soon as possible
-                      discardOldItems {
-                        // Keep removed SCM heads/branch/PRs only for 1 day (not 0 days to be sure that jobs are all finished/timeouted when deleting)
-                        // Does not apply to the build history of kept branches(use Pipeline for that)
-                        daysToKeep(1)
+                      defaultOrphanedItemStrategy {
+                        pruneDeadBranches(true)
+                        daysToKeepStr("")
+                        numToKeepStr("")
+                        abortBuilds(true)
                       }
                     }
                     configure { node ->
@@ -329,11 +329,11 @@ tests:
                       }
                     }
                     orphanedItemStrategy {
-                      // Remove unused items as soon as possible
-                      discardOldItems {
-                        // Keep removed SCM heads/branch/PRs only for 1 day (not 0 days to be sure that jobs are all finished/timeouted when deleting)
-                        // Does not apply to the build history of kept branches(use Pipeline for that)
-                        daysToKeep(1)
+                      defaultOrphanedItemStrategy {
+                        pruneDeadBranches(true)
+                        daysToKeepStr("")
+                        numToKeepStr("")
+                        abortBuilds(true)
                       }
                     }
                     configure { node ->
@@ -361,6 +361,8 @@ tests:
           branchExcludes: "excluded"
           disableTagDiscovery: true
           buildOnFirstIndexing: true
+          orphanedItemStrategyDaysToKeep: 3
+          orphanedItemStrategyNumToKeep: 10
     asserts:
       - equal:
           path: data["jobs-definition.yaml"]
@@ -441,11 +443,11 @@ tests:
                       }
                     }
                     orphanedItemStrategy {
-                      // Remove unused items as soon as possible
-                      discardOldItems {
-                        // Keep removed SCM heads/branch/PRs only for 1 day (not 0 days to be sure that jobs are all finished/timeouted when deleting)
-                        // Does not apply to the build history of kept branches(use Pipeline for that)
-                        daysToKeep(1)
+                      defaultOrphanedItemStrategy {
+                        pruneDeadBranches(true)
+                        daysToKeepStr("3")
+                        numToKeepStr("10")
+                        abortBuilds(true)
                       }
                     }
                     configure { node ->

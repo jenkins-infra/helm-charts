@@ -205,11 +205,11 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
     }
   }
   orphanedItemStrategy {
-    // Remove unused items as soon as possible
-    discardOldItems {
-      // Keep removed SCM heads/branch/PRs only for 1 day (not 0 days to be sure that jobs are all finished/timeouted when deleting)
-      // Does not apply to the build history of kept branches(use Pipeline for that)
-      daysToKeep(1)
+    defaultOrphanedItemStrategy {
+      pruneDeadBranches(true)
+      daysToKeepStr("{{ .orphanedItemStrategyDaysToKeep | default "" }}")
+      numToKeepStr("{{ .orphanedItemStrategyNumToKeep | default "" }}")
+      abortBuilds(true)
     }
   }
   configure { node ->
