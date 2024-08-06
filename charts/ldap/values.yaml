@@ -9,7 +9,7 @@ image:
     pullPolicy: IfNotPresent
   crond:
     repository: jenkinsciinfra/ldap
-    tag: cron-1.1.10
+    tag: cron-1.1.11
     pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
