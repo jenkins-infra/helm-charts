@@ -2831,6 +2831,16 @@ entries:
     version: 0.3.0
   ipv6-lb-service:
   - apiVersion: v2
+    created: "2024-08-06T16:55:28.504065073Z"
+    description: A Helm chart for Kubernetes to add an additional LB service dedicated
+      to IPv6
+    digest: fc56b27064d9ab06178d2254fae1cec4c4b4b8739f9819d816378fe27c4751c9
+    name: ipv6-lb-service
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/ipv6-lb-service-1.0.1/ipv6-lb-service-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
     created: "2023-11-09T09:36:03.579354594Z"
     description: A Helm chart for Kubernetes to add an additional LB service dedicated
       to IPv6
@@ -11640,4 +11650,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-06T06:07:17.737854736Z"
+generated: "2024-08-06T16:55:28.505545703Z"
