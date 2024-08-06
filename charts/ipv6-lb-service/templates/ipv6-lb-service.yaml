@@ -18,7 +18,7 @@ metadata:
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Local
-  ipFamilyPolicy: RequireDualStack
+  ipFamilyPolicy: SingleStack
   ipFamilies:
     - IPv6
   ports:
