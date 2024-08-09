@@ -6,6 +6,7 @@ templates:
   - nginx-default-configmap.yaml
   - statefulset.yaml
   - pdb.yaml
+  - service.yaml
 tests:
   - it: should not generate any ingress with default values
     template: ingress.yaml
@@ -86,3 +87,27 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
+  - it: should generate a ClusterIP service with defaults
+    template: service.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-artifact-caching-proxy
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: artifact-caching-proxy
+      - notExists:
+          path: metadata.annotations
+      - equal:
+          path: spec.type
+          value: ClusterIP
+      - equal:
+          path: spec.ports[0].port
+          value: 8080
+      - equal:
+          path: spec.ports[0].targetPort
+          value: http

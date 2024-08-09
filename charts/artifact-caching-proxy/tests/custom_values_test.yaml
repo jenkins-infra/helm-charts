@@ -6,6 +6,7 @@ templates:
   - statefulset.yaml
   - nginx-default-configmap.yaml
   - nginx-proxy-configmap.yaml
+  - service.yaml
 tests:
   - it: Should set a custom env and envFrom when specified by values
     template: statefulset.yaml
@@ -187,3 +188,35 @@ tests:
       - equal:
           path: spec.selector.matchLabels['app.kubernetes.io/name']
           value: "artifact-caching-proxy"
+
+  - it: should generate a custom service with specified values
+    template: service.yaml
+    set:
+      service:
+        type: LoadBalancer
+        annotations:
+          foo.bar/something: hello
+          foo.bar/other: 12
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-artifact-caching-proxy
+      - equal:
+          path: metadata.annotations["foo.bar/something"]
+          value: hello
+      - equal:
+          path: metadata.annotations["foo.bar/other"]
+          value: 12
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+      - equal:
+          path: spec.ports[0].port
+          value: 8080
+      - equal:
+          path: spec.ports[0].targetPort
+          value: http
