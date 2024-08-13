@@ -28,6 +28,21 @@ global:
     #   - secretName: ingress-tls
     #     hosts:
     #       - company.org
+    ## Specify a list of additional Ingress objects to cover advanced routing use cases (default: empty object list)
+    # additionalIngresses:
+    # - className: public-nginx
+    #   annotations:
+    #     foo: bar
+    #   hosts:
+    #     - host: company.org
+    #       paths:
+    #         - path: /.*$
+    #           ## Note: the "path" objects allows defining which path matches which backend webservice component (possible values: mirrorbits or httpd)
+    #           backendService: httpd
+    #   tls:
+    #     - secretName: ingress-tls
+    #       hosts:
+    #         - company.org
 
   ## Persistent Storage used across components
   storage:
