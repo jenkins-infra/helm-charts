@@ -3,65 +3,10 @@ values:
   - values/custom.yaml
 templates:
   - ingress.yaml
+  - additional-ingresses.yaml
 tests:
-  - it: should create ingress with a single HTTP host and defaults ingress values
-    template: ingress.yaml
-    asserts:
-      - hasDocuments:
-          count: 1
-      - isKind:
-          of: Ingress
-      - equal:
-          path: metadata.name
-          value: RELEASE-NAME-mirrorbits-parent
-      - notExists:
-          path: metadata.annotations
-      - notExists:
-          path: spec.ingressClassName
-      - notExists:
-          path: spec.tls
-      - equal:
-          path: spec.rules[0].host
-          value: company.org
-      - equal:
-          path: spec.rules[0].http.paths[0].path
-          value: /
-      - equal:
-          path: spec.rules[0].http.paths[0].pathType
-          value: Prefix
-      - notExists:
-          path: spec.rules[1]
-      - equal:
-          path: spec.rules[0].http.paths[0].backend.service.name
-          value: RELEASE-NAME-mirrorbits
-      - equal:
-          path: spec.rules[0].http.paths[0].backend.service.port.number
-          value: 7777
   - it: should create ingress with multiple hosts and multiple paths with full customized values
     template: ingress.yaml
-    set:
-      global:
-        ingress:
-          className: my-ingress-class
-          annotations:
-            'app.kubernetes/whatever-with-chars': 'same/here-right'
-          hosts:
-            - host: company.org
-              paths:
-                - path: /.*[.](deb|hpi|war|rpm|msi|pkg|sha256|md5sum|zip|gz|pdf|json|svg|sh|jpeg|ico|png|html)$
-                  backendService: httpd
-                - path: /
-                  backendService: mirrorbits
-                  pathType: ImplementationSpecific
-            - host: fallback.company.org
-              paths:
-                - path: /
-                  backendService: httpd
-          tls:
-            - secretName: ingress-tls
-              hosts:
-                - company.org
-                - fallback.company.org
     asserts:
       - hasDocuments:
           count: 1
@@ -172,3 +117,87 @@ tests:
     asserts:
       - failedTemplate:
           errorMessage: "Cannot use mirrorbits as backend if it is disabled."
+  - it: should create additional ingresses (from customized values)
+    template: additional-ingresses.yaml
+    asserts:
+      - hasDocuments:
+          count: 2
+      - documentIndex: 0
+        isKind:
+          of: Ingress
+      - documentIndex: 1
+        isKind:
+          of: Ingress
+      - documentIndex: 0
+        equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-parent-1
+      - documentIndex: 1
+        equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-parent-2
+      - documentIndex: 0
+        notExists:
+          path: metadata.annotations
+      - documentIndex: 1
+        equal:
+          path: metadata.annotations["nginx.ingress.kubernetes.io/rewrite-target"]
+          value: "/$1$2/index.html"
+      - documentIndex: 0
+        notExists:
+          path: spec.ingressClassName
+      - documentIndex: 1
+        equal:
+          path: spec.ingressClassName
+          value: bar
+      - documentIndex: 0
+        notExists:
+          path: spec.tls
+      - documentIndex: 1
+        equal:
+          path: spec.tls[0].secretName
+          value: ubersecret
+      - documentIndex: 1
+        equal:
+          path: spec.tls[0].hosts[0]
+          value: company.org
+      - documentIndex: 0
+        equal:
+          path: spec.rules[0].host
+          value: localhost
+      - documentIndex: 0
+        equal:
+          path: spec.rules[0].http.paths[0].path
+          value: /
+      - documentIndex: 0
+        equal:
+          path: spec.rules[0].http.paths[0].pathType
+          value: Prefix
+      - documentIndex: 0
+        equal:
+          path: spec.rules[0].http.paths[0].backend.service.name
+          value: RELEASE-NAME-httpd
+      - documentIndex: 0
+        equal:
+          path: spec.rules[0].http.paths[0].backend.service.port.number
+          value: 8080
+      - documentIndex: 1
+        equal:
+          path: spec.rules[0].host
+          value: company.org
+      - documentIndex: 1
+        equal:
+          path: spec.rules[0].http.paths[0].path
+          value: /(.*)(/|$)
+      - documentIndex: 1
+        equal:
+          path: spec.rules[0].http.paths[0].pathType
+          value: ImplementationSpecific
+      - documentIndex: 1
+        equal:
+          path: spec.rules[0].http.paths[0].backend.service.name
+          value: RELEASE-NAME-mirrorbits
+      - documentIndex: 1
+        equal:
+          path: spec.rules[0].http.paths[0].backend.service.port.number
+          value: 7777

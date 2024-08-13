@@ -13,11 +13,45 @@ httpd:
 global:
   ingress:
     enabled: true
+    className: my-ingress-class
+    annotations:
+      'app.kubernetes/whatever-with-chars': 'same/here-right'
     hosts:
       - host: company.org
         paths:
+          - path: /.*[.](deb|hpi|war|rpm|msi|pkg|sha256|md5sum|zip|gz|pdf|json|svg|sh|jpeg|ico|png|html)$
+            backendService: httpd
           - path: /
             backendService: mirrorbits
+            pathType: ImplementationSpecific
+      - host: fallback.company.org
+        paths:
+          - path: /
+            backendService: httpd
+    tls:
+      - secretName: ingress-tls
+        hosts:
+          - company.org
+          - fallback.company.org
+    additionalIngresses:
+      - hosts:
+          - host: localhost
+            paths:
+              - path: /
+                backendService: httpd
+      - className: bar
+        annotations:
+          "nginx.ingress.kubernetes.io/rewrite-target": "/$1$2/index.html"
+        hosts:
+          - host: company.org
+            paths:
+              - path: /(.*)(/|$)
+                pathType: ImplementationSpecific
+                backendService: mirrorbits
+        tls:
+          - secretName: ubersecret
+            hosts:
+              - company.org
   storage:
       enabled: true
       storageClassName: super-fast-storage

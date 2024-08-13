@@ -1,0 +1,45 @@
+{{- if .Values.global.ingress.enabled }}
+  {{- range $index, $addIngress := .Values.global.ingress.additionalIngresses }}
+    {{- $ingressName := printf "%s-%d" (include "mirrorbits-parent.name" $) (add $index 1) }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $ingressName }}
+  labels:
+{{ include "mirrorbits-parents.labels" $ | indent 4 }}
+  {{- with $addIngress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+    {{- with $addIngress.className }}
+  ingressClassName: {{ . }}
+    {{- end }}
+    {{- with $addIngress.tls }}
+  tls:
+      {{- range . }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+      {{- end }}
+    {{- end }}
+  rules:
+    {{- range $addIngress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+      {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType | default "Prefix" }}
+            backend:
+              service:
+                name: {{ include "mirrorbits-parent.ingressBackendName" (dict "currentBackendService" .backendService "rootContext" $) }}
+                port:
+                  number: {{ include "mirrorbits-parent.ingressBackendPort" (dict "currentBackendService" .backendService "rootContext" $) }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
