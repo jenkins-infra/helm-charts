@@ -2,10 +2,10 @@
 Check for deprecated values
 */}}
 {{- if .Values.conf }}
-[⚠️ WARNING] Found legacy value `conf` deprecated with the version 3.x of th chart. Please check the new value `config` instead.
+[⚠️ WARNING] Found legacy value `conf` deprecated with the version 3.x of the chart. Please check the new value `config` instead.
 {{- end }}
 {{- if .Values.logs }}
-[⚠️ WARNING] Found legacy value `logs` deprecated with the version 3.x of th chart. Please check the new value `config.logs` instead.
+[⚠️ WARNING] Found legacy value `logs` deprecated with the version 3.x of the chart. Please check the new value `config.logs` instead.
 {{- end }}
 
 1. Get the application URL by running these commands:
