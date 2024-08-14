@@ -1,0 +1,7 @@
+# Mock chart parent inherited global values passed to subcharts
+global:
+  storage:
+    enabled: true
+    claimNameTpl: '{{ default "parent-chart-shared-data" }}'
+  ingress:
+    enabled: true

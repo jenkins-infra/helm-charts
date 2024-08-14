@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,17 +36,19 @@ spec:
               containerPort: 8080
               protocol: TCP
           volumeMounts:
-            - name: conf
+            - name: mirrorbits-config
               mountPath: /etc/mirrorbits
               readOnly: true
             - name: geoipdata
-              mountPath: /usr/share/GeoIP
+              mountPath: {{ .Values.config.geoipDatabase }}
               readOnly: true
+            {{- if and .Values.config .Values.config.logs .Values.config.logs.enabled }}
             - name: logs
-              mountPath: /var/log/mirrorbits
+              mountPath: {{ .Values.config.logs.path }}
               readOnly: false
+            {{- end }}
             - name: data
-              mountPath: /srv/repo
+              mountPath: {{ .Values.config.repository }}
               readOnly: true
           livenessProbe:
             httpGet:
@@ -106,15 +109,17 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       volumes:
-        - name: conf
+        - name: mirrorbits-config
           secret:
-            secretName: {{ include "mirrorbits.fullname" . }}
+            secretName: {{ include "mirrorbits.config-secretname" . }}
             items:
               - key: mirrorbits.conf
                 path: mirrorbits.conf
         - name: geoipdata
           emptyDir: {}
+        {{- if and .Values.config .Values.config.logs .Values.config.logs.enabled }}
         - name: logs
-          {{- toYaml .Values.logs.volume | nindent 10 }}
+          {{- toYaml .Values.config.logs.volume | nindent 10 }}
+        {{- end }}
         - name: data
           {{- include "mirrorbits.data-volume" . | nindent 10}}

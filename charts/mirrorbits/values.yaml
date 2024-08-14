@@ -67,17 +67,44 @@ geoipupdate:
   license_key: ""
   editions: GeoLite2-ASN GeoLite2-City GeoLite2-Country
   update_frequency: 24
-logs:
-  volume:
-    emptyDir: {}
-    ## Volume contains the Pod Volume definition. Example with an existing PVC:
-    # persistentVolumeClaim:
-    #   claimName: <PVC name>
-# mirrorbits.conf data, to be completed as secret with Redis credentials
-conf: |
-  Repository: /srv/repo
-  Templates: /usr/share/mirrorbits/templates
-  RedisAddress: mirrors-redis-master:6379
+## config: specify mirrorbits configuration items
+config:
+  repository: /srv/repo
+  templates: /usr/share/mirrorbits/templates
+  geoipDatabase: /usr/share/GeoIP
+  disallowRedirects: true
+  disableOnMissingFile: true
+  ## config.logs specify where to mount mirrorbits detailled logs directory.
+  logs:
+    # Wether to use mirrorbits detaileld logs or not
+    enabled: true
+    ## config.logs.path specifies the mountpath of the volume (and set the mirrorbits configuration item)
+    path: /var/log/mirrorbits
+    ## config.logs.volume contains the Pod Volume definition for mirrorbits logs
+    volume:
+      emptyDir: {}
+      # Example with an existing PVC:
+      # persistentVolumeClaim:
+      #   claimName: <PVC name>
+  gzip: false
+  port: 8080
+  traceFile: /trace
+  ## Interval in minutes between mirror scan
+  scanInterval: 30
+  ## Interval between two scans of the local repository. This should, more or less, match the frequency where the local repo is updated.
+  repositoryScanInterval: 5
+  concurentSync: 5
+  ## Interval in minutes between mirrors HTTP health checks
+  checkInterval: 1
+  ## config.redis specifies the Redis configuration
+  # redis:
+  #   address: redis.local:6379
+  #   password: superSecretValueForRedis
+  #   dbId: 0
+  fallbacks: []
+  # - URL: https://fallback.company.org
+  #   CountryCode: DE
+  #   ContinentCode: EU
 repository:
   name: mirrorbits-binary
   persistentVolumeClaim:
