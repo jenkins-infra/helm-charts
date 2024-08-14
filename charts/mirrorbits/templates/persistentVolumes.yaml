@@ -1,0 +1,31 @@
+{{ if and .Values.repository.persistentVolume.enabled (not (dig "global" "ingress" "enabled" false .Values.AsMap)) -}}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits.fullname" .)) }}
+  labels:
+    data: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits.fullname" . )) }}
+spec:
+{{ toYaml .Values.repository.persistentVolume.spec | nindent 2 }}
+{{- end }}
+{{ if .Values.geoipdata.persistentData.enabled -}}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "mirrorbits.geoipdata" . }}
+  labels:
+    data: {{ include "mirrorbits.geoipdata" . }}
+spec:
+  accessModes:
+    - ReadOnlyMany
+  capacity:
+    storage: {{ .Values.geoipdata.persistentData.capacity}}
+{{- with .Values.geoipdata.persistentData.csi}}
+  csi:
+    {{- toYaml . | nindent 4 -}}
+{{- end }}
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: {{ .Values.geoipdata.persistentData.storageClassName}}
+{{- end }}
