@@ -32,22 +32,41 @@ tests:
       - equal:
           path: spec.replicas
           value: 1
-      # Configuration is a read-only mount of a secret
+      # Configuration is a read-only mount of a configmap
       - equal:
           path: spec.template.spec.volumes[0].name
-          value: conf
+          value: mirrorbits-config
       - equal:
           path: spec.template.spec.volumes[0].secret.secretName
-          value: RELEASE-NAME-mirrorbits
+          value: RELEASE-NAME-mirrorbits-config # same as the secret's metadata.name below
+      - equal:
+          path: spec.template.spec.volumes[0].secret.items[0].key
+          value: mirrorbits.conf
+      - equal:
+          path: spec.template.spec.volumes[0].secret.items[0].path
+          value: mirrorbits.conf
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[0].name
-          value: conf
+          value: mirrorbits-config
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[0].mountPath
           value: /etc/mirrorbits
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[0].readOnly
           value: true
+      # GeoIP is an emptyDir, with default mountpath
+      - equal:
+          path: spec.template.spec.volumes[1].name
+          value: geoipdata
+      - equal:
+          path: spec.template.spec.volumes[1].emptyDir
+          value: {}
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].name
+          value: geoipdata
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].mountPath
+          value: /usr/share/GeoIP
       # Log volumes is an emptydir by default (and you can write in it)
       - equal:
           path: spec.template.spec.volumes[2].name
@@ -95,7 +114,7 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
-  - it: should only create the mirrorbits conf secret by default
+  - it: should create only 1 secret by default (mirrorbits configuration)
     template: secrets.yaml
     asserts:
       - hasDocuments:
@@ -104,4 +123,70 @@ tests:
           of: Secret
       - equal:
           path: metadata.name
+          value: RELEASE-NAME-mirrorbits-config
+      - matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'Repository: /srv/repo'
+          decodeBase64: true
+      - matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'Templates: /usr/share/mirrorbits/templates'
+          decodeBase64: true
+      - matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'GeoipDatabasePath: /usr/share/GeoIP'
+          decodeBase64: true
+      - matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'Gzip: false'
+          decodeBase64: true
+      - matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'ListenAddress: :8080'
+          decodeBase64: true
+      - matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'LogDir: /var/log/mirror'
+          decodeBase64: true
+      - matchRegex:
+            path: data["mirrorbits.conf"]
+            pattern: 'DisallowRedirects: true'
+            decodeBase64: true
+      - matchRegex:
+            path: data["mirrorbits.conf"]
+            pattern: 'DisableOnMissingFile: true'
+            decodeBase64: true
+      - matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'TraceFileLocation: /trace'
+          decodeBase64: true
+      - notMatchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'Fallbacks'
+          decodeBase64: true
+      - notMatchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'Redis'
+          decodeBase64: true
+  - it: should create a ClusterIP service with default settings
+    template: service.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+      - equal:
+          path: metadata.name
           value: RELEASE-NAME-mirrorbits
+      - equal:
+          path: spec.type
+          value: ClusterIP
+      - equal:
+          path: spec.ports[0].name
+          value: http
+      - equal:
+          path: spec.ports[0].port
+          value: 80
+      - equal:
+          path: spec.ports[0].targetPort
+          value: 8080

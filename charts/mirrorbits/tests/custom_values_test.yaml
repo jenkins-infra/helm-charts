@@ -7,62 +7,8 @@ templates:
   - pdb.yaml
   - persistentVolume.yaml
   - persistentVolumeClaim.yaml
-set:
-  replicaCount: 2
-  image:
-    pullPolicy: Always
-  geoipupdate:
-    account_id: my-account-id
-    license_key: my-license-key
-  ingress:
-    enabled: true
-    hosts:
-      - host: chart-example.local
-        paths:
-        - path: /
-          pathType: IfNotPresent
-  logs:
-    volume:
-      persistentVolumeClaim:
-        claimName: foobar
-  repository:
-    name: mirrorbits-binary
-    persistentVolumeClaim:
-      enabled: true
-      spec:
-        accessModes:
-          - ReadWriteMany
-        storageClassName: azurefile-csi-premium
-        resources:
-          requests:
-            storage: 1000Gi
-        volumeName: mirrorbits-binary
-    persistentVolume:
-      enabled: true
-      spec:
-        capacity:
-          storage: 1000Gi
-        storageClassName: azurefile-csi-premium
-        accessModes:
-          - ReadWriteMany
-        persistentVolumeReclaimPolicy: Retain
-        csi:
-          driver: file.csi.azure.com
-          readOnly: false
-          volumeHandle: mirrorbits-binary  # make sure this volumeid is unique for every identical share in the cluster
-          volumeAttributes:
-            resourceGroup: prod-core-releases
-            shareName: mirrorbits
-          nodeStageSecretRef:
-            name: mirrorbits-binary
-            namespace: mirrorbits
-        mountOptions:
-          - dir_mode=0755
-    secrets:
-      enabled: true
-      data:
-        azurestorageaccountkey: 'SuperSecretKey!'
-        azurestorageaccountname: storage-account-in-az
+values:
+  - values/custom.yaml
 tests:
   - it: Should set the correct service selector labels when a fullNameOverride is specified
     template: service.yaml
@@ -92,7 +38,11 @@ tests:
       - equal:
           path: spec.replicas
           value: 2
-      # Log volumes is a custom PVC
+      # Custom GeoIP mountpath
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].mountPath
+          value: /geo-data
+      # Log volumes is a custom PVC in a custom mount path
       - equal:
           path: spec.template.spec.volumes[2].name
           value: logs
@@ -104,7 +54,7 @@ tests:
           value: logs
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].mountPath
-          value: /var/log/mirrorbits
+          value: /custom
       # Data Volume
       - equal:
           path: spec.template.spec.volumes[3].name
@@ -117,7 +67,7 @@ tests:
           value: data
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].mountPath
-          value: /srv/repo
+          value: /DATA
   - it: should create ingress with pathType set to the specified custom value by default
     template: ingress.yaml
     asserts:
@@ -186,18 +136,122 @@ tests:
       - documentIndex: 0
         equal:
           path: metadata.name
-          value: RELEASE-NAME-mirrorbits
-      - documentIndex: 1
-        isKind:
-          of: Secret
-      - documentIndex: 1
-        equal:
-          path: metadata.name
           value: RELEASE-NAME-mirrorbits-geoipupdate
-      - documentIndex: 2
+      - documentIndex: 1
         isKind:
           of: Secret
-      - documentIndex: 2
+      - documentIndex: 1
         equal:
           path: metadata.name
           value: RELEASE-NAME-mirrorbits-binary
+      - documentIndex: 2
+        equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-config
+      - documentIndex: 2
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'Repository: /DATA'
+          decodeBase64: true
+      - documentIndex: 2
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'Templates: /custom-tpls'
+          decodeBase64: true
+      - documentIndex: 2
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'GeoipDatabasePath: /geo-data'
+          decodeBase64: true
+      - documentIndex: 2
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'Gzip: false'
+          decodeBase64: true
+      - documentIndex: 2
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'ListenAddress: :7777'
+          decodeBase64: true
+      - documentIndex: 2
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'LogDir: /custom'
+          decodeBase64: true
+      - documentIndex: 2
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'Fallbacks'
+          decodeBase64: true
+      - documentIndex: 2
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'RedisAddress: redis-master.internal.company.org:6379'
+          decodeBase64: true
+      - documentIndex: 2
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'RedisPassword: SuperSecretRedisPassword'
+          decodeBase64: true
+      - documentIndex: 2
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'RedisDB: 4'
+          decodeBase64: true
+      - documentIndex: 2
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'Fallbacks:'
+          decodeBase64: true
+      - documentIndex: 2
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: '- URL: https://fallback.company.org'
+          decodeBase64: true
+      - documentIndex: 2
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'CountryCode: DE'
+          decodeBase64: true
+      - documentIndex: 2
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'ContinentCode: EU'
+          decodeBase64: true
+      - documentIndex: 2
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'DisallowRedirects: false'
+          decodeBase64: true
+      - documentIndex: 2
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'DisableOnMissingFile: false'
+          decodeBase64: true
+      - documentIndex: 2
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'TraceFileLocation: /TIME'
+          decodeBase64: true
+  - it: should create a custom service
+    template: service.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+      - equal:
+          path: spec.ports[0].name
+          value: http
+      - equal:
+          path: spec.ports[0].port
+          value: 443
+      - equal:
+          path: spec.ports[0].targetPort
+          value: 7777
