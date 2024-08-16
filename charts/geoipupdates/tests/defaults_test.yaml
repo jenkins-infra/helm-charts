@@ -1,0 +1,52 @@
+suite: default tests
+templates:
+  - deployment.yaml
+tests:
+  - it: should define the default "mirrorbits" deployment with default imagePullPolicy and metadata labels
+    template: deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/name"]
+          value: "geoipupdate"
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/instance"]
+          value: "RELEASE-NAME"
+      - equal:
+          path: "spec.template.spec.containers[*].imagePullPolicy"
+          value: IfNotPresent
+      - equal:
+          path: spec.replicas
+          value: 1
+      # GeoIP is an emptyDir, with default mountpath
+      - equal:
+          path: spec.template.spec.volumes[0].name
+          value: geoipdata
+      - equal:
+          path: spec.template.spec.volumes[0].emptyDir
+          value: {}
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].name
+          value: geoipdata
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].mountPath
+          value: /usr/share/GeoIP
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].readOnly
+          value: false
+      # Env. variables
+      - equal:
+          path: spec.template.spec.containers[0].env[0].name
+          value: GEOIPUPDATE_EDITION_IDS
+      - equal:
+          path: spec.template.spec.containers[0].env[0].value
+          value: GeoLite2-ASN GeoLite2-City GeoLite2-Country
+      - equal:
+          path: spec.template.spec.containers[0].env[1].name
+          value: GEOIPUPDATE_FREQUENCY
+      - equal:
+          path: spec.template.spec.containers[0].env[1].value
+          value: "24"

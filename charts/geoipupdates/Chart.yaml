@@ -1,0 +1,8 @@
+apiVersion: v1
+description: MaxMind GeoIP database updater
+name: geoipupdates
+version: 0.0.1
+appVersion: "v7.0.1"
+maintainers:
+- email: jenkins-infra-team@googlegroups.com
+  name: jenkins-infra-team
