@@ -1749,6 +1749,15 @@ entries:
     version: 0.1.0
   artifact-caching-proxy:
   - apiVersion: v2
+    created: "2024-08-16T07:17:27.707633307Z"
+    description: artifact-caching-proxy is a Nginx caching proxy in front of repo.jenkins-ci.org
+    digest: ced11c5dbe7a8ac16f0f8d18ab332e2c4a50c825997575c9b4c0eec5a6ce44ac
+    name: artifact-caching-proxy
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/artifact-caching-proxy-1.6.1/artifact-caching-proxy-1.6.1.tgz
+    version: 1.6.1
+  - apiVersion: v2
     created: "2024-08-09T16:28:40.877109193Z"
     description: artifact-caching-proxy is a Nginx caching proxy in front of repo.jenkins-ci.org
     digest: 91136f501fa938dd317c15ae0889c8a1b41211a6f3005f00ec59e9d9f264d1dc
@@ -3067,6 +3076,17 @@ entries:
   javadoc:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2024-08-16T07:17:27.874798727Z"
+    description: A Helm chart for javadoc.jenkins.io
+    digest: 0a58eaa7b7e89a1654cef9d55f054e782db43e59e9ea1462f72b7a6a16389e16
+    maintainers:
+    - name: timja
+    name: javadoc
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/javadoc-0.4.3/javadoc-0.4.3.tgz
+    version: 0.4.3
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2024-05-31T06:27:14.161794693Z"
     description: A Helm chart for javadoc.jenkins.io
     digest: 9cda00b50dd255c5b8c08a871b7b5a51c07dccfaaf9cab71eacaf70d1f33566d
@@ -3515,6 +3535,17 @@ entries:
     - https://github.com/jenkins-infra/public-charts/releases/download/jenkins-wiki-exporter-0.5.0/jenkins-wiki-exporter-0.5.0.tgz
     version: 0.5.0
   jenkinsio:
+  - apiVersion: v1
+    created: "2024-08-16T07:17:28.031781645Z"
+    description: A Helm chart for jenkins.io
+    digest: d07a8b98141f3b022f264994c2494e974c75a69783c72eafbecc85af37cb8c3d
+    maintainers:
+    - name: timja
+    - name: dduportal
+    name: jenkinsio
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/jenkinsio-1.2.3/jenkinsio-1.2.3.tgz
+    version: 1.2.3
   - apiVersion: v1
     created: "2024-05-31T06:27:14.294048752Z"
     description: A Helm chart for jenkins.io
@@ -8554,6 +8585,17 @@ entries:
   nginx-website:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2024-08-16T07:17:28.221711751Z"
+    description: A Helm chart for serving website with nginx
+    digest: a90f2227ed6bd560f6becfdeac48ba2fdb30bf838b4cb12631195602971baa5b
+    maintainers:
+    - name: lemeurherve
+    name: nginx-website
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/nginx-website-0.1.4/nginx-website-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2024-05-31T06:27:14.466284928Z"
     description: A Helm chart for serving website with nginx
     digest: b427e7fab26ef5a59cc065a52083bdd4882b61723c0faa5b7c53644146e6063b
@@ -9087,6 +9129,18 @@ entries:
   plugin-site:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2024-08-16T07:17:28.384907852Z"
+    description: A Helm chart for plugins.jenkins.io
+    digest: ac8134295b525b253a52f7c2961aa40c3121a21c0431cf298eb74df6c5e31337
+    maintainers:
+    - name: timja
+    - name: halkeye
+    name: plugin-site
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/plugin-site-0.4.8/plugin-site-0.4.8.tgz
+    version: 0.4.8
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2024-05-31T06:27:14.588744667Z"
     description: A Helm chart for plugins.jenkins.io
     digest: 8c74b1a8e188b3c90c58ac99d6321af2d39b2b3033e52a744d6e799753f4f67b
@@ -9546,6 +9600,17 @@ entries:
     - https://github.com/jenkins-infra/helm-charts/releases/download/rating-0.1.0/rating-0.1.0.tgz
     version: 0.1.0
   reports:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2024-08-16T07:17:28.550135309Z"
+    description: A Helm chart for reports.jenkins.io
+    digest: 5c14cd36d0bc8db607919e036542f275ca01b690d2ec79a86d119ab3bafdc457
+    maintainers:
+    - name: timja
+    name: reports
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/reports-0.4.3/reports-0.4.3.tgz
+    version: 0.4.3
   - apiVersion: v1
     appVersion: "1.0"
     created: "2024-05-31T06:27:14.724687164Z"
@@ -11911,4 +11976,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-16T07:10:22.4713303Z"
+generated: "2024-08-16T07:17:28.55240758Z"
