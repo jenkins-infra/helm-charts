@@ -21,14 +21,6 @@ sources:
       repository: "docker-mirrorbits"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
-  latestGeoIPRelease:
-    name: Get latest version of GeoIP
-    kind: githubrelease
-    spec:
-      owner: "maxmind"
-      repository: "geoipupdate"
-      token: "{{ requiredEnv .github.token }}"
-      username: "{{ .github.username }}"
 
 conditions:
   checkMirrorbitsDockerImagePublished:
@@ -37,14 +29,6 @@ conditions:
     kind: dockerimage
     spec:
       image: "jenkinsciinfra/mirrorbits"
-      architecture: "amd64"
-      # Tag comes from sourceid
-  checkGeoIPDockerImagePublished:
-    name: Ensure that the image "maxmindinc/geoipupdate:<found_version>" is published on the DockerHub
-    sourceid: latestGeoIPRelease
-    kind: dockerimage
-    spec:
-      image: "maxmindinc/geoipupdate"
       architecture: "amd64"
       # Tag comes from sourceid
 
@@ -58,14 +42,6 @@ targets:
       key: $.image.tag
       versionincrement: patch
     scmid: default
-  updateGeoIP:
-    name: "Update maxmindinc/geoipupdate docker image version"
-    sourceid: latestGeoIPRelease
-    kind: helmchart
-    spec:
-      name: charts/mirrorbits
-      key: $.geoipupdate.image.tag
-    scmid: default
 
 actions:
   default:
@@ -76,4 +52,3 @@ actions:
       labels:
         - dependencies
         - mirrorbits
-        - geoip

@@ -1,0 +1,56 @@
+name: Bump `ghcr.io/maxmind/geoipupdate` docker image and helm chart versions
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
+sources:
+  lastVersion:
+    name: Get latest version of maxmind/geoipupdate
+    kind: githubrelease
+    spec:
+      owner: maxmind
+      repository: geoipupdate
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+
+conditions:
+  checkGeoIPDockerImagePublished:
+    name: Ensure that the image "ghcr.io/maxmind/geoipupdate:<found_version>" is published
+    kind: dockerimage
+    spec:
+      image: ghcr.io/maxmind/geoipupdate
+      architectures:
+        - "arm64"
+      # Tag comes from sourceid
+
+targets:
+  updateGeoIP:
+    name: "Update chart appVersion"
+    transformers:
+      - addprefix: '"'
+      - addsuffix: '"'
+    kind: helmchart
+    spec:
+      name: charts/geoipupdates
+      file: Chart.yaml
+      key: $.appVersion
+    scmid: default
+
+actions:
+  default:
+    kind: github/pullrequest
+    scmid: default
+    title: Bump `ghcr.io/maxmind/geoipupdate` docker image to {{ source `lastVersion` }}
+    spec:
+      labels:
+        - dependencies
+        - geoipupdates
