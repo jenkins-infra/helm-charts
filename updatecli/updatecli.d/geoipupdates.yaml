@@ -13,7 +13,7 @@ scms:
       branch: "{{ .github.branch }}"
 
 sources:
-  latestMirrorbitsRelease:
+  lastVersion:
     name: Get latest version of maxmind/geoipupdate
     kind: githubrelease
     spec:
@@ -41,18 +41,16 @@ targets:
     kind: helmchart
     spec:
       name: charts/geoipupdates
-      # appversion: true
       file: Chart.yaml
       key: $.appVersion
-#     scmid: default
+    scmid: default
 
-# actions:
-#   default:
-#     kind: github/pullrequest
-#     scmid: default
-#     title: Bump `mirrorbits` docker images and helm chart versions
-#     spec:
-#       labels:
-#         - dependencies
-#         - mirrorbits
-#         - geoip
+actions:
+  default:
+    kind: github/pullrequest
+    scmid: default
+    title: Bump `ghcr.io/maxmind/geoipupdate` docker image to {{ source `lastVersion` }}
+    spec:
+      labels:
+        - dependencies
+        - geoipupdates
