@@ -102,6 +102,12 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].readOnly
           value: true
+      - notExists:
+          path: spec.template.spec.securityContext
+      - notExists:
+          path: spec.template.spec.containers[0].securityContext
+      - notExists:
+          path: spec.template.spec.containers[0].resources
   - it: should not define any persistent volume
     template: persistentVolumes.yaml
     asserts:

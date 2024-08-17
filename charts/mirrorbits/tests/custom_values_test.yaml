@@ -80,6 +80,15 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].mountPath
           value: /DATA
+      - equal:
+          path: spec.template.spec.securityContext.runAsUser
+          value: 1000
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem
+          value: true
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.cpu
+          value: 500m
   - it: should create ingress with pathType set to the specified custom value by default
     template: ingress.yaml
     asserts:
