@@ -23,8 +23,10 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+    {{- with .Values.podSecurityContext }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -60,42 +62,6 @@ spec:
               port: 8080
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-        - name: geoipupdate
-          image: "{{ .Values.geoipupdate.image.repository }}:{{ .Values.geoipupdate.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          securityContext:
-            allowPrivilegeEscalation: false
-          volumeMounts:
-            - name: geoipdata
-              mountPath: /usr/share/GeoIP
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          env:
-            - name: GEOIPUPDATE_EDITION_IDS
-              value: {{ .Values.geoipupdate.editions }}
-            - name: GEOIPUPDATE_FREQUENCY
-              value: {{ .Values.geoipupdate.update_frequency | quote }}
-          envFrom:
-          - secretRef:
-              name: {{ include "mirrorbits.fullname" . }}-geoipupdate
-      initContainers:
-        # we need to ensure the geoip data is in place before mirrorbits starts
-        - name: geoipupdate-init
-          image: "{{ .Values.geoipupdate.image.repository }}:{{ .Values.geoipupdate.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          securityContext:
-            allowPrivilegeEscalation: false
-          volumeMounts:
-            - name: geoipdata
-              mountPath: /usr/share/GeoIP
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          env:
-            - name: GEOIPUPDATE_EDITION_IDS
-              value: {{ .Values.geoipupdate.editions }}
-          envFrom:
-          - secretRef:
-              name: {{ include "mirrorbits.fullname" . }}-geoipupdate
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -115,11 +81,16 @@ spec:
             items:
               - key: mirrorbits.conf
                 path: mirrorbits.conf
-        - name: geoipdata
-          emptyDir: {}
         {{- if and .Values.config .Values.config.logs .Values.config.logs.enabled }}
         - name: logs
           {{- toYaml .Values.config.logs.volume | nindent 10 }}
         {{- end }}
         - name: data
           {{- include "mirrorbits.data-volume" . | nindent 10}}
+        - name: geoipdata
+        {{- if .Values.geoipdata.persistentData.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "mirrorbits.geoipdata" . }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}

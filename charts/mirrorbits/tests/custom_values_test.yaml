@@ -5,8 +5,8 @@ templates:
   - secrets.yaml
   - service.yaml
   - pdb.yaml
-  - persistentVolume.yaml
-  - persistentVolumeClaim.yaml
+  - persistentVolumes.yaml
+  - persistentVolumeClaims.yaml
 values:
   - values/custom.yaml
 tests:
@@ -38,16 +38,28 @@ tests:
       - equal:
           path: spec.replicas
           value: 2
-      # Custom GeoIP mountpath
+      # Custom GeoIP PVC
+      - equal:
+          path: spec.template.spec.volumes[3].name
+          value: geoipdata
+      - equal:
+          path: spec.template.spec.volumes[3].persistentVolumeClaim.claimName
+          value: RELEASE-NAME-mirrorbits-geoipdata
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].name
+          value: geoipdata
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[1].mountPath
           value: /geo-data
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].readOnly
+          value: true
       # Log volumes is a custom PVC in a custom mount path
       - equal:
-          path: spec.template.spec.volumes[2].name
+          path: spec.template.spec.volumes[1].name
           value: logs
       - equal:
-          path: spec.template.spec.volumes[2].persistentVolumeClaim.claimName
+          path: spec.template.spec.volumes[1].persistentVolumeClaim.claimName
           value: foobar
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].name
@@ -57,10 +69,10 @@ tests:
           value: /custom
       # Data Volume
       - equal:
-          path: spec.template.spec.volumes[3].name
+          path: spec.template.spec.volumes[2].name
           value: data
       - equal:
-          path: spec.template.spec.volumes[3].persistentVolumeClaim.claimName
+          path: spec.template.spec.volumes[2].persistentVolumeClaim.claimName
           value: mirrorbits-binary
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].name
@@ -78,20 +90,36 @@ tests:
       - equal:
           path: spec.rules[0].http.paths[0].pathType
           value: "IfNotPresent"
-  - it: should define a customized "mirrorbits" persistent volume
-    template: persistentVolume.yaml
+  - it: should define 2 customized PVCs, one for "mirrorbits" binary persistent volume and another for geoip
+    template: persistentVolumes.yaml
     asserts:
       - hasDocuments:
-          count: 1
-      - isKind:
+          count: 2
+      - documentIndex: 0
+        isKind:
+          of: PersistentVolume
+      - documentIndex: 1
+        isKind:
           of: PersistentVolume
   - it: should define a customized "mirrorbits" PV claim
-    template: persistentVolumeClaim.yaml
+    template: persistentVolumeClaims.yaml
     asserts:
       - hasDocuments:
-          count: 1
-      - isKind:
+          count: 2
+      - documentIndex: 0
+        isKind:
           of: PersistentVolumeClaim
+      - documentIndex: 0
+        equal:
+          path: metadata.name
+          value: mirrorbits-binary
+      - documentIndex: 1
+        isKind:
+          of: PersistentVolumeClaim
+      - documentIndex: 1
+        equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-geoipdata
   - it: create a default pdb when replicated
     template: pdb.yaml
     asserts:
@@ -129,106 +157,94 @@ tests:
     template: secrets.yaml
     asserts:
       - hasDocuments:
-          count: 3
-      - documentIndex: 0
+          count: 2
+      - document: 0
         isKind:
           of: Secret
-      - documentIndex: 0
-        equal:
-          path: metadata.name
-          value: RELEASE-NAME-mirrorbits-geoipupdate
-      - documentIndex: 1
+      - document: 1
         isKind:
           of: Secret
       - documentIndex: 1
-        equal:
-          path: metadata.name
-          value: RELEASE-NAME-mirrorbits-binary
-      - documentIndex: 2
-        equal:
-          path: metadata.name
-          value: RELEASE-NAME-mirrorbits-config
-      - documentIndex: 2
         matchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'Repository: /DATA'
           decodeBase64: true
-      - documentIndex: 2
+      - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'Templates: /custom-tpls'
           decodeBase64: true
-      - documentIndex: 2
+      - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'GeoipDatabasePath: /geo-data'
           decodeBase64: true
-      - documentIndex: 2
+      - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'Gzip: false'
           decodeBase64: true
-      - documentIndex: 2
+      - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'ListenAddress: :7777'
           decodeBase64: true
-      - documentIndex: 2
+      - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'LogDir: /custom'
           decodeBase64: true
-      - documentIndex: 2
+      - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'Fallbacks'
           decodeBase64: true
-      - documentIndex: 2
+      - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'RedisAddress: redis-master.internal.company.org:6379'
           decodeBase64: true
-      - documentIndex: 2
+      - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'RedisPassword: SuperSecretRedisPassword'
           decodeBase64: true
-      - documentIndex: 2
+      - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'RedisDB: 4'
           decodeBase64: true
-      - documentIndex: 2
+      - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'Fallbacks:'
           decodeBase64: true
-      - documentIndex: 2
+      - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
           pattern: '- URL: https://fallback.company.org'
           decodeBase64: true
-      - documentIndex: 2
+      - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'CountryCode: DE'
           decodeBase64: true
-      - documentIndex: 2
+      - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'ContinentCode: EU'
           decodeBase64: true
-      - documentIndex: 2
+      - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'DisallowRedirects: false'
           decodeBase64: true
-      - documentIndex: 2
+      - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'DisableOnMissingFile: false'
           decodeBase64: true
-      - documentIndex: 2
+      - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'TraceFileLocation: /TIME'

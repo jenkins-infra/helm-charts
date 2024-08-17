@@ -3,8 +3,8 @@ templates:
   - deployment.yaml
   - ingress.yaml
   - secrets.yaml
-  - persistentVolume.yaml
-  - persistentVolumeClaim.yaml
+  - persistentVolumes.yaml
+  - persistentVolumeClaims.yaml
 values:
   - values/global.yaml
   - values/custom.yaml
@@ -18,10 +18,10 @@ tests:
           of: Deployment
       # Data Volume (references a claim from parent chart)
       - equal:
-          path: spec.template.spec.volumes[3].name
+          path: spec.template.spec.volumes[2].name
           value: data
       - equal:
-          path: spec.template.spec.volumes[3].persistentVolumeClaim.claimName
+          path: spec.template.spec.volumes[2].persistentVolumeClaim.claimName
           value: parent-chart-shared-data
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].name
@@ -34,32 +34,33 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
-  - it: should not define any persistent volume
-    template: persistentVolume.yaml
+  - it: should only define the GeoIP PV
+    template: persistentVolumes.yaml
     asserts:
       - hasDocuments:
-          count: 0
-  - it: should not define any PV claim
-    template: persistentVolumeClaim.yaml
+          count: 1
+      - isKind:
+          of: PersistentVolume
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-geoipdata
+  - it: should only define the GeoIP PVC
+    template: persistentVolumeClaims.yaml
     asserts:
       - hasDocuments:
-          count: 0
-  - it: should create one GeoIP secret and the default config secret
+          count: 1
+      - isKind:
+          of: PersistentVolumeClaim
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-geoipdata
+  - it: should create the default config secret
     template: secrets.yaml
     asserts:
       - hasDocuments:
-          count: 2
-      - documentIndex: 0
-        isKind:
+          count: 1
+      - isKind:
           of: Secret
-      - documentIndex: 1
-        isKind:
-          of: Secret
-      - documentIndex: 0
-        equal:
-          path: metadata.name
-          value: RELEASE-NAME-mirrorbits-geoipupdate
-      - documentIndex: 1
-        equal:
+      - equal:
           path: metadata.name
           value: RELEASE-NAME-mirrorbits-config

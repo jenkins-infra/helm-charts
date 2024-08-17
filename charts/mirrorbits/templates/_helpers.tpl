@@ -77,6 +77,13 @@ Ensure coherent name of the mirrorbits configuration object (so deployment has t
 {{- end -}}
 
 {{/*
+Ensure coherent name of the geoipdata PV/PVC objects
+*/}}
+{{- define "mirrorbits.geoipdata" -}}
+  {{ include "mirrorbits.fullname" . }}-geoipdata
+{{- end -}}
+
+{{/*
 Template of the mirrorbits configuration file
 */}}
 {{- define "mirrorbits.configmap" -}}

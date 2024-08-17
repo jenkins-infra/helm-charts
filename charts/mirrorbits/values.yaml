@@ -58,15 +58,6 @@ resources: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
-geoipupdate:
-  image:
-    repository: maxmindinc/geoipupdate
-    tag: v7.0.1
-  # Secret values, set to empty below for reference:
-  account_id: ""
-  license_key: ""
-  editions: GeoLite2-ASN GeoLite2-City GeoLite2-Country
-  update_frequency: 24
 ## config: specify mirrorbits configuration items
 config:
   repository: /srv/repo
@@ -121,3 +112,9 @@ repository:
     data: {}
 poddisruptionbudget:
   minAvailable: 1
+geoipdata:
+  persistentData:
+    enabled: false
+    # capacity: 1Gi
+    # storageClassName: statically-provisionned
+    # csi: {}

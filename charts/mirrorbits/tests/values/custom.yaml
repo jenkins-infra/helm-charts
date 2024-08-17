@@ -1,9 +1,6 @@
 replicaCount: 2
 image:
   pullPolicy: Always
-geoipupdate:
-  account_id: my-account-id
-  license_key: my-license-key
 ingress:
   enabled: true
   hosts:
@@ -77,3 +74,11 @@ repository:
     data:
       azurestorageaccountkey: 'SuperSecretKey!'
       azurestorageaccountname: storage-account-in-az
+geoipdata:
+  persistentData:
+    enabled: true
+    capacity: 2Gi
+    storageClassName: stc
+    csi:
+      driver: disk.csi.azure.com
+      fsType: ext4

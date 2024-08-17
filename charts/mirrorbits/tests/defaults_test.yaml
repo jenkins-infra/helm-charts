@@ -5,15 +5,15 @@ templates:
   - secrets.yaml
   - service.yaml
   - pdb.yaml
-  - persistentVolume.yaml
-  - persistentVolumeClaim.yaml
+  - persistentVolumes.yaml
+  - persistentVolumeClaims.yaml
 tests:
   - it: should not create any ingress by default
     template: ingress.yaml
     asserts:
       - hasDocuments:
           count: 0
-  - it: should define the default "mirrorbits" deployment with default imagePullPolicy and metadata labels
+  - it: should define the default "mirrorbits" deployment
     template: deployment.yaml
     asserts:
       - hasDocuments:
@@ -56,10 +56,10 @@ tests:
           value: true
       # GeoIP is an emptyDir, with default mountpath
       - equal:
-          path: spec.template.spec.volumes[1].name
+          path: spec.template.spec.volumes[3].name
           value: geoipdata
       - equal:
-          path: spec.template.spec.volumes[1].emptyDir
+          path: spec.template.spec.volumes[3].emptyDir
           value: {}
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[1].name
@@ -67,12 +67,15 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[1].mountPath
           value: /usr/share/GeoIP
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].readOnly
+          value: true
       # Log volumes is an emptydir by default (and you can write in it)
       - equal:
-          path: spec.template.spec.volumes[2].name
+          path: spec.template.spec.volumes[1].name
           value: logs
       - equal:
-          path: spec.template.spec.volumes[2].emptyDir
+          path: spec.template.spec.volumes[1].emptyDir
           value: {}
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].name
@@ -85,10 +88,10 @@ tests:
           value: false
       # Data Volume is an emptyDir by default (but readonly)
       - equal:
-          path: spec.template.spec.volumes[3].name
+          path: spec.template.spec.volumes[2].name
           value: data
       - equal:
-          path: spec.template.spec.volumes[3].emptyDir
+          path: spec.template.spec.volumes[2].emptyDir
           value: {}
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].name
@@ -100,12 +103,12 @@ tests:
           path: spec.template.spec.containers[0].volumeMounts[3].readOnly
           value: true
   - it: should not define any persistent volume
-    template: persistentVolume.yaml
+    template: persistentVolumes.yaml
     asserts:
       - hasDocuments:
           count: 0
   - it: should not define any PV claim
-    template: persistentVolumeClaim.yaml
+    template: persistentVolumeClaims.yaml
     asserts:
       - hasDocuments:
           count: 0
