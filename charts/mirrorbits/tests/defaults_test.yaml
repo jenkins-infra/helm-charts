@@ -108,6 +108,8 @@ tests:
           path: spec.template.spec.containers[0].securityContext
       - notExists:
           path: spec.template.spec.containers[0].resources
+      - notExists:
+          path: spec.template.metadata.annotations
   - it: should not define any persistent volume
     template: persistentVolumes.yaml
     asserts:

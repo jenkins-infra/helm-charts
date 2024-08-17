@@ -89,6 +89,13 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].resources.limits.cpu
           value: 500m
+      - equal:
+          path: spec.template.metadata.annotations["ad.datadoghq.com/mirrorbits.logs"]
+          value: |
+            [
+              {"type":"file","path":"/custom/downloads.log","source":"file","service":"RELEASE-NAME"},
+              {"source":"container","service":"RELEASE-NAME"}
+            ]
   - it: should create ingress with pathType set to the specified custom value by default
     template: ingress.yaml
     asserts:

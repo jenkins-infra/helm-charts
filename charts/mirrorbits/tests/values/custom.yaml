@@ -90,3 +90,9 @@ containerSecurityContext:
 resources:
   limits:
     cpu: 500m
+annotations:
+  ad.datadoghq.com/mirrorbits.logs: |
+    [
+      {"type":"file","path":"/custom/downloads.log","source":"file","service":"RELEASE-NAME"},
+      {"source":"container","service":"RELEASE-NAME"}
+    ]
