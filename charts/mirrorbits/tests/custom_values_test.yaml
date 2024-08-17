@@ -249,6 +249,16 @@ tests:
           path: data["mirrorbits.conf"]
           pattern: 'TraceFileLocation: /TIME'
           decodeBase64: true
+      - documentIndex: 1
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'RepositoryScanInterval: 10'
+          decodeBase64: true
+      - documentIndex: 1
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'ScanInterval: 8'
+          decodeBase64: true
   - it: should create a custom service
     template: service.yaml
     asserts:

@@ -138,7 +138,7 @@ Hashes:
 ## Maximum number of concurrent mirror synchronization to do (rsync/ftp)
 ConcurrentSync: {{ .Values.config.concurentSync }}
 ## Interval in minutes between mirror scan
-ScanInterval: {{ .Values.config.repositoryScanInterval }}
+ScanInterval: {{ .Values.config.scanInterval }}
 ## Interval in minutes between mirrors HTTP health checks
 CheckInterval: {{ .Values.config.checkInterval }}
 ## Allow a mirror to issue an HTTP redirect.

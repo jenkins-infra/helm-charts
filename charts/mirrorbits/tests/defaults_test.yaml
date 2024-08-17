@@ -163,6 +163,14 @@ tests:
           path: data["mirrorbits.conf"]
           pattern: 'TraceFileLocation: /trace'
           decodeBase64: true
+      - matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'RepositoryScanInterval: 5'
+          decodeBase64: true
+      - matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'ScanInterval: 30'
+          decodeBase64: true
       - notMatchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'Fallbacks'

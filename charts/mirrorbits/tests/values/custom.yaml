@@ -19,6 +19,7 @@ config:
   port: 7777
   traceFile: /TIME
   repositoryScanInterval: 10
+  scanInterval: 8
   concurentSync: 9
   checkInterval: 60
   disallowRedirects: false
