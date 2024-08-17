@@ -6261,6 +6261,31 @@ entries:
     version: 0.0.1
   mirrorbits-parent:
   - apiVersion: v2
+    created: "2024-08-17T07:45:05.692777206Z"
+    dependencies:
+    - condition: mirrorbits.enabled
+      name: mirrorbits
+      repository: https://jenkins-infra.github.io/helm-charts
+      version: 4.0.0
+    - condition: httpd.enabled
+      name: httpd
+      repository: https://jenkins-infra.github.io/helm-charts
+      version: 1.0.0
+    - condition: rsyncd.enabled
+      name: rsyncd
+      repository: https://jenkins-infra.github.io/helm-charts
+      version: 1.4.44
+    description: A mirrorbits parent chart for Kubernetes
+    digest: 8f530de59a7098904c1b2082c1dbfa1b5ad6370c558b2446b8bd5be74e555308
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: mirrorbits-parent
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/mirrorbits-parent-4.0.0/mirrorbits-parent-4.0.0.tgz
+    version: 4.0.0
+  - apiVersion: v2
     created: "2024-08-15T08:31:22.627662136Z"
     dependencies:
     - condition: mirrorbits.enabled
@@ -12011,4 +12036,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-17T07:41:26.355490868Z"
+generated: "2024-08-17T07:45:05.694110984Z"
