@@ -50,9 +50,9 @@ spec:
             - name: geoipdata
               mountPath: {{ .Values.config.geoipDatabase }}
               readOnly: true
-            {{- if and .Values.config .Values.config.logs .Values.config.logs.enabled }}
+            {{- with .Values.config.logs.volume }}
             - name: logs
-              mountPath: {{ .Values.config.logs.path }}
+              mountPath: {{ $.Values.config.logs.path }}
               readOnly: false
             {{- end }}
             - name: data
@@ -89,9 +89,9 @@ spec:
             items:
               - key: mirrorbits.conf
                 path: mirrorbits.conf
-        {{- if and .Values.config .Values.config.logs .Values.config.logs.enabled }}
+        {{- with .Values.config.logs.volume }}
         - name: logs
-          {{- toYaml .Values.config.logs.volume | nindent 10 }}
+          {{- toYaml . | nindent 10 }}
         {{- end }}
         - name: data
           {{- include "mirrorbits.data-volume" . | nindent 10}}

@@ -100,7 +100,7 @@ GeoipDatabasePath: {{ .Values.config.geoipDatabase }}
 Gzip: {{ .Values.config.gzip }}
 ## Host an port to listen on
 ListenAddress: :{{ .Values.config.port }}
-  {{- if and .Values.config.logs .Values.config.logs.enabled }}
+  {{- if and .Values.config.logs .Values.config.logs.path }}
 ## Path where to store logs
 LogDir: {{ .Values.config.logs.path }}
   {{- end }}

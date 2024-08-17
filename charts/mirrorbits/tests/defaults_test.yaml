@@ -56,10 +56,10 @@ tests:
           value: true
       # GeoIP is an emptyDir, with default mountpath
       - equal:
-          path: spec.template.spec.volumes[3].name
+          path: spec.template.spec.volumes[2].name
           value: geoipdata
       - equal:
-          path: spec.template.spec.volumes[3].emptyDir
+          path: spec.template.spec.volumes[2].emptyDir
           value: {}
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[1].name
@@ -70,38 +70,25 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[1].readOnly
           value: true
-      # Log volumes is an emptydir by default (and you can write in it)
+      # Data Volume is an emptyDir by default (but readonly)
       - equal:
           path: spec.template.spec.volumes[1].name
-          value: logs
+          value: data
       - equal:
           path: spec.template.spec.volumes[1].emptyDir
           value: {}
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].name
-          value: logs
+          value: data
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].mountPath
-          value: /var/log/mirrorbits
-      - equal:
-          path: spec.template.spec.containers[0].volumeMounts[2].readOnly
-          value: false
-      # Data Volume is an emptyDir by default (but readonly)
-      - equal:
-          path: spec.template.spec.volumes[2].name
-          value: data
-      - equal:
-          path: spec.template.spec.volumes[2].emptyDir
-          value: {}
-      - equal:
-          path: spec.template.spec.containers[0].volumeMounts[3].name
-          value: data
-      - equal:
-          path: spec.template.spec.containers[0].volumeMounts[3].mountPath
           value: /srv/repo
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[3].readOnly
+          path: spec.template.spec.containers[0].volumeMounts[2].readOnly
           value: true
+      # There are no log volumes
+      - notExists:
+          path: spec.template.spec.volumes[3]
       - notExists:
           path: spec.template.spec.securityContext
       - notExists:
@@ -156,10 +143,6 @@ tests:
           pattern: 'ListenAddress: :8080'
           decodeBase64: true
       - matchRegex:
-          path: data["mirrorbits.conf"]
-          pattern: 'LogDir: /var/log/mirror'
-          decodeBase64: true
-      - matchRegex:
             path: data["mirrorbits.conf"]
             pattern: 'DisallowRedirects: true'
             decodeBase64: true
@@ -178,6 +161,10 @@ tests:
       - matchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'ScanInterval: 30'
+          decodeBase64: true
+      - matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'LogDir: /var/logs/mirrorbits'
           decodeBase64: true
       - notMatchRegex:
           path: data["mirrorbits.conf"]
