@@ -23,8 +23,7 @@ jobs:
 
       - name: Install Helm
         uses: azure/setup-helm@fe7b79cd5ee1e45176fcad797de68ecaf3ca4814 # v4.2.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          
       # Needed for subchart dependencies
       - name: Add jenkins-infra Helm repository
         run: helm repo add jenkins-infra https://jenkins-infra.github.io/helm-charts
