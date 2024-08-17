@@ -83,3 +83,10 @@ geoipdata:
     csi:
       driver: disk.csi.azure.com
       fsType: ext4
+podSecurityContext:
+  runAsUser: 1000
+containerSecurityContext:
+  readOnlyRootFilesystem: true
+resources:
+  limits:
+    cpu: 500m
