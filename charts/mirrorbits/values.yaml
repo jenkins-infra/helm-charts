@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: jenkinsciinfra/mirrorbits
-  tag: 0.2.44
+  tag: 0.2.45
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
@@ -68,16 +68,13 @@ config:
   disableOnMissingFile: true
   ## config.logs specify where to mount mirrorbits detailled logs directory.
   logs:
-    # Wether to use mirrorbits detaileld logs or not
-    enabled: true
-    ## config.logs.path specifies the mountpath of the volume (and set the mirrorbits configuration item)
-    path: /var/log/mirrorbits
+    ## config.logs.path specifies the logs path. Default as a download.logs symlink to stdout
+    path: /var/logs/mirrorbits
     ## config.logs.volume contains the Pod Volume definition for mirrorbits logs
-    volume:
-      emptyDir: {}
-      # Example with an existing PVC:
-      # persistentVolumeClaim:
-      #   claimName: <PVC name>
+    ## Example with an existing PVC:
+    # volume:
+    #   persistentVolumeClaim:
+    #     claimName: <PVC name>
   gzip: false
   port: 8080
   traceFile: /trace
