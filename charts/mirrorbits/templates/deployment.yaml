@@ -41,8 +41,13 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: {{ .Values.config.port }}
               protocol: TCP
+      {{- if .Values.cli.enabled }}
+            - name: cli
+              containerPort: {{ .Values.cli.port }}
+              protocol: TCP
+      {{- end }}
           volumeMounts:
             - name: mirrorbits-config
               mountPath: /etc/mirrorbits
