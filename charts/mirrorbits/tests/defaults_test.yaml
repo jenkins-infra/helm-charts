@@ -54,22 +54,6 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[0].readOnly
           value: true
-      # GeoIP is an emptyDir, with default mountpath
-      - equal:
-          path: spec.template.spec.volumes[2].name
-          value: geoipdata
-      - equal:
-          path: spec.template.spec.volumes[2].emptyDir
-          value: {}
-      - equal:
-          path: spec.template.spec.containers[0].volumeMounts[1].name
-          value: geoipdata
-      - equal:
-          path: spec.template.spec.containers[0].volumeMounts[1].mountPath
-          value: /usr/share/GeoIP
-      - equal:
-          path: spec.template.spec.containers[0].volumeMounts[1].readOnly
-          value: true
       # Data Volume is an emptyDir by default (but readonly)
       - equal:
           path: spec.template.spec.volumes[1].name
@@ -86,9 +70,44 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].readOnly
           value: true
+      # GeoIP is an emptyDir, with default mountpath
+      - equal:
+          path: spec.template.spec.volumes[2].name
+          value: geoipdata
+      - equal:
+          path: spec.template.spec.volumes[2].emptyDir
+          value: {}
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].name
+          value: geoipdata
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].mountPath
+          value: /usr/share/GeoIP
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].readOnly
+          value: true
+      # Tempdir uses a tmpfs volume with a 100Mi limit
+      - equal:
+          path: spec.template.spec.volumes[3].name
+          value: tmpdir
+      - equal:
+          path: spec.template.spec.volumes[3].emptyDir.medium
+          value: Memory
+      - equal:
+          path: spec.template.spec.volumes[3].emptyDir.sizeLimit
+          value: 100Mi
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].name
+          value: tmpdir
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].mountPath
+          value: /tmp
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].readOnly
+          value: false
       # There are no log volumes
       - notExists:
-          path: spec.template.spec.volumes[3]
+          path: spec.template.spec.volumes[4]
       - notExists:
           path: spec.template.spec.securityContext
       - notExists:

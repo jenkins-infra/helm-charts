@@ -58,6 +58,9 @@ spec:
             - name: data
               mountPath: {{ .Values.config.repository }}
               readOnly: true
+            - name: tmpdir
+              mountPath: /tmp
+              readOnly: false
           livenessProbe:
             httpGet:
               path: /?mirrorstats
@@ -102,3 +105,7 @@ spec:
         {{- else }}
           emptyDir: {}
         {{- end }}
+        - name: tmpdir
+          emptyDir:
+            medium: Memory
+            sizeLimit: 100Mi
