@@ -1,7 +1,7 @@
 apiVersion: v1
 description: Mirrobits helm chart for Kubernetes
 name: mirrorbits
-version: 5.0.0
+version: 5.0.1
 appVersion: "v0.5.1"
 maintainers:
 - email: jenkins-infra-team@googlegroups.com

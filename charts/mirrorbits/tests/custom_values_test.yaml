@@ -80,6 +80,25 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].mountPath
           value: /DATA
+      # Tempdir uses a tmpfs volume with a 100Mi limit
+      - equal:
+          path: spec.template.spec.volumes[4].name
+          value: tmpdir
+      - equal:
+          path: spec.template.spec.volumes[4].emptyDir.medium
+          value: Memory
+      - equal:
+          path: spec.template.spec.volumes[4].emptyDir.sizeLimit
+          value: 100Mi
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[4].name
+          value: tmpdir
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[4].mountPath
+          value: /tmp
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[4].readOnly
+          value: false
       - equal:
           path: spec.template.spec.securityContext.runAsUser
           value: 1000
