@@ -60,4 +60,4 @@ tests:
           pattern: 'autoindex on;'
       - notMatchRegex:
           path: data["default.conf"]
-          pattern: 'try_files $uri /index.html;'
+          pattern: 'try_files \$uri /index.html;'
