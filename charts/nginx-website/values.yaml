@@ -1,7 +1,4 @@
 ---
-# Default values for plugins.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
 replicaCount: 1
 image:
   repository: nginx
@@ -50,8 +47,17 @@ affinity: {}
 htmlVolume: {}
 podDisruptionBudget:
   minAvailable: 1
-# ## Secrets values
+## Secrets values
 # # name of the azure storage account to be used
 # azureStorageAccountName:
 # # key for accessing the azure storage account
 # azureStorageAccountKey:
+## nginx default.conf
+nginx:
+  serverName: localhost
+  slashLocation:
+    root: /usr/share/nginx/html
+    index: index.html index.htm
+    autoindex: "on"
+    ## Uncomment to enable try_files directive
+    # tryFiles: $uri /index.html

@@ -2,6 +2,17 @@
 suite: Test with custom values
 templates:
   - pdb.yaml
+  - nginx-configmap.yaml
+set:
+  nginx:
+    serverName: _
+    slashLocation:
+      root: /custom
+      index: custom.html
+      autoindex: "off"
+      tryFiles: $uri /index.html
+  service:
+    port: 8080
 tests:
   - it: should ensure the pdb has correct spec
     template: pdb.yaml
@@ -18,3 +29,28 @@ tests:
       - equal:
           path: spec.selector.matchLabels['app.kubernetes.io/name']
           value: "nginx-website"
+  - it: should create a custom nginx configuration
+    template: nginx-configmap.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ConfigMap
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-nginx-website
+      - matchRegex:
+          path: data["default.conf"]
+          pattern: 'listen       8080;'
+      - matchRegex:
+          path: data["default.conf"]
+          pattern: 'root   /custom;'
+      - matchRegex:
+          path: data["default.conf"]
+          pattern: 'index  custom.html;'
+      - matchRegex:
+          path: data["default.conf"]
+          pattern: 'autoindex off;'
+      - matchRegex:
+          path: data["default.conf"]
+          pattern: 'try_files \$uri /index.html;'

@@ -6,11 +6,14 @@ metadata:
 data:
   default.conf: |
     server {
-      listen       80;
-      server_name  localhost;
+      listen       {{ .Values.service.port }};
+      server_name  {{ .Values.nginx.serverName }};
       location / {
-        root   /usr/share/nginx/html;
-        index  index.html index.htm;
-        autoindex on;
+        root   {{ .Values.nginx.slashLocation.root }};
+        index  {{ .Values.nginx.slashLocation.index }};
+        autoindex {{ .Values.nginx.slashLocation.autoindex }};
+        {{- if .Values.nginx.slashLocation.tryFiles }}
+        try_files {{ .Values.nginx.slashLocation.tryFiles }};
+        {{- end}}
       }
     }
