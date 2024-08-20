@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: jenkinsciinfra/mirrorbits
-  tag: 0.2.47
+  tag: 0.2.48
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
