@@ -1,15 +1,15 @@
 suite: default tests
 templates:
   - deployment.yaml
-  - ingress.yaml
+  - ingresses.yaml
   - secrets.yaml
-  - service.yaml
+  - services.yaml
   - pdb.yaml
   - persistentVolumes.yaml
   - persistentVolumeClaims.yaml
 tests:
   - it: should not create any ingress by default
-    template: ingress.yaml
+    template: ingresses.yaml
     asserts:
       - hasDocuments:
           count: 0
@@ -105,6 +105,12 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].readOnly
           value: false
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].name
+          value: http
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].containerPort
+          value: 8080
       # There are no log volumes
       - notExists:
           path: spec.template.spec.volumes[4]
@@ -116,6 +122,8 @@ tests:
           path: spec.template.spec.containers[0].resources
       - notExists:
           path: spec.template.metadata.annotations
+      - notExists:
+          path: spec.template.spec.containers[0].ports[1]
   - it: should not define any persistent volume
     template: persistentVolumes.yaml
     asserts:
@@ -193,8 +201,16 @@ tests:
           path: data["mirrorbits.conf"]
           pattern: 'Redis'
           decodeBase64: true
-  - it: should create a ClusterIP service with default settings
-    template: service.yaml
+      - notMatchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'RPCListenAddress:'
+          decodeBase64: true
+      - notMatchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'RPCPassword:'
+          decodeBase64: true
+  - it: should only create one service for HTTP with default settings
+    template: services.yaml
     asserts:
       - hasDocuments:
           count: 1
@@ -206,6 +222,12 @@ tests:
       - equal:
           path: spec.type
           value: ClusterIP
+      - equal:
+          path: spec.selector["app.kubernetes.io/instance"]
+          value: RELEASE-NAME
+      - equal:
+          path: spec.selector["app.kubernetes.io/name"]
+          value: mirrorbits
       - equal:
           path: spec.ports[0].name
           value: http

@@ -105,6 +105,15 @@ ListenAddress: :{{ .Values.config.port }}
 LogDir: {{ .Values.config.logs.path }}
   {{- end }}
 
+  {{- if .Values.cli.enabled }}
+## Host and port to listen for the CLI RPC
+RPCListenAddress: 0.0.0.0:{{ .Values.cli.port }}
+
+    {{- with .Values.cli.password }}
+## Password for restricting access to the CLI (optional)
+RPCPassword: {{ . | quote }}
+    {{- end }}
+  {{- end }}
   {{- with .Values.config.redis }}
 ####################
 ##### DATABASE #####
@@ -153,7 +162,7 @@ DisableOnMissingFile: {{ .Values.config.disableOnMissingFile }}
 ## location but won't be able to know if the mirror has the requested file.
 ## Therefore only put your most reliable and up-to-date mirrors here.
 Fallbacks:
-    {{ range . }}
+    {{- range . }}
   - URL: {{ .url }}
     CountryCode: {{ .countryCode }}
     ContinentCode: {{ .continentCode }}

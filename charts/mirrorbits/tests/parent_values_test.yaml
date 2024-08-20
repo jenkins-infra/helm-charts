@@ -1,7 +1,7 @@
 suite: Tests with values from parent (umbrella ingress and umbrella PVC)
 templates:
   - deployment.yaml
-  - ingress.yaml
+  - ingresses.yaml
   - secrets.yaml
   - persistentVolumes.yaml
   - persistentVolumeClaims.yaml
@@ -29,11 +29,16 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].mountPath
           value: /DATA
-  - it: should not create any ingress
-    template: ingress.yaml
+  - it: should only create the CLI ingress
+    template: ingresses.yaml
     asserts:
       - hasDocuments:
-          count: 0
+          count: 1
+      - isKind:
+          of: Ingress
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-cli
   - it: should only define the GeoIP PV
     template: persistentVolumes.yaml
     asserts:

@@ -37,6 +37,30 @@ config:
     - url: https://fallback.company.org
       countryCode: DE
       continentCode: EU
+cli:
+  enabled: true
+  port: 3333
+  password: "SuperSecretPasswordForCli"
+  service:
+    type: NodePort
+    annotations:
+      beta.kubernetes.io/foo: bar
+  ingress:
+    enabled: true
+    className: customClass
+    annotations:
+      beta.kubernetes.io/yipi: kai
+    hosts:
+      - external.localhost
+      - internal.localhost
+    tls:
+      - hosts:
+          - external.localhost
+        secretName: external-tls
+      - hosts:
+          - internal.localhost
+          - private.localhost
+        secretName: internal-tls
 repository:
   name: mirrorbits-binary
   persistentVolumeClaim:

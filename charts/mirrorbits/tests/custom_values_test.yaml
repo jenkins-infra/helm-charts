@@ -1,9 +1,9 @@
 suite: Tests with custom values
 templates:
   - deployment.yaml
-  - ingress.yaml
+  - ingresses.yaml
   - secrets.yaml
-  - service.yaml
+  - services.yaml
   - pdb.yaml
   - persistentVolumes.yaml
   - persistentVolumeClaims.yaml
@@ -11,18 +11,21 @@ values:
   - values/custom.yaml
 tests:
   - it: Should set the correct service selector labels when a fullNameOverride is specified
-    template: service.yaml
+    template: services.yaml
     set:
       fullNameOverride: "my-fullNameOverride"
     asserts:
       - hasDocuments:
-          count: 1
-      - isKind:
+          count: 2
+      - documentIndex: 0
+        isKind:
           of: Service
-      - equal:
+      - documentIndex: 0
+        equal:
           path: spec.selector["app.kubernetes.io/name"]
           value: "mirrorbits"
-      - equal:
+      - documentIndex: 0
+        equal:
           path: spec.selector["app.kubernetes.io/instance"]
           value: "RELEASE-NAME"
   - it: should define a customized "mirrorbits" deployment
@@ -115,16 +118,53 @@ tests:
               {"type":"file","path":"/custom/downloads.log","source":"file","service":"RELEASE-NAME"},
               {"source":"container","service":"RELEASE-NAME"}
             ]
-  - it: should create ingress with pathType set to the specified custom value by default
-    template: ingress.yaml
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].name
+          value: http
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].containerPort
+          value: 7777
+      - equal:
+          path: spec.template.spec.containers[0].ports[1].name
+          value: cli
+      - equal:
+          path: spec.template.spec.containers[0].ports[1].containerPort
+          value: 3333
+  - it: "should create two ingresses: one for HTTP and the other for CLI"
+    template: ingresses.yaml
     asserts:
       - hasDocuments:
-          count: 1
-      - isKind:
+          count: 2
+      - documentIndex: 0
+        isKind:
           of: Ingress
-      - equal:
+      - documentIndex: 0
+        equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits
+      - documentIndex: 0
+        equal:
           path: spec.rules[0].http.paths[0].pathType
           value: "IfNotPresent"
+      - documentIndex: 1
+        isKind:
+          of: Ingress
+      - documentIndex: 1
+        equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-cli
+      - documentIndex: 1
+        equal:
+          path: spec.ingressClassName
+          value: customClass
+      - documentIndex: 1
+        equal:
+          path: spec.tls[1].hosts[1]
+          value: private.localhost
+      - documentIndex: 1
+        equal:
+          path: spec.rules[0].host
+          value: external.localhost
   - it: should define 2 customized PVCs, one for "mirrorbits" binary persistent volume and another for geoip
     template: persistentVolumes.yaml
     asserts:
@@ -193,12 +233,20 @@ tests:
     asserts:
       - hasDocuments:
           count: 2
-      - document: 0
+      - documentIndex: 0
         isKind:
           of: Secret
-      - document: 1
+      - documentIndex: 0
+        equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-binary
+      - documentIndex: 1
         isKind:
           of: Secret
+      - documentIndex: 1
+        equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-config
       - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
@@ -294,25 +342,84 @@ tests:
           path: data["mirrorbits.conf"]
           pattern: 'ScanInterval: 8'
           decodeBase64: true
-  - it: should create a custom service
-    template: service.yaml
+      - documentIndex: 1
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'RPCListenAddress: 0.0.0.0:3333'
+          decodeBase64: true
+      - documentIndex: 1
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'RPCPassword: "SuperSecretPasswordForCli"'
+          decodeBase64: true
+  - it: "should create two (custom) services: HTTP and cli"
+    template: services.yaml
     asserts:
       - hasDocuments:
-          count: 1
-      - isKind:
+          count: 2
+      - documentIndex: 0
+        isKind:
           of: Service
-      - equal:
+      - documentIndex: 0
+        equal:
           path: metadata.name
           value: RELEASE-NAME-mirrorbits
-      - equal:
+      - documentIndex: 0
+        equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits
+      - documentIndex: 0
+        equal:
           path: spec.type
           value: LoadBalancer
-      - equal:
+      - documentIndex: 0
+        equal:
+          path: spec.selector["app.kubernetes.io/instance"]
+          value: RELEASE-NAME
+      - documentIndex: 0
+        equal:
+          path: spec.selector["app.kubernetes.io/name"]
+          value: mirrorbits
+      - documentIndex: 0
+        equal:
           path: spec.ports[0].name
           value: http
-      - equal:
+      - documentIndex: 0
+        equal:
           path: spec.ports[0].port
           value: 443
-      - equal:
+      - documentIndex: 0
+        equal:
           path: spec.ports[0].targetPort
           value: 7777
+      - documentIndex: 1
+        isKind:
+          of: Service
+      - documentIndex: 1
+        equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-cli
+      - documentIndex: 1
+        equal:
+          path: spec.type
+          value: NodePort
+      - documentIndex: 1
+        equal:
+          path: spec.ports[0].name
+          value: cli
+      - documentIndex: 1
+        equal:
+          path: spec.selector["app.kubernetes.io/instance"]
+          value: RELEASE-NAME
+      - documentIndex: 1
+        equal:
+          path: spec.selector["app.kubernetes.io/name"]
+          value: mirrorbits
+      - documentIndex: 1
+        equal:
+          path: spec.ports[0].port
+          value: 3333
+      - documentIndex: 1
+        equal:
+          path: spec.ports[0].targetPort
+          value: 3333
