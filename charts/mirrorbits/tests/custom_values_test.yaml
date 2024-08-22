@@ -130,6 +130,19 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].ports[1].containerPort
           value: 3333
+      # Probes are define with custom setup
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.path
+          value: /?mirrorstats
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.port
+          value: 7777
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet.path
+          value: /?mirrorstats
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet.port
+          value: 7777
   - it: "should create two ingresses: one for HTTP and the other for CLI"
     template: ingresses.yaml
     asserts:
