@@ -152,9 +152,14 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
             gitHubBranchDiscovery {
               strategyId(1) // 1-only branches that are not pull requests
             }
-            // Only Origin Pull Request
             gitHubPullRequestDiscovery {
               strategyId(1) // 1-Merging the pull request with the current target branch revision
+            }
+            gitHubForkDiscovery {
+              strategyId(1) // 1-Merging the pull request with the current target branch revision
+              trust {
+                gitHubTrustPermissions()
+              }
             }
             pruneStaleBranchTrait()
             {{- if not .disableTagDiscovery }}
@@ -210,14 +215,6 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
       daysToKeepStr("{{ .orphanedItemStrategyDaysToKeep | default "" }}")
       numToKeepStr("{{ .orphanedItemStrategyNumToKeep | default "" }}")
       abortBuilds(true)
-    }
-  }
-  configure { node ->
-    def traits = node / 'sources' / 'data' / 'jenkins.branch.BranchSource' / 'source' / 'traits'
-    // Not discovered by Job-DSL: need to be configured as raw-XML
-    traits << 'org.jenkinsci.plugins.github__branch__source.ForkPullRequestDiscoveryTrait' {
-      strategyId(1) // 1-Merging the pull request with the current target branch revision
-      trust(class: 'org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait$TrustPermission')
     }
   }
 
