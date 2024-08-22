@@ -378,7 +378,7 @@ configNode << 'org.jenkinsci.plugins.github__branch__source.GitHubAppCredentials
   appID('{{ coalesce .appID .appId .appid }}')
   privateKey('''{{ .privateKey }}''')
   {{- if .owner }}
-  owner({{ .owner }})
+  owner('{{ .owner }}')
   {{- end }}
 }
 {{- end }}
