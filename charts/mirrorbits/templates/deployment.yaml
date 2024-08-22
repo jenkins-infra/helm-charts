@@ -69,11 +69,11 @@ spec:
           livenessProbe:
             httpGet:
               path: /?mirrorstats
-              port: 8080
+              port: {{ .Values.config.port }}
           readinessProbe:
             httpGet:
               path: /?mirrorstats
-              port: 8080
+              port: {{ .Values.config.port }}
       {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}

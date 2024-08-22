@@ -124,7 +124,21 @@ tests:
           path: spec.template.metadata.annotations
       - notExists:
           path: spec.template.spec.containers[0].ports[1]
+      # Probes are define with default setups
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.path
+          value: /?mirrorstats
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.port
+          value: 8080
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet.path
+          value: /?mirrorstats
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet.port
+          value: 8080
   - it: should not define any persistent volume
+
     template: persistentVolumes.yaml
     asserts:
       - hasDocuments:
