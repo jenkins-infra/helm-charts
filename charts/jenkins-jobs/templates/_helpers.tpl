@@ -10,9 +10,10 @@ Generate the job-dsl configuration from specified values
     {{- range $childId, $childDef := $jobDef.children }}
       {{- /*  Jenkins + Job DSL allow to define job children by concatenating their id with the parent id, separated by a / */}}
       {{- $childFullId := printf "%s/%s" $jobId $childId }}
-      {{- $child := (dict "id" $childId "fullId" $childFullId "root" $root) }}
+      {{- $parentGithubCredential := $jobDef.childrenGithubCredential }}
+      {{- $child := (dict "id" $childId "fullId" $childFullId "root" $root "parentGithubCredential" $parentGithubCredential) }}
       {{- if $childDef }}
-      {{- $child = (merge $childDef (dict "id" $childId "fullId" $childFullId "root" $root)) }}
+      {{- $child = (merge $childDef (dict "id" $childId "fullId" $childFullId "root" $root "parentGithubCredential" $parentGithubCredential)) }}
       {{- end }}
 {{ include "generic-job-dsl-definition" $child | indent 4 }}
     {{- end -}}
@@ -123,7 +124,7 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
       source {
         github {
           id('{{ .fullId | default .id | toString }}')
-          credentialsId('{{ .githubCredentialsId | default "github-app-infra" }}')
+          credentialsId('{{ coalesce .githubCredentialsId .parentGithubCredential "github-app-infra" }}')
           configuredByUrl(true)
           repositoryUrl('https://github.com/{{ $repositoryOwner }}/{{ $repository }}')
           repoOwner('{{ $repositoryOwner }}')
