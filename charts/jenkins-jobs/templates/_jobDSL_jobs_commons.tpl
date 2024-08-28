@@ -20,7 +20,6 @@ Generate the job-dsl configuration from specified values
   {{- end }}
 {{- end }}
 
-{{/******************* Jobs (foler, multibranch, etc.) ***********************/}}
 {{/*
 Generate the job-dsl definition of a single generic item
 */}}
