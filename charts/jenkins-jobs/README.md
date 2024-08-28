@@ -48,10 +48,12 @@ Requirements:
 ## You can fine tune the Kubernetes version with the file tests/manual/k3d.yaml (and other parameters)
 k3d cluster create --config=./tests/manual/k3d.yaml
 
-# Now your $KUBECONFIG is set to use this cluster named 'jenkins-jobs'. You can install the Jenkins + this chart in it for testing
+# Now your $KUBECONFIG is set to use this cluster named 'jenkins-jobs'. You can install Jenkins + this chart in it for testing
 ## You can specify custom values for the jenkins-jobs chart with the file ./
 helmfile apply -f ./tests/manual/helmfile-k3d.yaml
 ```
+
+Now Jenkins is available on <http://localhost> with the username `admin` and the password `butler`, as specified in `./tests/manual/jenkins-jobs_values.yaml`.
 
 You can clean up with the following command:
 

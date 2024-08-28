@@ -61,12 +61,10 @@ tests:
                     displayName('Parent Folder')
                     description('This is the parent folder')
                   }
-
                   folder('child-folder-1') {
                     displayName('Child Folder 1')
                     description('This is the first sub-folder')
                   }
-
                   folder('child-folder-2') {
                     displayName('Child Folder 2')
                     description('This is the second sub-folder')
@@ -90,7 +88,6 @@ tests:
                     displayName('Parent Folder')
                     description('Parent Folder')
                   }
-
                   multibranchPipelineJob('parent-folder/child-job') {
                     triggers {
                       periodicFolderTrigger {
@@ -183,7 +180,6 @@ tests:
                         abortBuilds(true)
                       }
                     }
-
                     displayName('Child Multibranch Job')
                     description('Child Multibranch Job')
                   }
