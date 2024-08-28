@@ -113,7 +113,6 @@ tests:
                         abortBuilds(true)
                       }
                     }
-
                     displayName('Default Job')
                     description('Default Job')
                   }
@@ -223,7 +222,6 @@ tests:
                         abortBuilds(true)
                       }
                     }
-
                     displayName('Job A')
                     description('Job A for team A')
                   }
@@ -335,7 +333,6 @@ tests:
                         abortBuilds(true)
                       }
                     }
-
                     displayName('Job B')
                     description('Job B for team B')
                   }
@@ -446,7 +443,6 @@ tests:
                         abortBuilds(true)
                       }
                     }
-
                     displayName('Job C')
                     description('Job C')
                   }

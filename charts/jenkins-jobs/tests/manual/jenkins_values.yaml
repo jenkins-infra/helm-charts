@@ -10,6 +10,19 @@ controller:
         jenkins:
           numExecutors: 0
       security: |
+        jenkins:
+          securityRealm:
+            local:
+              allowsSignup: false
+              users:
+                - id: "admin"
+                  password: "butler"
+          authorizationStrategy:
+            loggedInUsersCanDoAnything:
+              allowAnonymousRead: false
+          crumbIssuer:
+            standard:
+              excludeClientIPFromCrumb: true
         security:
           gitHostKeyVerificationConfiguration:
             sshHostKeyVerificationStrategy:
