@@ -1,0 +1,8 @@
+jobsDefinition:
+  job-b:
+    name: Job B
+    description: Job B for team B
+    kind: multibranchPipelineJob
+    repoOwner: obiwankenobi
+    repository: lightsaber
+    githubCredentialsId: the-force

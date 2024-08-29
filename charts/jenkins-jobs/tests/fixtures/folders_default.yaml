@@ -1,0 +1,4 @@
+jobsDefinition:
+  folder-a:
+    name: Folder A
+    kind: folder
