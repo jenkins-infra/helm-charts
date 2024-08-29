@@ -11,9 +11,14 @@ tests:
           value: |-
             jobs:
               - script: >
+
                   folder('folder-a') {
                     displayName('Folder A')
                     description('Folder A')
+                  }
+                  folder('folder-b') {
+                    displayName('Folder B')
+                    description('Folder B')
                   }
   - it: should generate a folder with custom description and name
     values:
@@ -24,6 +29,7 @@ tests:
           value: |-
             jobs:
               - script: >
+
                   folder('folder-b') {
                     displayName('Folder B')
                     description('This is the folder of the projects of Team B')
@@ -37,6 +43,7 @@ tests:
           value: |-
             jobs:
               - script: >
+
                   folder('parent-folder') {
                     displayName('Parent Folder')
                     description('This is the parent folder')

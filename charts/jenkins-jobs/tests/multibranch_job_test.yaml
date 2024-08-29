@@ -19,6 +19,7 @@ tests:
           value: |-
             jobs:
               - script: >
+
                   multibranchPipelineJob('default-job') {
                     triggers {
                       periodicFolderTrigger {
@@ -123,6 +124,7 @@ tests:
           value: |-
             jobs:
               - script: >
+
                   multibranchPipelineJob('joba') {
                     triggers {
                       periodicFolderTrigger {
@@ -227,6 +229,7 @@ tests:
           value: |-
             jobs:
               - script: >
+
                   multibranchPipelineJob('job-b') {
                     triggers {
                       periodicFolderTrigger {
@@ -331,6 +334,7 @@ tests:
           value: |-
             jobs:
               - script: >
+
                   multibranchPipelineJob('job-c') {
                     triggers {
                       periodicFolderTrigger {

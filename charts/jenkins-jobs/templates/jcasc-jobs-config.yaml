@@ -13,5 +13,6 @@ metadata:
 data:
   {{ .Values.keyName }}.yaml: |-
     jobs:
-{{- include "jobs-dsl-config" $ | indent 6 }}
+      - script: >
+{{ indent 6 (include "jobs-dsl-config" $) }}
 {{- end }}
