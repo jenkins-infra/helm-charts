@@ -3318,6 +3318,18 @@ entries:
   jenkins-jobs:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2024-08-29T18:03:07.599296594Z"
+    description: Jenkins Jobs Definition from YAML to job-dsl
+    digest: 1f92edcd57aa5255c0de3acfa779d9d95270024ad607f6ab0fce9f34729bdeb2
+    icon: https://jenkins.io/images/logos/plumber/256.png
+    maintainers:
+    - name: Jenkins Infra Team <jenkins-infra-team@googlegroups.com>
+    name: jenkins-jobs
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/jenkins-jobs-2.1.2/jenkins-jobs-2.1.2.tgz
+    version: 2.1.2
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2024-08-28T16:03:26.657152748Z"
     description: Jenkins Jobs Definition from YAML to job-dsl
     digest: 36fa35a0ac4487ab5c3656745cef6d51f3edb9c2e52348626900b50929d47f95
@@ -12567,4 +12579,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-29T07:56:30.946929981Z"
+generated: "2024-08-29T18:03:07.600712578Z"
