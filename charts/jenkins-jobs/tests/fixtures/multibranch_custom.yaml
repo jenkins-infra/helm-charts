@@ -1,0 +1,6 @@
+jenkinsFqdn: jenkins.company.com
+jobsDefinition:
+  joba:
+    name: Job A
+    description: Job A for team A
+    kind: multibranchPipelineJob

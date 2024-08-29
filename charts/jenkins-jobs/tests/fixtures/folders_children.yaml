@@ -1,0 +1,14 @@
+jobsDefinition:
+  parent-folder:
+    name: Parent Folder
+    description: This is the parent folder
+    kind: folder
+    children:
+      child-folder-1:
+        name: Child Folder 1
+        description: This is the first sub-folder
+        kind: folder
+      child-folder-2:
+        name: Child Folder 2
+        description: This is the second sub-folder
+        kind: folder

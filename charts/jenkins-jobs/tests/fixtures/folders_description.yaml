@@ -1,0 +1,5 @@
+jobsDefinition:
+  folder-b:
+    name: Folder B
+    description: This is the folder of the projects of Team B
+    kind: folder

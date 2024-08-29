@@ -3,7 +3,7 @@
 {{/*
 Generate the job-dsl definition main credentials structure in a Job definition
 */}}
-{{- define "common-credentials-job-dsl-definition" }}
+{{- define "common-credentials-job-dsl-definition" -}}
   {{- if .credentials }}
     {{- /* Prepare the 2 dicts of credentials: bindings and hackishxml */}}
     {{- $credentialsWithBindings := dict }}
@@ -45,7 +45,7 @@ properties {
           description('Credentials for the job {{ .name }}')
         }
     {{- if $credentialsWithBindings }}
-      {{- include "binding-credentials-dsl-definition" $credentialsWithBindings | indent 8 }}
+{{ include "binding-credentials-dsl-definition" $credentialsWithBindings | indent 8 }}
     {{- end }}
       }
     }
@@ -57,15 +57,15 @@ properties {
     - https://github.com/jenkinsci/job-dsl-plugin/pull/1202
     */}}
     {{- if $credentialsWithHackishXml }}
-      {{- include "hackishxml-credentials-dsl-definition" $credentialsWithHackishXml }}
+{{- include "hackishxml-credentials-dsl-definition" $credentialsWithHackishXml }}
     {{- end }}
   {{- end }}
-{{- end }}
+{{- end -}}
 
 {{/*
 Generate the job-dsl definition of credentials with bindings
 */}}
-{{- define "binding-credentials-dsl-definition" }}
+{{- define "binding-credentials-dsl-definition" -}}
 credentials {
   {{- range $credentialsId, $credentialDef := . }}
     {{- $kind := .kind | default "string" }}

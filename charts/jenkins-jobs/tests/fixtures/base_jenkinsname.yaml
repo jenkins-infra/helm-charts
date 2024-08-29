@@ -1,0 +1,6 @@
+jenkinsName: admin-controller
+jobsDefinition:
+  parent-folder:
+    name: Parent Folder
+    description: Folder hosting all the jobs
+    kind: folder

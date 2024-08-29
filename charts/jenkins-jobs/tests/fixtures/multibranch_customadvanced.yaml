@@ -1,0 +1,13 @@
+jobsDefinition:
+  job-c:
+    name: Job C
+    githubCheckName: untrusted-ci
+    enableGitHubChecks: true
+    allowUntrustedChanges: true
+    jenkinsfilePath: Jenkinsfile
+    branchIncludes: "prod dev MR-*"
+    branchExcludes: "excluded"
+    disableTagDiscovery: true
+    buildOnFirstIndexing: true
+    orphanedItemStrategyDaysToKeep: 3
+    orphanedItemStrategyNumToKeep: 10

@@ -11,16 +11,15 @@ tests:
   #     - failedTemplate:
   #         errorMessage: "fi"
   - it: should generate a multibranch job with minimum defaults
-    set:
-      jobsDefinition:
-        default-job:
-          name: Default Job
+    values:
+      - fixtures/multibranch_default.yaml
     asserts:
       - equal:
           path: data["jobs-definition.yaml"]
           value: |-
             jobs:
               - script: >
+
                   multibranchPipelineJob('default-job') {
                     triggers {
                       periodicFolderTrigger {
@@ -117,19 +116,15 @@ tests:
                     description('Default Job')
                   }
   - it: should generate a multibranch job with custom name, description and explicit kind
-    set:
-      jenkinsFqdn: jenkins.company.com
-      jobsDefinition:
-        joba:
-          name: Job A
-          description: Job A for team A
-          kind: multibranchPipelineJob
+    values:
+      - fixtures/multibranch_custom.yaml
     asserts:
       - equal:
           path: data["jobs-definition.yaml"]
           value: |-
             jobs:
               - script: >
+
                   multibranchPipelineJob('joba') {
                     triggers {
                       periodicFolderTrigger {
@@ -226,21 +221,15 @@ tests:
                     description('Job A for team A')
                   }
   - it: should generate a multibranch job with custom github configuration
-    set:
-      jobsDefinition:
-        job-b:
-          name: Job B
-          description: Job B for team B
-          kind: multibranchPipelineJob
-          repoOwner: obiwankenobi
-          repository: lightsaber
-          githubCredentialsId: the-force
+    values:
+      - fixtures/multibranch_customgithub.yaml
     asserts:
       - equal:
           path: data["jobs-definition.yaml"]
           value: |-
             jobs:
               - script: >
+
                   multibranchPipelineJob('job-b') {
                     triggers {
                       periodicFolderTrigger {
@@ -337,26 +326,15 @@ tests:
                     description('Job B for team B')
                   }
   - it: should generate a multibranch job with advanced configuration
-    set:
-      jobsDefinition:
-        job-c:
-          name: Job C
-          githubCheckName: untrusted-ci
-          enableGitHubChecks: true
-          allowUntrustedChanges: true
-          jenkinsfilePath: Jenkinsfile
-          branchIncludes: "prod dev MR-*"
-          branchExcludes: "excluded"
-          disableTagDiscovery: true
-          buildOnFirstIndexing: true
-          orphanedItemStrategyDaysToKeep: 3
-          orphanedItemStrategyNumToKeep: 10
+    values:
+      - fixtures/multibranch_customadvanced.yaml
     asserts:
       - equal:
           path: data["jobs-definition.yaml"]
           value: |-
             jobs:
               - script: >
+
                   multibranchPipelineJob('job-c') {
                     triggers {
                       periodicFolderTrigger {

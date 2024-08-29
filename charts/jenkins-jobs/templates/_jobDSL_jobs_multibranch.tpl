@@ -2,9 +2,9 @@
 {{/*
 Generate the job-dsl definition of a multibranch job
 */}}
-{{- define "multibranch-job-dsl-definition" }}
-  {{- $repository := .repository | default .id }}
-  {{- $repositoryOwner := .repoOwner | default "jenkins-infra" }}
+{{- define "multibranch-job-dsl-definition" -}}
+  {{- $repository := .repository | default .id -}}
+  {{- $repositoryOwner := .repoOwner | default "jenkins-infra" -}}
 multibranchPipelineJob('{{ .fullId | default .id }}') {
   triggers {
     periodicFolderTrigger {
@@ -111,7 +111,6 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
       abortBuilds(true)
     }
   }
-
-  {{- include "common-job-dsl-definition" . | indent 2 }}
+{{ indent 2 (include "common-job-dsl-definition" .) }}
 }
 {{- end }}
