@@ -4,5 +4,5 @@ icon: https://jenkins.io/images/logos/plumber/256.png
 maintainers:
   - name: Jenkins Infra Team <jenkins-infra-team@googlegroups.com>
 name: jenkins-jobs
-version: 2.1.2
+version: 2.2.0
 appVersion: "1.0" # unused

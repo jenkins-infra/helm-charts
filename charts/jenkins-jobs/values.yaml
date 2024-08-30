@@ -1,5 +1,9 @@
 keyName: jobs-definition
 jenkinsName: jenkins
+defaults:
+  repoOwner: jenkins-infra
+  jenkinsfilePath: Jenkinsfile_k8s
+  triggerScanInterval: 2h
 jobsDefinition: {}
 ## Example of job definitions
 # jobsDefinition:

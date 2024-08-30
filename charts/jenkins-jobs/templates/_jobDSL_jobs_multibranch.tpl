@@ -4,11 +4,11 @@ Generate the job-dsl definition of a multibranch job
 */}}
 {{- define "multibranch-job-dsl-definition" -}}
   {{- $repository := .repository | default .id -}}
-  {{- $repositoryOwner := .repoOwner | default "jenkins-infra" -}}
+  {{- $repoOwner := (coalesce .repoOwner .root.Values.defaults.repoOwner) -}}
 multibranchPipelineJob('{{ .fullId | default .id }}') {
   triggers {
     periodicFolderTrigger {
-      interval('2h')
+      interval('{{ coalesce .triggerScanInterval .root.Values.defaults.triggerScanInterval }}')
     }
   }
 
@@ -19,8 +19,8 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
           id('{{ .fullId | default .id | toString }}')
           credentialsId('{{ coalesce .githubCredentialsId .parentGithubCredential "github-app-infra" }}')
           configuredByUrl(true)
-          repositoryUrl('https://github.com/{{ $repositoryOwner }}/{{ $repository }}')
-          repoOwner('{{ $repositoryOwner }}')
+          repositoryUrl('https://github.com/{{ $repoOwner }}/{{ $repository }}')
+          repoOwner('{{ $repoOwner }}')
           repository('{{ $repository }}')
           traits {
             gitHubNotificationContextTrait {
@@ -100,7 +100,7 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
   }
   factory {
     workflowBranchProjectFactory {
-      scriptPath('{{ .jenkinsfilePath | default "Jenkinsfile_k8s" }}')
+      scriptPath('{{ coalesce .jenkinsfilePath .root.Values.defaults.jenkinsfilePath }}')
     }
   }
   orphanedItemStrategy {
