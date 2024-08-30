@@ -2,14 +2,6 @@ suite: multibranch jobs tests
 templates:
   - jcasc-jobs-config.yaml
 tests:
-  ## TODO: implement validation in template (to fail with the template existing)
-  # - it: should fail if no job name is provided
-  #   set:
-  #     jobsDefinition:
-  #       default-job:
-  #   asserts:
-  #     - failedTemplate:
-  #         errorMessage: "fi"
   - it: should generate a multibranch job with minimum defaults
     values:
       - fixtures/multibranch_default.yaml
