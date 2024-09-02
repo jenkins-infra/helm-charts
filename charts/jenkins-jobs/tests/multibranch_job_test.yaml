@@ -8,9 +8,9 @@ tests:
     asserts:
       - equal:
           path: data["jobs-definition.yaml"]
-          value: |-
+          value: |
             jobs:
-              - script: >
+              - script: |
 
                   multibranchPipelineJob('default-job') {
                     triggers {
@@ -113,9 +113,9 @@ tests:
     asserts:
       - equal:
           path: data["jobs-definition.yaml"]
-          value: |-
+          value: |
             jobs:
-              - script: >
+              - script: |
 
                   multibranchPipelineJob('joba') {
                     triggers {
@@ -218,9 +218,9 @@ tests:
     asserts:
       - equal:
           path: data["jobs-definition.yaml"]
-          value: |-
+          value: |
             jobs:
-              - script: >
+              - script: |
 
                   multibranchPipelineJob('job-b') {
                     triggers {
@@ -323,9 +323,9 @@ tests:
     asserts:
       - equal:
           path: data["jobs-definition.yaml"]
-          value: |-
+          value: |
             jobs:
-              - script: >
+              - script: |
 
                   multibranchPipelineJob('job-c') {
                     triggers {

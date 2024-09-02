@@ -8,9 +8,9 @@ tests:
     asserts:
       - equal:
           path: data["jobs-definition.yaml"]
-          value: |-
+          value: |
             jobs:
-              - script: >
+              - script: |
 
                   folder('folder-a') {
                     displayName('Folder A')
@@ -26,9 +26,9 @@ tests:
     asserts:
       - equal:
           path: data["jobs-definition.yaml"]
-          value: |-
+          value: |
             jobs:
-              - script: >
+              - script: |
 
                   folder('folder-b') {
                     displayName('Folder B')
@@ -40,9 +40,9 @@ tests:
     asserts:
       - equal:
           path: data["jobs-definition.yaml"]
-          value: |-
+          value: |
             jobs:
-              - script: >
+              - script: |
 
                   folder('parent-folder') {
                     displayName('Parent Folder')
