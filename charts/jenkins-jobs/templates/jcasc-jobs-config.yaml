@@ -11,8 +11,8 @@ metadata:
     "app.kubernetes.io/instance": "{{ $.Release.Name }}"
     {{ .Values.jenkinsName }}-jenkins-config: "true"
 data:
-  {{ .Values.keyName }}.yaml: |-
+  {{ .Values.keyName }}.yaml: |
     jobs:
-      - script: >
+      - script: |
 {{ indent 6 (include "jobs-dsl-config" $) }}
 {{- end }}
