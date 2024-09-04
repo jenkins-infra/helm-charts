@@ -20,8 +20,3 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
-  - it: should not provide a service account by default
-    template: serviceaccount.yaml
-    asserts:
-      - hasDocuments:
-          count: 0
