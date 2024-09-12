@@ -114,6 +114,11 @@ RPCListenAddress: 0.0.0.0:{{ .Values.cli.port }}
 RPCPassword: {{ . | quote }}
     {{- end }}
   {{- end }}
+## OutputMode can take on the three values:
+##  - redirect: HTTP redirect to the destination file on the selected mirror
+##  - json: return a json document for pre-treatment by an application
+##  - auto: based on the Accept HTTP header
+OutputMode: {{ .Values.config.outputMode | default "auto" }}
   {{- with .Values.config.redis }}
 ####################
 ##### DATABASE #####

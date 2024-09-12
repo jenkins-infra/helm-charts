@@ -365,6 +365,11 @@ tests:
           path: data["mirrorbits.conf"]
           pattern: 'RPCPassword: "SuperSecretPasswordForCli"'
           decodeBase64: true
+      - documentIndex: 1
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'OutputMode: redirect'
+          decodeBase64: true
   - it: "should create two (custom) services: HTTP and cli"
     template: services.yaml
     asserts:
