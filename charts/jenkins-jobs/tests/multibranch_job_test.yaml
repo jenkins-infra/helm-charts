@@ -62,11 +62,11 @@ tests:
                                   gitHubTrustPermissions()
                                 }
                               }
-                              pruneStaleBranchTrait()
-                              gitHubTagDiscovery()
                               pullRequestLabelsBlackListFilterTrait {
                                 labels('on-hold,ci-skip,skip-ci')
                               }
+                              pruneStaleBranchTrait()
+                              gitHubTagDiscovery()
                               // Select branches and tags to build based on these filters
                               headWildcardFilterWithPR {
                                 includes('main master PR-*') // only branches listed here
@@ -171,11 +171,11 @@ tests:
                                   gitHubTrustPermissions()
                                 }
                               }
-                              pruneStaleBranchTrait()
-                              gitHubTagDiscovery()
                               pullRequestLabelsBlackListFilterTrait {
                                 labels('on-hold,ci-skip,skip-ci')
                               }
+                              pruneStaleBranchTrait()
+                              gitHubTagDiscovery()
                               // Select branches and tags to build based on these filters
                               headWildcardFilterWithPR {
                                 includes('main master PR-*') // only branches listed here
@@ -280,11 +280,11 @@ tests:
                                   gitHubTrustPermissions()
                                 }
                               }
-                              pruneStaleBranchTrait()
-                              gitHubTagDiscovery()
                               pullRequestLabelsBlackListFilterTrait {
                                 labels('on-hold,ci-skip,skip-ci')
                               }
+                              pruneStaleBranchTrait()
+                              gitHubTagDiscovery()
                               // Select branches and tags to build based on these filters
                               headWildcardFilterWithPR {
                                 includes('main master PR-*') // only branches listed here
@@ -389,10 +389,10 @@ tests:
                                   gitHubTrustPermissions()
                                 }
                               }
-                              pruneStaleBranchTrait()
                               pullRequestLabelsBlackListFilterTrait {
                                 labels('on-hold,ci-skip,skip-ci')
                               }
+                              pruneStaleBranchTrait()
                               // Select branches and tags to build based on these filters
                               headWildcardFilterWithPR {
                                 includes('prod dev MR-*') // only branches listed here
@@ -426,6 +426,90 @@ tests:
                         pruneDeadBranches(true)
                         daysToKeepStr("3")
                         numToKeepStr("10")
+                        abortBuilds(true)
+                      }
+                    }
+                    displayName('Job C')
+                    description('Job C')
+                  }
+  - it: should generate a multibranch job for "website production deployement" (with only principal branch for pipeline, No PR, no tags)
+    values:
+      - fixtures/multibranch_mainbranch_only.yaml
+    asserts:
+      - equal:
+          path: data["jobs-definition.yaml"]
+          value: |
+            jobs:
+              - script: |
+
+                  multibranchPipelineJob('job-c') {
+                    triggers {
+                      periodicFolderTrigger {
+                        interval('2h')
+                      }
+                    }
+
+                    branchSources {
+                      branchSource {
+                        source {
+                          github {
+                            id('job-c')
+                            credentialsId('github-app-infra')
+                            configuredByUrl(true)
+                            repositoryUrl('https://github.com/jenkins-infra/job-c')
+                            repoOwner('jenkins-infra')
+                            repository('job-c')
+                            traits {
+                              gitHubNotificationContextTrait {
+                                contextLabel('jenkins/localhost/job-c')
+                                typeSuffix(true)
+                              }
+                              gitHubSCMSourceStatusChecksTrait {
+                                // Note: changing this name might have impact on github branch protections if they specify status names
+                                name('jenkins')
+                                skip(true)
+                                skipProgressUpdates(true)
+                                // If this option is checked, the notifications sent by the GitHub Branch Source Plugin will be disabled.
+                                skipNotifications(false)
+                                // Default value: false. Warning: risk of secret leak in console if the build fails
+                                // Please note that it only disable the detailed logs. If you really want no logs, then use "skip(false)' instead
+                                suppressLogs(true)
+                                unstableBuildNeutral(false)
+                              }
+                              gitHubBranchDiscovery {
+                                strategyId(1) // 1-only branches that are not pull requests
+                              }
+                              pruneStaleBranchTrait()
+                              // Select branches and tags to build based on these filters
+                              headWildcardFilterWithPR {
+                                includes('main') // only branches listed here
+                                excludes('')
+                                tagIncludes('*')
+                                tagExcludes('')
+                              }
+                            }
+                          }
+                          buildStrategies {
+                            buildAnyBranches {
+                              strategies {
+                                skipInitialBuildOnFirstBranchIndexing()
+                                buildRegularBranches()
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    factory {
+                      workflowBranchProjectFactory {
+                        scriptPath('Jenkinsfile_k8s')
+                      }
+                    }
+                    orphanedItemStrategy {
+                      defaultOrphanedItemStrategy {
+                        pruneDeadBranches(true)
+                        daysToKeepStr("")
+                        numToKeepStr("")
                         abortBuilds(true)
                       }
                     }

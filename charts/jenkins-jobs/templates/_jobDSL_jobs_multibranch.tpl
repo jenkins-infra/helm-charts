@@ -51,6 +51,7 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
             gitHubBranchDiscovery {
               strategyId(1) // 1-only branches that are not pull requests
             }
+            {{- if not .disablePullRequests }}
             gitHubPullRequestDiscovery {
               // 1 - Merging the pull request with the current target branch revision
               // 2 - The current pull request revision
@@ -64,13 +65,14 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
                 gitHubTrustPermissions()
               }
             }
+            pullRequestLabelsBlackListFilterTrait {
+              labels('on-hold,ci-skip,skip-ci')
+            }
+            {{- end }}
             pruneStaleBranchTrait()
     {{- if not .disableTagDiscovery }}
             gitHubTagDiscovery()
     {{- end }}
-            pullRequestLabelsBlackListFilterTrait {
-              labels('on-hold,ci-skip,skip-ci')
-            }
             // Select branches and tags to build based on these filters
             headWildcardFilterWithPR {
               includes('{{ .branchIncludes | default "main master PR-*" }}') // only branches listed here
@@ -86,14 +88,16 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
     {{- if eq (.buildOnFirstIndexing | toString) "<nil>" }}
               skipInitialBuildOnFirstBranchIndexing()
     {{- end }}
+    {{- if not .disablePullRequests }}
               buildChangeRequests {
                 ignoreTargetOnlyChanges(true)
-    {{- if eq (.allowUntrustedChanges | toString) "<nil>" }}
+      {{- if eq (.allowUntrustedChanges | toString) "<nil>" }}
                 ignoreUntrustedChanges(true)
-    {{- else }}
+      {{- else }}
                 ignoreUntrustedChanges({{ not .allowUntrustedChanges }})
-    {{- end }}
+      {{- end }}
               }
+    {{- end }}
               buildRegularBranches()
     {{- if not .disableTagDiscovery }}
               buildTags {
