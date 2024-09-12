@@ -67,6 +67,8 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[1].mountPath
           value: /usr/local/apache2/htdocs
+      - notExists:
+          path: spec.template.metadata.annotations
   - it: should not define any persistent volume
     template: persistentVolume.yaml
     asserts:
