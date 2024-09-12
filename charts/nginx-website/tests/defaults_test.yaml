@@ -61,3 +61,6 @@ tests:
       - notMatchRegex:
           path: data["default.conf"]
           pattern: 'try_files \$uri /index.html;'
+      - notMatchRegex:
+          path: data["default.conf"]
+          pattern: 'return .*;'

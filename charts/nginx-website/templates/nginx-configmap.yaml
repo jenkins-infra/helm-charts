@@ -16,4 +16,11 @@ data:
         try_files {{ .Values.nginx.slashLocation.tryFiles }};
         {{- end}}
       }
+      {{- if .Values.nginx.redirections }}
+      {{- range .Values.nginx.redirections }}
+      location {{ .location }} {
+        return {{ .returnedCode }} {{ .destination}}$request_uri;
+      }
+      {{- end}}
+      {{- end}}
     }

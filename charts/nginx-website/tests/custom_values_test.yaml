@@ -11,6 +11,13 @@ set:
       index: custom.html
       autoindex: "off"
       tryFiles: $uri /index.html
+    redirections:
+      - location: /alocation
+        returnedCode: 301
+        destination: https://awebsite.example/apath/
+      - location: /anotherlocation
+        returnedCode: 302
+        destination: https://anotherwebsite.example/anotherpath/
   service:
     port: 8080
 tests:
@@ -54,3 +61,15 @@ tests:
       - matchRegex:
           path: data["default.conf"]
           pattern: 'try_files \$uri /index.html;'
+      - matchRegex:
+          path: data["default.conf"]
+          pattern: 'location /alocation {'
+      - matchRegex:
+          path: data["default.conf"]
+          pattern: 'return 301 https://awebsite.example/apath/\$request_uri;'
+      - matchRegex:
+          path: data["default.conf"]
+          pattern: 'location /anotherlocation {'
+      - matchRegex:
+          path: data["default.conf"]
+          pattern: 'return 302 https://anotherwebsite.example/anotherpath/\$request_uri;'

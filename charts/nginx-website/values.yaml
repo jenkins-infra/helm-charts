@@ -61,3 +61,8 @@ nginx:
     autoindex: "on"
     ## Uncomment to enable try_files directive
     # tryFiles: $uri /index.html
+  redirections: {}
+    ## Example:
+    # - location: /plugin-installation-trend
+    #   returnedCode: 301
+    #   destination: https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/
