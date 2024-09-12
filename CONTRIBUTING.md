@@ -15,7 +15,7 @@ Contributions are welcome via GitHub pull requests. This document outlines the p
 ### Prerequisites
 
 - [helm](https://helm.sh/)
-- [quintus/helm-unittest](https://github.com/quintush/helm-unittest)
+- [helm-unittest/helm-unittest](https://github.com/helm-unittest/helm-unittest)
 - Read the [Review Guidelines](./REVIEW_GUIDELINES.md)
 <!-- - [minikube](https://minikube.sigs.k8s.io/docs/start/), [k3d](https://k3d.io/), [kind](https://kind.sigs.k8s.io/), [microk8s](https://microk8s.io/) or some other local k8s cluster -->
 
