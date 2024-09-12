@@ -207,6 +207,10 @@ tests:
           path: data["mirrorbits.conf"]
           pattern: 'LogDir: /var/logs/mirrorbits'
           decodeBase64: true
+      - matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'OutputMode: auto'
+          decodeBase64: true
       - notMatchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'Fallbacks'

@@ -24,6 +24,7 @@ config:
   checkInterval: 60
   disallowRedirects: false
   disableOnMissingFile: false
+  outputMode: redirect
   redis:
     address: redis-master.internal.company.org:6379
     password: SuperSecretRedisPassword
