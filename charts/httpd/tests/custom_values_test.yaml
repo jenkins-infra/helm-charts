@@ -7,18 +7,8 @@ templates:
   - service.yaml
   - persistentVolume.yaml
   - persistentVolumeClaim.yaml
-set:
-  image:
-    pullPolicy: Never
-  repository:
-    reuseExistingPersistentVolumeClaim: true
-  ingress:
-    enabled: true
-    hosts:
-      - host: chart-example.local
-        paths:
-        - path: /
-          pathType: IfNotPresent
+values:
+  - values/custom.yaml
 tests:
   - it: Should set the correct service selector labels when a fullNameOverride is specified
     template: service.yaml
@@ -60,6 +50,13 @@ tests:
       - equal:
           path: spec.template.spec.containers[*].imagePullPolicy
           value: Never
+      - equal:
+          path: spec.template.metadata.annotations["ad.datadoghq.com/mirrorbits.logs"]
+          value: |
+            [
+              {"type":"file","path":"/custom/downloads.log","source":"file","service":"RELEASE-NAME"},
+              {"source":"container","service":"RELEASE-NAME"}
+            ]
   - it: should define a volume 'html' if reuseExistingPersistentVolumeClaim is true
     template: deployment.yaml
     asserts:
@@ -157,9 +154,6 @@ tests:
             ServerName example.com
   - it: should create a config map with custom ServerName from values
     template: configmap.yaml
-    set:
-      httpdConf:
-        serverName: https://death.star:8443
     asserts:
       - hasDocuments:
           count: 1
