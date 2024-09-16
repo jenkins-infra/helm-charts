@@ -33,16 +33,12 @@ subjects:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "httpd.fullname" . }}-restart-cronjob
+  name: {{ include "httpd.fullname" . }}-restart-deployment
   labels:
 {{ include "httpd.labels" . | indent 4 }}
 spec:
-  successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 2
   concurrencyPolicy: Forbid
-  {{- with .Values.httpdRestart.cron }}
-  schedule: {{ toYaml . }}
-  {{- end }}
+  schedule: {{ .Values.httpdRestart.cron }}
   jobTemplate:
     spec:
       backoffLimit: 2
@@ -52,7 +48,7 @@ spec:
           serviceAccountName: {{ include "httpd.fullname" . }}-restart-deployment
           restartPolicy: Never
           containers:
-            - name: kubectl-cron
+            - name: kubectl-httpdRestart
               image: "{{ .Values.httpdRestart.image.repository }}:{{ .Values.httpdRestart.image.tag }}"
               imagePullPolicy: {{ .Values.httpdRestart.image.pullPolicy }}
               command:
