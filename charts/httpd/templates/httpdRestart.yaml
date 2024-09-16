@@ -56,7 +56,7 @@ spec:
               image: "{{ .Values.httpdRestart.image.repository }}:{{ .Values.httpdRestart.image.tag }}"
               imagePullPolicy: {{ .Values.httpdRestart.image.pullPolicy }}
               command:
-                - bash
+                - sh
                 - -c
                 - >-
                   kubectl rollout restart deployment/{{ include "httpd.fullname" . }} &&
