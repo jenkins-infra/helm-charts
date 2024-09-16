@@ -222,7 +222,7 @@ tests:
       httpdRestart:
         enable: true
         image:
-          tag: "v0.0.0"
+          tag: "0.0.0"
           pullPolicy: "Never"
     asserts:
       - hasDocuments:
@@ -245,7 +245,7 @@ tests:
         documentIndex: 3
       - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].image
-          value: "rancher/kubectl:v0.0.0"
+          value: "bitnami/kubectl:0.0.0"
         documentIndex: 3
       - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].imagePullPolicy
