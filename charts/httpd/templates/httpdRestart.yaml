@@ -41,8 +41,6 @@ spec:
   schedule: {{ .Values.httpdRestart.cron }}
   jobTemplate:
     spec:
-      backoffLimit: 2
-      activeDeadlineSeconds: 600
       template:
         spec:
           serviceAccountName: {{ include "httpd.fullname" . }}-restart-deployment
