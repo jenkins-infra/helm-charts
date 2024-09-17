@@ -46,7 +46,7 @@ spec:
           serviceAccountName: {{ include "httpd.fullname" . }}-restart-deployment
           restartPolicy: Never
           containers:
-            - name: kubectl-httpdRestart
+            - name: kubectl-httpdrestart
               image: "{{ .Values.httpdRestart.image.repository }}:{{ .Values.httpdRestart.image.tag }}"
               imagePullPolicy: {{ .Values.httpdRestart.image.pullPolicy }}
               command:
