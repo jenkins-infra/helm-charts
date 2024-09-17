@@ -1,9 +1,9 @@
-{{ if and .Values.repository.persistentVolumeClaim.enabled (not (dig "global" "ingress" "enabled" false .Values.AsMap)) -}}
+{{ if and .Values.repository.persistentVolumeClaim.enabled (not (dig "global" "storage" "enabled" false .Values.AsMap)) -}}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits.fullname" .))  }}
+  name: {{ include "mirrorbits.data-name" . }}
 spec:
 {{ toYaml .Values.repository.persistentVolumeClaim.spec | nindent 2 }}
 {{- end }}
@@ -12,7 +12,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "mirrorbits.geoipdata" . }}
+  name: {{ include "mirrorbits.geoipdata-name" . }}
 spec:
   accessModes:
     - ReadOnlyMany
@@ -20,5 +20,5 @@ spec:
     requests:
       storage: {{ .Values.geoipdata.persistentData.capacity}}
   storageClassName: {{ .Values.geoipdata.persistentData.storageClassName}}
-  volumeName: {{ include "mirrorbits.geoipdata" . }}
+  volumeName: {{ include "mirrorbits.geoipdata-name" . }}
 {{- end }}

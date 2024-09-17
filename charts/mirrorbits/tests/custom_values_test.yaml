@@ -441,3 +441,63 @@ tests:
         equal:
           path: spec.ports[0].targetPort
           value: 3333
+  - it: should only define a GeoIP PV when reusing existing PVCs
+    template: persistentVolumes.yaml
+    values:
+      - values/custom_existingPVC.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should only define a GeoIP PVC when reusing existing PVC for repository
+    template: persistentVolumeClaims.yaml
+    values:
+      - values/custom_existingPVC.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should set up repository to use the specified existing PVC (when specified)
+    template: deployment.yaml
+    values:
+      - values/custom_existingPVC.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      # Custom GeoIP PVC
+      - equal:
+          path: spec.template.spec.volumes[3].name
+          value: geoipdata
+      - equal:
+          path: spec.template.spec.volumes[3].persistentVolumeClaim.claimName
+          value: geodataHere
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].name
+          value: geoipdata
+      # Log volumes is a custom PVC in a custom mount path
+      - equal:
+          path: spec.template.spec.volumes[1].name
+          value: logs
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2].name
+          value: logs
+      # Data Volume
+      - equal:
+          path: spec.template.spec.volumes[2].name
+          value: data
+      - equal:
+          path: spec.template.spec.volumes[2].persistentVolumeClaim.claimName
+          value: anotherPVC
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].name
+          value: data
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].mountPath
+          value: /DATA
+      # Tempdir uses a tmpfs volume with a 100Mi limit
+      - equal:
+          path: spec.template.spec.volumes[4].name
+          value: tmpdir
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[4].name
+          value: tmpdir
