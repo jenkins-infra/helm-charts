@@ -52,21 +52,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
 {{/*
-Data directory volume definition. Might be defined from parent chart templates or autonomously
-based on the presence of the global value provided by the parent chart.
+Ensure coherent name of the repository data PV/PVC objects
 */}}
-{{- define "mirrorbits.data-volume" -}}
-{{- if and (dig "global" "storage" "enabled" false .Values.AsMap) .Values.global.storage.claimNameTpl -}}
-persistentVolumeClaim:
-  claimName: {{ printf "%s" (tpl .Values.global.storage.claimNameTpl $) | trim | trunc 63 }}
-{{- else -}}
-  {{- if .Values.repository.persistentVolumeClaim.enabled -}}
-persistentVolumeClaim:
-  claimName: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits.fullname" .)) }}
-  {{- else -}}
-emptyDir: {}
-  {{- end -}}
+{{- define "mirrorbits.data-name" -}}
+{{ .Values.repository.name }}
 {{- end -}}
+
+{{/*
+Ensure coherent name of the geoipdata PV/PVC objects
+*/}}
+{{- define "mirrorbits.geoipdata-name" -}}
+{{ .Values.geoipdata.existingPVCName | default (printf "%s-%s" (include "mirrorbits.fullname" .) "geoipdata") }}
 {{- end -}}
 
 {{/*
@@ -74,13 +70,6 @@ Ensure coherent name of the mirrorbits configuration object (so deployment has t
 */}}
 {{- define "mirrorbits.config-secretname" -}}
   {{ include "mirrorbits.fullname" . }}-config
-{{- end -}}
-
-{{/*
-Ensure coherent name of the geoipdata PV/PVC objects
-*/}}
-{{- define "mirrorbits.geoipdata" -}}
-  {{ include "mirrorbits.fullname" . }}-geoipdata
 {{- end -}}
 
 {{/*

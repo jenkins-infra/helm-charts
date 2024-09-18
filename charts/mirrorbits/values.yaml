@@ -108,24 +108,31 @@ config:
   #   CountryCode: DE
   #   ContinentCode: EU
 repository:
+  ## Name of the PVC (existing or to be created - see options below) to use as repository data
   name: mirrorbits-binary
+  ## Is the repository.name an existing PVC (statically or chart-externally defined)
+  existingPVC: false
+  ## Use dynamically provisioned PVC
   persistentVolumeClaim:
     enabled: false
-    # spec hold persistentVolumeClaim spec
+    ## spec holds persistentVolumeClaim spec
     spec: {}
+  ## Use dynamically provisioned PV
   persistentVolume:
     enabled: false
-    # spec hold persistentVolume spec
+    ## spec holds persistentVolume spec
     spec: {}
   secrets:
     enabled: false
-    # data hold secrets data used by persistentVolume
+    ## data hold secrets data used by persistentVolume
     data: {}
 poddisruptionbudget:
   minAvailable: 1
 geoipdata:
+  ## Is the repository.name an existing PVC (statically or chart-externally defined)
+  # existingPVCName: geoIPExistingData
   persistentData:
     enabled: false
     # capacity: 1Gi
-    # storageClassName: statically-provisionned
+    # storageClassName: statically-provisioned
     # csi: {}

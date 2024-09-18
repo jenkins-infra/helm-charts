@@ -1,0 +1,11 @@
+repository:
+  name: anotherPVC
+  existingPVC: true
+  persistentVolumeClaim:
+    enabled: false
+  persistentVolume:
+    enabled: false
+geoipdata:
+  existingPVCName: geodataHere
+  persistentData:
+    enabled: false

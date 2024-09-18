@@ -1,11 +1,11 @@
-{{ if and .Values.repository.persistentVolume.enabled (not (dig "global" "ingress" "enabled" false .Values.AsMap)) -}}
+{{ if and .Values.repository.persistentVolume.enabled (not (dig "global" "storage" "enabled" false .Values.AsMap)) -}}
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits.fullname" .)) }}
+  name: {{ include "mirrorbits.data-name" . }}
   labels:
-    data: {{ .Values.repository.name | default (printf "%s-binary" (include "mirrorbits.fullname" . )) }}
+    data: {{ include "mirrorbits.data-name" . }}
 spec:
 {{ toYaml .Values.repository.persistentVolume.spec | nindent 2 }}
 {{- end }}
@@ -14,9 +14,9 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ include "mirrorbits.geoipdata" . }}
+  name: {{ include "mirrorbits.geoipdata-name" . }}
   labels:
-    data: {{ include "mirrorbits.geoipdata" . }}
+    data: {{ include "mirrorbits.geoipdata-name" . }}
 spec:
   accessModes:
     - ReadOnlyMany
