@@ -1744,6 +1744,19 @@ entries:
     version: 0.0.1
   acme:
   - apiVersion: v1
+    created: "2024-09-18T16:18:54.523665786Z"
+    description: An acme settings chart for Jenkins infra project
+    digest: e21c88e730e9e7249f2de656b4ada1541d03ae6c696b1820de361c1b325f7a3e
+    home: https://github.com/jenkins-infra/charts
+    maintainers:
+    - email: me@olblak.com
+      name: Olblak
+      url: https://github.com/olblak
+    name: acme
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/acme-0.1.4/acme-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v1
     created: "2023-09-20T15:59:50.170633921Z"
     description: An acme settings chart for Jenkins infra project
     digest: c16529413397d26ac5f464f7448b31ee55e01dc2458a284e3f92c7d2725c9a63
@@ -1798,6 +1811,15 @@ entries:
     - https://github.com/jenkins-infra/public-charts/releases/download/acme-0.1.0/acme-0.1.0.tgz
     version: 0.1.0
   artifact-caching-proxy:
+  - apiVersion: v2
+    created: "2024-09-18T16:18:54.671681711Z"
+    description: artifact-caching-proxy is a Nginx caching proxy in front of repo.jenkins-ci.org
+    digest: 42a6525e54ae442a29d909edadba1d890cf3bf398e5ae693954957a711f0fa1e
+    name: artifact-caching-proxy
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/artifact-caching-proxy-1.6.2/artifact-caching-proxy-1.6.2.tgz
+    version: 1.6.2
   - apiVersion: v2
     created: "2024-08-16T07:17:27.707633307Z"
     description: artifact-caching-proxy is a Nginx caching proxy in front of repo.jenkins-ci.org
@@ -10553,6 +10575,17 @@ entries:
   reports:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2024-09-18T16:18:54.809479711Z"
+    description: A Helm chart for reports.jenkins.io
+    digest: f238bd71c53d56fdf67a2e3c4f413f2dc7827ddf9124f7616fad386ed0b9ea98
+    maintainers:
+    - name: timja
+    name: reports
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/reports-0.4.4/reports-0.4.4.tgz
+    version: 0.4.4
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2024-08-16T07:17:28.550135309Z"
     description: A Helm chart for reports.jenkins.io
     digest: 5c14cd36d0bc8db607919e036542f275ca01b690d2ec79a86d119ab3bafdc457
@@ -13011,4 +13044,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-18T14:40:01.299342298Z"
+generated: "2024-09-18T16:18:54.811234259Z"
