@@ -34,17 +34,27 @@ ingress:
   #   - host: chart-example.local
   #     paths:
   #       - path: /
-  #         serviceNameSuffix: files
+  #         pathType: Prefix
   #       - path: /.*[.](deb|hpi|war|rpm|msi|pkg|sha256|md5sum|zip|gz|pdf|json|svg|sh|jpeg|ico|png|html)$
   #         pathType: ImplementationSpecific
-  #   - host: fallback.chart-example.local
-  #     paths:
-  #       - path: /
-  #         serviceNameSuffix: files
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+  ## Specify a list of additional Ingress objects to cover advanced routing use cases (default: empty object list)
+  # additionalIngresses:
+  # - className: public-nginx
+  #   annotations:
+  #     foo: bar
+  #   hosts:
+  #     - host: company.org
+  #       paths:
+  #         - path: /.*$
+  #           pathType: ImplementationSpecific
+  #   tls:
+  #     - secretName: ingress-tls
+  #       hosts:
+  #         - company.org
 cli:
   enable: false
   port: 3390
