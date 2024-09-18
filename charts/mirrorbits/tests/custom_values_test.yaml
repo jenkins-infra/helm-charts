@@ -147,7 +147,8 @@ tests:
     template: ingresses.yaml
     asserts:
       - hasDocuments:
-          count: 2
+          count: 3
+      ## Main Ingress
       - documentIndex: 0
         isKind:
           of: Ingress
@@ -159,22 +160,63 @@ tests:
         equal:
           path: spec.rules[0].http.paths[0].pathType
           value: "IfNotPresent"
+      ## Additional Ingress
       - documentIndex: 1
         isKind:
           of: Ingress
       - documentIndex: 1
         equal:
           path: metadata.name
-          value: RELEASE-NAME-mirrorbits-cli
+          value: RELEASE-NAME-mirrorbits-1
+      - documentIndex: 1
+        equal:
+          path: metadata.annotations["nginx.ingress.kubernetes.io/rewrite-target"]
+          value: "/$1$2/index.html"
       - documentIndex: 1
         equal:
           path: spec.ingressClassName
-          value: customClass
+          value: bar
       - documentIndex: 1
+        equal:
+          path: spec.tls[0].secretName
+          value: ubersecret
+      - documentIndex: 1
+        equal:
+          path: spec.rules[0].host
+          value: company.org
+      - documentIndex: 1
+        equal:
+          path: spec.rules[0].http.paths[0].path
+          value: /(.*)(/|$)
+      - documentIndex: 1
+        equal:
+          path: spec.rules[0].http.paths[0].pathType
+          value: ImplementationSpecific
+      - documentIndex: 1
+        equal:
+          path: spec.rules[0].http.paths[0].backend.service.name
+          value: RELEASE-NAME-mirrorbits
+      - documentIndex: 1
+        equal:
+          path: spec.rules[0].http.paths[0].backend.service.port.number
+          value: 443
+      ## CLI Ingress
+      - documentIndex: 2
+        isKind:
+          of: Ingress
+      - documentIndex: 2
+        equal:
+          path: metadata.name
+          value: RELEASE-NAME-mirrorbits-cli
+      - documentIndex: 2
+        equal:
+          path: spec.ingressClassName
+          value: customClass
+      - documentIndex: 2
         equal:
           path: spec.tls[1].hosts[1]
           value: private.localhost
-      - documentIndex: 1
+      - documentIndex: 2
         equal:
           path: spec.rules[0].host
           value: external.localhost
