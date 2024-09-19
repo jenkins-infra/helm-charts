@@ -4,5 +4,6 @@ appVersion: "1.0"
 description: A Helm chart for serving website with nginx
 name: nginx-website
 maintainers:
-- name: lemeurherve
-version: 0.2.0
+- email: jenkins-infra-team@googlegroups.com
+  name: jenkins-infra-team
+version: 0.3.0

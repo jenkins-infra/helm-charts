@@ -8,12 +8,16 @@ data:
     server {
       listen       {{ .Values.service.port }};
       server_name  {{ .Values.nginx.serverName }};
+      {{- if .Values.nginx.overrideLocations }}
+{{ .Values.nginx.overrideLocations | indent 6 }}
+      {{- else }}
       location / {
         root   {{ .Values.nginx.slashLocation.root }};
         index  {{ .Values.nginx.slashLocation.index }};
         autoindex {{ .Values.nginx.slashLocation.autoindex }};
         {{- if .Values.nginx.slashLocation.tryFiles }}
         try_files {{ .Values.nginx.slashLocation.tryFiles }};
-        {{- end}}
+        {{- end }}
       }
+    {{- end }}
     }
