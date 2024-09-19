@@ -75,7 +75,7 @@ spec:
         volumeMounts:
           - mountPath: {{ .Values.cache.path }}
             name: {{ .Values.persistence.claimPrefix }}
-      {{- end}}
+      {{- end }}
       containers:
       - name: {{ .Chart.Name }}
         {{- with .Values.containerSecurityContext }}
