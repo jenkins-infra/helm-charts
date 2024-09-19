@@ -9547,6 +9547,18 @@ entries:
   nginx-website:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2024-09-19T14:35:12.039060721Z"
+    description: A Helm chart for serving website with nginx
+    digest: e1d43eec6699022a070236a803b24d4f734278d9ede1926d6d9098d8f376b423
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: nginx-website
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/nginx-website-0.3.0/nginx-website-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2024-08-21T05:12:25.685253079Z"
     description: A Helm chart for serving website with nginx
     digest: bab5f98859a07eee02d94e7bfee2f10e6c0a0615e506c6079fcce932f2568105
@@ -13044,4 +13056,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-18T16:18:54.811234259Z"
+generated: "2024-09-19T14:35:12.04040747Z"
