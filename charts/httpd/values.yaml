@@ -84,5 +84,5 @@ httpdRestart:
   cron: '0 * * * *' # default to every hour
   image:
     repository: bitnami/kubectl
-    tag: 1.28.13
+    tag: 1.29.7
     pullPolicy: IfNotPresent
