@@ -1,0 +1,55 @@
+---
+name: Bump `kubectl` version for httpd rollout restart
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
+sources:
+  getKubernetesPublick8sVersion:
+    kind: terraform/file
+    name: Retrieve the current version of the kubernetes used in production on publick8s
+    spec:
+      file: https://raw.githubusercontent.com/jenkins-infra/azure/refs/heads/main/locals.tf
+      path: locals.kubernetes_versions
+    transformers: #  as per updatecli/updatecli#1859 need to use terraform/file findsubmatch for now
+      - findsubmatch:
+          pattern: '"publick8s".*=."(.*)"'
+          captureindex: 1
+
+conditions:
+  checkDockerImagePublished:
+    name: "Test bitnami/kubectl:<getKubernetesPublick8sVersion> docker image tag"
+    kind: dockerimage
+    sourceid: getKubernetesPublick8sVersion
+    spec:
+      image: "bitnami/kubectl"
+      ## Tag from source
+
+targets:
+  setKubectlToolVersion:
+    name: "Bump `kubectl` version for httpd rollout restart"
+    kind: yaml
+    sourceid: getKubernetesPublick8sVersion
+    spec:
+      file: charts/httpd/values.yaml
+      engine: yamlpath
+      key: $.httpdRestart.image.tag
+    scmid: default
+
+actions:
+  default:
+    kind: github/pullrequest
+    scmid: default
+    title: Bump`kubectl` version for httpd rollout restart to {{ source "getKubernetesPublick8sVersion" }}
+    spec:
+      labels:
+        - dependencies
