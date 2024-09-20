@@ -1,5 +1,5 @@
 ---
-name: Bump Kubectl version for httpd rollout restart
+name: Bump `kubectl` version for httpd rollout restart
 
 scms:
   default:
@@ -36,7 +36,7 @@ conditions:
 
 targets:
   setKubectlToolVersion:
-    name: "Bump Kubectl version for httpd rollout restart"
+    name: "Bump `kubectl` version for httpd rollout restart"
     kind: yaml
     sourceid: getKubernetesPublick8sVersion
     spec:
@@ -49,7 +49,7 @@ actions:
   default:
     kind: github/pullrequest
     scmid: default
-    title: Bump Kubectl version for httpd rollout restart to {{ source "getKubernetesPublick8sVersion" }}
+    title: Bump`kubectl` version for httpd rollout restart to {{ source "getKubernetesPublick8sVersion" }}
     spec:
       labels:
         - dependencies
