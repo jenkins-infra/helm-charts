@@ -37,12 +37,12 @@ conditions:
 targets:
   setKubectlToolVersion:
     name: "Bump `kubectl` version for httpd rollout restart"
-    kind: yaml
+    kind: helmchart
     sourceid: getKubernetesPublick8sVersion
     spec:
-      file: charts/httpd/values.yaml
-      engine: yamlpath
+      name: charts/httpd
       key: $.httpdRestart.image.tag
+      versionincrement: patch
     scmid: default
 
 actions:
