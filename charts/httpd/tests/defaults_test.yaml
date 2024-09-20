@@ -62,6 +62,8 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[1].name
           value: html
+      - notExists:
+          path: spec.template.spec.containers[0].volumeMounts[1].subPath
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[1].readOnly
           value: true

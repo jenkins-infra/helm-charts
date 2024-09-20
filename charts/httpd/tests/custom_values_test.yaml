@@ -88,6 +88,9 @@ tests:
           path: spec.template.spec.containers[0].volumeMounts[1].readOnly
           value: true
       - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].subPath
+          value: ./foo/
+      - equal:
           path: spec.template.spec.containers[0].volumeMounts[1].mountPath
           value: /usr/local/apache2/htdocs
   - it: should define a managed "html" volume if repository.persistentVolumeClaim.enabled is true

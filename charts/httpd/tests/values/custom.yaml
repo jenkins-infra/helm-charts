@@ -2,6 +2,7 @@ image:
   pullPolicy: Never
 repository:
   reuseExistingPersistentVolumeClaim: true
+  subDir: ./foo/
 ingress:
   enabled: true
   hosts:
