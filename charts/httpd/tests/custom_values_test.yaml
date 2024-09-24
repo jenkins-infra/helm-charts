@@ -181,14 +181,30 @@ tests:
       - isKind:
           of: ServiceAccount
         documentIndex: 0
+      - equal:
+          path: metadata.name
+          value: updates-jenkins-io-httpd-unsecure-restart-deployment
+        documentIndex: 0
       - isKind:
           of: Role
+        documentIndex: 1
+      - equal:
+          path: metadata.name
+          value: updates-jenkins-io-httpd-unsecure-restart-deployment
         documentIndex: 1
       - isKind:
           of: RoleBinding
         documentIndex: 2
+      - equal:
+          path: metadata.name
+          value: updates-jenkins-io-httpd-unsecure-restart-deployment
+        documentIndex: 2
       - isKind:
           of: CronJob
+        documentIndex: 3
+      - equal:
+          path: metadata.name
+          value: updates-jenkins-io-httpd-unsecure-restart-deployment
         documentIndex: 3
       - equal:
           path: spec.schedule

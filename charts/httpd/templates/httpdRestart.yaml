@@ -2,14 +2,14 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "httpd.fullname" . }}-restart-deployment
+  name: {{ include "httpd.restart-fullname" . }}
   labels:
 {{ include "httpd.labels" . | indent 4 }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: {{ include "httpd.fullname" . }}-restart-deployment
+  name: {{ include "httpd.restart-fullname" . }}
   labels:
 {{ include "httpd.labels" . | indent 4 }}
 rules:
@@ -21,19 +21,19 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: {{ include "httpd.fullname" . }}-restart-deployment
+  name: {{ include "httpd.restart-fullname" . }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: {{ include "httpd.fullname" . }}-restart-deployment
+  name: {{ include "httpd.restart-fullname" . }}
 subjects:
   - kind: ServiceAccount
-    name: {{ include "httpd.fullname" . }}-restart-deployment
+    name: {{ include "httpd.restart-fullname" . }}
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "httpd.fullname" . }}-restart-deployment
+  name: {{ include "httpd.restart-fullname" . }}
   labels:
 {{ include "httpd.labels" . | indent 4 }}
 spec:
@@ -43,7 +43,7 @@ spec:
     spec:
       template:
         spec:
-          serviceAccountName: {{ include "httpd.fullname" . }}-restart-deployment
+          serviceAccountName: {{ include "httpd.restart-fullname" . }}
           restartPolicy: Never
           containers:
             - name: kubectl-httpdrestart
