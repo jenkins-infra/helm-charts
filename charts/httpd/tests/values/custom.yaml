@@ -1,3 +1,4 @@
+fullnameOverride: updates-jenkins-io-httpd-unsecured
 image:
   pullPolicy: Never
 repository:
