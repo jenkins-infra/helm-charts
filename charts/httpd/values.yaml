@@ -76,6 +76,13 @@ httpdConf:
   override: ""
   # Provides a custom ServerName directive
   serverName: ""
+  serverLimit: 25
+  startServers: 3
+  maxRequestWorkers: 400 # serverLimit * threadsPerChild (MPM event)
+  minSpareThreads: 75
+  maxSpareThreads: 250
+  threadsPerChild: 16
+  threadLimit: 64
 nodeSelector: {}
 tolerations: []
 affinity: {}

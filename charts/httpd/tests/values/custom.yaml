@@ -13,6 +13,13 @@ ingress:
         pathType: IfNotPresent
 httpdConf:
   serverName: https://death.star:8443
+  serverLimit: 30
+  startServers: 2
+  maxRequestWorkers: 750
+  minSpareThreads: 25
+  maxSpareThreads: 75
+  threadsPerChild: 25
+  threadLimit: 64
 annotations:
   ad.datadoghq.com/mirrorbits.logs: |
     [

@@ -170,6 +170,12 @@ tests:
       - matchRegex:
           path: data["httpd.conf"]
           pattern: "ServerName https://death.star:8443"
+      - matchRegex:
+          path: data["httpd.conf"]
+          pattern: "ServerLimit.*30"
+      - matchRegex:
+          path: data["httpd.conf"]
+          pattern: "MaxRequestWorkers.*750"
   - it: should create a service account for cronjob
     template: httpdRestart.yaml
     set:

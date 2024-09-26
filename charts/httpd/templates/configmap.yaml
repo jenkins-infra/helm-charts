@@ -28,6 +28,16 @@ data:
     # LoadModule foo_module modules/mod_foo.so
     #
     LoadModule mpm_event_module modules/mod_mpm_event.so
+    <IfModule mpm_event_module>
+        ServerLimit            {{ .Values.httpdConf.serverLimit }}
+        StartServers           {{ .Values.httpdConf.startServers }}
+        MaxRequestWorkers      {{ .Values.httpdConf.maxRequestWorkers }}
+        MinSpareThreads        {{ .Values.httpdConf.minSpareThreads }}
+        MaxSpareThreads        {{ .Values.httpdConf.maxSpareThreads }}
+        ThreadsPerChild        {{ .Values.httpdConf.threadsPerChild }}
+        ThreadLimit            {{ .Values.httpdConf.threadLimit }}
+        ListenBacklog          511
+    </IfModule>
     #LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
     #LoadModule mpm_worker_module modules/mod_mpm_worker.so
     LoadModule authn_file_module modules/mod_authn_file.so
