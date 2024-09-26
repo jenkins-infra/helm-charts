@@ -87,3 +87,16 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
+  - it: should create a config map with default tuning values
+    template: configmap.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ConfigMap
+      - matchRegex:
+          path: data["httpd.conf"]
+          pattern: "ServerLimit.*25"
+      - matchRegex:
+          path: data["httpd.conf"]
+          pattern: "MaxRequestWorkers.*400"
