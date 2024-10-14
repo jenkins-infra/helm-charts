@@ -10,7 +10,7 @@ dependencies:
 - name: mirrorbits
   condition: mirrorbits.enabled
   repository: https://jenkins-infra.github.io/helm-charts
-  version: 5.4.1
+  version: 5.4.2
 - name: httpd
   condition: httpd.enabled
   repository: https://jenkins-infra.github.io/helm-charts
