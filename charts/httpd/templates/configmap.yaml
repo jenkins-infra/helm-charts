@@ -478,8 +478,9 @@ data:
     # broken on your system.
     # Defaults: EnableMMAP On, EnableSendfile Off
     #
+    # Both disabled as the chart specifies a data volume (most probably network based) for htdocs
     EnableMMAP off
-    #EnableSendfile on
+    EnableSendfile off
 
     # Supplemental configuration
     #
