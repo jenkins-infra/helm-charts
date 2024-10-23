@@ -4116,6 +4116,16 @@ entries:
     version: 0.1.0
   ldap:
   - apiVersion: v1
+    created: "2024-10-23T05:49:30.653705539Z"
+    description: A Helm chart for ldap.jenkins.io
+    digest: 17e65d57491f8dfa97bcddd17dd1c72f70ca03d69d4abfb034c7490b6046270e
+    maintainers:
+    - name: jenkins-infra-team@googlegroups.com
+    name: ldap
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/ldap-1.1.14/ldap-1.1.14.tgz
+    version: 1.1.14
+  - apiVersion: v1
     created: "2024-10-16T09:12:18.734469725Z"
     description: A Helm chart for ldap.jenkins.io
     digest: b8ddb6f32d5599fa81b06446172b699f84b5091fe48eb6fa8e4e0f8da8b40178
@@ -13636,4 +13646,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-21T07:51:26.981995776Z"
+generated: "2024-10-23T05:49:30.655323796Z"
