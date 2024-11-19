@@ -161,3 +161,5 @@ tests:
       - equal:
           path: spec.selector["app.kubernetes.io/instance"]
           value: "RELEASE-NAME"
+      - notExists:
+          path: metadata.annotations

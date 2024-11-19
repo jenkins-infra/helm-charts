@@ -1,21 +1,6 @@
 suite: Tests with parent values
-# Custom values used to test all suites from this file
-set:
-  global:
-    storage:
-      enabled: true
-  configuration:
-    components:
-      - name: jenkins
-        path: /rsyncd/data/jenkins
-        comment: "Jenkins Read-Only Mirror"
-        volumeTpl: '{{ default "parent-chart-shared-data" }}'
-      - name: hudson
-        path: /tmp/hudson
-        comment: "Hudson Read-Only Mirror"
-        volume:
-          persistentVolumeClaim:
-            claimName: another-vol
+values:
+  - values/parent-custom.yaml
 tests:
   - it: should define a customized "rsyncd" deployment
     template: deployment.yaml
