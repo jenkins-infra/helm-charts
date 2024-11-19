@@ -1,56 +1,6 @@
 suite: Tests with custom values
-# Custom values used to test all suites from this file
-set:
-  image:
-    pullPolicy: Always
-  podSecurityContext:
-    fsGroup: 2000
-  containerSecurityContext:
-    runAsNonRoot: true
-  nodeSelector:
-    os: windows-2022
-  affinity:
-    podAntiAffinity:
-      foo: bar
-  tolerations:
-    - key: "kubernetes.io/arch"
-      operator: "Equal"
-      value: "arm64"
-      effect: "NoSchedule"
-  resources:
-    limits:
-      cpu: 500m
-    requests:
-      memory: 1024Mi
-  port: 9999
-  service:
-    port: 2873
-    type: LoadBalancer
-    LoadBalancerIP: 1.2.3.4
-    whitelisted_sources:
-      - 52.167.253.43/32
-      - 52.202.51.185/32
-  configuration:
-    motd:
-      path: /tmp/motd
-      content: |-
-        ==========
-        FOO BAR
-        SUPER MOTD
-        ==========
-    components:
-      - name: jenkins
-        path: /rsyncd/data/jenkins
-        comment: "Jenkins Read-Only Mirror"
-        volume:
-          persistentVolumeClaim:
-            claimName: super-pvc
-      - name: hudson
-        path: /tmp/hudson
-        comment: "Hudson Read-Only Mirror"
-        volume:
-          persistentVolumeClaim:
-            claimName: another-vol
+values:
+  - values/custom.yaml
 tests:
   - it: should define a customized "rsyncd" deployment
     template: deployment.yaml
@@ -278,3 +228,6 @@ tests:
       - equal:
           path: spec.selector["app.kubernetes.io/instance"]
           value: "RELEASE-NAME"
+      - equal:
+          path: metadata.annotations["service.beta.kubernetes.io/azure-load-balancer-internal"]
+          value: "true"

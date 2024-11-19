@@ -1,0 +1,15 @@
+global:
+  storage:
+    enabled: true
+configuration:
+  components:
+    - name: jenkins
+      path: /rsyncd/data/jenkins
+      comment: "Jenkins Read-Only Mirror"
+      volumeTpl: '{{ default "parent-chart-shared-data" }}'
+    - name: hudson
+      path: /tmp/hudson
+      comment: "Hudson Read-Only Mirror"
+      volume:
+        persistentVolumeClaim:
+          claimName: another-vol
