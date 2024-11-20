@@ -34,6 +34,7 @@ jobsDefinition: {}
 #       multibranchJobC: ## Default to kind: multibranchJob
 #         name: Job C
 #         enableGitHubChecks: true
+#         disableGitHubNotifications: true
 #         githubCheckName: RogerRoger
 #          enableGitHubChecks: true
 #          allowUntrustedChanges: true
