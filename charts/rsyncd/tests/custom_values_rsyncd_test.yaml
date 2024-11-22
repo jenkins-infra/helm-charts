@@ -1,6 +1,6 @@
 suite: Tests with custom values
 values:
-  - values/custom.yaml
+  - values/custom_rsyncd.yaml
 tests:
   - it: should define a customized "rsyncd" deployment
     template: deployment.yaml
@@ -41,8 +41,48 @@ tests:
           value: "NoSchedule"
       # Custom exposed port
       - equal:
+          path: spec.template.spec.containers[0].ports[0].name
+          value: rsyncd
+      - equal:
           path: spec.template.spec.containers[0].ports[0].containerPort
           value: 9999
+      # Health Probes
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.exec.command[0]
+          value: pgrep
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.exec.command[1]
+          value: rsync
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.initialDelaySeconds
+          value: 5
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.periodSeconds
+          value: 5
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.exec.command[2]
+          value: test -f /home/rsyncd/run/rsyncd.pid
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.initialDelaySeconds
+          value: 5
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.periodSeconds
+          value: 5
+      # Environment variables with default setup
+      - equal:
+          path: spec.template.spec.containers[0].env[0].name
+          value: RSYNCD_DAEMON
+      - equal:
+          path: spec.template.spec.containers[0].env[0].value
+          value: rsyncd
+      - equal:
+          path: spec.template.spec.containers[0].env[1].name
+          value: RSYNCD_PORT
+      - equal:
+          path: spec.template.spec.containers[0].env[1].value
+          value: "9999"
+      - notExists:
+          path: spec.template.spec.containers[0].env[2]
       # Custom container resources
       - equal:
           path: spec.template.spec.containers[0].resources.limits.cpu
@@ -52,57 +92,46 @@ tests:
           value: 1024Mi
       # Custom rsyncd.inc configuration overlay is mounted from the rsyncd-conf configmap
       - equal:
-          path: spec.template.spec.volumes[0].name
+          path: spec.template.spec.volumes[1].name
           value: rsyncd-conf
       - equal:
-          path: spec.template.spec.volumes[0].configMap.name
+          path: spec.template.spec.volumes[1].configMap.name
           value: RELEASE-NAME-rsyncd-conf
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[0].name
-          value: rsyncd-conf
-      - equal:
-          path: spec.template.spec.containers[0].volumeMounts[0].subPath
-          value: rsyncd.inc
-      - equal:
-          path: spec.template.spec.containers[0].volumeMounts[0].mountPath
-          value: /etc/rsyncd.d/rsyncd.inc
-      # Custom motd mounted
-      - equal:
-          path: spec.template.spec.containers[0].volumeMounts[1].name
-          value: rsyncd-conf
-      - equal:
-          path: spec.template.spec.containers[0].volumeMounts[1].subPath
-          value: jenkins.motd
-      - equal:
-          path: spec.template.spec.containers[0].volumeMounts[1].mountPath
-          value: /tmp/motd
-      # TempFS volumes
-      -  equal:
-          path: spec.template.spec.volumes[1].name
-          value: ramfs
-      -  equal:
-          path: spec.template.spec.volumes[1].emptyDir.medium
-          value: Memory
-      - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].name
-          value: ramfs
-      - equal:
-          path: spec.template.spec.containers[0].volumeMounts[2].mountPath
-          value: /tmp
+          value: rsyncd-conf
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].subPath
-          value: tmp
+          value: rsyncd.inc
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[3].name
+          path: spec.template.spec.containers[0].volumeMounts[2].mountPath
+          value:  /home/rsyncd/etc/rsyncd.d/rsyncd.inc
+      # TempFS volumes
+      -  equal:
+          path: spec.template.spec.volumes[0].name
+          value: ramfs
+      -  equal:
+          path: spec.template.spec.volumes[0].emptyDir.medium
+          value: Memory
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].name
           value: ramfs
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[3].mountPath
-          value: /rsync/run
+          path: spec.template.spec.containers[0].volumeMounts[0].mountPath
+          value: /tmp
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[3].subPath
+          path: spec.template.spec.containers[0].volumeMounts[0].subPath
+          value: tmp
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].name
+          value: ramfs
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].mountPath
+          value: /home/rsyncd/run
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].subPath
           value: run
       # Custom Rsyncd components
-      ## jenkins (1 configmap volume mount + 1 data volume and 1 volumemount for data dir)
       - equal:
           path: spec.template.spec.volumes[2].name
           value: datadir-jenkins
@@ -110,16 +139,16 @@ tests:
           path: spec.template.spec.volumes[2].persistentVolumeClaim.claimName
           value: super-pvc
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[4].name
+          path: spec.template.spec.containers[0].volumeMounts[3].name
           value: rsyncd-conf
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[4].mountPath
-          value: /etc/rsyncd.d/jenkins.conf
+          path: spec.template.spec.containers[0].volumeMounts[3].mountPath
+          value:  /home/rsyncd/etc/rsyncd.d/jenkins.conf
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[4].subPath
+          path: spec.template.spec.containers[0].volumeMounts[3].subPath
           value: jenkins.conf
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[4].readOnly
+          path: spec.template.spec.containers[0].volumeMounts[3].readOnly
           value: true
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[5].name
@@ -132,7 +161,6 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[5].readOnly
           value: true
-      ## hudson (1 configmap volume mount + 1 data volume and 1 volumemount for data dir)
       - equal:
           path: spec.template.spec.volumes[3].name
           value: datadir-hudson
@@ -140,28 +168,28 @@ tests:
           path: spec.template.spec.volumes[3].persistentVolumeClaim.claimName
           value: another-vol
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[6].name
+          path: spec.template.spec.containers[0].volumeMounts[4].name
           value: rsyncd-conf
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[6].mountPath
-          value: /etc/rsyncd.d/hudson.conf
+          path: spec.template.spec.containers[0].volumeMounts[4].mountPath
+          value:  /home/rsyncd/etc/rsyncd.d/hudson.conf
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[6].subPath
+          path: spec.template.spec.containers[0].volumeMounts[4].subPath
           value: hudson.conf
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[6].readOnly
+          path: spec.template.spec.containers[0].volumeMounts[4].readOnly
           value: true
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[7].name
+          path: spec.template.spec.containers[0].volumeMounts[6].name
           value: datadir-hudson
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[7].mountPath
+          path: spec.template.spec.containers[0].volumeMounts[6].mountPath
           value: /tmp/hudson
       - notExists:
-          path: spec.template.spec.containers[0].volumeMounts[7].subPath
+          path: spec.template.spec.containers[0].volumeMounts[6].subPath
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[7].readOnly
-          value: true
+          path: spec.template.spec.containers[0].volumeMounts[6].readOnly
+          value: false
   - it: should create a custom rsyncd-conf config map
     template: configmap.rsyncd-conf.yaml
     asserts:
@@ -173,9 +201,6 @@ tests:
           path: metadata.name
           value: RELEASE-NAME-rsyncd-conf
       - matchRegex:
-          path: data["rsyncd.inc"]
-          pattern: motd file = /tmp/motd
-      - matchRegex:
           path: data["jenkins.conf"]
           pattern: "[jenkins]"
       - matchRegex:
@@ -184,15 +209,6 @@ tests:
       - matchRegex:
           path: data["hudson.conf"]
           pattern: "path = /tmp/hudson"
-      - notMatchRegex:
-          path: data["jenkins.motd"]
-          pattern: JENKINS MIRROR
-      - matchRegex:
-          path: data["jenkins.motd"]
-          pattern: SUPER MOTD
-      - matchRegex:
-          path: data["rsyncd.inc"]
-          pattern: port = 9999
   - it: should create the default service
     template: service.yaml
     asserts:
@@ -213,10 +229,9 @@ tests:
       - equal:
           path: spec.loadBalancerSourceRanges[1]
           value: 52.202.51.185/32
-      # Custom published port
       - equal:
           path: spec.ports[0].port
-          value: 2873
+          value: 873
       # Default exposed (pod) port is 1873 by default
       - equal:
           path: spec.ports[0].targetPort
@@ -231,3 +246,16 @@ tests:
       - equal:
           path: metadata.annotations["service.beta.kubernetes.io/azure-load-balancer-internal"]
           value: "true"
+  - it: should create the port-customized service
+    template: service.yaml
+    set:
+      service:
+        port: 1111
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+      - equal:
+          path: spec.ports[0].port
+          value: 1111

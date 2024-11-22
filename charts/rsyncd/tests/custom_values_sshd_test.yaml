@@ -1,6 +1,8 @@
-suite: Test with no specified values (e.g. "helm template .")
+suite: Tests with custom values
+values:
+  - values/custom_sshd.yaml
 tests:
-  - it: should create the default deployment with expected attributes
+  - it: should define a customized "rsyncd" deployment
     template: deployment.yaml
     asserts:
       - hasDocuments:
@@ -8,12 +10,8 @@ tests:
       - isKind:
           of: Deployment
       - equal:
-          path: spec.replicas
-          value: 1
-      # Default pull policy is "IfNotPresent"
-      - equal:
           path: spec.template.spec.containers[*].imagePullPolicy
-          value: "IfNotPresent"
+          value: Always
       # Check the expected "matched labels" to allow Service to catch this pod with label selectors
       - equal:
           path: spec.selector.matchLabels["app.kubernetes.io/name"]
@@ -21,46 +19,52 @@ tests:
       - equal:
           path: spec.selector.matchLabels["app.kubernetes.io/instance"]
           value: "RELEASE-NAME"
-      # No security contexts by default
-      - notExists:
-          path: spec.template.spec.securityContext
-      - notExists:
-          path: spec.template.spec.containers[0].securityContext
-      # No node selector by default
-      - notExists:
-          path: spec.template.spec.nodeSelector
-      # No affinity by default
-      - notExists:
-          path: spec.template.spec.affinity
-      # No tolerations by default
-      - notExists:
-          path: spec.template.spec.tolerations
-      # Default exposed port is 1873
+      # Custom pod security context
+      - equal:
+          path: spec.template.spec.securityContext.fsGroup
+          value: 2000
+      # Custom container security context
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.runAsNonRoot
+          value: true
+      # Custom node selectors
+      - equal:
+          path: spec.template.spec.nodeSelector.os
+          value: windows-2022
+      # Custom affinity
+      - equal:
+          path: spec.template.spec.affinity.podAntiAffinity.foo
+          value: bar
+      # Custom tolerations
+      - equal:
+          path: spec.template.spec.tolerations[0].effect
+          value: "NoSchedule"
+      # Custom exposed port
       - equal:
           path: spec.template.spec.containers[0].ports[0].name
-          value: rsyncd
+          value: sshd
       - equal:
           path: spec.template.spec.containers[0].ports[0].containerPort
-          value: 1873
+          value: 2222
       # Health Probes
       - equal:
           path: spec.template.spec.containers[0].livenessProbe.exec.command[0]
           value: pgrep
       - equal:
           path: spec.template.spec.containers[0].livenessProbe.exec.command[1]
-          value: rsync
+          value: sshd
       - equal:
           path: spec.template.spec.containers[0].livenessProbe.initialDelaySeconds
-          value: 5
+          value: 10
       - equal:
           path: spec.template.spec.containers[0].livenessProbe.periodSeconds
           value: 5
       - equal:
           path: spec.template.spec.containers[0].readinessProbe.exec.command[2]
-          value: test -f /home/rsyncd/run/rsyncd.pid
+          value: test -f /home/rsyncd/run/sshd.pid
       - equal:
           path: spec.template.spec.containers[0].livenessProbe.initialDelaySeconds
-          value: 5
+          value: 10
       - equal:
           path: spec.template.spec.containers[0].livenessProbe.periodSeconds
           value: 5
@@ -70,35 +74,27 @@ tests:
           value: RSYNCD_DAEMON
       - equal:
           path: spec.template.spec.containers[0].env[0].value
-          value: rsyncd
+          value: sshd
       - equal:
           path: spec.template.spec.containers[0].env[1].name
-          value: RSYNCD_PORT
+          value: SSHD_PORT
       - equal:
           path: spec.template.spec.containers[0].env[1].value
-          value: "1873"
-      - notExists:
-          path: spec.template.spec.containers[0].env[2]
-      # No container resources by default
-      - notExists:
-          path: spec.template.spec.containers[0].resources
-      # Custom rsyncd.inc configuration overlay is mounted from the rsyncd-conf configmap
+          value: "2222"
       - equal:
-          path: spec.template.spec.volumes[1].name
-          value: rsyncd-conf
+          path: spec.template.spec.containers[0].env[1].name
+          value: SSHD_PORT
       - equal:
-          path: spec.template.spec.volumes[1].configMap.name
-          value: RELEASE-NAME-rsyncd-conf
+          path: spec.template.spec.containers[0].env[1].value
+          value: "2222"
+      # Custom container resources
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[2].name
-          value: rsyncd-conf
+          path: spec.template.spec.containers[0].resources.limits.cpu
+          value: 500m
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts[2].subPath
-          value: rsyncd.inc
-      - equal:
-          path: spec.template.spec.containers[0].volumeMounts[2].mountPath
-          value:  /home/rsyncd/etc/rsyncd.d/rsyncd.inc
-      # TempFS volume by default
+          path: spec.template.spec.containers[0].resources.requests.memory
+          value: 1024Mi
+      # TempFS volumes
       -  equal:
           path: spec.template.spec.volumes[0].name
           value: ramfs
@@ -123,32 +119,45 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[1].subPath
           value: run
-      # No Rsyncd component by default
+      - equal:
+          path: spec.template.spec.volumes[1].name
+          value: datadir-jenkins
+      - equal:
+          path: spec.template.spec.volumes[1].persistentVolumeClaim.claimName
+          value: super-pvc
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2].name
+          value: datadir-jenkins
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2].mountPath
+          value: /rsyncd/data/jenkins
       - notExists:
-          path: spec.template.spec.containers[0].volumeMounts[4]
+          path: spec.template.spec.containers[0].volumeMounts[2].subPath
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2].readOnly
+          value: true
+      - equal:
+          path: spec.template.spec.volumes[2].name
+          value: datadir-hudson
+      - equal:
+          path: spec.template.spec.volumes[2].persistentVolumeClaim.claimName
+          value: another-vol
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].name
+          value: datadir-hudson
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].mountPath
+          value: /tmp/hudson
       - notExists:
-          path: spec.template.spec.volumes[2]
-      - notExists:
-          path: spec.template.spec.containers[0].volumeMounts[5]
-      - notExists:
-          path: spec.template.spec.volumes[3]
-      # No custom entrypoint/command by default
-      - notExists:
-          path: spec.template.spec.containers[0].command
-      - notExists:
-          path: spec.template.spec.containers[0].args
-  - it: should create a default rsyncd-conf config map
+          path: spec.template.spec.containers[0].volumeMounts[3].subPath
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].readOnly
+          value: false
+  - it: should not create any config map
     template: configmap.rsyncd-conf.yaml
     asserts:
       - hasDocuments:
-          count: 1
-      - isKind:
-          of: ConfigMap
-      - equal:
-          path: metadata.name
-          value: RELEASE-NAME-rsyncd-conf
-      - notExists:
-          path: data["jenkins.conf"]
+          count: 0
   - it: should create the default service
     template: service.yaml
     asserts:
@@ -162,19 +171,20 @@ tests:
       # Internal service by default
       - equal:
           path: spec.type
-          value: ClusterIP
-      - notExists:
+          value: LoadBalancer
+      - equal:
           path: spec.loadBalancerIP
-      - notExists:
-          path: spec.loadBalancerSourceRanges
-      # Default published port is 873 by default
+          value: 1.2.3.4
+      - equal:
+          path: spec.loadBalancerSourceRanges[1]
+          value: 52.202.51.185/32
       - equal:
           path: spec.ports[0].port
-          value: 873
+          value: 22
       # Default exposed (pod) port is 1873 by default
       - equal:
           path: spec.ports[0].targetPort
-          value: 1873
+          value: 2222
       # Check the expected label selectors to allow Service to catch the pods
       - equal:
           path: spec.selector["app.kubernetes.io/name"]
@@ -182,5 +192,19 @@ tests:
       - equal:
           path: spec.selector["app.kubernetes.io/instance"]
           value: "RELEASE-NAME"
-      - notExists:
-          path: metadata.annotations
+      - equal:
+          path: metadata.annotations["service.beta.kubernetes.io/azure-load-balancer-internal"]
+          value: "true"
+  - it: should create the port-customized service
+    template: service.yaml
+    set:
+      service:
+        port: 1111
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+      - equal:
+          path: spec.ports[0].port
+          value: 1111

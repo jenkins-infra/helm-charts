@@ -45,14 +45,13 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
 {{/*
-Data directory volume definition. Might be defined from parent chart templates or autonomously
-based on the presence of the global value provided by the parent chart.
+Data directory volume definition.
 Expected argument: dict{
   "currentRsyncComponent": <string>,
   "rootContext": { },
 }
 */}}
-{{- define "rsync.datadir-volumedefinition" -}}
+{{- define "rsyncd.datadir-volumedefinition" -}}
 {{- if .currentRsyncComponent.volumeTpl -}}
 persistentVolumeClaim:
   claimName: {{ printf "%s" (tpl .currentRsyncComponent.volumeTpl .rootContext) | trim | trunc 63 -}}
@@ -60,5 +59,29 @@ persistentVolumeClaim:
   {{- toYaml .currentRsyncComponent.volume -}}
 {{- else -}}
 emptyDir: {}
+{{- end -}}
+{{- end -}}
+
+{{/* Define the port exposed by the pod (depends on the RsyncD daemon specified, usually unprivileged port) */}}
+{{- define "rsyncd.port" -}}
+{{/* Overrides defaults if the top level `port` value exists */}}
+{{- if .Values.port -}}
+{{ .Values.port }}
+{{- else if eq .Values.configuration.rsyncd_daemon "rsyncd" -}}
+1873
+{{- else if eq .Values.configuration.rsyncd_daemon "sshd" -}}
+2222
+{{- end -}}
+{{- end -}}
+
+{{/* Define the port exposed by the service (usually standard RsyncD or SSH ) */}}
+{{- define "rsyncd.service.port" -}}
+{{/* Overrides defaults if the `service.port` value exists */}}
+{{- if .Values.service.port -}}
+{{ .Values.service.port }}
+{{- else if eq .Values.configuration.rsyncd_daemon "rsyncd" -}}
+873
+{{- else if eq .Values.configuration.rsyncd_daemon "sshd" -}}
+22
 {{- end -}}
 {{- end -}}

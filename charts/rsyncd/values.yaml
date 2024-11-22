@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 image:
   repository: jenkinsciinfra/rsyncd
-  tag: 1.0.68
+  tag: 2.1.0
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
@@ -17,12 +17,15 @@ containerSecurityContext: {}
 # readOnlyRootFilesystem: true
 # runAsNonRoot: true
 # runAsUser: 1000
-# (privately exposed) port of the pod. Should be > 1024 as the container should run as non root
-port: 1873
+
+## Override the (chart) default ports for the pod internal exposed port
+## (privately exposed) port of the pod. Should be > 1024 as the container should run as non root
+# port: 1873
+
 service:
   type: ClusterIP
-  # Port published by the "Service". Maps to the pod (privately exposed) port
-  port: 873
+  ## Custom port published by the "Service" if you don't want the standard RsyncD 873 (or SSHD 22)
+  # port: 873
   # LoadBalancerIP: 1.2.3.4
   whitelisted_sources: []
   # - 52.167.253.43/32
@@ -42,20 +45,16 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 configuration:
-  motd:
-    path: /etc/rsyncd.d/jenkins.motd
-    content: |-
-      ========================
-      ==== JENKINS MIRROR ====
-      ========================
-
-      **Read Only**
-
-      Feel free to reach out on https://www.jenkins.io/chat/#jenkins-infra/ with any question you may have
-  ## Uncomment to specify a list of "rsyncd" components (rsync://server.name:873/COMPONENT)
-  components: []
-  #   - name: jenkins
-  #     path: /rsyncd/data/jenkins
-  #     comment: "Jenkins Read-Only Mirror"
-  #     volume:
-  #       emptyDir: {}
+  ## Specify the Daemon providing rsync service capability: 'rsyncd' (default) or 'sshd'
+  rsyncd_daemon: rsyncd
+  rsyncd:
+    ## Uncomment to specify a list of "rsyncd" components (rsync://server.name:873/COMPONENT)
+    components: []
+    #   - name: jenkins
+    #     path: /rsyncd/data/jenkins
+    #     comment: "Jenkins Read-Only Mirror"
+    #     volume:
+    #       emptyDir: {}
+  ## Set up the SSHD service (when `configuration.rsyncd_daemon` equals 'sshd')
+  # sshd:
+  #   public_key: "ssh-rsa XXXXX"
