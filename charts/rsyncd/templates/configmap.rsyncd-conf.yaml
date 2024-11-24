@@ -1,3 +1,4 @@
+{{- if eq .Values.configuration.rsyncd_daemon "rsyncd" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -13,15 +14,10 @@ data:
     read only = true
     # Downloads will be possible if file permissions on the daemon side allow them
     write only = false
-
-    motd file = {{ .Values.configuration.motd.path }}
-
-    port = {{ .Values.port }}
-  jenkins.motd: |-
-{{ .Values.configuration.motd.content | nindent 4 }}
-{{- range .Values.configuration.components }}
+  {{- range .Values.configuration.components }}
   {{ .name }}.conf: |-
     [{{ .name }}]
     path = {{ .path }}
     comment = {{ .comment}}
+  {{- end }}
 {{- end }}

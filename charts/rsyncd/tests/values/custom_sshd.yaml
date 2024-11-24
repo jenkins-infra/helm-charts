@@ -19,9 +19,7 @@ resources:
     cpu: 500m
   requests:
     memory: 1024Mi
-port: 9999
 service:
-  port: 2873
   type: LoadBalancer
   LoadBalancerIP: 1.2.3.4
   whitelisted_sources:
@@ -30,13 +28,9 @@ service:
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 configuration:
-  motd:
-    path: /tmp/motd
-    content: |-
-      ==========
-      FOO BAR
-      SUPER MOTD
-      ==========
+  rsyncd_daemon: sshd
+  sshd:
+    public_key: "ssh-rsa AAAAAAAA=="
   components:
     - name: jenkins
       path: /rsyncd/data/jenkins
@@ -47,6 +41,5 @@ configuration:
     - name: hudson
       path: /tmp/hudson
       comment: "Hudson Read-Only Mirror"
-      volume:
-        persistentVolumeClaim:
-          claimName: another-vol
+      volumeTpl: "another-vol"
+      writeEnabled: true

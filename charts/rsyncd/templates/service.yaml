@@ -20,10 +20,10 @@ spec:
     {{- end }}
   {{- end }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: {{ .Values.port }}
+    - port: {{ include "rsyncd.service.port" . }}
+      targetPort: {{ include "rsyncd.port" . }}
       protocol: TCP
-      name: rsyncd
+      name: {{ .Values.configuration.rsyncd_daemon }}
   selector:
     app.kubernetes.io/name: {{ include "rsyncd.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

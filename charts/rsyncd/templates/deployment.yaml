@@ -34,43 +34,79 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          env:
+            - name: RSYNCD_DAEMON
+              value: "{{ .Values.configuration.rsyncd_daemon }}"
+            - name: {{ upper .Values.configuration.rsyncd_daemon }}_PORT
+              value: "{{ include "rsyncd.port" . }}"
+          {{- if and .Values.configuration.sshd .Values.configuration.sshd.public_key }}
+            - name: SSHD_PUBLIC_KEY
+              value: "{{ .Values.configuration.sshd.public_key }}"
+          {{- end }}
+          {{- if and .Values.configuration.sshd .Values.configuration.sshd.log_level }}
+            - name: SSHD_LOG_LEVEL
+              value: "{{ .Values.configuration.sshd.log_level }}"
+          {{- end }}
           ports:
-            - name: rsyncd
-              containerPort: {{ .Values.port }}
+            - name: {{ .Values.configuration.rsyncd_daemon }}
+              containerPort: {{ include "rsyncd.port" . }}
               protocol: TCP
           livenessProbe:
-            tcpSocket:
-              port: {{ .Values.port }}
+            # Using a tcpSocket pollutes SSHD logs. Instead, we check
+            # for existence of sshd process as it is the last instruction
+            # of the entrypoint.
+            exec:
+              command:
+              - pgrep
+          {{- if eq .Values.configuration.rsyncd_daemon "sshd" }}
+              - sshd
+            initialDelaySeconds: 10
+          {{- else if eq .Values.configuration.rsyncd_daemon "rsyncd" }}
+              - rsync
+            initialDelaySeconds: 5
+          {{- end }}
+            periodSeconds: 5
           readinessProbe:
-            tcpSocket:
-              port: {{ .Values.port }}
+            # Using a tcpSocket pollutes SSHD logs. Instead, we check
+            # for existence of pid file which means SSH is ready to receive connections
+            exec:
+              command:
+              - sh
+              - -c
+              - test -f /home/rsyncd/run/{{ .Values.configuration.rsyncd_daemon }}.pid
+            {{- if eq .Values.configuration.rsyncd_daemon "sshd" }}
+            initialDelaySeconds: 10
+            {{- else if eq .Values.configuration.rsyncd_daemon "rsyncd" }}
+            initialDelaySeconds: 5
+            {{- end }}
+            periodSeconds: 5
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:
-            - name: rsyncd-conf
-              mountPath: /etc/rsyncd.d/rsyncd.inc
-              readOnly: true # Default for configmaps
-              subPath: rsyncd.inc
-            - name: rsyncd-conf
-              mountPath: {{ .Values.configuration.motd.path }}
-              subPath: jenkins.motd
-              readOnly: true # Default for configmaps
             - name: ramfs
               mountPath: /tmp
               subPath: tmp
             - name: ramfs
-              mountPath: /rsync/run
+              mountPath: /home/rsyncd/run
               subPath: run
+          {{- if eq .Values.configuration.rsyncd_daemon "rsyncd" }}
+            - name: rsyncd-conf
+              mountPath: /home/rsyncd/etc/rsyncd.d/rsyncd.inc
+              readOnly: true # Default for configmaps
+              subPath: rsyncd.inc
             {{- range .Values.configuration.components }}
             - name: rsyncd-conf
-              mountPath: /etc/rsyncd.d/{{ .name }}.conf
+              mountPath: /home/rsyncd/etc/rsyncd.d/{{ .name }}.conf
               readOnly: true # Default for configmaps
               subPath: {{ .name }}.conf
+            {{- end }}
+          {{- end }}
+          {{- range .Values.configuration.components }}
             - name: datadir-{{ .name }}
               mountPath: {{ .path }}
-              readOnly: true
+              readOnly: {{ eq (toString .writeEnabled) "true" | ternary "false" "true" }}
             {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
@@ -85,14 +121,16 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       volumes:
-        - name: rsyncd-conf
-          configMap:
-            name: {{ include "rsyncd.fullname" . }}-conf
         - name: ramfs
           emptyDir:
             medium: Memory
             sizeLimit: 32Mi
-        {{- range .Values.configuration.components }}
+    {{- if eq .Values.configuration.rsyncd_daemon "rsyncd" }}
+        - name: rsyncd-conf
+          configMap:
+            name: {{ include "rsyncd.fullname" . }}-conf
+    {{- end }}
+    {{- range .Values.configuration.components }}
         - name: datadir-{{ .name }}
-          {{- include "rsync.datadir-volumedefinition" (dict "currentRsyncComponent" . "rootContext" $) | nindent 10 }}
-        {{- end }}
+      {{- include "rsyncd.datadir-volumedefinition" (dict "currentRsyncComponent" . "rootContext" $) | nindent 10 }}
+    {{- end }}
