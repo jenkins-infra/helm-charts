@@ -11,12 +11,14 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   {{- if eq .Values.service.type "LoadBalancer" }}
-  {{- with .Values.service.LoadBalancerIP }}
+    {{- with .Values.service.LoadBalancerIP }}
   loadBalancerIP: {{ . }}
-  {{- end }}
+    {{- end }}
+    {{- with .Values.service.whitelisted_sources }}
   loadBalancerSourceRanges:
-    {{- range .Values.service.whitelisted_sources }}
+      {{- range . }}
     - {{ . | quote }}
+      {{- end }}
     {{- end }}
   {{- end }}
   ports:
