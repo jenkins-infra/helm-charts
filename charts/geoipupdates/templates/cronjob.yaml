@@ -1,0 +1,62 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "geoipupdate.fullname" . }}
+  labels:
+{{ include "geoipupdate.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: {{ .Values.geoipupdate.cron }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: {{ include "geoipupdate.fullname" . }}
+          restartPolicy: Never
+          containers:
+            - name: geoipupdate
+              image: "{{ .Values.image }}:{{ .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.imagePullPolicy }}
+              {{- with .Values.containerSecurityContext }}
+              securityContext:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+              volumeMounts:
+                - name: geoipdata
+                  mountPath: /usr/share/GeoIP
+                  readOnly: false
+                - name: tmpdir
+                  mountPath: /tmp
+                  readOnly: false
+              resources:
+                {{- toYaml .Values.resources | nindent 16 }}
+              env:
+                - name: GEOIPUPDATE_EDITION_IDS
+                  value: {{ .Values.geoipupdate.editions }}
+                - name: GEOIPUPDATE_FREQUENCY
+                  value: {{ .Values.geoipupdate.update_frequency | quote }}
+              envFrom:
+              - secretRef:
+                  name: {{ include "geoipupdate.fullname" . }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.affinity }}
+          affinity:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumes:
+            - name: geoipdata
+            {{- if .Values.dataVolume }}
+              {{- toYaml .Values.dataVolume | nindent 14 }}
+            {{- else }}
+              emptyDir: {}
+            {{- end }}
+            - name: tmpdir
+              emptyDir:
+                medium: "Memory"
