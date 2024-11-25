@@ -61,6 +61,7 @@ spec:
           {{- if eq .Values.configuration.rsyncd_daemon "sshd" }}
               - sshd
             initialDelaySeconds: 10
+            failureThreshold: 15
           {{- else if eq .Values.configuration.rsyncd_daemon "rsyncd" }}
               - rsync
             initialDelaySeconds: 5
@@ -76,6 +77,7 @@ spec:
               - test -f /home/rsyncd/run/{{ .Values.configuration.rsyncd_daemon }}.pid
             {{- if eq .Values.configuration.rsyncd_daemon "sshd" }}
             initialDelaySeconds: 10
+            failureThreshold: 15
             {{- else if eq .Values.configuration.rsyncd_daemon "rsyncd" }}
             initialDelaySeconds: 5
             {{- end }}
