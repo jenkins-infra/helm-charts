@@ -4,7 +4,6 @@ This chart allows to deploys up to three services:
 
 * [mirrorbits](https://github.com/etix/mirrorbits) through the subchart <https://github.com/jenkins-infra/helm-charts/tree/main/charts/mirrorbits>
 * [httpd (Apache2)](https://httpd.apache.org/) through the subchart <https://github.com/jenkins-infra/helm-charts/tree/main/charts/httpd>
-* [rsyncd](https://linux.die.net/man/1/rsync) through the subchart <https://github.com/jenkins-infra/helm-charts/tree/main/charts/rsyncd>
 
 The goal is to deploy an "HTTP redirector" service centered on [mirrorbits](https://github.com/etix/mirrorbits) and/or a Jenkins download mirror.
 

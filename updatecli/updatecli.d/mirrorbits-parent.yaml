@@ -25,12 +25,6 @@ sources:
     spec:
       url: https://jenkins-infra.github.io/helm-charts
       name: httpd
-  lastRsyncdChartVersion:
-    kind: helmchart
-    name: get last chart version
-    spec:
-      url: https://jenkins-infra.github.io/helm-charts
-      name: rsyncd
 
 targets:
   updateMirrorbits:
@@ -53,16 +47,6 @@ targets:
       key: $.dependencies[1].version
       versionincrement: patch
     scmid: default
-  updateRsyncd:
-    name: Update rsyncd subchart version
-    sourceid: lastRsyncdChartVersion
-    kind: helmchart
-    spec:
-      name: charts/mirrorbits-parent
-      file: Chart.yaml
-      key: $.dependencies[2].version
-      versionincrement: patch
-    scmid: default
 
 actions:
   default:
@@ -74,4 +58,3 @@ actions:
         - dependencies
         - mirrorbits
         - httpd
-        - rsyncd

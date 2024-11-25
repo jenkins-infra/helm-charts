@@ -91,5 +91,3 @@ mirrorbits:
 httpd:
   enabled: false
   backendServiceNameTpl: '{{ include "httpd.fullname" (index $.Subcharts "httpd")}}'
-rsyncd:
-  enabled: false
