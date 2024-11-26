@@ -8,6 +8,7 @@ geoipupdate:
   license_key: ""
   editions: GeoLite2-ASN GeoLite2-City GeoLite2-Country
   update_frequency: 24
+  cron: '0 4 * * *' # default to every day at 4AM
 podSecurityContext: {}
 # fsGroup: 2000
 containerSecurityContext: {}
