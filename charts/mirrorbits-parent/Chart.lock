@@ -1,9 +1,9 @@
 dependencies:
 - name: mirrorbits
   repository: https://jenkins-infra.github.io/helm-charts
-  version: 5.4.9
+  version: 5.4.10
 - name: httpd
   repository: https://jenkins-infra.github.io/helm-charts
   version: 1.4.1
-digest: sha256:292bbdd8ad7e0f5ce78cff064616f663c6c93440a56f1d21e541d3067498d829
-generated: "2024-11-26T11:19:14.946643+01:00"
+digest: sha256:6892e0f3eab0c6cffae558758e60e8c586be86d0a60cdef2ec424f42d46a5e2e
+generated: "2024-11-27T06:37:19.566613067Z"
