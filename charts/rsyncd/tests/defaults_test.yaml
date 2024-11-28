@@ -184,3 +184,8 @@ tests:
           value: "RELEASE-NAME"
       - notExists:
           path: metadata.annotations
+  - it: should not define any Secret
+    template: secrets.yaml
+    asserts:
+      - hasDocuments:
+          count: 0

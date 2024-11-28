@@ -67,9 +67,9 @@ emptyDir: {}
 {{/* Overrides defaults if the top level `port` value exists */}}
 {{- if .Values.port -}}
 {{ .Values.port }}
-{{- else if eq .Values.configuration.rsyncd_daemon "rsyncd" -}}
+{{- else if eq .Values.configuration.rsyncdDaemon "rsyncd" -}}
 1873
-{{- else if eq .Values.configuration.rsyncd_daemon "sshd" -}}
+{{- else if eq .Values.configuration.rsyncdDaemon "sshd" -}}
 2222
 {{- end -}}
 {{- end -}}
@@ -79,9 +79,9 @@ emptyDir: {}
 {{/* Overrides defaults if the `service.port` value exists */}}
 {{- if .Values.service.port -}}
 {{ .Values.service.port }}
-{{- else if eq .Values.configuration.rsyncd_daemon "rsyncd" -}}
+{{- else if eq .Values.configuration.rsyncdDaemon "rsyncd" -}}
 873
-{{- else if eq .Values.configuration.rsyncd_daemon "sshd" -}}
+{{- else if eq .Values.configuration.rsyncdDaemon "sshd" -}}
 22
 {{- end -}}
 {{- end -}}

@@ -23,7 +23,7 @@ port: 9999
 service:
   type: LoadBalancer
   LoadBalancerIP: 1.2.3.4
-  whitelisted_sources:
+  whitelistedSources:
     - 52.167.253.43/32
     - 52.202.51.185/32
   annotations:

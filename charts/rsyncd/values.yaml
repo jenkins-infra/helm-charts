@@ -27,7 +27,7 @@ service:
   ## Custom port published by the "Service" if you don't want the standard RsyncD 873 (or SSHD 22)
   # port: 873
   # LoadBalancerIP: 1.2.3.4
-  whitelisted_sources: []
+  whitelistedSources: []
   # - 52.167.253.43/32
   # - 52.202.51.185/32
 resources: {}
@@ -46,7 +46,7 @@ tolerations: []
 affinity: {}
 configuration:
   ## Specify the Daemon providing rsync service capability: 'rsyncd' (default) or 'sshd'
-  rsyncd_daemon: rsyncd
+  rsyncdDaemon: rsyncd
   rsyncd:
     ## Uncomment to specify a list of "rsyncd" components (rsync://server.name:873/COMPONENT)
     components: []
@@ -55,6 +55,12 @@ configuration:
     #     comment: "Jenkins Read-Only Mirror"
     #     volume:
     #       emptyDir: {}
-  ## Set up the SSHD service (when `configuration.rsyncd_daemon` equals 'sshd')
+  ## Set up the SSHD service (when `configuration.rsyncdDaemon` equals 'sshd')
   # sshd:
-  #   public_key: "ssh-rsa XXXXX"
+  #   # sepcify the publickey to use for the user 'rsyncd'
+  #   publicKey: "ssh-rsa XXXXX"
+  #   # Specify the SSHD persistent host keys
+  #   hostKeys:
+  #     ssh_host_dsa_key: ""
+  #     ssh_host_dsa_key.pub: ""
+  #     # ...

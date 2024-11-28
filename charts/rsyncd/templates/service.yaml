@@ -14,7 +14,7 @@ spec:
     {{- with .Values.service.LoadBalancerIP }}
   loadBalancerIP: {{ . }}
     {{- end }}
-    {{- with .Values.service.whitelisted_sources }}
+    {{- with .Values.service.whitelistedSources }}
   loadBalancerSourceRanges:
       {{- range . }}
     - {{ . | quote }}
@@ -25,7 +25,7 @@ spec:
     - port: {{ include "rsyncd.service.port" . }}
       targetPort: {{ include "rsyncd.port" . }}
       protocol: TCP
-      name: {{ .Values.configuration.rsyncd_daemon }}
+      name: {{ .Values.configuration.rsyncdDaemon }}
   selector:
     app.kubernetes.io/name: {{ include "rsyncd.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
