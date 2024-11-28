@@ -1,6 +1,9 @@
-image: ghcr.io/maxmind/geoipupdate
-imagePullSecrets: []
-imagePullPolicy: IfNotPresent
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: 1.26.2-alpine
 # securityContext:
 # Secret values, set to empty below for reference:
 geoipupdate:

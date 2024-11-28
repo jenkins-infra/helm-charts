@@ -20,10 +20,14 @@ spec:
         spec:
           serviceAccountName: {{ include "geoipupdate.fullname" . }}
           restartPolicy: Never
+          {{- with .Values.image.pullSecrets }}
+            imagePullSecrets:
+              {{- toYaml . | nindent 12 }}
+          {{- end }}
           containers:
-            - name: geoipupdate
-              image: "{{ .Values.image }}:{{ .Chart.AppVersion }}"
-              imagePullPolicy: {{ .Values.imagePullPolicy }}
+            - name: {{ .Chart.Name }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
               {{- with .Values.containerSecurityContext }}
               securityContext:
                 {{- toYaml . | nindent 16 }}

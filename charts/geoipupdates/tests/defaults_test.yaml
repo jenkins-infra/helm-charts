@@ -2,42 +2,61 @@ suite: default tests
 templates:
   - cronjob.yaml
 tests:
-  - it: should define the default "geoipupdate" cronjob with default imagePullPolicy and metadata labels
+  - it: should define the default "geoipupdate" cronjob with default image.pullPolicy and metadata labels
     template: cronjob.yaml
     asserts:
       - hasDocuments:
-          count: 1
-      - isKind:
+          count: 2
+      - documentIndex: 0
+        isKind:
+          of: ServiceAccount
+      - documentIndex: 1
+        isKind:
           of: CronJob
-      - equal:
+      - documentIndex: 0
+        equal:
+          path: metadata.name
+          value: RELEASE-NAME-geoipupdates
+      - documentIndex: 1
+        equal:
           path:  metadata.labels["app.kubernetes.io/name"]
           value: "geoipupdate"
-      - equal:
+      - documentIndex: 1
+        equal:
           path: metadata.labels["app.kubernetes.io/instance"]
           value: "RELEASE-NAME"
-      - equal:
+      - documentIndex: 1
+        equal:
           path: "spec.jobTemplate.spec.template.spec.containers[*].imagePullPolicy"
           value: IfNotPresent
-      - equal:
+      - documentIndex: 1
+        equal:
           path: spec.jobTemplate.spec.template.spec.volumes[0].emptyDir.medium
           value: "Memory"
-      - equal:
+      - documentIndex: 1
+        equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[0].readOnly
           value: false
       # Env. variables
-      - equal:
+      - documentIndex: 1
+        equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[0].name
           value: GEOIPUPDATE_EDITION_IDS
-      - equal:
+      - documentIndex: 1
+        equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[0].value
           value: GeoLite2-ASN GeoLite2-City GeoLite2-Country
-      - equal:
+      - documentIndex: 1
+        equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[1].name
           value: GEOIPUPDATE_FREQUENCY
-      - equal:
+      - documentIndex: 1
+        equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[1].value
           value: "24"
-      - notExists:
+      - documentIndex: 1
+        notExists:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[2].name
-      - notExists:
+      - documentIndex: 1
+        notExists:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[3].name
