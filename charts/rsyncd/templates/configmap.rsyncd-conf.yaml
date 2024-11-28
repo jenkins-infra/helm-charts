@@ -1,4 +1,4 @@
-{{- if eq .Values.configuration.rsyncd_daemon "rsyncd" }}
+{{- if eq .Values.configuration.rsyncdDaemon "rsyncd" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:

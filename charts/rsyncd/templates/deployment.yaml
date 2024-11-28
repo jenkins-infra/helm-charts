@@ -36,11 +36,11 @@ spec:
           {{- end }}
           env:
             - name: RSYNCD_DAEMON
-              value: "{{ .Values.configuration.rsyncd_daemon }}"
-            - name: {{ upper .Values.configuration.rsyncd_daemon }}_PORT
+              value: "{{ .Values.configuration.rsyncdDaemon }}"
+            - name: {{ upper .Values.configuration.rsyncdDaemon }}_PORT
               value: "{{ include "rsyncd.port" . }}"
           {{- if .Values.configuration.sshd }}
-            {{- with .Values.configuration.sshd.public_key }}
+            {{- with .Values.configuration.sshd.publicKey }}
             - name: SSHD_PUBLIC_KEY
               value: "{{ . }}"
             {{- end }}
@@ -48,13 +48,9 @@ spec:
             - name: SSHD_LOG_LEVEL
               value: "{{ . }}"
             {{- end }}
-            {{- with .Values.configuration.sshd.persistentHostKeys }}
-            - name: HOST_KEYS_SRC_DIR
-              value: "{{ . }}"
-            {{- end }}
           {{- end }}
           ports:
-            - name: {{ .Values.configuration.rsyncd_daemon }}
+            - name: {{ .Values.configuration.rsyncdDaemon }}
               containerPort: {{ include "rsyncd.port" . }}
               protocol: TCP
           livenessProbe:
@@ -64,11 +60,11 @@ spec:
             exec:
               command:
               - pgrep
-          {{- if eq .Values.configuration.rsyncd_daemon "sshd" }}
+          {{- if eq .Values.configuration.rsyncdDaemon "sshd" }}
               - sshd
             initialDelaySeconds: 10
             failureThreshold: 15
-          {{- else if eq .Values.configuration.rsyncd_daemon "rsyncd" }}
+          {{- else if eq .Values.configuration.rsyncdDaemon "rsyncd" }}
               - rsync
             initialDelaySeconds: 5
           {{- end }}
@@ -80,11 +76,11 @@ spec:
               command:
               - sh
               - -c
-              - test -f /home/rsyncd/run/{{ .Values.configuration.rsyncd_daemon }}.pid
-            {{- if eq .Values.configuration.rsyncd_daemon "sshd" }}
+              - test -f /home/rsyncd/run/{{ .Values.configuration.rsyncdDaemon }}.pid
+            {{- if eq .Values.configuration.rsyncdDaemon "sshd" }}
             initialDelaySeconds: 10
             failureThreshold: 15
-            {{- else if eq .Values.configuration.rsyncd_daemon "rsyncd" }}
+            {{- else if eq .Values.configuration.rsyncdDaemon "rsyncd" }}
             initialDelaySeconds: 5
             {{- end }}
             periodSeconds: 5
@@ -99,7 +95,7 @@ spec:
             - name: ramfs
               mountPath: /home/rsyncd/run
               subPath: run
-          {{- if eq .Values.configuration.rsyncd_daemon "rsyncd" }}
+          {{- if eq .Values.configuration.rsyncdDaemon "rsyncd" }}
             - name: rsyncd-conf
               mountPath: /home/rsyncd/etc/rsyncd.d/rsyncd.inc
               readOnly: true # Default for configmaps
@@ -115,6 +111,13 @@ spec:
             - name: datadir-{{ .name }}
               mountPath: {{ .path }}
               readOnly: {{ eq (toString .writeEnabled) "true" | ternary "false" "true" }}
+          {{- end }}
+          {{- if .Values.configuration.sshd }}
+            {{- if .Values.configuration.sshd.hostKeys }}
+            - name: hostkeys
+              mountPath: /home/rsyncd/etc/keys
+              readOnly: true
+            {{- end }}
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
@@ -133,7 +136,7 @@ spec:
           emptyDir:
             medium: Memory
             sizeLimit: 32Mi
-    {{- if eq .Values.configuration.rsyncd_daemon "rsyncd" }}
+    {{- if eq .Values.configuration.rsyncdDaemon "rsyncd" }}
         - name: rsyncd-conf
           configMap:
             name: {{ include "rsyncd.fullname" . }}-conf
@@ -141,4 +144,9 @@ spec:
     {{- range .Values.configuration.components }}
         - name: datadir-{{ .name }}
       {{- include "rsyncd.datadir-volumedefinition" (dict "currentRsyncComponent" . "rootContext" $) | nindent 10 }}
+    {{- end }}
+    {{- if and .Values.configuration.sshd .Values.configuration.sshd.hostKeys }}
+        - name: hostkeys
+          secret:
+            secretName: {{ include "rsyncd.fullname" . }}-hostkeys
     {{- end }}

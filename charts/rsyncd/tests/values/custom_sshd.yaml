@@ -22,17 +22,28 @@ resources:
 service:
   type: LoadBalancer
   LoadBalancerIP: 1.2.3.4
-  whitelisted_sources:
+  whitelistedSources:
     - 52.167.253.43/32
     - 52.202.51.185/32
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 configuration:
-  rsyncd_daemon: sshd
+  rsyncdDaemon: sshd
   sshd:
-    public_key: "ssh-rsa AAAAAAAA=="
+    publicKey: "ssh-rsa AAAAAAAA=="
     log_level: DEBUG3
-    persistentHostKeys: /foo/keys
+    hostKeys:
+      ssh_host_dsa_key: |
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEogIBAAKCAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzI
+        w+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoP
+        kcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2
+        DUMMY KEY
+        kda/AoGANWrLCz708y7VYgAtW2Uf1DPOIYMdvo6fxIB5i9ZfISgcJ/bbCUkFrhoH
+        +vq/5CIWxCPp0f85R4qxxQ5ihxJ0YDQT9Jpx4TMss4PSavPaBH3RXow5Ohe+bYoQ
+        NE5OgEXk2wVfZczCZpigBKbKZHNYcelXtTt/nP3rsCuGcM4h53s=
+        -----END RSA PRIVATE KEY-----
+      ssh_host_dsa_key.pub: "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ=="
   components:
     - name: jenkins
       path: /rsyncd/data/jenkins
