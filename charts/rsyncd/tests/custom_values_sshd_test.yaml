@@ -87,6 +87,24 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].env[1].value
           value: "2222"
+      - equal:
+          path: spec.template.spec.containers[0].env[2].name
+          value: SSHD_PUBLIC_KEY
+      - equal:
+          path: spec.template.spec.containers[0].env[2].value
+          value: "ssh-rsa AAAAAAAA=="
+      - equal:
+          path: spec.template.spec.containers[0].env[3].name
+          value: SSHD_LOG_LEVEL
+      - equal:
+          path: spec.template.spec.containers[0].env[3].value
+          value: DEBUG3
+      - equal:
+          path: spec.template.spec.containers[0].env[4].name
+          value: HOST_KEYS_SRC_DIR
+      - equal:
+          path: spec.template.spec.containers[0].env[4].value
+          value: "/foo/keys"
       # Custom container resources
       - equal:
           path: spec.template.spec.containers[0].resources.limits.cpu
