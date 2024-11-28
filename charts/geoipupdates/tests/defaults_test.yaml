@@ -37,13 +37,7 @@ tests:
       - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[1].value
           value: "24"
-      - equal:
+      - notExists:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[2].name
-          value: STORAGE_NAME
-      - isNullOrEmpty:
-          path: spec.jobTemplate.spec.template.spec.containers[0].env[2].value
-      - equal:
+      - notExists:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[3].name
-          value: STORAGE_FILESHARE
-      - isNullOrEmpty:
-          path: spec.jobTemplate.spec.template.spec.containers[0].env[3].value

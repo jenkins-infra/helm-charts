@@ -11,7 +11,6 @@ spec:
     spec:
       template:
         spec:
-          serviceAccountName: {{ include "geoipupdate.fullname" . }}
           restartPolicy: Never
           containers:
             - name: geoipupdate
@@ -28,14 +27,22 @@ spec:
               resources:
                 {{- toYaml .Values.resources | nindent 16 }}
               env:
+                {{- with .Values.geoipupdate.editions }}
                 - name: GEOIPUPDATE_EDITION_IDS
-                  value: {{ .Values.geoipupdate.editions }}
+                  value: {{ . }}
+                {{- end }}
+                {{- with .Values.geoipupdate.update_frequency }}
                 - name: GEOIPUPDATE_FREQUENCY
-                  value: {{ .Values.geoipupdate.update_frequency | quote }}
+                  value: {{ . | quote }}
+                {{- end }}
+                {{- with .Values.geoipupdate.storage_name }}
                 - name: STORAGE_NAME
-                  value: {{ .Values.geoipupdate.storage_name }}
+                  value: {{ . }}
+                {{- end }}
+                {{- with .Values.geoipupdate.storage_fileshare }}
                 - name: STORAGE_FILESHARE
-                  value: {{ .Values.geoipupdate.storage_fileshare }}
+                  value: {{ . }}
+                {{- end }}
               envFrom:
               - secretRef:
                   name: {{ include "geoipupdate.fullname" . }}
