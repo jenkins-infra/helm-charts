@@ -8,8 +8,8 @@ geoipupdate:
   license_key: ""
   editions: "GeoLite2-ASN GeoLite2-City GeoLite2-Country"
   update_frequency: 24
-  storage_name: "publick8spvdata"
-  storage_fileshare: "geoip-data"
+  storage_name: ""
+  storage_fileshare: ""
   cron: '0 4 * * *' # default to every day at 4AM
 podSecurityContext: {}
 # fsGroup: 2000

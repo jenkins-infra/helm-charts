@@ -1,0 +1,8 @@
+geoipupdate:
+  account_id: "myaccount"
+  license_key: "mylicencekey"
+  editions: "alleditions"
+  update_frequency: 74
+  storage_name: "mystoragename"
+  storage_fileshare: "myfileshare"
+  cron: '0 6 * * *' # default to every day at 6AM

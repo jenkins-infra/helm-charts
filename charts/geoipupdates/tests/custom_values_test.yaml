@@ -1,8 +1,8 @@
-suite: default tests
-templates:
-  - cronjob.yaml
+suite: Tests with custom values
+values:
+  - values/custom_geoipupdater.yaml
 tests:
-  - it: should define the default "geoipupdate" cronjob with default imagePullPolicy and metadata labels
+  - it: should define a customized "geoipupdate" cronjob
     template: cronjob.yaml
     asserts:
       - hasDocuments:
@@ -30,20 +30,22 @@ tests:
           value: GEOIPUPDATE_EDITION_IDS
       - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[0].value
-          value: GeoLite2-ASN GeoLite2-City GeoLite2-Country
+          value: alleditions
       - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[1].name
           value: GEOIPUPDATE_FREQUENCY
       - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[1].value
-          value: "24"
+          value: "74"
       - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[2].name
           value: STORAGE_NAME
-      - isNullOrEmpty:
+      - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[2].value
+          value: mystoragename
       - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[3].name
           value: STORAGE_FILESHARE
-      - isNullOrEmpty:
+      - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[3].value
+          value: myfileshare
