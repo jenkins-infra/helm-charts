@@ -77,6 +77,7 @@ cli:
         secretName: internal-tls
 repository:
   name: mirrorbits-binary
+  subDir: ./content/
   persistentVolumeClaim:
     enabled: true
     spec:
