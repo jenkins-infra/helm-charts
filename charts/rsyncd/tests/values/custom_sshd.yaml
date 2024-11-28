@@ -31,6 +31,8 @@ configuration:
   rsyncd_daemon: sshd
   sshd:
     public_key: "ssh-rsa AAAAAAAA=="
+    log_level: DEBUG3
+    persistentHostKeys: /foo/keys
   components:
     - name: jenkins
       path: /rsyncd/data/jenkins

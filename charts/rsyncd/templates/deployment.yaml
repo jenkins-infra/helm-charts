@@ -39,13 +39,19 @@ spec:
               value: "{{ .Values.configuration.rsyncd_daemon }}"
             - name: {{ upper .Values.configuration.rsyncd_daemon }}_PORT
               value: "{{ include "rsyncd.port" . }}"
-          {{- if and .Values.configuration.sshd .Values.configuration.sshd.public_key }}
+          {{- if .Values.configuration.sshd }}
+            {{- with .Values.configuration.sshd.public_key }}
             - name: SSHD_PUBLIC_KEY
-              value: "{{ .Values.configuration.sshd.public_key }}"
-          {{- end }}
-          {{- if and .Values.configuration.sshd .Values.configuration.sshd.log_level }}
+              value: "{{ . }}"
+            {{- end }}
+            {{- with .Values.configuration.sshd.log_level }}
             - name: SSHD_LOG_LEVEL
-              value: "{{ .Values.configuration.sshd.log_level }}"
+              value: "{{ . }}"
+            {{- end }}
+            {{- with .Values.configuration.sshd.persistentHostKeys }}
+            - name: HOST_KEYS_SRC_DIR
+              value: "{{ . }}"
+            {{- end }}
           {{- end }}
           ports:
             - name: {{ .Values.configuration.rsyncd_daemon }}
@@ -109,7 +115,7 @@ spec:
             - name: datadir-{{ .name }}
               mountPath: {{ .path }}
               readOnly: {{ eq (toString .writeEnabled) "true" | ternary "false" "true" }}
-            {{- end }}
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
