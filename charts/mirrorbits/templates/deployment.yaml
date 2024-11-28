@@ -64,7 +64,7 @@ spec:
               mountPath: {{ .Values.config.repository }}
               readOnly: true
               {{- with .Values.repository.subDir }}
-              subDir: {{ . }}
+              subPath: {{ . }}
               {{- end }}
             - name: tmpdir
               mountPath: /tmp

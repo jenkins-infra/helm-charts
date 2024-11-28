@@ -83,6 +83,9 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].mountPath
           value: /DATA
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].subPath
+          value: ./content/
       # Tempdir uses a tmpfs volume with a 100Mi limit
       - equal:
           path: spec.template.spec.volumes[4].name
