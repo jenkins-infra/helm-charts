@@ -18,19 +18,9 @@ tests:
       - equal:
           path: "spec.jobTemplate.spec.template.spec.containers[*].imagePullPolicy"
           value: IfNotPresent
-      # GeoIP is an emptyDir, with default mountpath
       - equal:
-          path: spec.jobTemplate.spec.template.spec.volumes[0].name
-          value: geoipdata
-      - equal:
-          path: spec.jobTemplate.spec.template.spec.volumes[0].emptyDir
-          value: {}
-      - equal:
-          path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[0].name
-          value: geoipdata
-      - equal:
-          path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[0].mountPath
-          value: /usr/share/GeoIP
+          path: spec.jobTemplate.spec.template.spec.volumes[0].emptyDir.medium
+          value: "Memory"
       - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[0].readOnly
           value: false
@@ -47,3 +37,15 @@ tests:
       - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[1].value
           value: "24"
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].env[2].name
+          value: STORAGE_NAME
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].env[2].value
+          value: "publick8spvdata"
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].env[3].name
+          value: STORAGE_FILESHARE
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].env[3].value
+          value: "geoip-data"
