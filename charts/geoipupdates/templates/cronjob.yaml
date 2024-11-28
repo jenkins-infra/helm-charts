@@ -20,7 +20,7 @@ spec:
         spec:
           serviceAccountName: {{ include "geoipupdate.fullname" . }}
           restartPolicy: Never
-          {{- with .Values.image.pullSecrets }}
+          {{- with .Values.imagePullSecrets }}
             imagePullSecrets:
               {{- toYaml . | nindent 12 }}
           {{- end }}

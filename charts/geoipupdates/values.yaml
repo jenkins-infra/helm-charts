@@ -1,9 +1,8 @@
 image:
-  repository: nginx
+  repository: geoipupdates
+  tag: latest
   pullPolicy: IfNotPresent
-  pullSecrets: []
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: 1.26.2-alpine
+imagePullSecrets: []
 # securityContext:
 # Secret values, set to empty below for reference:
 geoipupdate:
