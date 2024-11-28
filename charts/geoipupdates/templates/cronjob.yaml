@@ -1,3 +1,10 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "geoipupdate.fullname" . }}
+  labels:
+{{ include "geoipupdate.labels" . | indent 4 }}
+---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -11,6 +18,7 @@ spec:
     spec:
       template:
         spec:
+          serviceAccountName: {{ include "geoipupdate.fullname" . }}
           restartPolicy: Never
           containers:
             - name: geoipupdate
