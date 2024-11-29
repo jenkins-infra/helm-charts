@@ -6,67 +6,73 @@ tests:
     template: cronjob.yaml
     asserts:
       - hasDocuments:
-          count: 2
+          count: 4
       - documentIndex: 0
         isKind:
           of: ServiceAccount
+      - documentIndex: 1
+        isKind:
+          of: Role
+      - documentIndex: 2
+        isKind:
+          of: RoleBinding
+      - documentIndex: 3
+        isKind:
+          of: CronJob
       - documentIndex: 0
         equal:
           path: metadata.name
           value: RELEASE-NAME-geoipupdates
-      - documentIndex: 1
-        isKind:
-          of: CronJob
-      - documentIndex: 1
+      - documentIndex: 3
         equal:
           path:  metadata.labels["app.kubernetes.io/name"]
           value: "geoipupdate"
-      - documentIndex: 1
+      - documentIndex: 3
         equal:
           path: metadata.labels["app.kubernetes.io/instance"]
           value: "RELEASE-NAME"
-      - documentIndex: 1
+      - documentIndex: 3
         equal:
           path: "spec.jobTemplate.spec.template.spec.containers[*].imagePullPolicy"
           value: IfNotPresent
-      - documentIndex: 1
+      - documentIndex: 3
         equal:
           path: spec.jobTemplate.spec.template.spec.volumes[0].emptyDir.medium
           value: "Memory"
-      - documentIndex: 1
+      - documentIndex: 3
         equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[0].readOnly
           value: false
       # Env. variables
-      - documentIndex: 1
+      - documentIndex: 3
         equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[0].name
           value: GEOIPUPDATE_EDITION_IDS
-      - documentIndex: 1
+      - documentIndex: 3
         equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[0].value
           value: alleditions
-      - documentIndex: 1
+      - documentIndex: 3
         equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[1].name
           value: GEOIPUPDATE_FREQUENCY
-      - documentIndex: 1
+      - documentIndex: 3
         equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[1].value
           value: "74"
-      - documentIndex: 1
+      - documentIndex: 3
         equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[2].name
           value: STORAGE_NAME
-      - documentIndex: 1
+      - documentIndex: 3
         equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[2].value
           value: mystoragename
-      - documentIndex: 1
+      - documentIndex: 3
         equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[3].name
           value: STORAGE_FILESHARE
-      - documentIndex: 1
+      - documentIndex: 3
         equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[3].value
           value: myfileshare
