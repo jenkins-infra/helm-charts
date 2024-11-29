@@ -162,8 +162,9 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].mountPath
           value: /tmp/hudson
-      - notExists:
+      - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].subPath
+          value: ./foo/
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].readOnly
           value: false
