@@ -8,6 +8,9 @@ imagePullSecrets: []
 geoipupdate:
   account_id: ""
   license_key: ""
+  fileshare_client_id: ""
+  fileshare_client_secret: ""
+  fileshare_tenant_id: ""
   editions: "GeoLite2-ASN GeoLite2-City GeoLite2-Country"
   update_frequency: 24
   storage_name: ""

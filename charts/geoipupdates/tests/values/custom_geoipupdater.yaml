@@ -1,6 +1,9 @@
 geoipupdate:
   account_id: "myaccount"
   license_key: "mylicencekey"
+  fileshare_client_id: "clientid"
+  fileshare_client_secret: "clientsecret"
+  fileshare_tenant_id: "tenantid"
   editions: "alleditions"
   update_frequency: 74
   storage_name: "mystoragename"
