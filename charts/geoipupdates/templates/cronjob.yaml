@@ -60,9 +60,15 @@ spec:
                 - name: tmpdir
                   mountPath: /tmp
                   readOnly: false
+              {{- with .Values.resources }}
               resources:
-                {{- toYaml .Values.resources | nindent 16 }}
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
               env:
+                {{- with .Values.geoipupdate.dryrun }}
+                - name: GEOIPUPDATE_DRYRUN
+                  value: DRYRUN
+                {{- end }}
                 {{- with .Values.geoipupdate.editions }}
                 - name: GEOIPUPDATE_EDITION_IDS
                   value: {{ . }}

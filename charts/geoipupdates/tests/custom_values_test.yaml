@@ -47,32 +47,36 @@ tests:
       - documentIndex: 3
         equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[0].name
-          value: GEOIPUPDATE_EDITION_IDS
-      - documentIndex: 3
-        equal:
-          path: spec.jobTemplate.spec.template.spec.containers[0].env[0].value
-          value: alleditions
+          value: GEOIPUPDATE_DRYRUN
       - documentIndex: 3
         equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[1].name
-          value: GEOIPUPDATE_FREQUENCY
+          value: GEOIPUPDATE_EDITION_IDS
       - documentIndex: 3
         equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[1].value
-          value: "74"
+          value: alleditions
       - documentIndex: 3
         equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[2].name
-          value: STORAGE_NAME
+          value: GEOIPUPDATE_FREQUENCY
       - documentIndex: 3
         equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[2].value
-          value: mystoragename
+          value: "74"
       - documentIndex: 3
         equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[3].name
-          value: STORAGE_FILESHARE
+          value: STORAGE_NAME
       - documentIndex: 3
         equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[3].value
+          value: mystoragename
+      - documentIndex: 3
+        equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].env[4].name
+          value: STORAGE_FILESHARE
+      - documentIndex: 3
+        equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].env[4].value
           value: myfileshare

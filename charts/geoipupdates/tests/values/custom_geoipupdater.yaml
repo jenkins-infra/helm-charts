@@ -1,4 +1,5 @@
 geoipupdate:
+  dryrun: true
   account_id: "myaccount"
   license_key: "mylicencekey"
   fileshare_client_id: "clientid"

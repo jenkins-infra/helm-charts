@@ -6,6 +6,7 @@ imagePullSecrets: []
 # securityContext:
 # Secret values, set to empty below for reference:
 geoipupdate:
+  dryrun: false #use boolean to set dryrun to not call geoipupdater to avoid ratelimit
   account_id: ""
   license_key: ""
   fileshare_client_id: ""
@@ -25,17 +26,13 @@ containerSecurityContext: {}
 # readOnlyRootFilesystem: true
 # runAsNonRoot: true
 # runAsUser: 1000
-resources: {}
-# We usually recommend not to specify default resources and to leave this as a conscious
-# choice for the user. This also increases chances charts run on environments with little
-# resources, such as Minikube. If you do want to specify resources, uncomment the following
-# lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-# limits:
-#   cpu: 100m
-#   memory: 128Mi
-# requests:
-#   cpu: 100m
-#   memory: 128Mi
+resources:
+  limits:
+    cpu: 100m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
 nodeSelector: {}
 tolerations: []
 affinity: {}
