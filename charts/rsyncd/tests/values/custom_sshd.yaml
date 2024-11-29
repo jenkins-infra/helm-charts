@@ -55,4 +55,5 @@ configuration:
       path: /tmp/hudson
       comment: "Hudson Read-Only Mirror"
       volumeTpl: "another-vol"
+      volumeSubDir: ./foo/
       writeEnabled: true

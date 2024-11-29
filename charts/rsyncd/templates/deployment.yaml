@@ -111,6 +111,9 @@ spec:
             - name: datadir-{{ .name }}
               mountPath: {{ .path }}
               readOnly: {{ eq (toString .writeEnabled) "true" | ternary "false" "true" }}
+              {{- with .volumeSubDir }}
+              subPath: {{ . }}
+              {{- end }}
           {{- end }}
           {{- if .Values.configuration.sshd }}
             {{- if .Values.configuration.sshd.hostKeys }}
