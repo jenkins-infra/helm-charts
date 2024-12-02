@@ -19,7 +19,7 @@ spec:
               {{- toYaml . | nindent 12 }}
           {{- end }}
           containers:
-            - name: {{ .Chart.Name }}
+            - name: geoipupdate
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
               {{- with .Values.containerSecurityContext }}
