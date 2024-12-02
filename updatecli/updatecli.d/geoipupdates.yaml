@@ -1,4 +1,4 @@
-name: Bump `ghcr.io/maxmind/geoipupdate` docker image and helm chart versions
+name: Bump `jenkinsciinfra/geoipupdate` docker image and helm chart versions
 
 scms:
   default:
@@ -14,20 +14,20 @@ scms:
 
 sources:
   lastVersion:
-    name: Get latest version of maxmind/geoipupdate
+    name: Get latest version of jenkinsciinfra/geoipupdate
     kind: githubrelease
     spec:
-      owner: maxmind
-      repository: geoipupdate
+      owner: jenkins-infra
+      repository: docker-geoipupdate
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
 
 conditions:
   checkGeoIPDockerImagePublished:
-    name: Ensure that the image "ghcr.io/maxmind/geoipupdate:<found_version>" is published
+    name: Ensure that the image "jenkinsciinfra/geoipupdate:<found_version>" is published
     kind: dockerimage
     spec:
-      image: ghcr.io/maxmind/geoipupdate
+      image: jenkinsciinfra/geoipupdate
       architectures:
         - "arm64"
       # Tag comes from sourceid
