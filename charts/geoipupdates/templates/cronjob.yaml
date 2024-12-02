@@ -1,3 +1,4 @@
+---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -13,28 +14,47 @@ spec:
         spec:
           serviceAccountName: {{ include "geoipupdate.fullname" . }}
           restartPolicy: Never
+          {{- with .Values.imagePullSecrets }}
+            imagePullSecrets:
+              {{- toYaml . | nindent 12 }}
+          {{- end }}
           containers:
             - name: geoipupdate
-              image: "{{ .Values.image }}:{{ .Chart.AppVersion }}"
-              imagePullPolicy: {{ .Values.imagePullPolicy }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
               {{- with .Values.containerSecurityContext }}
               securityContext:
                 {{- toYaml . | nindent 16 }}
               {{- end }}
               volumeMounts:
-                - name: geoipdata
-                  mountPath: /usr/share/GeoIP
-                  readOnly: false
                 - name: tmpdir
                   mountPath: /tmp
                   readOnly: false
+              {{- with .Values.resources }}
               resources:
-                {{- toYaml .Values.resources | nindent 16 }}
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
               env:
+                {{- with .Values.geoipupdate.dryrun }}
+                - name: GEOIPUPDATE_DRYRUN
+                  value: {{ . | quote }}
+                {{- end }}
+                {{- with .Values.geoipupdate.editions }}
                 - name: GEOIPUPDATE_EDITION_IDS
-                  value: {{ .Values.geoipupdate.editions }}
+                  value: {{ . }}
+                {{- end }}
+                {{- with .Values.geoipupdate.update_frequency }}
                 - name: GEOIPUPDATE_FREQUENCY
-                  value: {{ .Values.geoipupdate.update_frequency | quote }}
+                  value: {{ . | quote }}
+                {{- end }}
+                {{- with .Values.geoipupdate.storage_name }}
+                - name: STORAGE_NAME
+                  value: {{ . }}
+                {{- end }}
+                {{- with .Values.geoipupdate.storage_fileshare }}
+                - name: STORAGE_FILESHARE
+                  value: {{ . }}
+                {{- end }}
               envFrom:
               - secretRef:
                   name: {{ include "geoipupdate.fullname" . }}
@@ -51,12 +71,6 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           volumes:
-            - name: geoipdata
-            {{- if .Values.dataVolume }}
-              {{- toYaml .Values.dataVolume | nindent 14 }}
-            {{- else }}
-              emptyDir: {}
-            {{- end }}
             - name: tmpdir
               emptyDir:
                 medium: "Memory"

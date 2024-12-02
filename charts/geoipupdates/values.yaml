@@ -1,13 +1,21 @@
-image: ghcr.io/maxmind/geoipupdate
+image:
+  repository: jenkinsciinfra/geoipupdate
+  tag: 0.2.1
+  pullPolicy: IfNotPresent
 imagePullSecrets: []
-imagePullPolicy: IfNotPresent
 # securityContext:
 # Secret values, set to empty below for reference:
 geoipupdate:
+  dryrun: true
   account_id: ""
   license_key: ""
-  editions: GeoLite2-ASN GeoLite2-City GeoLite2-Country
+  fileshare_client_id: ""
+  fileshare_client_secret: ""
+  fileshare_tenant_id: ""
+  editions: "GeoLite2-ASN GeoLite2-City GeoLite2-Country"
   update_frequency: 24
+  storage_name: ""
+  storage_fileshare: ""
   cron: '0 4 * * *' # default to every day at 4AM
 podSecurityContext: {}
 # fsGroup: 2000
@@ -19,22 +27,16 @@ containerSecurityContext: {}
 # runAsNonRoot: true
 # runAsUser: 1000
 resources: {}
-# We usually recommend not to specify default resources and to leave this as a conscious
-# choice for the user. This also increases chances charts run on environments with little
-# resources, such as Minikube. If you do want to specify resources, uncomment the following
-# lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-# limits:
-#   cpu: 100m
-#   memory: 128Mi
-# requests:
-#   cpu: 100m
-#   memory: 128Mi
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 256Mi # minimum 256Mi to avoid OMM kill for `az login`
+  # requests:
+  #   cpu: 100m
+  #   memory: 256Mi
 nodeSelector: {}
 tolerations: []
 affinity: {}
-
-## Defines the geoipdata volume
-## Example with a statically provisionned PVC;
-# dataVolume:
-#   persistentVolumeClaim:
-#     claimName: existing-pvc

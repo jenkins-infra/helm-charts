@@ -1,0 +1,18 @@
+suite: default tests for rbac
+templates:
+  - rbac.yaml
+tests:
+  - it: should define the default "objects" for rbac (ServiceAccount, Role, RoleBinding)
+    template: rbac.yaml
+    asserts:
+      - hasDocuments:
+          count: 3
+      - documentIndex: 0
+        isKind:
+          of: ServiceAccount
+      - documentIndex: 1
+        isKind:
+          of: Role
+      - documentIndex: 2
+        isKind:
+          of: RoleBinding
