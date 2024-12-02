@@ -67,7 +67,7 @@ spec:
               env:
                 {{- with .Values.geoipupdate.dryrun }}
                 - name: GEOIPUPDATE_DRYRUN
-                  value: DRYRUN
+                  value: {{ . | quote }}
                 {{- end }}
                 {{- with .Values.geoipupdate.editions }}
                 - name: GEOIPUPDATE_EDITION_IDS
