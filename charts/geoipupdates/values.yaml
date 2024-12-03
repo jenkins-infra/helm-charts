@@ -1,6 +1,6 @@
 image:
   repository: jenkinsciinfra/geoipupdate
-  tag: 0.2.1
+  tag: 0.3.0
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 # securityContext:
@@ -27,16 +27,16 @@ containerSecurityContext: {}
 # runAsNonRoot: true
 # runAsUser: 1000
 resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 256Mi # minimum 256Mi to avoid OMM kill for `az login`
-  # requests:
-  #   cpu: 100m
-  #   memory: 256Mi
+# We usually recommend not to specify default resources and to leave this as a conscious
+# choice for the user. This also increases chances charts run on environments with little
+# resources, such as Minikube. If you do want to specify resources, uncomment the following
+# lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+# limits:
+#   cpu: 100m
+#   memory: 256Mi # minimum 256Mi to avoid OMM kill for `az login`
+# requests:
+#   cpu: 100m
+#   memory: 256Mi
 nodeSelector: {}
 tolerations: []
 affinity: {}
