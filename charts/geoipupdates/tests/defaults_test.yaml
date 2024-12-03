@@ -41,13 +41,7 @@ tests:
       - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[1].value
           value: GeoLite2-ASN GeoLite2-City GeoLite2-Country
-      - equal:
+      - notExists:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[2].name
-          value: GEOIPUPDATE_FREQUENCY
-      - equal:
-          path: spec.jobTemplate.spec.template.spec.containers[0].env[2].value
-          value: "24"
       - notExists:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[3].name
-      - notExists:
-          path: spec.jobTemplate.spec.template.spec.containers[0].env[4].name

@@ -41,19 +41,13 @@ tests:
           value: alleditions
       - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[2].name
-          value: GEOIPUPDATE_FREQUENCY
-      - equal:
-          path: spec.jobTemplate.spec.template.spec.containers[0].env[2].value
-          value: "74"
-      - equal:
-          path: spec.jobTemplate.spec.template.spec.containers[0].env[3].name
           value: STORAGE_NAME
       - equal:
-          path: spec.jobTemplate.spec.template.spec.containers[0].env[3].value
+          path: spec.jobTemplate.spec.template.spec.containers[0].env[2].value
           value: mystoragename
       - equal:
-          path: spec.jobTemplate.spec.template.spec.containers[0].env[4].name
+          path: spec.jobTemplate.spec.template.spec.containers[0].env[3].name
           value: STORAGE_FILESHARE
       - equal:
-          path: spec.jobTemplate.spec.template.spec.containers[0].env[4].value
+          path: spec.jobTemplate.spec.template.spec.containers[0].env[3].value
           value: myfileshare

@@ -43,10 +43,6 @@ spec:
                 - name: GEOIPUPDATE_EDITION_IDS
                   value: {{ . }}
                 {{- end }}
-                {{- with .Values.geoipupdate.update_frequency }}
-                - name: GEOIPUPDATE_FREQUENCY
-                  value: {{ . | quote }}
-                {{- end }}
                 {{- with .Values.geoipupdate.storage_name }}
                 - name: STORAGE_NAME
                   value: {{ . }}
