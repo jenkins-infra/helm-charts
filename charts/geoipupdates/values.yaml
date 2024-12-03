@@ -13,7 +13,6 @@ geoipupdate:
   fileshare_client_secret: ""
   fileshare_tenant_id: ""
   editions: "GeoLite2-ASN GeoLite2-City GeoLite2-Country"
-  update_frequency: 24
   storage_name: ""
   storage_fileshare: ""
   cron: '0 4 * * *' # default to every day at 4AM
