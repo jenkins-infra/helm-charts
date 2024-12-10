@@ -16,6 +16,10 @@ rules:
     resources: ["pods"]
     resourceNames: [{{ include "geoipupdate.fullname" . }}]
     verbs: ["get", "read", "list", "watch", "create", "patch", "replace", "delete"]
+  - apiGroups: ["apps", "extensions"]
+    resources: ["deployments"]
+    resourceNames: ["updates-jenkins-io", "get-jenkins-io"]
+    verbs: ["get", "patch", "list", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
