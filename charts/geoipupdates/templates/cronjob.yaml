@@ -51,6 +51,12 @@ spec:
                 - name: STORAGE_FILESHARE
                   value: {{ . }}
                 {{- end }}
+                {{- if .Values.geoipupdate.rolloutrestart }}
+                {{- if .Values.geoipupdate.rolloutrestart.enable }}
+                - name: GEOIPUPDATE_ROLLOUT
+                  value: {{ include "geoipupdate.rollout" . }}
+                {{- end }}
+                {{- end }}
               envFrom:
               - secretRef:
                   name: {{ include "geoipupdate.fullname" . }}
