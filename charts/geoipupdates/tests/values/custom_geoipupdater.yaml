@@ -9,3 +9,13 @@ geoipupdate:
   storage_name: "mystoragename"
   storage_fileshare: "myfileshare"
   cron: '0 6 * * *' # default to every day at 6AM
+  rolloutrestart:
+    enable: true
+    restarts:
+      - namespace: updates-jenkins-io
+        deployments:
+          - updates-jenkins-io-content-secured-mirrorbits
+          - updates-jenkins-io-content-unsecured-mirrorbits
+      - namespace: get-jenkins-io
+        deployments:
+          - get-jenkins-io-mirrorbits

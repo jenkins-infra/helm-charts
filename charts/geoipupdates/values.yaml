@@ -16,6 +16,16 @@ geoipupdate:
   storage_name: ""
   storage_fileshare: ""
   cron: '0 4 * * *' # default to every day at 4AM
+  # rolloutrestart:
+  #   enable: false
+  #   restarts:
+  #     - namespace: updates-jenkins-io
+  #       deployments:
+  #         - updates-jenkins-io-content-secured-mirrorbits
+  #         - updates-jenkins-io-content-unsecured-mirrorbits
+  #     - namespace: get-jenkins-io
+  #       deployments:
+  #         - get-jenkins-io-mirrorbits
 podSecurityContext: {}
 # fsGroup: 2000
 containerSecurityContext: {}

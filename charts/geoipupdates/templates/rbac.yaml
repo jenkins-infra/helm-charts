@@ -28,3 +28,35 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: {{ include "geoipupdate.fullname" . }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "geoipupdate.fullname" . }}-rolloutrestart
+  labels:
+{{ include "geoipupdate.labels" . | indent 4 }}
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "patch", "list", "watch"]
+---
+{{- if .Values.geoipupdate.rolloutrestart -}}
+{{- if .Values.geoipupdate.rolloutrestart.enable -}}
+{{- range .Values.geoipupdate.rolloutrestart.restarts }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "geoipupdate.fullname" $ }}-rolloutrestart-{{ .namespace }}
+  namespace: {{ .namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "geoipupdate.fullname" $ }}-rolloutrestart
+subjects:
+  - kind: ServiceAccount
+    namespace: {{ $.Release.Namespace }}
+    name: {{ include "geoipupdate.fullname" $ }}
+---
+{{- end -}}
+{{- end -}}
+{{- end -}}

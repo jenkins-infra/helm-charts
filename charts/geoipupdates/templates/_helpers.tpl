@@ -50,3 +50,24 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
+
+{{/*
+rollout expand
+*/}}
+{{- define "geoipupdate.rollout" -}}
+{{- if .Values.geoipupdate.rolloutrestart -}}
+{{- if .Values.geoipupdate.rolloutrestart.enable -}}
+{{- $result := "" -}}
+{{- range .Values.geoipupdate.rolloutrestart.restarts -}}
+{{- $namespace := .namespace -}}
+{{- $deployments := .deployments | join "," -}}
+{{- if $result -}}
+{{- $result = printf "%s;%s:%s" $result $namespace $deployments -}}
+{{- else -}}
+{{- $result = printf "%s:%s" $namespace $deployments -}}
+{{- end -}}
+{{- end -}}
+{{ $result }}
+{{- end -}}
+{{- end -}}
+{{- end -}}
