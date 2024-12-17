@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: jenkinsciinfra/account-app
-  tag: 0.6.13
+  tag: 0.6.14
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
