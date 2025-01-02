@@ -2554,6 +2554,18 @@ entries:
   geoipupdates:
   - apiVersion: v1
     appVersion: v7.1.0
+    created: "2025-01-02T07:41:53.295941653Z"
+    description: MaxMind GeoIP database updater
+    digest: 38978275442ba2a4fab5c2a92d1b0ffcf8da6275223c11ef2d073a236c250d81
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: geoipupdates
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/geoipupdates-2.6.0/geoipupdates-2.6.0.tgz
+    version: 2.6.0
+  - apiVersion: v1
+    appVersion: v7.1.0
     created: "2024-12-18T14:07:31.983428033Z"
     description: MaxMind GeoIP database updater
     digest: ee0f1b88bc7c877b7c7c34d9ad5445c872fd18ead665b455e8c88fc777e5814b
@@ -14956,4 +14968,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2025-01-02T07:41:35.138786849Z"
+generated: "2025-01-02T07:41:53.298571668Z"
