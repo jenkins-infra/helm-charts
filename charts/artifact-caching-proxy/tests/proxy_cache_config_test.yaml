@@ -18,6 +18,9 @@ tests:
       - matchRegex:
           path: data["proxy-cache.conf"]
           pattern: proxy_cache_valid 200 206 1M;
+      - notMatchRegex:
+          path: data["proxy-cache.conf"]
+          pattern: proxy_ssl_server_name on;
       - matchRegex:
           path: data["vhost-proxy.conf"]
           pattern: set \$initial_proxy_location /public;
@@ -42,6 +45,7 @@ tests:
         proxyPass: "repo.jenkins-ci.org"
         proxyCacheValidCode: "201 204"
         proxyCacheValidCodeDuration: "3H"
+        proxySslServerNameEnabled: true
         initialProxyLocationPath: /
         authorizationHeader: "Bearer 123456"
         dnsResolver: 8.8.8.8
@@ -59,6 +63,9 @@ tests:
       - matchRegex:
           path: data["proxy-cache.conf"]
           pattern: proxy_cache_valid 201 204 3H;
+      - matchRegex:
+          path: data["proxy-cache.conf"]
+          pattern: proxy_ssl_server_name on;
       - matchRegex:
           path: data["vhost-proxy.conf"]
           pattern: set \$initial_proxy_location /;
