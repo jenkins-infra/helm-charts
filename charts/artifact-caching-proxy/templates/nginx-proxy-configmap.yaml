@@ -34,6 +34,10 @@ data:
 
     # Specify HTTP code of responses to cache
     proxy_cache_valid {{ .Values.proxy.proxyCacheValidCode }} {{ .Values.proxy.proxyCacheValidCodeDuration }};
+
+    # Set proxy_ssl_server_name to ensure that the server name is passed to the upstream
+    proxy_ssl_server_name on;  # Default for all locations and servers
+
   vhost-proxy.conf: |
     include /etc/nginx/conf.d/cache.conf;
 
