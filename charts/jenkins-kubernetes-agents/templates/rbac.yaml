@@ -35,3 +35,7 @@ subjects:
 - kind: ServiceAccount
   name: {{ template "jenkins.serviceAccountName" . }}
   namespace: {{ template "jenkins.serviceAccountNamespace" . }}
+{{ range .Values.groups }}
+- kind: Group
+  name: {{ . }}
+{{- end }}

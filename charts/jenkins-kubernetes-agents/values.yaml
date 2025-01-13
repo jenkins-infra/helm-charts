@@ -9,3 +9,7 @@ imageCredentials:
 #   pods: 30
 ## uncomment to reuse an existing service account
 # existingServiceAccount: jenkins-infra:jenkins-controller
+## Uncomment to add groups for rbac access entries, see https://docs.aws.amazon.com/eks/latest/userguide/creating-access-entries.html
+# groups:
+#   - groupname1
+#   - groupname2

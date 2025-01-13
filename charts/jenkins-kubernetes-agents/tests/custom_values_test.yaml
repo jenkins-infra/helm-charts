@@ -140,3 +140,26 @@ tests:
       - equal:
           path: metadata.namespace
           value: tatooine
+
+  - it: Should add groups for access entries in the RoleBinding
+    template: rbac.yaml
+    set:
+      groups:
+        - groupname1
+        - groupname2
+    documentIndex: 1
+    asserts:
+      - hasDocuments:
+          count: 2
+      - equal:
+          path: subjects[1].kind
+          value: Group
+      - equal:
+          path: subjects[1].name
+          value: groupname1
+      - equal:
+          path: subjects[2].kind
+          value: Group
+      - equal:
+          path: subjects[2].name
+          value: groupname2
