@@ -15,15 +15,11 @@ scms:
 
 sources:
   getKubernetesPublick8sVersion:
-    kind: terraform/file
+    kind: json
     name: Retrieve the current version of the kubernetes used in production on publick8s
     spec:
-      file: https://raw.githubusercontent.com/jenkins-infra/azure/refs/heads/main/locals.tf
-      path: locals.kubernetes_versions
-    transformers: #  as per updatecli/updatecli#1859 need to use terraform/file findsubmatch for now
-      - findsubmatch:
-          pattern: '"publick8s".*=."(.*)"'
-          captureindex: 1
+      file: https://reports.jenkins.io/jenkins-infra-data-reports/azure.json
+      key: publick8s.kubernetes_version
 
 conditions:
   checkDockerImagePublished:
