@@ -2642,6 +2642,24 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/custom-distribution-service-0.2.0/custom-distribution-service-0.2.0.tgz
     version: 0.2.0
+  docker-registry:
+  - apiVersion: v2
+    created: "2025-02-13T08:01:31.80895315Z"
+    description: Docker Registry for Jenkins Infrastructure
+    digest: aec7fc5e420e934710a10f19133a36e0768e6247e2b75381a9591c461be08a90
+    home: https://hub.docker.com/_/registry/
+    icon: https://helm.twun.io/docker-registry.png
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: Jenkins Infra Team
+      url: https://www.jenkins.io/projects/infrastructure/
+    name: docker-registry
+    sources:
+    - https://github.com/jenkins-infra/helm-charts
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/docker-registry-1.0.0/docker-registry-1.0.0.tgz
+    version: 1.0.0
   docker-registry-secrets:
   - apiVersion: v2
     created: "2022-02-16T09:08:36.114379023Z"
@@ -15761,4 +15779,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2025-02-12T07:28:35.784784657Z"
+generated: "2025-02-13T08:01:31.810520217Z"
