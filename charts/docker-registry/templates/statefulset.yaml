@@ -1,0 +1,121 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "docker-registry.fullname" . }}
+  labels:
+    {{- include "docker-registry.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "docker-registry.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  strategy: {}
+  selector:
+    matchLabels:
+      {{- include "docker-registry.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "docker-registry.selectorLabels" . | nindent 8 }}
+    spec:
+      automountServiceAccountToken: false
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.initContainers }}
+      initContainers:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: {{ .Chart.Name }}
+        {{- with .Values.containerSecurityContext }}
+        securityContext:
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env: {{ include "docker-registry.envs" . | nindent 12 }}
+        ports:
+          - name: http
+            containerPort: {{ .Values.port }}
+            protocol: TCP
+        # livenessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: {{ .Values.port }}
+        #     {{- if .Values.tlsSecretName }}
+        #     scheme: HTTPS
+        #     {{- end }}
+        # readinessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: {{ .Values.port }}
+        #     {{- if .Values.tlsSecretName }}
+        #     scheme: HTTPS
+        #     {{- end }}
+        {{- with .Values.resources }}
+        resources:
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
+        volumeMounts:
+          - name: data
+            mountPath: {{ include "docker-registry.dataVolumeMountPath" . }}
+          - name: "{{ template "docker-registry.fullname" . }}-config"
+            mountPath: "/etc/docker/registry"
+        {{- if .Values.tlsSecretName }}
+          - mountPath: /etc/ssl/docker
+            name: tls-cert
+            readOnly: true
+        {{- end }}
+        {{- with .Values.extraVolumeMounts }}
+        {{ toYaml .  | nindent 10 }}
+        {{- end }}
+      volumes:
+        - name: {{ template "docker-registry.fullname" . }}-config
+          configMap:
+            name: {{ template "docker-registry.fullname" . }}-config
+        {{- if .Values.tlsSecretName }}
+        - name: tls-cert
+          secret:
+            secretName: {{ .Values.tlsSecretName }}
+        {{- end }}
+        {{- with .Values.extraVolumes }}
+        {{ toYaml . | nindent 8 }}
+        {{- end }}
+  {{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      {{- with .Values.persistence.storageClass }}
+      storageClassName: {{ . }}
+      {{- end }}
+      accessModes:
+      - {{ required ".Values.persistence.accessMode is required" .Values.persistence.accessMode }}
+      resources:
+        requests:
+          storage: "{{ required ".Values.persistence.size is required" .Values.persistence.size }}"
+  {{- else }}
+        - name: data
+          emptyDir: {}
+  {{- end }}

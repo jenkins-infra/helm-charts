@@ -1,0 +1,13 @@
+apiVersion: v2
+description: Docker Registry for Jenkins Infrastructure
+name: docker-registry
+type: application
+version: 1.0.0
+home: https://hub.docker.com/_/registry/
+icon: https://helm.twun.io/docker-registry.png
+maintainers:
+- email: jenkins-infra-team@googlegroups.com
+  name: Jenkins Infra Team
+  url: https://www.jenkins.io/projects/infrastructure/
+sources:
+- https://github.com/jenkins-infra/helm-charts
