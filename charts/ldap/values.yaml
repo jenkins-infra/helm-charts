@@ -35,9 +35,6 @@ ldap:
     key:
       filename: privkey.key
       value: ''
-  storage:
-    accountname: account-name
-    accountkey: account-key
 podSecurityContext: {}
 # fsGroup: 2000
 securityContext: {}

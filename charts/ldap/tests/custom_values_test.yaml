@@ -3,15 +3,12 @@ templates:
   - secret.yaml
   - service.yaml
   - statefulset.yaml
-  - persistentVolumeClaim.yaml
-  - persistentVolume.yaml
 tests:
   - it: should create a Secret with the correct value
     set:
       ldap:
-        storage:
-          accountname: name
-          accountkey: key
+        admin:
+          password: name
     template: secret.yaml
     asserts:
       - hasDocuments:
@@ -19,11 +16,8 @@ tests:
       - isKind:
           of: Secret
       - equal:
-          path: data.azurestorageaccountname
+          path: data["ldap.admin.password"]
           value: bmFtZQ==
-      - equal:
-          path: data.azurestorageaccountkey
-          value: a2V5
   - it: should create a custom service of type loadbalancer with legacy loadbalancerIP field
     template: service.yaml
     set:
@@ -106,21 +100,3 @@ tests:
     - equal:
         path: spec.template.spec.volumes[1].persistentVolumeClaim.claimName
         value: batData
-  - it: should not create any PVs or PVCs when specifying custom claim names
-    template: persistentVolumeClaim.yaml
-    set:
-      persistence:
-        customBackupClaimName: superBackup
-        customDataClaimName: batData
-    asserts:
-    - hasDocuments:
-        count: 0
-  - it: should not create any PV when specifying custom claim names
-    template: persistentVolume.yaml
-    set:
-      persistence:
-        customBackupClaimName: superBackup
-        customDataClaimName: batData
-    asserts:
-    - hasDocuments:
-        count: 0
