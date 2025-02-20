@@ -4,6 +4,6 @@ dependencies:
   version: 5.5.14
 - name: httpd
   repository: https://jenkins-infra.github.io/helm-charts
-  version: 1.4.4
-digest: sha256:f51f2c21e61b67e76bf80fae1a78e2fa3e8404fe7107b3b92a11d381de82032a
-generated: "2025-02-19T07:06:47.634236586Z"
+  version: 1.4.5
+digest: sha256:9563aa647ae1768b79335367de1d01cf03dfab31f58d4f0007a36a3bb5095bb6
+generated: "2025-02-20T18:15:32.889416299Z"
