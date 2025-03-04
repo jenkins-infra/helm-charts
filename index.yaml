@@ -4661,6 +4661,16 @@ entries:
     version: 0.1.0
   ldap:
   - apiVersion: v1
+    created: "2025-03-04T12:48:41.963713877Z"
+    description: A Helm chart for ldap.jenkins.io
+    digest: b57487ed2b90d83a9f97eae92495db6a20047759b3cfb79a0fa9e91d3d6e5509
+    maintainers:
+    - name: jenkins-infra-team@googlegroups.com
+    name: ldap
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/ldap-2.0.1/ldap-2.0.1.tgz
+    version: 2.0.1
+  - apiVersion: v1
     created: "2025-02-20T18:30:57.640069252Z"
     description: A Helm chart for ldap.jenkins.io
     digest: 24be119afeceb9a903610ca7ebb177507356ab8905dd7e4855ce394f7f820ce3
@@ -5113,6 +5123,18 @@ entries:
     - https://github.com/jenkins-infra/helm-charts/releases/download/mirror-0.1.23/mirror-0.1.23.tgz
     version: 0.1.23
   mirrorbits:
+  - apiVersion: v1
+    appVersion: v0.5.1
+    created: "2025-03-04T12:48:42.130859641Z"
+    description: Mirrobits helm chart for Kubernetes
+    digest: 60821a8f7cad3773e00b1ed7d5593c65f8f55f3601ce7dcac4502e57227dd668
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: mirrorbits
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/mirrorbits-5.5.15/mirrorbits-5.5.15.tgz
+    version: 5.5.15
   - apiVersion: v1
     appVersion: v0.5.1
     created: "2025-02-19T07:06:05.122392651Z"
@@ -15942,4 +15964,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2025-03-04T12:48:19.120354295Z"
+generated: "2025-03-04T12:48:42.133239162Z"
