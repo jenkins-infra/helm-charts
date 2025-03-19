@@ -70,12 +70,12 @@ tolerations: []
 affinity: {}
 dataFileUrl: https://ci.jenkins.io/job/Infra/job/plugin-site-api/job/generate-data/lastSuccessfulBuild/artifact/plugins.json.gzip
 github:
-  appId: "your-app-id"
-  appPrivateKey: "your-private-key"
+  appId: ""
+  appPrivateKey: ""
 
 jira:
-  username: "your-username"
-  password: "your-password"
+  username: ""
+  password: ""
 
 # the volume to mount
 # e.g.
