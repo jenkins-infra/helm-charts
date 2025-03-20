@@ -3,12 +3,19 @@ templates:
   - deployment-frontend.yaml
   - ingress.yaml
   - pdb-frontend.yaml
-  - nginx-configmap.yaml # Direct dependency of deployment.yaml
+  - nginx-configmap.yaml
+  - secret.yaml
 tests:
   - it: should create an ingress when ingress.enabled is true
     set:
       ingress:
         enabled: true
+      github:
+        appId: "12345"  # Add required value
+        appPrivateKey: "github-key"  # Add required value
+      jira:
+        username: "test-user"  # Add required value
+        password: "jira-pass"  # Add required value
     template: ingress.yaml
     asserts:
       - hasDocuments:
@@ -22,6 +29,12 @@ tests:
         resources:
           limits:
             cpu: 300ms
+      github:
+        appId: "12345"  # Add required value
+        appPrivateKey: "github-key"  # Add required value
+      jira:
+        username: "test-user"  # Add required value
+        password: "jira-pass"  # Add required value
     asserts:
       - hasDocuments:
           count: 1
@@ -44,6 +57,12 @@ tests:
         poddisruptionbudget:
           minAvailable: 2
           maxUnavailable: 3
+      github:
+        appId: "12345"  # Add required value
+        appPrivateKey: "github-key"  # Add required value
+      jira:
+        username: "test-user"  # Add required value
+        password: "jira-pass"  # Add required value
     asserts:
       - isKind:
           of: PodDisruptionBudget
@@ -56,3 +75,57 @@ tests:
       - equal:
           path: spec.selector.matchLabels['app.kubernetes.io/name']
           value: "plugin-site-frontend"
+
+  # Add tests for secret.yaml
+  - it: should create a Secret with the correct values
+    set:
+      github:
+        appId: "12345"
+        appPrivateKey: "github-key"
+      jira:
+        username: "test-user"
+        password: "jira-pass"
+      azureStorageAccountName: "azure-account"
+      azureStorageAccountKey: "azure-key"
+      sentry:
+        dsn: "sentry-dsn"
+    template: secret.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Secret
+      - equal:
+          path: data.github_app_id
+          value: "MTIzNDU="  # Base64 encoded value of "12345"
+      - equal:
+          path: data.github_app_key
+          value: "Z2l0aHViLWtleQ=="  # Base64 encoded value of "github-key"
+      - equal:
+          path: data.jira_username
+          value: "dGVzdC11c2Vy"  # Base64 encoded value of "test-user"
+      - equal:
+          path: data.jira_password
+          value: "amlyYS1wYXNz"  # Base64 encoded value of "jira-pass"
+      - equal:
+          path: data.azurestorageaccountname
+          value: "YXp1cmUtYWNjb3VudA=="  # Base64 encoded value of "azure-account"
+      - equal:
+          path: data.azurestorageaccountkey
+          value: "YXp1cmUta2V5"  # Base64 encoded value of "azure-key"
+      - equal:
+          path: data.sentry_dsn
+          value: "c2VudHJ5LWRzbg=="  # Base64 encoded value of "sentry-dsn"
+
+  - it: should fail if github.appId is missing
+    set:
+      github:
+        appId: ""
+        appPrivateKey: "github-key"
+      jira:
+        username: "test-user"
+        password: "jira-pass"
+    template: secret.yaml
+    asserts:
+      - failedTemplate:
+          errorMessage: "github.appId is required"
