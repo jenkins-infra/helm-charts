@@ -5260,6 +5260,18 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/ldap-0.0.2/ldap-0.0.2.tgz
     version: 0.0.2
+  maven-cacher:
+  - apiVersion: v1
+    created: "2025-03-24T18:39:07.381649199Z"
+    description: Maven Cache updater for the *.jenkins.io controllers
+    digest: 8af4b8d47768c50683a0e2e2f9b7dda0f32bad4c1111fe4c63186633f2fbb8bd
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: maven-cacher
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/maven-cacher-0.0.1/maven-cacher-0.0.1.tgz
+    version: 0.0.1
   mirror:
   - apiVersion: v1
     appVersion: "1.0"
@@ -16335,4 +16347,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2025-03-24T08:32:28.207598417Z"
+generated: "2025-03-24T18:39:07.383653606Z"
