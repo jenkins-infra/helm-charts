@@ -1,0 +1,102 @@
+suite: default tests
+templates:
+  - cronjob.yaml
+  - configmap-scripts.yaml
+  - configmap-maven-settings.yaml
+values:
+  - ./values/custom.yaml
+tests:
+  - it: should define the default "scripts" configmap
+    template: configmap-scripts.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ConfigMap
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-maven-cacher-scripts
+  - it: should NOT define the a "maven-settings" configmap
+    template: configmap-maven-settings.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ConfigMap
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-maven-cacher-maven-settings
+  - it: should define the default "maven-cacher" cronjob with defaults
+    template: cronjob.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - documentIndex: 0
+        isKind:
+          of: CronJob
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-maven-cacher
+      - equal:
+          path:  metadata.labels["app.kubernetes.io/name"]
+          value: "maven-cacher"
+      - equal:
+          path: metadata.labels["app.kubernetes.io/instance"]
+          value: "RELEASE-NAME"
+      - equal:
+          path: "spec.jobTemplate.spec.template.spec.containers[*].imagePullPolicy"
+          value: IfNotPresent
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.volumes[0].name
+          value: tmpdir
+      - exists:
+          path: spec.jobTemplate.spec.template.spec.volumes[0].emptyDir
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.volumes[1].name
+          value: scripts
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.volumes[1].configMap.name
+          value: RELEASE-NAME-maven-cacher-scripts
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.volumes[2].name
+          value: mavenrepo
+      - exists:
+          path: spec.jobTemplate.spec.template.spec.volumes[2].emptyDir
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.volumes[3].name
+          value: cache
+      - notExists:
+          path: spec.jobTemplate.spec.template.spec.volumes[3].emptyDir
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.volumes[4].name
+          value: mavensettings
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[0].name
+          value: tmpdir
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[0].readOnly
+          value: false
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[1].name
+          value: scripts
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[1].mountPath
+          value: /scripts
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[1].readonly
+          value: true
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[2].name
+          value: mavenrepo
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[2].mountPath
+          value: /home/jenkins/.m2/repository
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[2].readonly
+          value: false
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[4].name
+          value: mavensettings
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].env[0].name
+          value: MVN_LOCAL_REPO

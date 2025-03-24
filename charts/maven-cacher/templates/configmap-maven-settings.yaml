@@ -1,0 +1,44 @@
+{{- if .Values.mavenMirror.enable }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "maven-cacher.fullname" . }}-maven-settings
+  labels: {{ include "maven-cacher.labels" . | nindent 4 }}
+data:
+  settings.xml: |
+    <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+      <mirrors>
+        <mirror>
+            <id>{{ .Values.mavenMirror.mirrorId }}</id>
+            <url>{{ .Values.mavenMirror.url }}</url>
+            <mirrorOf>{{ .Values.mavenMirror.mirrorOf }}</mirrorOf>
+        </mirror>
+      </mirrors>
+      <profiles>
+        <profile>
+          <id>jenkins-infra-plugin-repositories</id>
+          <pluginRepositories>
+            <pluginRepository>
+              <id>repo.jenkins-ci.org</id>
+              <url>https://repo.jenkins-ci.org/public/</url>
+            </pluginRepository>
+            <pluginRepository>
+              <snapshots>
+                <enabled>false</enabled>
+              </snapshots>
+              <id>incrementals</id>
+              <url>https://repo.jenkins-ci.org/incrementals/</url>
+            </pluginRepository>
+            <pluginRepository>
+              <id>central</id>
+              <url>https://repo.maven.apache.org/maven2</url>
+            </pluginRepository>
+          </pluginRepositories>
+        </profile>
+      </profiles>
+      <activeProfiles>
+        <activeProfile>jenkins-infra-plugin-repositories</activeProfile>
+      </activeProfiles>
+    </settings>
+{{- end }}
