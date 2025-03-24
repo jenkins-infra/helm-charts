@@ -1,0 +1,97 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "maven-cacher.fullname" . }}
+  labels:
+{{ include "maven-cacher.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: {{ .Values.cron }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          automountServiceAccountToken: false
+          restartPolicy: Never
+          {{- with .Values.imagePullSecrets }}
+            imagePullSecrets:
+              {{- toYaml . | nindent 12 }}
+          {{- end }}
+          containers:
+            - name: maven-cacher
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              {{- with .Values.containerSecurityContext }}
+              securityContext:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+              command:
+                - "bash"
+                - "{{ .Values.scriptsDir }}/maven-cacher.sh"
+              env:
+                - name: MVN_LOCAL_REPO
+                  value: {{ .Values.mavenLocalRepo }}
+                - name: MVN_CACHE_DIR
+                  value: {{ .Values.cacheMount }}
+                - name: JAVA_HOME
+                  value: {{ .Values.javaHome }}
+                {{- if .Values.mavenMirror.enable }}
+                - name: MAVEN_ARGS
+                  value: "-s /mavensettings/settings.xml"
+                {{- end }}
+              volumeMounts:
+                - name: tmpdir
+                  mountPath: /tmp
+                  readOnly: false
+                - name: scripts
+                  mountPath: {{ .Values.scriptsDir }}
+                  readonly: true
+                - name: mavenrepo
+                  mountPath: {{ .Values.mavenLocalRepo }}
+                  readonly: false
+                - name: cache
+                  mountPath: {{ .Values.cacheMount }}
+                  readonly: false
+                {{- if .Values.mavenMirror.enable }}
+                - name: mavensettings
+                  mountPath: /mavensettings
+                  readonly: true
+                {{- end }}
+              workingDir: /tmp
+              {{- with .Values.resources }}
+              resources:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.affinity }}
+          affinity:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumes:
+            - name: tmpdir
+              emptyDir: {}
+            - name: scripts
+              configMap:
+                name: {{ include "maven-cacher.fullname" . }}-scripts
+            - name: mavenrepo
+              emptyDir: {}
+            - name: cache
+            {{- if .Values.cachePvc }}
+              persistentVolumeClaim:
+                claimName: {{ .Values.cachePvc }}
+            {{- else }}
+              emptyDir: {}
+            {{- end -}}
+            {{- if .Values.mavenMirror.enable }}
+            - name: mavensettings
+              configMap:
+                name: {{ include "maven-cacher.fullname" . }}-maven-settings
+            {{- end }}

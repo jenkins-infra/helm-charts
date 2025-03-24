@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "maven-cacher.fullname" . }}-scripts
+  labels: {{ include "maven-cacher.labels" . | nindent 4 }}
+data:
+  maven-cacher.sh: |
+    #!/bin/bash
+
+    set -eux -o pipefail
+
+    mvn_cache_dir="${MVN_CACHE_DIR:-"/tmp"}"
+    test -d "${mvn_cache_dir}"
+    mvn_local_repo="${MVN_LOCAL_REPO:-"${HOME}/.m2/repository"}"
+    mvn_cache_archive="${mvn_cache_dir}/maven-bom-local-repo.tar.gz"
+
+    # Set up local working directory with BOM code
+    test -d ./bom || git clone https://github.com/jenkinsci/bom
+    pushd ./bom
+
+    # TODO: Retrieve this list from Maven
+    build_lines=("weekly" "2.479.x" "2.492.x")
+
+    # Load dependencies in the local Maven repo
+    for build_line in "${build_lines[@]}"; do
+      MVN_OPTS=()
+      if [[ $build_line != "weekly" ]]; then
+          MVN_OPTS+=("-P $build_line")
+      fi
+      time mvn -pl sample-plugin\
+          dependency:go-offline \
+          -DincludeScore=runtime,compile,test \
+          -Dmaven.repo.local="{{ .Values.mavenLocalRepo }}" \
+          "${MVN_OPTS[@]}"
+    done
+
+    # Generate a new cache archive from the local Maven repository
+    pushd "${mvn_local_repo}"
+    df -h .
+    du -sh .
+    time tar czf /tmp/maven-bom-local-repo.tar.gz ./
+    time cp /tmp/maven-bom-local-repo.tar.gz "${mvn_cache_archive}"
+    du -sh "${mvn_cache_dir}"/*

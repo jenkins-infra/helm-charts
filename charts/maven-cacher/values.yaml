@@ -1,0 +1,42 @@
+image:
+  repository: jenkinsciinfra/jenkins-agent-ubuntu-22.04
+  # TODO: track with updatecli
+  tag: 2.33.0
+  pullPolicy: IfNotPresent
+imagePullSecrets: []
+# securityContext:
+# Secret values, set to empty below for reference:
+podSecurityContext: {}
+# fsGroup: 2000
+containerSecurityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+resources: {}
+# We usually recommend not to specify default resources and to leave this as a conscious
+# choice for the user. This also increases chances charts run on environments with little
+# resources, such as Minikube. If you do want to specify resources, uncomment the following
+# lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+# limits:
+#   cpu: 100m
+#   memory: 256Mi # minimum 256Mi to avoid OMM kill for `az login`
+# requests:
+#   cpu: 100m
+#   memory: 256Mi
+nodeSelector: {}
+tolerations: []
+affinity: {}
+cron: '0 14 * * 0' # Once a week, at 14:00, on Sunday
+## Provide a custom PVC to read and write caching archive from/to
+# cachePvc: customPersistentVolumeClaimName
+cacheMount: /cache
+mavenLocalRepo: /home/jenkins/.m2/repository
+javaHome: /opt/jdk-21
+scriptsDir: /scripts
+mavenMirror:
+  enable: false
+  # url: http://internal-mirror
+  # mirrorOf: "external:*,!whatever"
