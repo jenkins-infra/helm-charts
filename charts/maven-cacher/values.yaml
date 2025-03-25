@@ -1,7 +1,6 @@
 image:
   repository: jenkinsciinfra/jenkins-agent-ubuntu-22.04
-  # TODO: track with updatecli
-  tag: 2.33.0
+  tag: latest
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 # securityContext:

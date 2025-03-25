@@ -1,7 +1,7 @@
 apiVersion: v1
 description: Maven Cache updater for the *.jenkins.io controllers
 name: maven-cacher
-version: 0.0.1
+version: 0.0.2
 maintainers:
 - email: jenkins-infra-team@googlegroups.com
   name: jenkins-infra-team
