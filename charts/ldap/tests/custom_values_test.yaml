@@ -3,12 +3,10 @@ templates:
   - secret.yaml
   - service.yaml
   - statefulset.yaml
+values:
+  - values/custom.yaml
 tests:
   - it: should create a Secret with the correct value
-    set:
-      ldap:
-        admin:
-          password: name
     template: secret.yaml
     asserts:
       - hasDocuments:
@@ -49,6 +47,9 @@ tests:
     - equal:
         path: spec.loadBalancerIP
         value: 128.129.0.12
+    - equal:
+        path: spec.loadBalancerSourceRanges[0]
+        value: "1.2.3.4"
     - notExists:
         path: metadata.annotations
   - it: should create a custom service of type loadbalancer with modern AKS annotation for public IP
@@ -79,10 +80,6 @@ tests:
         value: myAKSPublicIP
   - it: should create a statefulset with custom settings
     template: statefulset.yaml
-    set:
-      persistence:
-        customBackupClaimName: superBackup
-        customDataClaimName: batData
     asserts:
     - hasDocuments:
         count: 1
