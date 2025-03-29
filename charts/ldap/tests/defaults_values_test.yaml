@@ -44,6 +44,8 @@ tests:
         path: spec.loadBalancerIP
     - notExists:
         path: metadata.annotations
+    - notExists:
+        path: spec.loadBalancerSourceRanges
   - it: should create a statefulset with default settings
     template: statefulset.yaml
     asserts:
