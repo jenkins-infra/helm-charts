@@ -5,7 +5,7 @@ ldap:
 service:
   lbAllowSources:
     another: 1.2.3.4
-    local: 127.0.0.1
+    locals: "127.0.0.1, 127.0.0.0/24"
 
 
 persistence:
