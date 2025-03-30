@@ -22,7 +22,9 @@ spec:
     {{- with .Values.service.lbAllowSources }}
   loadBalancerSourceRanges:
       {{- range $sourceId, $sourceCIDR := . }}
-    - {{ $sourceCIDR | quote }}
+        {{- range $key, $value := (split "," $sourceCIDR) }}
+    - {{ $value | trim | quote }}
+        {{- end }}
       {{- end }}
     {{- end }}
   {{- end }}

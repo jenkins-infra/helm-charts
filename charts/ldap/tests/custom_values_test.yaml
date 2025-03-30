@@ -50,6 +50,12 @@ tests:
     - equal:
         path: spec.loadBalancerSourceRanges[0]
         value: "1.2.3.4"
+    - equal:
+        path: spec.loadBalancerSourceRanges[1]
+        value: "127.0.0.1"
+    - equal:
+        path: spec.loadBalancerSourceRanges[2]
+        value: "127.0.0.0/24"
     - notExists:
         path: metadata.annotations
   - it: should create a custom service of type loadbalancer with modern AKS annotation for public IP
