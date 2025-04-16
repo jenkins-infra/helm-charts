@@ -12334,6 +12334,15 @@ entries:
     version: 0.1.0
   plugin-health-scoring:
   - apiVersion: v2
+    created: "2025-04-16T08:46:26.711505544Z"
+    description: A Helm chart for Kubernetes
+    digest: ed5b479c146d4bb2b40099fe0200e43ee55e68dfe690de6843d193f62ee1e042
+    name: plugin-health-scoring
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/plugin-health-scoring-3.0.14/plugin-health-scoring-3.0.14.tgz
+    version: 3.0.14
+  - apiVersion: v2
     created: "2025-04-15T08:36:28.313533655Z"
     description: A Helm chart for Kubernetes
     digest: a611beef1cc27c9e30d6fd085eb0d0b76e60cd3c4597e0fb0466a1cc89476504
@@ -16606,4 +16615,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2025-04-15T08:36:28.315819836Z"
+generated: "2025-04-16T08:46:26.713043638Z"
