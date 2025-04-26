@@ -47,7 +47,7 @@ actions:
     scmid: default
     title: Bump `plugin-health-scoring` docker image version to {{ source "latestRelease" }}
     spec:
-      automerged: true
+      automerge: true
       reviewers:
         - alecharp
         - darinpope
