@@ -5,11 +5,11 @@ replicaCount: 1
 image:
   slapd:
     repository: jenkinsciinfra/ldap
-    tag: 2.0.0
+    tag: 2.1.0
     pullPolicy: IfNotPresent
   crond:
     repository: jenkinsciinfra/ldap
-    tag: cron-2.0.0
+    tag: cron-2.1.0
     pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
