@@ -15059,6 +15059,18 @@ entries:
   uplink:
   - apiVersion: v1
     appVersion: 1.0.0
+    created: "2025-05-23T13:13:53.044609534Z"
+    description: A Helm chart for uplink.jenkins.io
+    digest: 96881ac066fdcf952dddc295843789c8a38408fe9f0a9c3eac6d1eca66d88b5d
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: uplink
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/uplink-1.0.1/uplink-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v1
+    appVersion: 1.0.0
     created: "2025-05-23T10:19:37.476428597Z"
     description: A Helm chart for uplink.jenkins.io
     digest: a6a361390050e00879ed4509f33f257cfe1737b78f8052fc044ad2654fb22364
@@ -16918,4 +16930,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2025-05-23T10:19:37.47939075Z"
+generated: "2025-05-23T13:13:53.048504075Z"
