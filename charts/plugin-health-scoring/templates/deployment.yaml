@@ -15,8 +15,10 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "plugin-health-scoring.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+      {{- with .Values.podAnnotations }}
       annotations:
-        checksum/config: {{ print "%v" .Values.secrets | sha256sum }}
+        {{ toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       automountServiceAccountToken: false
     {{- with .Values.imagePullSecrets }}

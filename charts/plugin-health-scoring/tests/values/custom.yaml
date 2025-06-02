@@ -1,0 +1,9 @@
+secrets:
+  github0auth: "SuperSecret2022!"
+  database:
+    password: "PleaseDoNotUseWeakPasswords"
+podAnnotations:
+  ad.datadoghq.com/phs.logs: |
+    [
+      {"source":"java","service":"RELEASE-NAME"}
+    ]
