@@ -93,6 +93,8 @@ data:
             proxy_pass          https://$jenkins_repo$initial_proxy_location$request_uri;
 
             proxy_intercept_errors on;
+            # Forbidden (403) resources on the backend should be answered "Not Found" (404) to content Maven
+            error_page 403 =404 /404.html;
             # If the file is not found, then fallback the search in the "non-cached jenkins incrementals" upstream server
             error_page 404 = @fallback_noncached_jenkins_incrementals;
         }
@@ -101,6 +103,8 @@ data:
             proxy_pass          https://$jenkins_repo/incrementals$request_uri;
 
             proxy_intercept_errors on;
+            # Forbidden (403) resources on the backend should be answered "Not Found" (404) to content Maven
+            error_page 403 =404 /404.html;
             # If the file is not found, then fallback the search in the "non-cached maven central" upstream server
             error_page 404 = @fallback_noncached_maven_central;
         }
@@ -110,6 +114,8 @@ data:
 
             # Stop chaining requests
             proxy_intercept_errors off;
+            # Forbidden (403) resources on the backend should be answered "Not Found" (404) to content Maven
+            error_page 403 =404 /404.html;
         }
 
         # Cached requests
