@@ -37,6 +37,7 @@ resources: {}
 #   cpu: 100m
 #   memory: 128Mi
 nodeSelector: {}
+podAnnotations: {}
 tolerations: []
 affinity: {}
 # the volume to mount

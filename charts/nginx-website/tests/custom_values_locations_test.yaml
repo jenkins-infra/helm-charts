@@ -3,7 +3,8 @@ suite: Test with custom values
 templates:
   - nginx-configmap.yaml
 values:
-    - values/custom.yaml
+  - values/custom.yaml
+  - values/custom-locations.yaml
 tests:
   - it: should create a custom nginx locations configuration
     template: nginx-configmap.yaml
