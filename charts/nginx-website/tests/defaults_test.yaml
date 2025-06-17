@@ -33,6 +33,8 @@ tests:
           value: {}
       - notExists:
           path: spec.template.spec.containers[0].resources
+      - notExists:
+          path: spec.template.metadata.annotations
   - it: should create a default nginx configuration
     template: nginx-configmap.yaml
     asserts:

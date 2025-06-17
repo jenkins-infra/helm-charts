@@ -1,38 +1,14 @@
 service:
   port: 8080
 nginx:
-  overrideLocations: |
-    location /starwars {
-        root   /dark/force/;
-        index  yoloo.html;
-        autoindex off;
-    }
-    location /statistics {
-        root   /usr/share/nginx/html;
-        index  index.html index.htm;
-        autoindex on;
-        try_files $uri /index.html;
-    }
-    location /plugin-trends {
-        root   /usr/share/nginx/html;
-        index  index.html index.htm;
-        autoindex on;
-        try_files $uri /index.html;
-    }
-    location /plugin-versions {
-        root   /usr/share/nginx/html;
-        index  index.html index.htm;
-        autoindex on;
-        try_files $uri /index.html;
-    }
-    location /dep-graph {
-        root   /usr/share/nginx/html;
-        index  index.html index.htm;
-        autoindex on;
-        try_files $uri /index.html;
-    }
-    location / {
-        root   /usr/share/nginx/html;
-        index  index.html index.htm;
-        autoindex on;
-    }
+  serverName: _
+  slashLocation:
+    root: /custom
+    index: custom.html
+    autoindex: "off"
+    tryFiles: $uri /index.html
+podAnnotations:
+  ad.datadoghq.com/web.logs: |
+    [
+      {"source":"nginx","service":"RELEASE-NAME"}
+    ]

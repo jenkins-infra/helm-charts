@@ -3,16 +3,9 @@ suite: Test with custom values
 templates:
   - pdb.yaml
   - nginx-configmap.yaml
-set:
-  nginx:
-    serverName: _
-    slashLocation:
-      root: /custom
-      index: custom.html
-      autoindex: "off"
-      tryFiles: $uri /index.html
-  service:
-    port: 8080
+  - deployment.yaml
+values:
+  - values/custom.yaml
 tests:
   - it: should ensure the pdb has correct spec
     template: pdb.yaml
@@ -54,3 +47,16 @@ tests:
       - matchRegex:
           path: data["default.conf"]
           pattern: 'try_files \$uri /index.html;'
+  - it: should generate a deployment with the custom values
+    template: deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.metadata.annotations["ad.datadoghq.com/web.logs"]
+          value: |
+            [
+              {"source":"nginx","service":"RELEASE-NAME"}
+            ]
