@@ -19,3 +19,8 @@ geoipupdate:
       - namespace: get-jenkins-io
         deployments:
           - get-jenkins-io-mirrorbits
+podAnnotations:
+  ad.datadoghq.com/geoipupdate.logs: |
+    [
+      {"source":"geoipupdate","service":"RELEASE-NAME"}
+    ]

@@ -49,3 +49,4 @@ resources: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
+podAnnotations: {}
