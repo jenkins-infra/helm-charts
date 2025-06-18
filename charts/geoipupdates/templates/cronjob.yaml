@@ -11,6 +11,11 @@ spec:
   jobTemplate:
     spec:
       template:
+        metadata:
+          {{- with .Values.podAnnotations }}
+          annotations:
+              {{ toYaml . | nindent 16 }}
+          {{- end }}
         spec:
           serviceAccountName: {{ include "geoipupdate.fullname" . }}
           restartPolicy: Never

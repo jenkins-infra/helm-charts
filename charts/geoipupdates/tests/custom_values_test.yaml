@@ -60,3 +60,9 @@ tests:
       - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[4].value
           value: "updates-jenkins-io:updates-jenkins-io-content-secured-mirrorbits,updates-jenkins-io-content-unsecured-mirrorbits;get-jenkins-io:get-jenkins-io-mirrorbits"
+      - equal:
+          path: spec.jobTemplate.spec.template.metadata.annotations["ad.datadoghq.com/geoipupdate.logs"]
+          value: |
+            [
+              {"source":"geoipupdate","service":"RELEASE-NAME"}
+            ]

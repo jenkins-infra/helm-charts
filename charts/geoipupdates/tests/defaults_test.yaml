@@ -47,3 +47,5 @@ tests:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[3].name
       - notExists:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[4].name
+      - notExists:
+          path: spec.template.metadata.annotations
