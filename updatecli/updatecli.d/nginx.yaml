@@ -76,14 +76,6 @@ targets:
       key: $.frontend.image.tag
       versionincrement: patch
     scmid: default
-  updateReportsChart:
-    name: "Update nginx stable docker image version for reports chart"
-    kind: helmchart
-    spec:
-      name: charts/reports
-      key: $.image.tag
-      versionincrement: patch
-    scmid: default
   updateArtifactCachingProxy:
     name: "Update nginx stable docker image version for artifact-caching-proxy chart"
     kind: helmchart
@@ -113,6 +105,5 @@ actions:
         - javadoc
         - jenkinsio
         - plugin-site
-        - reports
         - artifact-caching-proxy
         - nginx-website
