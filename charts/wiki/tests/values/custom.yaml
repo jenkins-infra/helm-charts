@@ -1,0 +1,4 @@
+replicaCount: 2
+poddisruptionbudget:
+  minAvailable: 2
+  maxUnavailable: 1

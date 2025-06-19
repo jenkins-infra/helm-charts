@@ -1,6 +1,8 @@
 apiVersion: v2
-appVersion: 0.0.7
+appVersion: 0.2.29
 description: A Helm chart for wiki static content
 name: wiki
 type: application
-version: 0.6.78
+maintainers:
+- name: jenkins-infra-team@googlegroups.com
+version: 0.7.0

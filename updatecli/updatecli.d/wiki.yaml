@@ -35,12 +35,21 @@ conditions:
         - arm64
 
 targets:
-  updateChart:
+  updateChartValue:
     name: Update wiki helm chart
     kind: helmchart
     spec:
       name: charts/wiki
       key: $.image.tag
+      versionincrement: patch
+    scmid: default
+  updateChartMeta:
+    name: Update chart appVersion
+    kind: helmchart
+    spec:
+      name: charts/wiki
+      file: Chart.yaml
+      key: $.appVersion
       versionincrement: patch
     scmid: default
 
