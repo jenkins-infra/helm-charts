@@ -44,14 +44,6 @@ conditions:
         - arm64
 
 targets:
-  updateJavadocChart:
-    name: "Update nginx stable docker image version for javadoc chart"
-    kind: helmchart
-    spec:
-      name: charts/javadoc
-      key: $.image.tag
-      versionincrement: patch
-    scmid: default
   updateJenkinsioChartEn:
     name: "Update nginx stable docker image version for jenkinsio chart (EN)"
     kind: helmchart
@@ -102,7 +94,6 @@ actions:
       labels:
         - dependencies
         - nginx
-        - javadoc
         - jenkinsio
         - plugin-site
         - artifact-caching-proxy
