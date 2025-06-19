@@ -68,3 +68,5 @@ tests:
     - equal:
         path: spec.template.spec.volumes[2].name
         value: tls
+    - notExists:
+          path: spec.template.metadata.annotations

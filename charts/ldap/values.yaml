@@ -36,6 +36,7 @@ ldap:
       filename: privkey.key
       value: ''
 podSecurityContext: {}
+podAnnotations: {}
 # fsGroup: 2000
 securityContext: {}
 # capabilities:
