@@ -1,0 +1,16 @@
+permissions_url: https://somewhere.jenkins.io/github.json
+artifactory:
+  key: testingArtifactoryKey
+github:
+    token: customSuperSecretToken
+    appId: customSuperSecretAppId
+    privateKey: customSuperSecretPrivateKey
+jenkins:
+  auth: customSecretJenkinsUser:customSecretJenkinsPassword
+preshared_key: customSuperSecretPreSharedKey
+
+podAnnotations:
+  ad.datadoghq.com/incrementals-publisher.logs: |
+    [
+      {"source":"nodejs","service":"RELEASE-NAME"}
+    ]
