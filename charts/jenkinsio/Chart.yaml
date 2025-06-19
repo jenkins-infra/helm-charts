@@ -4,4 +4,4 @@ maintainers:
 - email: jenkins-infra-team@googlegroups.com
   name: jenkins-infra-team
 name: jenkinsio
-version: 1.3.0
+version: 1.3.1
