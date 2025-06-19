@@ -1,0 +1,22 @@
+ldap:
+  password: ldap-password
+jira:
+  password: jira-password
+smtp:
+  password: smtp-password
+image:
+  pullPolicy: Always
+resources:
+  limits:
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+replicaCount: 2
+poddisruptionbudget:
+  minAvailable: 2
+  maxUnavailable: 1
+podAnnotations:
+  ad.datadoghq.com/accountapp.logs: |
+    [
+      {"source":"java","service":"RELEASE-NAME"}
+    ]

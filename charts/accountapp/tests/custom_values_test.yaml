@@ -4,15 +4,10 @@ templates:
   - ingress.yaml
   - secret.yaml # Direct dependency of deployment.yaml
   - pdb.yaml
+values:
+  - values/custom.yaml
 tests:
   - it: should create a Secret with the correct value
-    set:
-      ldap:
-        password: ldap-password
-      jira:
-        password: jira-password
-      smtp:
-        password: smtp-password
     template: secret.yaml
     asserts:
       - hasDocuments:
@@ -29,14 +24,6 @@ tests:
           path: data.smtpPassword
           value: c210cC1wYXNzd29yZA==
   - it: should create a Deployment with the customized values
-    set:
-      image:
-        pullPolicy: Always
-      resources:
-        limits:
-          memory: 1024Mi
-        requests:
-          cpu: 500m
     template: deployment.yaml
     asserts:
       - hasDocuments:
@@ -52,12 +39,14 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].resources.requests.cpu
           value: 500m
+      - equal:
+          path: spec.template.metadata.annotations["ad.datadoghq.com/accountapp.logs"]
+          value: |
+            [
+              {"source":"java","service":"RELEASE-NAME"}
+            ]
   - it: should ensure the pdb has correct spec
     template: pdb.yaml
-    set:
-      replicaCount: 2
-      poddisruptionbudget.minAvailable: 2
-      poddisruptionbudget.maxUnavailable: 1
     asserts:
       - isKind:
           of: PodDisruptionBudget

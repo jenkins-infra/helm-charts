@@ -28,6 +28,8 @@ tests:
       - equal:
           path: metadata.labels["app.kubernetes.io/managed-by"]
           value: Helm
+      - notExists:
+          path: spec.template.metadata.annotations
   - it: should not generate any pdb with default values
     template: pdb.yaml
     asserts:
