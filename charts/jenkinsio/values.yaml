@@ -50,6 +50,9 @@ tolerations: []
 affinity:
   jenkinsio: {}
   jenkinsio-zh: {}
+podAnnotations:
+  jenkinsio: {}
+  jenkinsio-zh: {}
 htmlVolume: {}
 zhHtmlVolume: {}
 jenkinsioEnabled: true

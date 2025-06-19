@@ -13,8 +13,10 @@ spec:
   template:
     metadata:
       labels: {{include "jenkinsio.labels" . | nindent 8}}
+      {{- with .Values.podAnnotations.jenkinsio }}
       annotations:
-        checksum/config: {{include (print $.Template.BasePath "/configmap.yaml") . | sha256sum}}
+        {{ toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       automountServiceAccountToken: false
     {{- with .Values.imagePullSecrets }}

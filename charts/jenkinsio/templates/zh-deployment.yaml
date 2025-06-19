@@ -13,8 +13,10 @@ spec:
   template:
     metadata:
       labels: {{include "zh-jenkinsio.labels" . | nindent 8}}
+      {{- with index .Values.podAnnotations "jenkinsio-zh" }}
       annotations:
-        checksum/config: {{include (print $.Template.BasePath "/zh-configmap.yaml") . | sha256sum}}
+        {{ toYaml . | nindent 8 }}
+      {{- end }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
