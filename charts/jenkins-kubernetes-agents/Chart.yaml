@@ -3,4 +3,4 @@ apiVersion: v2
 name: jenkins-kubernetes-agents
 description: A Helm chart for using Jenkins Kubernetes agents on a remote cluster
 type: application
-version: 1.1.0
+version: 1.1.1
