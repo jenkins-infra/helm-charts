@@ -42,6 +42,7 @@ resources: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
+podAnnotations: {}
 ldap:
   url: ldaps://ldap.jenkins.io:636/
   managerDn: cn=admin,dc=jenkins-ci,dc=org
