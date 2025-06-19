@@ -1,7 +1,0 @@
-apiVersion: v1
-description: A Helm chart for ircbot
-maintainers:
-- name: timja
-- name: slide
-name: ircbot
-version: 0.3.0
