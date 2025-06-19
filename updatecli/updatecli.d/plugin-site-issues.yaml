@@ -33,12 +33,21 @@ conditions:
       architecture: "amd64"
 
 targets:
-  updateChart:
-    name: Update rating helm chart
+  updateChartValue:
+    name: Update default image tag version
     kind: helmchart
     spec:
       name: charts/plugin-site-issues
       key: $.image.tag
+      versionincrement: patch
+    scmid: default
+  updateChartMeta:
+    name: Update chart appVersion
+    kind: helmchart
+    spec:
+      name: charts/plugin-site-issues
+      file: Chart.yaml
+      key: $.appVersion
       versionincrement: patch
     scmid: default
 
