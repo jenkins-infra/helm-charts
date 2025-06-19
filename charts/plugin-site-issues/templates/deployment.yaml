@@ -5,9 +5,7 @@ metadata:
   labels:
 {{ include "plugin-site-issues.labels" . | indent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
       {{- include "plugin-site-issues.selectorLabels" . | nindent 6 }}

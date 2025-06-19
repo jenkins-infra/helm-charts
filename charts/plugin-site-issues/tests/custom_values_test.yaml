@@ -1,0 +1,26 @@
+suite: Test with custom values
+templates:
+  - deployment.yaml
+  - ingress.yaml
+  - secret.yaml # Direct dependency of deployment-backend.yaml
+values:
+  - values/custom.yaml
+tests:
+  - it: should create a custom ingress when ingress.enabled is true
+    template: ingress.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+  - it: should create a custom frontend deployment
+    template: deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.metadata.annotations["ad.datadoghq.com/plugin-site-issues.logs"]
+          value: |
+            [
+              {"source":"nodejs","service":"RELEASE-NAME"}
+            ]

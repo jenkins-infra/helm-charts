@@ -1,0 +1,13 @@
+ingress:
+  enabled: true
+podAnnotations:
+  ad.datadoghq.com/plugin-site-issues.logs: |
+    [
+      {"source":"nodejs","service":"RELEASE-NAME"}
+    ]
+github:
+  appId: foo
+  appPrivateKey: bar
+jira:
+  username: foo
+  password: bar

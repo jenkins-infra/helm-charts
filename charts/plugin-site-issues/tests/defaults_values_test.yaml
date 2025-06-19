@@ -1,0 +1,38 @@
+suite: Test with default values
+templates:
+  - deployment.yaml
+  - ingress.yaml
+  - secret.yaml # Direct dependency of deployment-backend.yaml
+set:
+  # TODO: these values should be required here
+  # Ref. https://github.com/jenkins-infra/helm-charts/issues/660
+  github:
+    appId: foo
+    appPrivateKey: bar
+  jira:
+    username: foo
+    password: bar
+tests:
+  - it: should  not create an ingress by default
+    template: ingress.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should define the default frontend deployment with default imagePullPolicy
+    template: deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].imagePullPolicy
+          value: IfNotPresent
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: plugin-site-issues
+      - equal:
+          path: metadata.labels["app.kubernetes.io/managed-by"]
+          value: Helm
+      - notExists:
+          path: spec.template.metadata.annotations
