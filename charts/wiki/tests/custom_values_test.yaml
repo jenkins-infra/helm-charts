@@ -1,12 +1,10 @@
 suite: Tests with custom values
 templates:
   - pdb.yaml
+values:
+  - values/custom.yaml
 tests:
   - it: should ensure the pdb has correct spec
-    set:
-      replicaCount: 2
-      poddisruptionbudget.minAvailable: 2
-      poddisruptionbudget.maxUnavailable: 1
     asserts:
       - isKind:
           of: PodDisruptionBudget
