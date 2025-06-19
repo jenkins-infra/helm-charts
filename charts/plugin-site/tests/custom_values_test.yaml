@@ -1,27 +1,34 @@
 suite: Test with custom values
 templates:
   - deployment-frontend.yaml
+  - deployment-backend.yaml
   - ingress.yaml
   - pdb-frontend.yaml
-  - nginx-configmap.yaml # Direct dependency of deployment.yaml
+  - nginx-configmap.yaml # Direct dependency of deployment-frontend.yaml
+  - secret.yaml # Direct dependency of deployment-backend.yaml
+values:
+  - values/custom.yaml
 tests:
-  - it: should create an ingress when ingress.enabled is true
-    set:
-      ingress:
-        enabled: true
+  - it: should create a custom ingress when ingress.enabled is true
     template: ingress.yaml
     asserts:
       - hasDocuments:
           count: 1
-  - it: should mount the html volume when htmlVolume is set
+  - it: should create a custom backend deployment
+    template: deployment-backend.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.metadata.annotations["ad.datadoghq.com/plugin-site-backend.logs"]
+          value: |
+            [
+              {"source":"java","service":"RELEASE-NAME"}
+            ]
+  - it: should create a custom frontend deployment
     template: deployment-frontend.yaml
-    set:
-      htmlVolume:
-        hostPath: /host
-      frontend:
-        resources:
-          limits:
-            cpu: 300ms
     asserts:
       - hasDocuments:
           count: 1
@@ -36,14 +43,14 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].resources.limits.cpu
           value: 300ms
+      - equal:
+          path: spec.template.metadata.annotations["ad.datadoghq.com/plugin-site-frontend.logs"]
+          value: |
+            [
+              {"source":"nginx","service":"RELEASE-NAME"}
+            ]
   - it: should create a customized PDB with the provided spec
     template: pdb-frontend.yaml
-    set:
-      frontend:
-        replicaCount: 3
-        poddisruptionbudget:
-          minAvailable: 2
-          maxUnavailable: 3
     asserts:
       - isKind:
           of: PodDisruptionBudget
