@@ -58,3 +58,4 @@ sentry:
   dsn: ""
 poddisruptionbudget:
   minAvailable: 1
+podAnnotations: {}

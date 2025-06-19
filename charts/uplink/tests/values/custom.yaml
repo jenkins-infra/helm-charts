@@ -1,0 +1,12 @@
+postgresql:
+  url: "example-url"
+client:
+  id: "example-id"
+  secret: "example-secret"
+sentry:
+  dsn: "example-dsn"
+podAnnotations:
+  ad.datadoghq.com/uplink.logs: |
+    [
+      {"source":"nodejs","service":"RELEASE-NAME"}
+    ]

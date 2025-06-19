@@ -2,13 +2,9 @@ suite: test secret.yaml
 templates:
   - secret.yaml
   - pdb.yaml
-set:
-  postgresql:
-    url: "example-url"
-  client:
-    id: "example-id"
-    secret: "example-secret"
-  sentry.dsn: "example-dsn"
+  - deployment
+values:
+  - values/custom.yaml
 tests:
   - it: should ensure the secret is created with custom credentials
     template: secret.yaml
@@ -64,3 +60,16 @@ tests:
       - equal:
           path: metadata.labels["app.kubernetes.io/name"]
           value: uplink
+  - it: should generate a deployment with the custom values
+    template: deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.metadata.annotations["ad.datadoghq.com/uplink.logs"]
+          value: |
+            [
+              {"source":"nodejs","service":"RELEASE-NAME"}
+            ]
