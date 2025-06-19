@@ -1,16 +1,36 @@
 suite: Test with default values
 templates:
   - deployment-frontend.yaml
+  - deployment-backend.yaml
   - ingress.yaml
   - pdb-frontend.yaml
-  - nginx-configmap.yaml
+  - nginx-configmap.yaml # Direct dependency of deployment.yaml
+  - secret.yaml # Direct dependency of deployment-backend.yaml
+set:
+  # TODO: these values should be required here
+  # Ref. https://github.com/jenkins-infra/helm-charts/issues/660
+  github:
+    appId: foo
+    appPrivateKey: bar
+  jira:
+    username: foo
+    password: bar
 tests:
   - it: should  not create an ingress by default
     template: ingress.yaml
     asserts:
       - hasDocuments:
           count: 0
-  - it: should define the default deployment with default imagePullPolicy
+  - it: should define the default backend deployment with default imagePullPolicy
+    template: deployment-backend.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - notExists:
+          path: spec.template.metadata.annotations
+  - it: should define the default frontend deployment with default imagePullPolicy
     template: deployment-frontend.yaml
     asserts:
       - hasDocuments:
@@ -35,6 +55,8 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].resources.limits.cpu
           value: 100m
+      - notExists:
+          path: spec.template.metadata.annotations
   - it: should create a pdb with default values as the frontend service is replicated to 2 by default
     template: pdb-frontend.yaml
     asserts:

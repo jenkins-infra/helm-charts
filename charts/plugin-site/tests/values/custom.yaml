@@ -1,0 +1,29 @@
+ingress:
+  enabled: true
+htmlVolume:
+  hostPath: /host
+frontend:
+  replicaCount: 3
+  poddisruptionbudget:
+    minAvailable: 2
+    maxUnavailable: 3
+  resources:
+    limits:
+      cpu: 300ms
+  podAnnotations:
+    ad.datadoghq.com/plugin-site-frontend.logs: |
+      [
+        {"source":"nginx","service":"RELEASE-NAME"}
+      ]
+backend:
+  podAnnotations:
+    ad.datadoghq.com/plugin-site-backend.logs: |
+      [
+        {"source":"java","service":"RELEASE-NAME"}
+      ]
+github:
+  appId: foo
+  appPrivateKey: bar
+jira:
+  username: foo
+  password: bar

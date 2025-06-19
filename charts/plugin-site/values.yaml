@@ -15,6 +15,7 @@ backend:
     requests:
       cpu: 500m
       memory: 1024Mi
+  podAnnotations: {}
 frontend:
   replicaCount: 2
   image:
@@ -31,6 +32,7 @@ frontend:
       memory: 32Mi
   poddisruptionbudget:
     minAvailable: 1
+  podAnnotations: {}
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""

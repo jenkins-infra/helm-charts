@@ -11,9 +11,10 @@ spec:
       {{- include "plugin-site.selectorLabels" . | nindent 6}}
   template:
     metadata:
+      {{- with .Values.backend.podAnnotations }}
       annotations:
-        # subpath secrets don't get updates, and we want to restart on change anyways
-        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{ toYaml . | nindent 8 }}
+      {{- end }}
       labels: {{ include "plugin-site.labels" . | nindent 8 }}
     spec:
       automountServiceAccountToken: false
