@@ -32,3 +32,5 @@ tests:
           content:
             name: PERMISSIONS_URL
           any: true
+      - notExists:
+          path: spec.template.metadata.annotations

@@ -2,17 +2,8 @@ suite: Custom values
 templates:
   - deployment.yaml
   - secret.yaml # dependency of deployment.yaml
-set:
-  permissions_url: https://somewhere.jenkins.io/github.json
-  artifactory:
-    key: testingArtifactoryKey
-  github:
-      token: customSuperSecretToken
-      appId: customSuperSecretAppId
-      privateKey: customSuperSecretPrivateKey
-  jenkins:
-    auth: customSecretJenkinsUser:customSecretJenkinsPassword
-  preshared_key: customSuperSecretPreSharedKey
+values:
+  - values/custom.yaml
 tests:
   - it: should define a deployment with the provided custom settings
     template: deployment.yaml
@@ -47,7 +38,12 @@ tests:
               secretKeyRef:
                 key: jenkins_auth
                 name: RELEASE-NAME-incrementals-publisher
-
+      - equal:
+          path: spec.template.metadata.annotations["ad.datadoghq.com/incrementals-publisher.logs"]
+          value: |
+            [
+              {"source":"nodejs","service":"RELEASE-NAME"}
+            ]
   - it: should create a Secret with the correct value
     template: secret.yaml
     asserts:

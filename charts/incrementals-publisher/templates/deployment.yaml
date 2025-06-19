@@ -12,9 +12,10 @@ spec:
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
+      {{- with .Values.podAnnotations }}
       annotations:
-        # subpath secrets don't get updates, and we want to restart on change anyways
-        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{ toYaml . | nindent 8 }}
+      {{- end }}
       labels:
         app.kubernetes.io/name: {{ include "incrementals-publisher.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}

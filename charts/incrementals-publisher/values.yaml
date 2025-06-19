@@ -59,3 +59,4 @@ jenkins:
   auth: ''
 # preshared_key -- The token needed to be provided for autherization
 preshared_key: ''
+podAnnotations: {}
