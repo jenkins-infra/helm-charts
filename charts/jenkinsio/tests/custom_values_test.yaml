@@ -6,33 +6,8 @@ templates:
   - zh-configmap.yaml
   - pdb.yaml
   - zh-pdb.yaml
-set:
-  htmlVolume:
-    azureFile:
-      secretName: jenkinsio
-      shareName: jenkinsio
-      readOnly: true
-  affinity:
-    jenkinsio:
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-                - key: "app.kubernetes.io/name"
-                  operator: In
-                  values:
-                    - jenkinsio
-            topologyKey: "kubernetes.io/hostname"
-    jenkinsio-zh:
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-                - key: "app.kubernetes.io/name"
-                  operator: In
-                  values:
-                    - jenkinsio-zh
-            topologyKey: "kubernetes.io/hostname"
+values:
+  - values/custom.yaml
 tests:
   - it: should create a deployment for jenkins.io with specified custom values
     template: deployment.yaml
@@ -55,6 +30,12 @@ tests:
       - equal:
           path: spec.template.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].labelSelector.matchExpressions[0].values[0]
           value: jenkinsio
+      - equal:
+          path: spec.template.metadata.annotations["ad.datadoghq.com/jenkinsio.logs"]
+          value: |
+            [
+              {"source":"nginx","service":"RELEASE-NAME"}
+            ]
   - it: should create a deployment for zh.jenkins.io with specified custom values
     template: zh-deployment.yaml
     asserts:
@@ -68,6 +49,12 @@ tests:
       - equal:
           path: spec.template.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].labelSelector.matchExpressions[0].values[0]
           value: jenkinsio-zh
+      - equal:
+          path: spec.template.metadata.annotations["ad.datadoghq.com/jenkinsio.logs"]
+          value: |
+            [
+              {"source":"nginx","service":"ZH-RELEASE-NAME"}
+            ]
   - it: should ensure the pdb has correct spec for jenkinsio
     template: pdb.yaml
     set:
