@@ -103,3 +103,9 @@ tests:
     - equal:
         path: spec.template.spec.volumes[1].persistentVolumeClaim.claimName
         value: batData
+    - equal:
+        path: spec.template.metadata.annotations["ad.datadoghq.com/slapd.logs"]
+        value: |
+          [
+            {"source":"openldap","service":"RELEASE-NAME"}
+          ]

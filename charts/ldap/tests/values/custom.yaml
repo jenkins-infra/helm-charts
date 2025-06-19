@@ -7,7 +7,12 @@ service:
     another: 1.2.3.4
     locals: "127.0.0.1, 127.0.0.0/24"
 
-
 persistence:
   customBackupClaimName: superBackup
   customDataClaimName: batData
+
+podAnnotations:
+  ad.datadoghq.com/slapd.logs: |
+    [
+      {"source":"openldap","service":"RELEASE-NAME"}
+    ]

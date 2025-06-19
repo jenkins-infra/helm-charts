@@ -18,6 +18,10 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "ldap.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{ toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       automountServiceAccountToken: false
     {{- with .Values.imagePullSecrets }}
