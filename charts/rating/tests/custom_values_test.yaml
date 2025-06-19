@@ -1,0 +1,21 @@
+---
+suite: Test with custom values
+templates:
+  - deployment.yaml
+  - secret.yaml
+values:
+  - values/custom.yaml
+tests:
+  - it: should generate a deployment with the custom values
+    template: deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.metadata.annotations["ad.datadoghq.com/rating.logs"]
+          value: |
+            [
+              {"source":"apache","service":"RELEASE-NAME"}
+            ]

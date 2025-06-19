@@ -1,0 +1,5 @@
+podAnnotations:
+  ad.datadoghq.com/rating.logs: |
+    [
+      {"source":"apache","service":"RELEASE-NAME"}
+    ]

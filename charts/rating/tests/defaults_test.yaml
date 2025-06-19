@@ -8,6 +8,10 @@ tests:
     asserts:
       - isKind:
           of: Deployment
+      - isKind:
+          of: Deployment
       - equal:
           path: metadata.name
           value: RELEASE-NAME-rating
+      - notExists:
+          path: spec.template.metadata.annotations
