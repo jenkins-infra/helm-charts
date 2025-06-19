@@ -66,7 +66,6 @@ helm.sh/chart: {{ include "plugin-site.chart" . }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-jenkins.io/maintainer: {{ (index .Chart.Maintainers 0).Name }}
 {{- end -}}
 
 {{/*
@@ -87,5 +86,4 @@ helm.sh/chart: {{ include "plugin-site.chart" . }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-jenkins.io/maintainer: {{ (index .Chart.Maintainers 0).Name }}
 {{- end -}}

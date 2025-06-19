@@ -4,4 +4,4 @@ description: A Helm chart for plugins.jenkins.io
 maintainers:
 - name: jenkins-infra-team@googlegroups.com
 name: plugin-site
-version: 0.5.0
+version: 0.5.1
