@@ -61,3 +61,4 @@ database:
   name: rating
   server: postgresql
   port: 5432
+podAnnotations: {}

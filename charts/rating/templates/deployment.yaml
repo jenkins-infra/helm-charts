@@ -15,8 +15,10 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "rating.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+      {{- with .Values.podAnnotations }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{ toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       automountServiceAccountToken: false
     {{- with .Values.imagePullSecrets }}
