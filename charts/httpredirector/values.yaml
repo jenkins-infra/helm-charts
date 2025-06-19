@@ -1,4 +1,0 @@
-urlredirect: http://demo.localhost.me
-host: localhost
-ingressClassName: nginx
-tls: true
