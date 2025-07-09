@@ -1,9 +1,9 @@
 apiVersion: v2
-appVersion: 0.10.13
+appVersion: 0.10.15
 description: plugin-site-issues
 name: plugin-site-issues
 type: application
 maintainers:
 - email: jenkins-infra-team@googlegroups.com
   name: jenkins-infra-team
-version: 0.3.5
+version: 0.3.6
