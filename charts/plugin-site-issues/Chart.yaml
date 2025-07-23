@@ -6,4 +6,4 @@ type: application
 maintainers:
 - email: jenkins-infra-team@googlegroups.com
   name: jenkins-infra-team
-version: 0.3.11
+version: 0.3.12
