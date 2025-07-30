@@ -13930,6 +13930,19 @@ entries:
     version: 0.0.3
   plugin-site-issues:
   - apiVersion: v2
+    appVersion: 0.10.28
+    created: "2025-07-30T07:23:14.710052195Z"
+    description: plugin-site-issues
+    digest: b9ab04c315e648fe3412e4456aa07fbb111440b726f09a7b30ceac90025fef2e
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: plugin-site-issues
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/plugin-site-issues-0.3.14/plugin-site-issues-0.3.14.tgz
+    version: 0.3.14
+  - apiVersion: v2
     appVersion: 0.10.27
     created: "2025-07-28T05:01:43.998804899Z"
     description: plugin-site-issues
@@ -17762,4 +17775,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2025-07-28T05:01:44.000527856Z"
+generated: "2025-07-30T07:23:14.713664857Z"
