@@ -38,6 +38,5 @@ data:
     pushd "${mvn_local_repo}"
     df -h .
     du -sh .
-    time tar czf /tmp/maven-bom-local-repo.tar.gz ./
-    time cp /tmp/maven-bom-local-repo.tar.gz "${mvn_cache_archive}"
+    time tar czf "${mvn_cache_archive}" ./
     du -sh "${mvn_cache_dir}"/*
