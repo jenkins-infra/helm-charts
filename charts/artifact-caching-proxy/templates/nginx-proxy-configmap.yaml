@@ -176,16 +176,17 @@ data:
         location @handle_redirects {
             # We need to capture these values now otherwise they disappear
             # as soon as we invoke the proxy_* directives
-            set $original_uri $uri;
-            set $orig_loc $upstream_http_location;
+            set $original_uri   $uri;
+            set $orig_loc       $upstream_http_location;
 
             # Send the request to the URL passed in the `Location` header of the response
-            proxy_pass $orig_loc;
+            proxy_pass          $orig_loc;
 
             # Cache the result with the cache key of the original request URI
             # so that future requests won't need to follow the redirect too
-            proxy_cache_key $original_uri;
-            include /etc/nginx/conf.d/common-proxy.conf;
+            proxy_cache_key     $original_uri;
+            include             /etc/nginx/conf.d/common-proxy.conf;
+            include             /etc/nginx/conf.d/proxy-cache.conf;
         }
 
         # Endpoint used to check healthiness of the service before running Maven commands in Jenkins pipelines
