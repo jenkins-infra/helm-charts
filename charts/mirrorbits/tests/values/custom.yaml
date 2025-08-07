@@ -42,6 +42,10 @@ config:
     address: redis-master.internal.company.org:6379
     password: SuperSecretRedisPassword
     dbId: 4
+    sentinelMasterName: mySentinelMaster
+    sentinels:
+      - 1.2.3.4:26379
+      - 4.3.2.1:26379
   logs:
     path: /custom
     volume:
