@@ -113,6 +113,10 @@ config:
   #   address: redis.local:6379
   #   password: superSecretValueForRedis
   #   dbId: 0
+  #   sentinelMasterName: mymaster
+  #   sentinels:
+  #   - 1.2.3.4:26379
+  #   - 4.3.2.1:26379
   fallbacks: []
   # - URL: https://fallback.company.org
   #   CountryCode: DE

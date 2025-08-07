@@ -112,14 +112,29 @@ OutputMode: {{ .Values.config.outputMode | default "auto" }}
 ####################
 ##### DATABASE #####
 ####################
+    {{- with .address }}
 ## Redis host and port
-RedisAddress: {{ .address }}
+RedisAddress: {{ . }}
+    {{- end }}
+    {{- with .password }}
 ## Redis password (if any)
-RedisPassword: {{ .password }}
+RedisPassword: {{ . }}
+    {{- end }}
+    {{- with .dbId }}
 ## Redis database ID (if any)
-RedisDB: {{ .dbId }}
+RedisDB: {{ . }}
+    {{- end }}
+    {{- with .sentinelMasterName }}
+## Redis database ID (if any)
+RedisSentinelMasterName: {{ . }}
+    {{- end }}
+    {{- with .sentinels }}
+RedisSentinels:
+      {{- range . }}
+- Host: {{ . }}
+      {{- end }}
+    {{- end }}
   {{- end }}
-
 ###################
 ##### MIRRORS #####
 ###################
