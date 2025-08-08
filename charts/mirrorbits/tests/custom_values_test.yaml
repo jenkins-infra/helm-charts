@@ -338,11 +338,6 @@ tests:
       - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
-          pattern: 'Fallbacks'
-          decodeBase64: true
-      - documentIndex: 1
-        matchRegex:
-          path: data["mirrorbits.conf"]
           pattern: 'RedisAddress: redis-master.internal.company.org:6379'
           decodeBase64: true
       - documentIndex: 1
@@ -429,6 +424,51 @@ tests:
         matchRegex:
           path: data["mirrorbits.conf"]
           pattern: 'OutputMode: redirect'
+          decodeBase64: true
+      - documentIndex: 1
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'LocalJSPath: /some/path/to/js'
+          decodeBase64: true
+      - documentIndex: 1
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'AllowHTTPToHTTPSRedirects: true'
+          decodeBase64: true
+      - documentIndex: 1
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'SameDownloadInterval: 600'
+          decodeBase64: true
+      - documentIndex: 1
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: 'WeightDistributionRange: 1.5'
+          decodeBase64: true
+      - documentIndex: 1
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: "MaxLinkHeaders: 10"
+          decodeBase64: true
+      - documentIndex: 1
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: "FixTimezoneOffsets: true"
+          decodeBase64: true
+      - documentIndex: 1
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: "AllowOutdatedFiles:"
+          decodeBase64: true
+      - documentIndex: 1
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: "- Prefix: /dists/"
+          decodeBase64: true
+      - documentIndex: 1
+        matchRegex:
+          path: data["mirrorbits.conf"]
+          pattern: "Minutes: 540"
           decodeBase64: true
   - it: "should create two (custom) services: HTTP and cli"
     template: services.yaml
