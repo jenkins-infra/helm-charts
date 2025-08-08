@@ -55,6 +55,15 @@ config:
     - url: https://fallback.company.org
       countryCode: DE
       continentCode: EU
+  localJSPath: /some/path/to/js
+  allowHTTPToHTTPSRedirects: true
+  sameDownloadInterval: 600
+  allowOutdatedFiles:
+    - prefix: /dists/
+      minutes: 540
+  weightDistributionRange: 1.5
+  maxLinkHeaders: 10
+  fixTimezoneOffsets: true
 cli:
   enabled: true
   port: 3333

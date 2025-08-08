@@ -83,16 +83,40 @@ Template of the mirrorbits configuration file
 Repository: {{ .Values.config.repository }}
 ## Path to the templates (default autodetect)
 Templates: {{ .Values.config.templates }}
+  {{- with .Values.config.localJSPath }}
+## A local path or URL containing the JavaScript used by the templates.
+## If this is not set (the default), the JavaScript will just be loaded
+## from the usual CDNs. See also `contrib/localjs/fetchfiles.sh`.
+LocalJSPath: {{ . }}
+  {{- end }}
+  {{- if and .Values.config.logs .Values.config.logs.path }}
+## Path where to store download logs (comment to disable)
+LogDir: {{ .Values.config.logs.path }}
+  {{- end }}
+  {{- with .Values.config.geoipDatabase }}
 ## Path to the GeoIP2 mmdb databases
-GeoipDatabasePath: {{ .Values.config.geoipDatabase }}
+GeoipDatabasePath: {{ . }}
+  {{- end }}
+
+  {{- with .Values.config.allowHTTPToHTTPSRedirects }}
+## Allow redirecting HTTP requests to HTTPS mirrors. If ever a mirror supports
+## both, HTTPS is favored. In other words, this setting forces HTTPS when
+## possible, thus making the implicit assumption that the client supports it.
+AllowHTTPToHTTPSRedirects: {{ . }}
+  {{- end }}
+
+  {{- with .Values.config.sameDownloadInterval }}
+## Interval in seconds between which 2 range downloads of a given file
+## from a same origin (hashed (IP, user-agent) couple) are considered
+## to be the same download. In particular, download statistics are not
+## incremented for this file.
+SameDownloadInterval: {{ . }}
+  {{- end }}
+
 ## Enable Gzip compression
 Gzip: {{ .Values.config.gzip }}
 ## Host an port to listen on
 ListenAddress: :{{ .Values.config.port }}
-  {{- if and .Values.config.logs .Values.config.logs.path }}
-## Path where to store logs
-LogDir: {{ .Values.config.logs.path }}
-  {{- end }}
 
   {{- if .Values.cli.enabled }}
 ## Host and port to listen for the CLI RPC
@@ -135,35 +159,81 @@ RedisSentinels:
       {{- end }}
     {{- end }}
   {{- end }}
-###################
-##### MIRRORS #####
-###################
+############################
+##### LOCAL REPOSITORY #####
+############################
+
 ## Relative path to the trace file within the repository (optional).
 ## The file must contain the number of seconds since epoch and should
 ## be updated every minute (or so) with a cron on the master repository.
 TraceFileLocation: {{ .Values.config.traceFile }}
+
 ## Interval between two scans of the local repository.
 ## The repository scan will index new and removed files and collect file
 ## sizes and checksums.
 ## This should, more or less, match the frequency where the local repo
 ## is updated.
 RepositoryScanInterval: {{ .Values.config.repositoryScanInterval }}
+
 ## Enable or disable specific hashing algorithms
 Hashes:
   SHA256: On
-  SHA1: On
-  MD5: On
+  SHA1: Off
+  MD5: Off
+
+###################
+##### MIRRORS #####
+###################
+
 ## Maximum number of concurrent mirror synchronization to do (rsync/ftp)
 ConcurrentSync: {{ .Values.config.concurentSync }}
+
 ## Interval in minutes between mirror scan
 ScanInterval: {{ .Values.config.scanInterval }}
+
 ## Interval in minutes between mirrors HTTP health checks
 CheckInterval: {{ .Values.config.checkInterval }}
+
 ## Allow a mirror to issue an HTTP redirect.
 ## Setting this to true will disable the mirror if a redirect is detected.
 DisallowRedirects: {{ .Values.config.disallowRedirects }}
+
 ## Disable a mirror if an active file is missing (HTTP 404)
 DisableOnMissingFile: {{ .Values.config.disableOnMissingFile }}
+
+  {{- with .Values.config.allowOutdatedFiles }}
+## Allow some files to be outdated on the mirrors.
+## When the requested file matches any of the rules below, the file is allowed
+## to be outdated at most Minutes minutes, and the file size is not checked.
+## This might be desirable if the repository contains some files that are
+## updated in-place, to prevent Mirrorbits from redirecting all the traffic to
+## fallback mirrors for those files when they are modified.
+AllowOutdatedFiles:
+    {{ range . }}
+  - Prefix: {{ .prefix }}
+    Minutes: {{ .minutes }}
+    {{- end }}
+  {{- end }}
+
+  {{- with .Values.config.weightDistributionRange }}
+## Adjust the weight/range of the geographic distribution
+WeightDistributionRange: {{ . }}
+  {{- end }}
+
+  {{- with .Values.config.maxLinkHeaders }}
+## Maximum number of alternative links to return in the HTTP header
+MaxLinkHeaders: {{ . }}
+  {{- end }}
+
+  {{- with .Values.config.fixTimezoneOffsets }}
+## Automatically fix timezone offsets.
+## Enable this if one or more mirrors are always excluded because their
+## last-modification-time mismatch. This option will try to guess the
+## offset and adjust the mod time accordingly.
+## Affected mirrors will need to be rescanned after enabling this feature.
+FixTimezoneOffsets: {{ . }}
+  {{- end }}
+
   {{- with .Values.config.fallbacks }}
 ## List of mirrors to use as fallback which will be used in case mirrorbits
 ## is unable to answer a request because the database is unreachable.
