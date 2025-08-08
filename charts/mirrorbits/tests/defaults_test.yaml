@@ -105,6 +105,25 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].readOnly
           value: false
+      # Rundir for PID (tmpfs)
+      - equal:
+          path: spec.template.spec.volumes[4].name
+          value: rundir
+      - equal:
+          path: spec.template.spec.volumes[4].emptyDir.medium
+          value: Memory
+      - equal:
+          path: spec.template.spec.volumes[4].emptyDir.sizeLimit
+          value: 1Mi
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[4].name
+          value: rundir
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[4].mountPath
+          value: /run/mirrorbits
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[4].readOnly
+          value: false
       - equal:
           path: spec.template.spec.containers[0].ports[0].name
           value: http
@@ -113,7 +132,7 @@ tests:
           value: 8080
       # There are no log volumes
       - notExists:
-          path: spec.template.spec.volumes[4]
+          path: spec.template.spec.volumes[5]
       - notExists:
           path: spec.template.spec.securityContext
       - notExists:
