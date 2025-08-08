@@ -204,7 +204,7 @@ tests:
           decodeBase64: true
       - matchRegex:
           path: data["mirrorbits.conf"]
-          pattern: 'LogDir: /var/logs/mirrorbits'
+          pattern: 'LogDir: /var/log/mirrorbits'
           decodeBase64: true
       - matchRegex:
           path: data["mirrorbits.conf"]
