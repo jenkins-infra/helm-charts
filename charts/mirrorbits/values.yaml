@@ -89,10 +89,11 @@ config:
   geoipDatabase: /usr/share/GeoIP
   disallowRedirects: true
   disableOnMissingFile: true
-  ## config.logs specify where to mount mirrorbits detailled logs directory.
+  ## config.logs specify where to mount mirrorbits detailed logs directory.
   logs:
-    ## config.logs.path specifies the logs path. Default as a download.logs symlink to stdout
-    path: /var/logs/mirrorbits
+    ## config.logs.path specifies the logs path.
+    # By default, jenkins-infra Docker image has a symlink /var/log/mirrorbits/downloadsLogs to stdout
+    path: /var/log/mirrorbits
     ## config.logs.volume contains the Pod Volume definition for mirrorbits logs
     ## Example with an existing PVC:
     # volume:
