@@ -52,9 +52,17 @@ spec:
             - name: mirrorbits-config
               mountPath: /etc/mirrorbits
               readOnly: true
+            {{- if ne .Values.geoipdata.existingPVCName .Values.repository.name }}
             - name: geoipdata
+            {{- else }}
+            # geoipdata mount (same volume as repository)
+            - name: data
+            {{- end }}
               mountPath: {{ .Values.config.geoipDatabase }}
               readOnly: true
+              {{- with .Values.geoipdata.subDir }}
+              subPath: {{ . }}
+              {{- end }}
             {{- with .Values.config.logs.volume }}
             - name: logs
               mountPath: {{ $.Values.config.logs.path }}
@@ -103,6 +111,14 @@ spec:
             items:
               - key: mirrorbits.conf
                 path: mirrorbits.conf
+        - name: tmpdir
+          emptyDir:
+            medium: Memory
+            sizeLimit: 100Mi
+        - name: rundir
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Mi
         {{- with .Values.config.logs.volume }}
         - name: logs
           {{- toYaml . | nindent 10 }}
@@ -119,18 +135,12 @@ spec:
           emptyDir: {}
             {{- end }}
           {{- end }}
+        {{- if ne .Values.geoipdata.existingPVCName .Values.repository.name }}
         - name: geoipdata
-        {{- if or .Values.geoipdata.persistentData.enabled .Values.geoipdata.existingPVCName }}
+          {{- if or .Values.geoipdata.persistentData.enabled .Values.geoipdata.existingPVCName }}
           persistentVolumeClaim:
             claimName: {{ include "mirrorbits.geoipdata-name" . }}
-        {{- else }}
+          {{- else }}
           emptyDir: {}
+          {{- end }}
         {{- end }}
-        - name: tmpdir
-          emptyDir:
-            medium: Memory
-            sizeLimit: 100Mi
-        - name: rundir
-          emptyDir:
-            medium: Memory
-            sizeLimit: 1Mi

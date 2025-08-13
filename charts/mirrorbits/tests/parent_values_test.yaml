@@ -18,10 +18,10 @@ tests:
           of: Deployment
       # Data Volume (references a claim from parent chart)
       - equal:
-          path: spec.template.spec.volumes[2].name
+          path: spec.template.spec.volumes[4].name
           value: data
       - equal:
-          path: spec.template.spec.volumes[2].persistentVolumeClaim.claimName
+          path: spec.template.spec.volumes[4].persistentVolumeClaim.claimName
           value: parent-chart-shared-data
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].name

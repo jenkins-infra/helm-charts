@@ -43,10 +43,10 @@ tests:
           value: 2
       # Custom GeoIP PVC
       - equal:
-          path: spec.template.spec.volumes[3].name
+          path: spec.template.spec.volumes[5].name
           value: geoipdata
       - equal:
-          path: spec.template.spec.volumes[3].persistentVolumeClaim.claimName
+          path: spec.template.spec.volumes[5].persistentVolumeClaim.claimName
           value: RELEASE-NAME-mirrorbits-geoipdata
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[1].name
@@ -59,10 +59,10 @@ tests:
           value: true
       # Log volumes is a custom PVC in a custom mount path
       - equal:
-          path: spec.template.spec.volumes[1].name
+          path: spec.template.spec.volumes[3].name
           value: logs
       - equal:
-          path: spec.template.spec.volumes[1].persistentVolumeClaim.claimName
+          path: spec.template.spec.volumes[3].persistentVolumeClaim.claimName
           value: foobar
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].name
@@ -72,10 +72,10 @@ tests:
           value: /custom
       # Data Volume
       - equal:
-          path: spec.template.spec.volumes[2].name
+          path: spec.template.spec.volumes[4].name
           value: data
       - equal:
-          path: spec.template.spec.volumes[2].persistentVolumeClaim.claimName
+          path: spec.template.spec.volumes[4].persistentVolumeClaim.claimName
           value: mirrorbits-binary
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].name
@@ -88,13 +88,13 @@ tests:
           value: ./content/
       # Tempdir uses a tmpfs volume with a 100Mi limit
       - equal:
-          path: spec.template.spec.volumes[4].name
+          path: spec.template.spec.volumes[1].name
           value: tmpdir
       - equal:
-          path: spec.template.spec.volumes[4].emptyDir.medium
+          path: spec.template.spec.volumes[1].emptyDir.medium
           value: Memory
       - equal:
-          path: spec.template.spec.volumes[4].emptyDir.sizeLimit
+          path: spec.template.spec.volumes[1].emptyDir.sizeLimit
           value: 100Mi
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[4].name
@@ -566,27 +566,30 @@ tests:
           of: Deployment
       # Custom GeoIP PVC
       - equal:
-          path: spec.template.spec.volumes[3].name
+          path: spec.template.spec.volumes[5].name
           value: geoipdata
       - equal:
-          path: spec.template.spec.volumes[3].persistentVolumeClaim.claimName
+          path: spec.template.spec.volumes[5].persistentVolumeClaim.claimName
           value: geodataHere
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[1].name
           value: geoipdata
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].subPath
+          value: ./geoipdata/
       # Log volumes is a custom PVC in a custom mount path
       - equal:
-          path: spec.template.spec.volumes[1].name
+          path: spec.template.spec.volumes[3].name
           value: logs
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].name
           value: logs
       # Data Volume
       - equal:
-          path: spec.template.spec.volumes[2].name
+          path: spec.template.spec.volumes[4].name
           value: data
       - equal:
-          path: spec.template.spec.volumes[2].persistentVolumeClaim.claimName
+          path: spec.template.spec.volumes[4].persistentVolumeClaim.claimName
           value: anotherPVC
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].name
@@ -596,8 +599,42 @@ tests:
           value: /DATA
       # Tempdir uses a tmpfs volume with a 100Mi limit
       - equal:
-          path: spec.template.spec.volumes[4].name
+          path: spec.template.spec.volumes[1].name
           value: tmpdir
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[4].name
           value: tmpdir
+  - it: should set up deployment with the same PVC for both geoipdata and repository (e.g. only 1 volume) with the specified subdirs (e.g. 2 volumeMounts)
+    template: deployment.yaml
+    values:
+      - values/custom_samePVC.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      # Data Volume
+      - equal:
+          path: spec.template.spec.volumes[4].name
+          value: data
+      - equal:
+          path: spec.template.spec.volumes[4].persistentVolumeClaim.claimName
+          value: common-pvc
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].name
+          value: data
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].mountPath
+          value: /DATA
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].subPath
+          value: ./repository/
+      # No GeoIP volume. It should reuse the existing 'data' volume instead
+      - notExists:
+          path: spec.template.spec.volumes[5]
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].name
+          value: data
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].subPath
+          value: ./geoipdata/

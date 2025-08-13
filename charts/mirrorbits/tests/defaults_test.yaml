@@ -56,10 +56,10 @@ tests:
           value: true
       # Data Volume is an emptyDir by default (but readonly)
       - equal:
-          path: spec.template.spec.volumes[1].name
+          path: spec.template.spec.volumes[3].name
           value: data
       - equal:
-          path: spec.template.spec.volumes[1].emptyDir
+          path: spec.template.spec.volumes[3].emptyDir
           value: {}
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[2].name
@@ -72,10 +72,10 @@ tests:
           value: true
       # GeoIP is an emptyDir, with default mountpath
       - equal:
-          path: spec.template.spec.volumes[2].name
+          path: spec.template.spec.volumes[4].name
           value: geoipdata
       - equal:
-          path: spec.template.spec.volumes[2].emptyDir
+          path: spec.template.spec.volumes[4].emptyDir
           value: {}
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[1].name
@@ -88,13 +88,13 @@ tests:
           value: true
       # Tempdir uses a tmpfs volume with a 100Mi limit
       - equal:
-          path: spec.template.spec.volumes[3].name
+          path: spec.template.spec.volumes[1].name
           value: tmpdir
       - equal:
-          path: spec.template.spec.volumes[3].emptyDir.medium
+          path: spec.template.spec.volumes[1].emptyDir.medium
           value: Memory
       - equal:
-          path: spec.template.spec.volumes[3].emptyDir.sizeLimit
+          path: spec.template.spec.volumes[1].emptyDir.sizeLimit
           value: 100Mi
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[3].name
@@ -107,13 +107,13 @@ tests:
           value: false
       # Rundir for PID (tmpfs)
       - equal:
-          path: spec.template.spec.volumes[4].name
+          path: spec.template.spec.volumes[2].name
           value: rundir
       - equal:
-          path: spec.template.spec.volumes[4].emptyDir.medium
+          path: spec.template.spec.volumes[2].emptyDir.medium
           value: Memory
       - equal:
-          path: spec.template.spec.volumes[4].emptyDir.sizeLimit
+          path: spec.template.spec.volumes[2].emptyDir.sizeLimit
           value: 1Mi
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[4].name

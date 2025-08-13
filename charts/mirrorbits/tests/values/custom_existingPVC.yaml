@@ -7,5 +7,6 @@ repository:
     enabled: false
 geoipdata:
   existingPVCName: geodataHere
+  subDir: ./geoipdata/
   persistentData:
     enabled: false
