@@ -574,6 +574,9 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[1].name
           value: geoipdata
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].subPath
+          value: ./geoipdata/
       # Log volumes is a custom PVC in a custom mount path
       - equal:
           path: spec.template.spec.volumes[1].name

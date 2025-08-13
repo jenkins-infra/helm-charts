@@ -55,6 +55,9 @@ spec:
             - name: geoipdata
               mountPath: {{ .Values.config.geoipDatabase }}
               readOnly: true
+              {{- with .Values.geoipdata.subdDir }}
+              subPath: {{ . }}
+              {{- end }}
             {{- with .Values.config.logs.volume }}
             - name: logs
               mountPath: {{ $.Values.config.logs.path }}
