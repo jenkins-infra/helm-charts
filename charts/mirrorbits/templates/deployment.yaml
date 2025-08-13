@@ -106,6 +106,14 @@ spec:
             items:
               - key: mirrorbits.conf
                 path: mirrorbits.conf
+        - name: tmpdir
+          emptyDir:
+            medium: Memory
+            sizeLimit: 100Mi
+        - name: rundir
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Mi
         {{- with .Values.config.logs.volume }}
         - name: logs
           {{- toYaml . | nindent 10 }}
@@ -129,11 +137,3 @@ spec:
         {{- else }}
           emptyDir: {}
         {{- end }}
-        - name: tmpdir
-          emptyDir:
-            medium: Memory
-            sizeLimit: 100Mi
-        - name: rundir
-          emptyDir:
-            medium: Memory
-            sizeLimit: 1Mi
