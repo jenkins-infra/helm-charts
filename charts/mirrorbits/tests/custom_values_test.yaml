@@ -604,3 +604,37 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[4].name
           value: tmpdir
+  - it: should set up deployment with the same PVC for both geoipdata and repository (e.g. only 1 volume) with the specified subdirs (e.g. 2 volumeMounts)
+    template: deployment.yaml
+    values:
+      - values/custom_samePVC.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      # Data Volume
+      - equal:
+          path: spec.template.spec.volumes[4].name
+          value: data
+      - equal:
+          path: spec.template.spec.volumes[4].persistentVolumeClaim.claimName
+          value: common-pvc
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].name
+          value: data
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].mountPath
+          value: /DATA
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[3].subPath
+          value: ./repository/
+      # No GeoIP volume. It should reuse the existing 'data' volume instead
+      - notExists:
+          path: spec.template.spec.volumes[5]
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].name
+          value: data
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].subPath
+          value: ./geoipdata/

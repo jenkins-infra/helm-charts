@@ -1,0 +1,8 @@
+# Test case: both repository and geoipdata have the same PVC
+repository:
+  name: common-pvc
+  existingPVC: true
+  subDir: ./repository/
+geoipdata:
+  existingPVCName: common-pvc
+  subDir: ./geoipdata/
