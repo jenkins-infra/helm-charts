@@ -2,6 +2,18 @@ apiVersion: v1
 entries:
   accountapp:
   - apiVersion: v1
+    appVersion: 0.6.58
+    created: "2025-08-18T18:54:08.069897832Z"
+    description: A Helm chart for accounts.jenkins.io
+    digest: f72bb50ae78d5f26b8ba555044dd59fc89e71932d1c92b3ccfd65d504fb481b8
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: accountapp
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/accountapp-0.10.0/accountapp-0.10.0.tgz
+    version: 0.10.0
+  - apiVersion: v1
     appVersion: 0.6.56
     created: "2025-08-13T05:49:44.585100462Z"
     description: A Helm chart for accounts.jenkins.io
@@ -3849,6 +3861,17 @@ entries:
     version: 0.1.1
   incrementals-publisher:
   - apiVersion: v2
+    created: "2025-08-18T18:54:08.203706796Z"
+    description: incrementals-publisher
+    digest: 5b7ad7eb18425797a187cb2fd2b3b8d3ce780710d1b26a05d6263855a7c2e566
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: incrementals-publisher
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/incrementals-publisher-0.8.2/incrementals-publisher-0.8.2.tgz
+    version: 0.8.2
+  - apiVersion: v2
     created: "2025-06-19T19:56:01.9286391Z"
     description: incrementals-publisher
     digest: 569b5d63c69e7dd4ae9804660e0a6211356298851ee392f798ea9014f877a9e0
@@ -5308,6 +5331,16 @@ entries:
     version: 0.1.0
   ldap:
   - apiVersion: v1
+    created: "2025-08-18T18:54:09.329605014Z"
+    description: A Helm chart for ldap.jenkins.io
+    digest: 61002c21166e244ef3b689c1a9a806c4acecea75c3a9dd23e598d1632991c475
+    maintainers:
+    - name: jenkins-infra-team@googlegroups.com
+    name: ldap
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/ldap-4.2.0/ldap-4.2.0.tgz
+    version: 4.2.0
+  - apiVersion: v1
     created: "2025-08-14T06:10:40.02484053Z"
     description: A Helm chart for ldap.jenkins.io
     digest: a87d9898ce9c589a52e4fa6e62740a97a1966be0e5bc4f09010b9a5c79c14c62
@@ -5964,6 +5997,18 @@ entries:
     - https://github.com/jenkins-infra/helm-charts/releases/download/mirror-0.1.23/mirror-0.1.23.tgz
     version: 0.1.23
   mirrorbits:
+  - apiVersion: v1
+    appVersion: v0.6.1
+    created: "2025-08-18T18:54:09.490795387Z"
+    description: Mirrobits helm chart for Kubernetes
+    digest: 7a28b4b622619ef437d6c1da4b8979acfcfcf05b907c9c1682bcfa885e62e965
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: mirrorbits
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/mirrorbits-5.10.0/mirrorbits-5.10.0.tgz
+    version: 5.10.0
   - apiVersion: v1
     appVersion: v0.6.1
     created: "2025-08-16T15:27:56.702933945Z"
@@ -13308,6 +13353,19 @@ entries:
     version: 0.1.0
   plugin-health-scoring:
   - apiVersion: v2
+    appVersion: v4.10.2
+    created: "2025-08-18T18:54:09.670497639Z"
+    description: A Helm chart for Kubernetes
+    digest: e4eb25484800d454d7ebdc01c1b49c78ba23e4ca2cfc5fc456a87562dae73d7e
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: plugin-health-scoring
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/plugin-health-scoring-3.1.2/plugin-health-scoring-3.1.2.tgz
+    version: 3.1.2
+  - apiVersion: v2
     created: "2025-07-02T17:29:51.972345634Z"
     description: A Helm chart for Kubernetes
     digest: 15233842f9538d7cb8673047c414b7a25e4338fab852521513b45ce396186e19
@@ -13977,6 +14035,17 @@ entries:
   plugin-site:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2025-08-18T18:54:09.820870603Z"
+    description: A Helm chart for plugins.jenkins.io
+    digest: 6f15a28054362b6277b4fe82f342ecc6361bdcfbc699e33a698c9cc404f13906
+    maintainers:
+    - name: jenkins-infra-team@googlegroups.com
+    name: plugin-site
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/plugin-site-0.5.2/plugin-site-0.5.2.tgz
+    version: 0.5.2
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2025-06-19T16:39:41.125767049Z"
     description: A Helm chart for plugins.jenkins.io
     digest: ed1162e878c2a5f1dfc90452278478fb307ce438d658b2531fe4dd73c01795d7
@@ -14262,6 +14331,19 @@ entries:
     - https://github.com/jenkins-infra/public-charts/releases/download/plugin-site-0.0.3/plugin-site-0.0.3.tgz
     version: 0.0.3
   plugin-site-issues:
+  - apiVersion: v2
+    appVersion: 0.10.35
+    created: "2025-08-18T18:54:09.92991139Z"
+    description: plugin-site-issues
+    digest: cb4e58d0ed32c651679cebef65fbc08a4054d7b798ff91aa9bf1bc5b27ec7f9c
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: plugin-site-issues
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/plugin-site-issues-0.4.0/plugin-site-issues-0.4.0.tgz
+    version: 0.4.0
   - apiVersion: v2
     appVersion: 0.10.35
     created: "2025-08-16T07:09:47.158820099Z"
@@ -14728,6 +14810,19 @@ entries:
   rating:
   - apiVersion: v2
     appVersion: "1.0"
+    created: "2025-08-18T18:54:10.086215725Z"
+    description: A Helm chart for Kubernetes
+    digest: fcb0e896efd6e63036952d349299fcb0a1450c0382e535bc874cd2b2f4208114
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: rating
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/rating-0.5.0/rating-0.5.0.tgz
+    version: 0.5.0
+  - apiVersion: v2
+    appVersion: "1.0"
     created: "2025-06-19T12:15:01.80548321Z"
     description: A Helm chart for Kubernetes
     digest: bf228102d0b5469bf0e3b98c33ee255e7ee822be60f1c3d678584c3dbfd2ab06
@@ -15087,6 +15182,17 @@ entries:
     - https://github.com/jenkins-infra/helm-charts/releases/download/rss2twitter-0.0.1/rss2twitter-0.0.1.tgz
     version: 0.0.1
   rsyncd:
+  - apiVersion: v1
+    created: "2025-08-18T18:54:10.285069942Z"
+    description: rsyncd helm chart for Kubernetes
+    digest: 9c2f40e7373efb271af0af3fff7ea1355b63de007a62d958cec330451feef4ea
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: rsyncd
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/rsyncd-3.2.0/rsyncd-3.2.0.tgz
+    version: 3.2.0
   - apiVersion: v1
     created: "2025-08-13T06:23:57.76807626Z"
     description: rsyncd helm chart for Kubernetes
@@ -16281,6 +16387,18 @@ entries:
     version: 0.1.23
   uplink:
   - apiVersion: v1
+    appVersion: 1.0.3
+    created: "2025-08-18T18:54:10.417567344Z"
+    description: A Helm chart for uplink.jenkins.io
+    digest: e2541d9be7fcebb004f3aa2ce27fc4b1299b3166a183ebbdbe003e23ffebbd9a
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: uplink
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/uplink-1.2.0/uplink-1.2.0.tgz
+    version: 1.2.0
+  - apiVersion: v1
     appVersion: 1.0.0
     created: "2025-06-19T14:32:26.732149581Z"
     description: A Helm chart for uplink.jenkins.io
@@ -16445,6 +16563,18 @@ entries:
     - https://github.com/jenkins-infra/public-charts/releases/download/uplink-0.1.0/uplink-0.1.0.tgz
     version: 0.1.0
   wiki:
+  - apiVersion: v2
+    appVersion: 0.2.30
+    created: "2025-08-18T18:54:10.587650592Z"
+    description: A Helm chart for wiki static content
+    digest: 9e02198312024d4492bbfafbbc5da0146721a3d5dd20495a039e3d72035c2195
+    maintainers:
+    - name: jenkins-infra-team@googlegroups.com
+    name: wiki
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/wiki-0.8.0/wiki-0.8.0.tgz
+    version: 0.8.0
   - apiVersion: v2
     appVersion: 0.2.29
     created: "2025-06-19T19:35:47.468119693Z"
@@ -18197,4 +18327,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2025-08-16T15:27:56.704728716Z"
+generated: "2025-08-18T18:54:10.591385902Z"
