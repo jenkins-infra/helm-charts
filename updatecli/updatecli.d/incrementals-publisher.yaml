@@ -17,21 +17,20 @@ sources:
     kind: githubrelease
     name: Get jenkins-infra/incrementals-publish latest version
     spec:
-      owner: "jenkins-infra"
-      repository: "incrementals-publisher"
+      owner: jenkins-infra
+      repository: incrementals-publisher
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
 
 conditions:
   checkDockerImagePublished:
-    name: Test if jenkinsciinfra/incrementals-publisher docker image is published
+    name: Test if dockerhubmirror.azurecr.io/jenkinsciinfra/incrementals-publisher docker image is published
     kind: dockerimage
     sourceid: latestRelease
     spec:
-      image: "jenkinsciinfra/incrementals-publisher"
+      image: dockerhubmirror.azurecr.io/jenkinsciinfra/incrementals-publisher
       ## Tag from source
       architectures:
-        - amd64
         - arm64
 
 targets:

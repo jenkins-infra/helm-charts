@@ -13,33 +13,57 @@ scms:
       branch: "{{ .github.branch }}"
 
 sources:
-  latestMirrorbitsRelease:
+  latestMirrorbitsImageRelease:
     name: Get latest version of jenkinsciinfra/mirrorbits
     kind: githubrelease
     spec:
-      owner: "jenkins-infra"
-      repository: "docker-mirrorbits"
+      owner: jenkins-infra
+      repository: docker-mirrorbits
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
+  mirrorbitsVersion:
+    name: Get the version mirrorbits provided by latest jenkinsciinfra/mirrorbits
+    kind: file
+    spec:
+      file: https://raw.githubusercontent.com/jenkins-infra/docker-mirrorbits/refs/tags/{{ source "latestMirrorbitsImageRelease" }}/Dockerfile
+      matchpattern: 'ARG mirrorbits_version=v(.*)'
+    transformers:
+      - findsubmatch:
+          pattern: 'ARG mirrorbits_version=v(.*)'
+          captureindex: 1
 
 conditions:
   checkMirrorbitsDockerImagePublished:
-    name: Ensure that the image "jenkinsciinfra/mirrorbits:<found_version>" is published on the DockerHub
-    sourceid: latestMirrorbitsRelease
+    name: Ensure that the image "dockerhubmirror.azurecr.io/jenkinsciinfra/mirrorbits:<found_version>" is published on the DockerHub
+    sourceid: latestMirrorbitsImageRelease
     kind: dockerimage
     spec:
-      image: "jenkinsciinfra/mirrorbits"
-      architecture: "amd64"
+      image: dockerhubmirror.azurecr.io/jenkinsciinfra/mirrorbits
       # Tag comes from sourceid
+      architectures:
+        - arm64
 
 targets:
   updateMirrorbits:
     name: "Update mirrorbits docker image version"
-    sourceid: latestMirrorbitsRelease
+    sourceid: latestMirrorbitsImageRelease
     kind: helmchart
     spec:
       name: charts/mirrorbits
       key: $.image.tag
+      versionincrement: patch
+    scmid: default
+  updateChartMeta:
+    name: Update chart appVersion
+    sourceid: mirrorbitsVersion
+    transformers:
+      - addprefix: '"v'
+      - addsuffix: '"'
+    kind: helmchart
+    spec:
+      name: charts/mirrorbits
+      file: Chart.yaml
+      key: $.appVersion
       versionincrement: patch
     scmid: default
 
