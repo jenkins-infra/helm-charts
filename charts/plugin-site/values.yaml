@@ -4,7 +4,7 @@
 backend:
   replicaCount: 2
   image:
-    repository: jenkinsciinfra/plugin-site-api
+    repository: dockerhubmirror.azurecr.io/jenkinsciinfra/plugin-site-api
     tag: v1.17.0
     pullPolicy: IfNotPresent
   port: 8080
