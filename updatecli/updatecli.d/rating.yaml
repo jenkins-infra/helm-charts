@@ -15,24 +15,22 @@ scms:
 sources:
   latestRelease:
     kind: githubrelease
-    name: "Get latest jenkins-infra/rating release"
+    name: Get latest jenkins-infra/rating release
     spec:
-      owner: "jenkins-infra"
-      repository: "rating"
+      owner: jenkins-infra
+      repository: rating
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
 
 conditions:
   checkDockerImagePublished:
-    name: |
-      Test jenkinsciinfra/rating:{{ source `latestRelease` }} docker image tag
+    name: Check the  dockerhubmirror.azurecr.io/jenkinsciinfra/rating:{{ source `latestRelease` }} docker image is published
     kind: dockerimage
     sourceid: latestRelease
     spec:
-      image: "jenkinsciinfra/rating"
+      image:  dockerhubmirror.azurecr.io/jenkinsciinfra/rating
       ## Tag from source
       architectures:
-        - amd64
         - arm64
 
 targets:
