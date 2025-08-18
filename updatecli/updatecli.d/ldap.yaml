@@ -25,22 +25,22 @@ sources:
 
 conditions:
   checkLdapSlapdImage:
-    name: Ensure that the image "jenkinsciinfra/ldap:<found_version>" is published on the DockerHub
+    name: Ensure that the image "dockerhubmirror.azurecr.io/jenkinsciinfra/ldap:<found_version>" is published
     kind: dockerimage
     spec:
-      image: jenkinsciinfra/ldap
+      image: dockerhubmirror.azurecr.io/jenkinsciinfra/ldap
       architectures:
-        - amd64
+        - arm64
       # Tag comes from sourceid
   checkLdapCrondImage:
-    name: Ensure that the image "jenkinsciinfra/ldap:cron-<found_version>" is published on the DockerHub
+    name: Ensure that the image "dockerhubmirror.azurecr.io/jenkinsciinfra/ldap:cron-<found_version>" is published
     transformers:
       - addprefix: "cron-"
     kind: dockerimage
     spec:
-      image: jenkinsciinfra/ldap
+      image: dockerhubmirror.azurecr.io/jenkinsciinfra/ldap
       architectures:
-        - amd64
+        - arm64
       # Tag comes from (transformed) sourceid
 
 targets:
