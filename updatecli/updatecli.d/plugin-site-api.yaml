@@ -17,21 +17,20 @@ sources:
     kind: githubrelease
     name: Get jenkins-infra/plugin-site-api latest version
     spec:
-      owner: "jenkins-infra"
-      repository: "plugin-site-api"
+      owner: jenkins-infra
+      repository: plugin-site-api
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
 
 conditions:
   checkDockerImagePublished:
-    name: Test if jenkinsciinfra/plugin-site-api docker image is published
+    name: Test if dockerhubmirror.azurecr.io/jenkinsciinfra/incrementals-publisher docker image is published
     kind: dockerimage
     sourceid: latestRelease
     spec:
-      image: "jenkinsciinfra/plugin-site-api"
+      image: dockerhubmirror.azurecr.io/jenkinsciinfra/plugin-site-api
       ## Tag from source
       architectures:
-        - amd64
         - arm64
 
 targets:

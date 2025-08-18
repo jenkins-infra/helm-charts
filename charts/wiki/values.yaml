@@ -3,10 +3,9 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: jenkinsciinfra/wiki
+  repository: dockerhubmirror.azurecr.io/jenkinsciinfra/wiki
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: 0.2.29
+  tag: 0.2.30
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""

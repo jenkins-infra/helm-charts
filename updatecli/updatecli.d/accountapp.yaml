@@ -15,22 +15,21 @@ scms:
 sources:
   latestRelease:
     kind: githubrelease
-    name: "Get latest jenkins-infra/account-app release"
+    name: Get latest jenkins-infra/account-app release
     spec:
-      owner: "jenkins-infra"
-      repository: "account-app"
+      owner: jenkins-infra
+      repository: account-app
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
 
 conditions:
   checkDockerImagePublished:
-    name: "Test jenkinsciinfra/account-app:<latest_version> docker image tag"
+    name: Test jenkinsciinfra/account-app:<latest_version> docker image tag
     kind: dockerimage
     spec:
-      image: "jenkinsciinfra/account-app"
+      image: dockerhubmirror.azurecr.io/jenkinsciinfra/account-app
       ## Tag from source
       architectures:
-        - amd64
         - arm64
 
 targets:

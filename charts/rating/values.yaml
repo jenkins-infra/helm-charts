@@ -3,8 +3,8 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: "jenkinsciinfra/rating"
-  tag: 0.1.6
+  repository: dockerhubmirror.azurecr.io/jenkinsciinfra/rating
+  tag: 0.1.8
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""

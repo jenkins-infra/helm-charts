@@ -15,22 +15,22 @@ scms:
 sources:
   latestRelease:
     kind: githubrelease
-    name: "Get latest jenkins-infra/docker-plugin-site-issues latest version"
+    name: Get latest jenkins-infra/docker-plugin-site-issues latest version
     spec:
-      owner: "jenkins-infra"
-      repository: "docker-plugin-site-issues"
+      owner: jenkins-infra
+      repository: docker-plugin-site-issues
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
 
 conditions:
   checkDockerImagePublished:
-    name: |
-      Test jenkinsciinfra/docker-plugin-site-issues:{{ source `latestRelease` }} docker image tag
+    name: Verifiy the dockerhubmirror.azurecr.io/jenkinsciinfra/docker-plugin-site-issues:{{ source `latestRelease` }} docker image is published
     kind: dockerimage
     sourceid: latestRelease
     spec:
-      image: "jenkinsciinfra/plugin-site-issues"
-      architecture: "amd64"
+      image: dockerhubmirror.azurecr.io/jenkinsciinfra/plugin-site-issues
+      architectures:
+      - arm64
 
 targets:
   updateChartValue:

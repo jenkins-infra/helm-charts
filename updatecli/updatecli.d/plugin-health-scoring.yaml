@@ -15,21 +15,22 @@ scms:
 sources:
   latestRelease:
     kind: githubrelease
-    name: "Get latest jenkinsciinfra/plugin-health-scoring release"
+    name: Get latest jenkinsciinfra/plugin-health-scoring release
     spec:
-      owner: "jenkins-infra"
-      repository: "plugin-health-scoring"
+      owner: jenkins-infra
+      repository: plugin-health-scoring
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
 
 conditions:
   checkDockerImagePublished:
-    name: "Test jenkinsciinfra/plugin-health-scoring:<latest_version> docker image tag"
+    name: Verify the dockerhubmirror.azurecr.io/jenkinsciinfra/plugin-health-scoring:<latest_version> docker image is published
     kind: dockerimage
     spec:
-      image: "jenkinsciinfra/plugin-health-scoring"
+      image: dockerhubmirror.azurecr.io/jenkinsciinfra/plugin-health-scoring
       ## Tag from source
-      architecture: amd64
+      architectures:
+        - arm64
 
 targets:
   updateChart:
@@ -38,6 +39,15 @@ targets:
     spec:
       name: charts/plugin-health-scoring
       key: $.image.tag
+      versionincrement: patch
+    scmid: default
+  updateChartMeta:
+    name: Update chart appVersion
+    kind: helmchart
+    spec:
+      name: charts/plugin-health-scoring
+      file: Chart.yaml
+      key: $.appVersion
       versionincrement: patch
     scmid: default
 

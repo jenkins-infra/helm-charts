@@ -13,26 +13,30 @@ scms:
       branch: "{{ .github.branch }}"
 
 sources:
-  latestDockerRsyncdImage:
-    kind: dockerimage
-    name: "Get jenkinsciinfra/rsyncd:latest docker image version (arm64/amd64)"
+  latestRelease:
+    kind: githubrelease
+    name: Get latest jenkins-infra/docker-rsyncd release
     spec:
-      image: "jenkinsciinfra/rsyncd"
-      versionfilter:
-        kind: "semver"
+      owner: jenkins-infra
+      repository: docker-rsyncd
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
 
 conditions:
-   docker:
-    name: "Docker Image Published on Registry"
+  checkDockerImagePublished:
+    name: Check the  dockerhubmirror.azurecr.io/jenkinsciinfra/rsyncd:{{ source `latestRelease` }} docker image is published
     kind: dockerimage
+    sourceid: latestRelease
     spec:
-      image: "jenkinsciinfra/rsyncd"
-      architectures: ["linux/amd64","linux/arm64"]
+      image: dockerhubmirror.azurecr.io/jenkinsciinfra/rsyncd
+      ## Tag from source
+      architectures:
+        - arm64
 
 targets:
   updateRsyncd:
-    name: "Update rsyncd docker image version"
-    sourceid: latestDockerRsyncdImage
+    name: Update rsyncd docker image version
+    sourceid: latestRelease
     kind: helmchart
     spec:
       name: charts/rsyncd

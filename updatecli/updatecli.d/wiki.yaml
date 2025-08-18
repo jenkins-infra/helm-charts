@@ -15,23 +15,22 @@ scms:
 sources:
   latestRelease:
     kind: githubrelease
-    name: "Get latest jenkins-infra/docker-confluence-data release"
+    name: Get latest jenkins-infra/docker-confluence-data release
     spec:
-      owner: "jenkins-infra"
-      repository: "docker-confluence-data"
+      owner: jenkins-infra
+      repository: docker-confluence-data
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
 
 conditions:
   checkDockerImagePublished:
-    name: "Test jenkinsciinfra/wiki:<latest_version> docker image tag"
+    name: Test dockerhubmirror.azurecr.io/jenkinsciinfra/wiki:<latest_version> docker image tag
     kind: dockerimage
     sourceid: latestRelease
     spec:
-      image: "jenkinsciinfra/wiki"
+      image: dockerhubmirror.azurecr.io/jenkinsciinfra/wiki
       ## Tag from source
       architectures:
-        - amd64
         - arm64
 
 targets:
