@@ -15,22 +15,21 @@ scms:
 sources:
   latestRelease:
     kind: githubrelease
-    name: "Get latest jenkinsciinfra/uplink release"
+    name: Get latest jenkinsciinfra/uplink release
     spec:
-      owner: "jenkins-infra"
-      repository: "uplink"
+      owner: jenkins-infra
+      repository: uplink
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
 
 conditions:
   checkDockerImagePublished:
-    name: "Test jenkinsciinfra/uplink:<latest_version> docker image tag"
+    name: Check the dockerhubmirror.azurecr.io/jenkinsciinfra/uplink:<latest_version> docker image is published
     kind: dockerimage
     spec:
-      image: "jenkinsciinfra/uplink"
+      image: dockerhubmirror.azurecr.io/jenkinsciinfra/uplink
       ## Tag from source
       architectures:
-        - amd64
         - arm64
 
 targets:
@@ -40,6 +39,15 @@ targets:
     spec:
       name: charts/uplink
       key: $.image.tag
+      versionincrement: patch
+    scmid: default
+  updateChartMeta:
+    name: Update chart appVersion
+    kind: helmchart
+    spec:
+      name: charts/uplink
+      file: Chart.yaml
+      key: $.appVersion
       versionincrement: patch
     scmid: default
 
