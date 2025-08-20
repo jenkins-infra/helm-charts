@@ -11,3 +11,4 @@ jobsDefinition:
     buildOnFirstIndexing: true
     orphanedItemStrategyDaysToKeep: 3
     orphanedItemStrategyNumToKeep: 10
+    mergePrWithTargetRevision: true

@@ -50,10 +50,14 @@ tests:
                                 strategyId(1) // 1-only branches that are not pull requests
                               }
                               gitHubPullRequestDiscovery {
-                                strategyId(1) // 1-Merging the pull request with the current target branch revision
+                                // 1 - Merging the pull request with the current target branch revision
+                                // 2 - The current pull request revision
+                                strategyId(2)
                               }
                               gitHubForkDiscovery {
-                                strategyId(1) // 1-Merging the pull request with the current target branch revision
+                                // 1 - Merging the pull request with the current target branch revision
+                                // 2 - The current pull request revision
+                                strategyId(2)
                                 trust {
                                   gitHubTrustPermissions()
                                 }
@@ -155,10 +159,14 @@ tests:
                                 strategyId(1) // 1-only branches that are not pull requests
                               }
                               gitHubPullRequestDiscovery {
-                                strategyId(1) // 1-Merging the pull request with the current target branch revision
+                                // 1 - Merging the pull request with the current target branch revision
+                                // 2 - The current pull request revision
+                                strategyId(2)
                               }
                               gitHubForkDiscovery {
-                                strategyId(1) // 1-Merging the pull request with the current target branch revision
+                                // 1 - Merging the pull request with the current target branch revision
+                                // 2 - The current pull request revision
+                                strategyId(2)
                                 trust {
                                   gitHubTrustPermissions()
                                 }
@@ -260,10 +268,14 @@ tests:
                                 strategyId(1) // 1-only branches that are not pull requests
                               }
                               gitHubPullRequestDiscovery {
-                                strategyId(1) // 1-Merging the pull request with the current target branch revision
+                                // 1 - Merging the pull request with the current target branch revision
+                                // 2 - The current pull request revision
+                                strategyId(2)
                               }
                               gitHubForkDiscovery {
-                                strategyId(1) // 1-Merging the pull request with the current target branch revision
+                                // 1 - Merging the pull request with the current target branch revision
+                                // 2 - The current pull request revision
+                                strategyId(2)
                                 trust {
                                   gitHubTrustPermissions()
                                 }
@@ -365,10 +377,14 @@ tests:
                                 strategyId(1) // 1-only branches that are not pull requests
                               }
                               gitHubPullRequestDiscovery {
-                                strategyId(1) // 1-Merging the pull request with the current target branch revision
+                                // 1 - Merging the pull request with the current target branch revision
+                                // 2 - The current pull request revision
+                                strategyId(1)
                               }
                               gitHubForkDiscovery {
-                                strategyId(1) // 1-Merging the pull request with the current target branch revision
+                                // 1 - Merging the pull request with the current target branch revision
+                                // 2 - The current pull request revision
+                                strategyId(1)
                                 trust {
                                   gitHubTrustPermissions()
                                 }
