@@ -52,10 +52,14 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
               strategyId(1) // 1-only branches that are not pull requests
             }
             gitHubPullRequestDiscovery {
-              strategyId(1) // 1-Merging the pull request with the current target branch revision
+              // 1 - Merging the pull request with the current target branch revision
+              // 2 - The current pull request revision
+              strategyId({{ .mergePrWithTargetRevision | default false | ternary "1" "2"  }})
             }
             gitHubForkDiscovery {
-              strategyId(1) // 1-Merging the pull request with the current target branch revision
+              // 1 - Merging the pull request with the current target branch revision
+              // 2 - The current pull request revision
+              strategyId({{ .mergePrWithTargetRevision | default false | ternary "1" "2"  }})
               trust {
                 gitHubTrustPermissions()
               }
