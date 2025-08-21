@@ -12,3 +12,7 @@ podAnnotations:
     [
       {"source":"nginx","service":"RELEASE-NAME"}
     ]
+htmlVolume:
+  persistentVolumeClaim:
+    claimName: my-pvc
+htmlVolumeSubDir: ./html/

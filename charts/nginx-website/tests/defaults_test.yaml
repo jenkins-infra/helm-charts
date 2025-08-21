@@ -35,6 +35,22 @@ tests:
           path: spec.template.spec.containers[0].resources
       - notExists:
           path: spec.template.metadata.annotations
+      - equal:
+          path: spec.template.spec.volumes[0].name
+          value: html
+      - isNullOrEmpty:
+          path: spec.template.spec.volumes[0].emptyDir
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].name
+          value: html
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].readOnly
+          value: true
+      - notExists:
+          path: spec.template.spec.containers[0].volumeMounts[0].subPath
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].mountPath
+          value: /usr/share/nginx/html
   - it: should create a default nginx configuration
     template: nginx-configmap.yaml
     asserts:
