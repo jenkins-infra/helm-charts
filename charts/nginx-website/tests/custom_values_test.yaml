@@ -60,3 +60,21 @@ tests:
             [
               {"source":"nginx","service":"RELEASE-NAME"}
             ]
+      - equal:
+          path: spec.template.spec.volumes[0].name
+          value: html
+      - equal:
+          path: spec.template.spec.volumes[0].persistentVolumeClaim.claimName
+          value: my-pvc
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].name
+          value: html
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].readOnly
+          value: true
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].subPath
+          value: ./html/
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].mountPath
+          value: /usr/share/nginx/html

@@ -51,6 +51,10 @@ spec:
           volumeMounts:
             - name: html
               mountPath: /usr/share/nginx/html
+              readOnly: true
+          {{- with .Values.htmlVolumeSubDir }}
+              subPath: {{ . }}
+          {{- end }}
             - name: config
               mountPath: /etc/nginx/conf.d
           {{- with .Values.resources }}
