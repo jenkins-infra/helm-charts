@@ -2,8 +2,8 @@ apiVersion: v2
 description: A Helm chart for Kubernetes
 name: plugin-health-scoring
 type: application
-version: 3.1.2
-appVersion: v4.10.2
+version: 3.1.3
+appVersion: v5.0.0
 maintainers:
 - email: jenkins-infra-team@googlegroups.com
   name: jenkins-infra-team
