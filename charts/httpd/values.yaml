@@ -86,10 +86,3 @@ httpdConf:
 nodeSelector: {}
 tolerations: []
 affinity: {}
-httpdRestart:
-  enable: false # allow automatic kubernetes rollout restart
-  cron: '0 * * * *' # default to every hour
-  image:
-    repository: bitnami/kubectl
-    tag: 1.30.7
-    pullPolicy: IfNotPresent
