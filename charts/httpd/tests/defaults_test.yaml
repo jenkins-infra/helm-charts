@@ -2,7 +2,6 @@ suite: default tests
 templates:
   - configmap.yaml
   - deployment.yaml
-  - httpdRestart.yaml
   - ingress.yaml
   - persistentVolume.yaml
   - persistentVolumeClaim.yaml
@@ -79,11 +78,6 @@ tests:
           count: 0
   - it: should not define any PV claim
     template: persistentVolumeClaim.yaml
-    asserts:
-      - hasDocuments:
-          count: 0
-  - it: should not define a CronJob
-    template: httpdRestart.yaml
     asserts:
       - hasDocuments:
           count: 0
