@@ -5,19 +5,23 @@ metadata:
   labels: {{ include "nginx-website.labels" . | nindent 4 }}
 data:
   default.conf: |
+    # default.conf
+{{ if .Values.nginx.httpDirectives }}
+{{ .Values.nginx.httpDirectives | indent 4 }}
+{{ end }}
     server {
       listen       {{ .Values.service.port }};
       server_name  {{ .Values.nginx.serverName }};
-      {{- if .Values.nginx.overrideLocations }}
+{{- if .Values.nginx.overrideLocations }}
 {{ .Values.nginx.overrideLocations | indent 6 }}
-      {{- else }}
+{{- else }}
       location / {
         root   {{ .Values.nginx.slashLocation.root }};
         index  {{ .Values.nginx.slashLocation.index }};
         autoindex {{ .Values.nginx.slashLocation.autoindex }};
-        {{- if .Values.nginx.slashLocation.tryFiles }}
-        try_files {{ .Values.nginx.slashLocation.tryFiles }};
-        {{- end }}
+  {{- with .Values.nginx.slashLocation.tryFiles }}
+        try_files {{ . }};
+  {{- end }}
       }
-    {{- end }}
+{{- end }}
     }

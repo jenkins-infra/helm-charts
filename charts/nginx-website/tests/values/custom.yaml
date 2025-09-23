@@ -7,6 +7,12 @@ nginx:
     index: custom.html
     autoindex: "off"
     tryFiles: $uri /index.html
+  httpDirectives: |
+    map $http_accept_language $lang {
+      default '';
+      ~^zh zh;
+    }
+
 podAnnotations:
   ad.datadoghq.com/web.logs: |
     [
