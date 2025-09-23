@@ -63,6 +63,9 @@ tests:
           value: RELEASE-NAME-nginx-website
       - matchRegex:
           path: data["default.conf"]
+          pattern: '# default.conf'
+      - matchRegex:
+          path: data["default.conf"]
           pattern: 'listen       80;'
       - matchRegex:
           path: data["default.conf"]

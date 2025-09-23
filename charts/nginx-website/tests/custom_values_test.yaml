@@ -34,6 +34,9 @@ tests:
           value: RELEASE-NAME-nginx-website
       - matchRegex:
           path: data["default.conf"]
+          pattern: '# default.conf'
+      - matchRegex:
+          path: data["default.conf"]
           pattern: 'listen       8080;'
       - matchRegex:
           path: data["default.conf"]
@@ -47,6 +50,10 @@ tests:
       - matchRegex:
           path: data["default.conf"]
           pattern: 'try_files \$uri /index.html;'
+      - matchRegex:
+          path: data["default.conf"]
+          # Note: escaping regex special characters
+          pattern: 'map \$http_accept_language \$lang \{'
   - it: should generate a deployment with the custom values
     template: deployment.yaml
     asserts:

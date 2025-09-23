@@ -62,18 +62,24 @@ nginx:
     autoindex: "on"
     ## Uncomment to enable try_files directive
     # tryFiles: $uri /index.html
-  # overrideLocations |
-  ## to allow customs locations
-  # location /statistics {
-  #     root   /usr/share/nginx/html;
-  #     index  index.html index.htm;
-  #     autoindex on;
-  #     try_files $uri /index.html;
-  # }
-  #
-  # location /plugin-trends {
-  #     root   /usr/share/nginx/html;
-  #     index  index.html index.htm;
-  #     autoindex on;
-  #     try_files $uri /index.html;
-  # }
+  ## Uncomment to set up custom locations
+  # overrideLocations: |
+  #   location /statistics {
+  #       root   /usr/share/nginx/html;
+  #       index  index.html index.htm;
+  #       autoindex on;
+  #       try_files $uri /index.html;
+  #   }
+
+  #   location /plugin-trends {
+  #       root   /usr/share/nginx/html;
+  #       index  index.html index.htm;
+  #       autoindex on;
+  #       try_files $uri /index.html;
+  #   }
+  ## Uncomment to set up custom directives at 'http' level
+  # httpDirectives: |
+  #   map $http_accept_language $lang {
+  #     default '';
+  #     ~^zh zh;
+  #   }
