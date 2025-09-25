@@ -11,18 +11,18 @@ scms:
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
       branch: "{{ .github.branch }}"
-  nginxGithubMirror:
-    kind: git
-    spec:
-      url: "https://github.com/nginx/nginx"
-      branch: "master"
+  # nginxGithubMirror:
+  #   kind: git
+  #   spec:
+  #     url: "https://github.com/nginx/nginx"
+  #     branch: "master"
 
 sources:
   latestRelease:
     name: Get latest stable version of nginx
     kind: gittag
-    scmid: nginxGithubMirror
     spec:
+      url: "https://github.com/nginx/nginx"
       versionfilter:
         kind: regex
         ## Nginx stable version have the minor digit as an even number
@@ -44,22 +44,6 @@ conditions:
         - arm64
 
 targets:
-  updateJenkinsioChartEn:
-    name: "Update nginx stable docker image version for jenkinsio chart (EN)"
-    kind: helmchart
-    spec:
-      name: charts/jenkinsio
-      key: $.images.en.tag
-      versionincrement: patch
-    scmid: default
-  updateJenkinsioChartZh:
-    name: "Update nginx stable docker image version for jenkinsio chart (ZH)"
-    kind: helmchart
-    spec:
-      name: charts/jenkinsio
-      key: $.images.zh.tag
-      versionincrement: patch
-    scmid: default
   updatePluginSiteChart:
     name: "Update nginx stable docker image version for plugin-site chart"
     kind: helmchart
@@ -94,7 +78,6 @@ actions:
       labels:
         - dependencies
         - nginx
-        - jenkinsio
         - plugin-site
         - artifact-caching-proxy
         - nginx-website
