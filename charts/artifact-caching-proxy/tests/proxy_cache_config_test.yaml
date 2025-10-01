@@ -19,7 +19,7 @@ tests:
           path: data["proxy-cache.conf"]
           pattern: proxy_cache_valid 200 206 1M;
       - notMatchRegex:
-          path: data["proxy-cache.conf"]
+          path: data["common-proxy.conf"]
           pattern: proxy_ssl_server_name on;
       - matchRegex:
           path: data["vhost-proxy.conf"]
@@ -64,7 +64,7 @@ tests:
           path: data["proxy-cache.conf"]
           pattern: proxy_cache_valid 201 204 3H;
       - matchRegex:
-          path: data["proxy-cache.conf"]
+          path: data["common-proxy.conf"]
           pattern: proxy_ssl_server_name on;
       - matchRegex:
           path: data["vhost-proxy.conf"]

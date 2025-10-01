@@ -19,6 +19,10 @@ data:
     # Pass the current Server's identification to upstream
     # Ref. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server
     proxy_pass_header   Server;
+{{- if .Values.proxy.proxySslServerNameEnabled -}}
+    # Set proxy_ssl_server_name to ensure that the server name is passed to the upstream
+    proxy_ssl_server_name on;  # Default for all locations and servers
+{{- end }}
 
     # Remove any cookie in the requests to upstream
     proxy_cookie_path   ~*^/.* /;
@@ -39,11 +43,6 @@ data:
 
     # Specify HTTP code of responses to cache
     proxy_cache_valid {{ .Values.proxy.proxyCacheValidCode }} {{ .Values.proxy.proxyCacheValidCodeDuration }};
-
-{{- if .Values.proxy.proxySslServerNameEnabled -}}
-    # Set proxy_ssl_server_name to ensure that the server name is passed to the upstream
-    proxy_ssl_server_name on;  # Default for all locations and servers
-{{- end }}
 
   vhost-proxy.conf: |
     include /etc/nginx/conf.d/cache.conf;
