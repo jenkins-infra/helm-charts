@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: dockerhubmirror.azurecr.io/jenkinsciinfra/mirrorbits
-  tag: 0.3.4
+  tag: 0.3.5
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
