@@ -19,7 +19,7 @@ data:
     pushd ./bom
 
     # TODO: Retrieve this list from Maven
-    build_lines=("weekly" "2.479.x" "2.492.x")
+    build_lines=("weekly" "2.504.x" "2.516.x" "2.528.x")
 
     # Load dependencies in the local Maven repo
     for build_line in "${build_lines[@]}"; do
