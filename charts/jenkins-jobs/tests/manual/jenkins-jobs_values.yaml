@@ -10,3 +10,8 @@ jobsDefinition:
     kind: folder
     children:
       docker-404:
+      docker-404-production:
+        allowUntrustedChanges: false
+        disableTagDiscovery: true
+        disablePullRequests: true
+        branchIncludes: "main"

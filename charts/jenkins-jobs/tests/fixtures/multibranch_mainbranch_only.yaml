@@ -1,0 +1,7 @@
+jobsDefinition:
+  job-c:
+    name: Job C
+    allowUntrustedChanges: false
+    disableTagDiscovery: true
+    disablePullRequests: true
+    branchIncludes: "main"
