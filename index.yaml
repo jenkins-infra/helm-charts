@@ -3721,6 +3721,18 @@ entries:
   httpd:
   - apiVersion: v1
     appVersion: v2.4
+    created: "2025-12-05T09:17:04.373394781Z"
+    description: httpd helm chart for Kubernetes
+    digest: 39e966fd1d02cb6951c7b72b60886479b194fc81cc4af4236a09f5ec1293dd30
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: httpd
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/httpd-2.0.1/httpd-2.0.1.tgz
+    version: 2.0.1
+  - apiVersion: v1
+    appVersion: v2.4
     created: "2025-09-08T11:29:55.235957178Z"
     description: httpd helm chart for Kubernetes
     digest: 36a47762f8b6f5c7f5f962bdae80fd39bf6c063e7c62e9f449068c48ac71fcc0
@@ -18866,4 +18878,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-04T18:01:14.171017079Z"
+generated: "2025-12-05T09:17:04.375471624Z"
