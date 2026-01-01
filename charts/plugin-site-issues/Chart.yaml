@@ -1,5 +1,5 @@
 apiVersion: v2
-version: 0.4.7
+version: 0.4.8
 appVersion: 0.10.48
 description: plugin-site-issues
 name: plugin-site-issues
