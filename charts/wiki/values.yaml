@@ -5,7 +5,7 @@ replicaCount: 1
 image:
   repository: dockerhubmirror.azurecr.io/jenkinsciinfra/wiki
   pullPolicy: IfNotPresent
-  tag: 0.2.31
+  tag: 0.2.32
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
