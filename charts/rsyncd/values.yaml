@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 image:
   repository: dockerhubmirror.azurecr.io/jenkinsciinfra/rsyncd
-  tag: 2.1.44
+  tag: 2.1.45
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
