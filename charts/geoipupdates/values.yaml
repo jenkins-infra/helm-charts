@@ -1,6 +1,6 @@
 image:
   repository: jenkinsciinfra/geoipupdate
-  tag: 0.3.50
+  tag: 0.3.51
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 # securityContext:
