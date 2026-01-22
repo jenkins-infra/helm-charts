@@ -6,7 +6,7 @@ image:
   repository: dockerhubmirror.azurecr.io/jenkinsciinfra/plugin-site-issues
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 0.10.58
+  tag: 0.10.59
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
