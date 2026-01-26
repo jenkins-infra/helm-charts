@@ -10,8 +10,9 @@ data:
 {{ .Values.nginx.httpDirectives | indent 4 }}
 {{ end }}
     server {
-      listen       {{ .Values.service.port }};
-      server_name  {{ .Values.nginx.serverName }};
+      listen        {{ .Values.service.port }};
+      server_name   {{ .Values.nginx.serverName }};
+      server_tokens off;
 {{- if .Values.nginx.overrideLocations }}
 {{ .Values.nginx.overrideLocations | indent 6 }}
 {{- else }}
