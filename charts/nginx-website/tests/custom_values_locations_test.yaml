@@ -18,7 +18,10 @@ tests:
           value: RELEASE-NAME-nginx-website
       - matchRegex:
           path: data["default.conf"]
-          pattern: 'listen       8080;'
+          pattern: 'listen        8080;'
+      - matchRegex:
+          path: data["default.conf"]
+          pattern: 'server_tokens off;'
       - matchRegex:
           path: data["default.conf"]
           pattern: 'location /starwars'

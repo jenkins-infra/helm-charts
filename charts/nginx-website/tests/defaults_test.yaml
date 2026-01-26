@@ -66,10 +66,13 @@ tests:
           pattern: '# default.conf'
       - matchRegex:
           path: data["default.conf"]
-          pattern: 'listen       80;'
+          pattern: 'listen        80;'
       - matchRegex:
           path: data["default.conf"]
-          pattern: 'server_name  localhost;'
+          pattern: 'server_name   localhost;'
+      - matchRegex:
+          path: data["default.conf"]
+          pattern: 'server_tokens off;'
       - matchRegex:
           path: data["default.conf"]
           pattern: 'root   /usr/share/nginx/html;'
