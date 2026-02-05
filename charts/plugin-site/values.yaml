@@ -70,7 +70,7 @@ ingress:
 nodeSelector: {}
 tolerations: []
 affinity: {}
-dataFileUrl: https://ci.jenkins.io/job/Infra/job/plugin-site-api/job/generate-data/lastSuccessfulBuild/artifact/plugins.json.gzip
+dataFileUrl: https://reports.jenkins.io/plugin-site-api/plugins.json.gzip
 github:
   appId: ""
   appPrivateKey: ""
