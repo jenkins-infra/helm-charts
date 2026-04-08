@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: dockerhubmirror.azurecr.io/jenkinsciinfra/uplink
-  tag: 1.0.4
+  tag: 1.0.7
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
