@@ -40,7 +40,7 @@ spec:
           {{- if .Values.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
-              path: /rate/result.php
+              path: /healthcheck.php
               port: http
           {{- end }}
           resources:
