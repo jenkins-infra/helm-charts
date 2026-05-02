@@ -57,8 +57,7 @@ targets:
     name: Update chart appVersion
     sourceid: mirrorbitsVersion
     transformers:
-      - addprefix: '"v'
-      - addsuffix: '"'
+      - addprefix: v
     kind: helmchart
     spec:
       name: charts/mirrorbits
