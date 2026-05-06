@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: httpd
-  tag: 2.4.66
+  tag: 2.4.67
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
