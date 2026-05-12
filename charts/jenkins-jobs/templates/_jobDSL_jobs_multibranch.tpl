@@ -48,9 +48,11 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
               suppressLogs(true)
               unstableBuildNeutral(false)
             }
+            {{- if not .disableBranchDiscovery }}
             gitHubBranchDiscovery {
               strategyId(1) // 1-only branches that are not pull requests
             }
+            {{- end }}
             {{- if not .disablePullRequests }}
             gitHubPullRequestDiscovery {
               // 1 - Merging the pull request with the current target branch revision
@@ -98,7 +100,9 @@ multibranchPipelineJob('{{ .fullId | default .id }}') {
       {{- end }}
               }
     {{- end }}
+    {{- if not .disableBranchDiscovery }}
               buildRegularBranches()
+    {{- end }}
     {{- if not .disableTagDiscovery }}
               buildTags {
                 atLeastDays('-1')
