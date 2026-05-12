@@ -1,0 +1,5 @@
+jobsDefinition:
+  job-c:
+    name: Job C
+    disableTagDiscovery: true
+    disableBranchDiscovery: true

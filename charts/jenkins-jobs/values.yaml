@@ -36,11 +36,14 @@ jobsDefinition: {}
 #         enableGitHubChecks: true
 #         disableGitHubNotifications: true
 #         githubCheckName: RogerRoger
-#          enableGitHubChecks: true
-#          allowUntrustedChanges: true
-#          jenkinsfilePath: Jenkinsfile
-#          branchIncludes: "prod dev MR-*"
-#          branchExcludes: "excluded"
+#         enableGitHubChecks: true
+#         allowUntrustedChanges: true
+#         jenkinsfilePath: Jenkinsfile
+#         branchIncludes: "prod dev MR-*"
+#         branchExcludes: "excluded"
+#         disableTagDiscovery: true
+#         disablePullRequests: true
+#         disableBranchDiscovery: true
 #         credentials:
 #            ssh-deploy-key:
 #              username: ${SSH_CHARTS_SECRETS_USERNAME}
