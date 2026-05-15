@@ -63,7 +63,8 @@ jobs:
         name: Get Tools Versions
         if: steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests != ''
         run: |
-          current_helm_version="$(curl --silent --location https://raw.githubusercontent.com/jenkins-infra/docker-helmfile/main/Dockerfile  | grep 'ARG' | grep 'HELM_VERSION=' | sort -u | cut -d'=' -f2)"
+          current_packer_images_version="$(curl --show-error --silent --location https://raw.githubusercontent.com/jenkins-infra/jenkins-infra/refs/heads/production/hieradata/common.yaml | yq '.["profile::jenkinscontroller::jcasc"].agent_images.azure_vms_gallery_image.version')"
+          current_helm_version="$(curl --show-error --silent --location https://raw.githubusercontent.com/jenkins-infra/packer-images/refs/tags/"${current_packer_images_version}"/provisioning/tools-versions.yml  | yq '.helm_version')"
           echo "CURRENT_HELM_VERSION=${current_helm_version}" >> $GITHUB_OUTPUT
       - id: setup_helm
         name: Set up Helm
