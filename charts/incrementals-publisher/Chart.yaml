@@ -1,7 +1,7 @@
 apiVersion: v2
 description: incrementals-publisher
 name: incrementals-publisher
-version: 0.8.3
+version: 0.8.4
 maintainers:
 - email: jenkins-infra-team@googlegroups.com
   name: jenkins-infra-team
