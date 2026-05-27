@@ -3411,6 +3411,18 @@ entries:
   geoipupdates:
   - apiVersion: v1
     appVersion: v7.1.0
+    created: "2026-05-27T08:56:45.342613138Z"
+    description: MaxMind GeoIP database updater
+    digest: ff28a0595882b646afcbeaec4df473c76134a856963c5fe12abc0e2656ac289b
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: geoipupdates
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/geoipupdates-2.50.0/geoipupdates-2.50.0.tgz
+    version: 2.50.0
+  - apiVersion: v1
+    appVersion: v7.1.0
     created: "2026-05-11T09:29:00.007743292Z"
     description: MaxMind GeoIP database updater
     digest: 479c777a4c2662e98ce0ae1d11639199df947438c94700323ab4c25c5b61dc98
@@ -6884,6 +6896,18 @@ entries:
     - https://github.com/jenkins-infra/helm-charts/releases/download/mirror-0.1.23/mirror-0.1.23.tgz
     version: 0.1.23
   mirrorbits:
+  - apiVersion: v1
+    appVersion: v0.6.1
+    created: "2026-05-27T08:56:45.588767179Z"
+    description: Mirrobits helm chart for Kubernetes
+    digest: fac1c5ac86d658de8400abdbee6a067b723506e8fe3051ece83447011b682b33
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: mirrorbits
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/mirrorbits-5.10.13/mirrorbits-5.10.13.tgz
+    version: 5.10.13
   - apiVersion: v1
     appVersion: v0.6.1
     created: "2026-05-11T09:27:10.709560365Z"
@@ -18478,6 +18502,18 @@ entries:
     version: 0.1.0
   wiki:
   - apiVersion: v2
+    appVersion: 0.2.46
+    created: "2026-05-27T08:56:45.79021198Z"
+    description: A Helm chart for wiki static content
+    digest: 5b808c1af7f51bd85b83ccd75141ef5cf77f2f729a30e6a9fea84981fbfdc196
+    maintainers:
+    - name: jenkins-infra-team@googlegroups.com
+    name: wiki
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/wiki-0.8.14/wiki-0.8.14.tgz
+    version: 0.8.14
+  - apiVersion: v2
     appVersion: 0.2.45
     created: "2026-05-26T08:07:35.013999216Z"
     description: A Helm chart for wiki static content
@@ -20397,4 +20433,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2026-05-26T08:07:35.01624032Z"
+generated: "2026-05-27T08:56:45.793313603Z"
