@@ -1,1 +1,0 @@
-Consult the pod logs to see if the app is running.
