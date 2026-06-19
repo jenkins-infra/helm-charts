@@ -18,8 +18,7 @@ data:
     test -d ./bom || git clone https://github.com/jenkinsci/bom
     pushd ./bom
 
-    # TODO: Retrieve this list from Maven
-    build_lines=("weekly" "2.504.x" "2.516.x" "2.528.x")
+    read -r -a build_lines <<< "${RELEASE_LINES:-}"
 
     # Load dependencies in the local Maven repo
     for build_line in "${build_lines[@]}"; do
