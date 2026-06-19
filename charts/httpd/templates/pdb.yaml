@@ -1,0 +1,19 @@
+{{- if (gt (int .Values.replicaCount) 1) }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "httpd.fullname" . }}
+  labels:
+{{ include "httpd.labels" . | indent 4 }}
+spec:
+  {{- with .Values.poddisruptionbudget.minAvailable }}
+  minAvailable: {{ . }}
+  {{- end }}
+  {{- with .Values.poddisruptionbudget.maxUnavailable }}
+  maxUnavailable: {{ . }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "httpd.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
