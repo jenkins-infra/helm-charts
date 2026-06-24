@@ -35,4 +35,4 @@ pushd "${mvn_local_repo}"
 df -h .
 du -sh .
 time tar czf "${mvn_cache_archive}" ./
-du -sh "${mvn_cache_dir}"/*
+du -sh "${mvn_cache_dir}"/*.gz
