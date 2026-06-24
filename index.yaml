@@ -6907,6 +6907,17 @@ entries:
     version: 0.0.2
   maven-cacher:
   - apiVersion: v1
+    created: "2026-06-24T09:59:11.842973814Z"
+    description: Maven Cache updater for the *.jenkins.io controllers
+    digest: be7ba1be674276107830e80e79275f0bb64f2bea74e521a0609137cba71bfcd0
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: maven-cacher
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/maven-cacher-1.1.0/maven-cacher-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v1
     created: "2026-06-23T17:26:03.105009497Z"
     description: Maven Cache updater for the *.jenkins.io controllers
     digest: b47f744c8f4ff3bf1a07b4b6879544f9626bad2172ba794c5ec9a15e91a74d80
@@ -20642,4 +20653,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2026-06-24T08:58:46.466814226Z"
+generated: "2026-06-24T09:59:11.844868928Z"
