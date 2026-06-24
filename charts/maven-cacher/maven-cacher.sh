@@ -10,12 +10,15 @@ mvn_dependency_offline_target='org.apache.maven.plugins:maven-dependency-plugin:
 
 MVN_OPTS=("-Dmaven.repo.local=${mvn_local_repo}" "${mvn_dependency_offline_target}")
 
-# Set up local working directory with BOM code
+test -d ./jenkins || git clone https://github.com/jenkinsci/jenkins
+pushd ./jenkins
+time mvn "${MVN_OPTS[@]}"
+popd
+
 test -d ./bom || git clone https://github.com/jenkinsci/bom
 pushd ./bom
-
-read -r -a build_lines <<< "${RELEASE_LINES:-}"
-
+time mvn "${MVN_OPTS[@]}"
+# Stay in the bom for its sub-project 'sample-plugin'
 read -r -a build_lines <<< "${RELEASE_LINES:-}"
 for build_line in "${build_lines[@]}"; do
   if [[ $build_line != "weekly" ]]; then
@@ -25,6 +28,7 @@ for build_line in "${build_lines[@]}"; do
       -DincludeScore=runtime,compile,test \
       "${MVN_OPTS[@]}"
 done
+popd
 
 # Generate a new cache archive from the local Maven repository
 pushd "${mvn_local_repo}"
