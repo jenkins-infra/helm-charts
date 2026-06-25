@@ -16517,6 +16517,19 @@ entries:
   rating:
   - apiVersion: v2
     appVersion: "1.0"
+    created: "2026-06-25T10:00:08.475505771Z"
+    description: A Helm chart for Kubernetes
+    digest: 2ee3d25b5638a6876b968a4529379d9aaf34a080374eae19bcdf8de2027111f1
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: rating
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/rating-0.6.6/rating-0.6.6.tgz
+    version: 0.6.6
+  - apiVersion: v2
+    appVersion: "1.0"
     created: "2026-06-17T12:24:40.841407044Z"
     description: A Helm chart for Kubernetes
     digest: 39e1615e4eb05598e7564a132190166fcbf57423031f48e01bd0dc86aea2e3d8
@@ -20675,4 +20688,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2026-06-25T09:59:00.709391941Z"
+generated: "2026-06-25T10:00:08.477936718Z"
