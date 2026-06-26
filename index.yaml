@@ -18814,6 +18814,18 @@ entries:
     version: 0.1.0
   wiki:
   - apiVersion: v2
+    appVersion: 0.2.49
+    created: "2026-06-26T15:24:09.834946373Z"
+    description: A Helm chart for wiki static content
+    digest: 29095f76fa9d3c39762b211a4299b67879932dfa8b9f188b230919243e39b48c
+    maintainers:
+    - name: jenkins-infra-team@googlegroups.com
+    name: wiki
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/wiki-0.8.16/wiki-0.8.16.tgz
+    version: 0.8.16
+  - apiVersion: v2
     appVersion: 0.2.47
     created: "2026-06-17T08:30:56.876533874Z"
     description: A Helm chart for wiki static content
@@ -20757,4 +20769,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2026-06-26T13:40:15.342016223Z"
+generated: "2026-06-26T15:24:09.838654056Z"
