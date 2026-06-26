@@ -9,7 +9,7 @@ image:
     pullPolicy: IfNotPresent
   crond:
     repository: dockerhubmirror.azurecr.io/jenkinsciinfra/ldap
-    tag: cron-2.1.28
+    tag: cron-2.1.32
     pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
