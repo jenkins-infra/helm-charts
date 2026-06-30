@@ -7,6 +7,7 @@ templates:
   - service.yaml
   - persistentVolume.yaml
   - persistentVolumeClaim.yaml
+  - pdb.yaml
 values:
   - values/custom.yaml
 tests:
@@ -128,6 +129,43 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].volumeMounts[1].mountPath
           value: /usr/local/apache2/htdocs
+  - it: should create a default pdb when replicated
+    template: pdb.yaml
+    set:
+      replicaCount: 2
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.minAvailable
+          value: 1
+      - notExists:
+          path: spec.maxUnavailable
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/name"]
+          value: "httpd"
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/instance"]
+          value: "RELEASE-NAME"
+  - it: should create a customized pdb when custom values are set
+    template: pdb.yaml
+    set:
+      replicaCount: 2
+      poddisruptionbudget:
+        minAvailable: null
+        maxUnavailable: 1
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: PodDisruptionBudget
+      - notExists:
+          path: spec.minAvailable
+      - equal:
+          path: spec.maxUnavailable
+          value: 1
   - it: should create ingress with pathType set to the specified custom value by default
     template: ingress.yaml
     asserts:

@@ -2,6 +2,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 replicaCount: 1
+# A PodDisruptionBudget is only rendered when replicaCount is greater than 1.
+poddisruptionbudget:
+  minAvailable: 1
+  # maxUnavailable: 1
 image:
   repository: httpd
   tag: 2.4.68
