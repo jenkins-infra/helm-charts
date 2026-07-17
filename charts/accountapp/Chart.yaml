@@ -4,5 +4,5 @@ maintainers:
 - email: jenkins-infra-team@googlegroups.com
   name: jenkins-infra-team
 name: accountapp
-version: 0.11.0
-appVersion: 0.6.92
+version: 0.11.1
+appVersion: 0.6.93
