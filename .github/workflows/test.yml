@@ -77,11 +77,7 @@ jobs:
         if: steps.list_modified_charts_with_unit_tests.outputs.modified_charts_with_unit_tests != ''
         run: |
           helm env
-          # Repeat 2 times to fight against network errors in  GHA runners
-          # Always return true
-          helm plugin install https://github.com/helm-unittest/helm-unittest --version ${UNITTEST_VERSION} \
-            || helm plugin install https://github.com/helm-unittest/helm-unittest --version ${UNITTEST_VERSION} \
-            || true
+          helm plugin install https://github.com/helm-unittest/helm-unittest --version ${UNITTEST_VERSION} --verify=false
           # Fail if not installed
           helm plugin list | grep unittest
       - id: run_helm_unittests
