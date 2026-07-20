@@ -28,7 +28,7 @@ resources: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
-cron: '0 14 * * 0' # Once a week, at 14:00, on Sunday
+cron: '0 14 * * 0'  # Once a week, at 14:00, on Sunday
 ## Provide a custom PVC to read and write caching archive from/to
 # cachePvc: customPersistentVolumeClaimName
 cacheMount: /cache
@@ -39,3 +39,5 @@ mavenMirror:
   enable: false
   # url: http://internal-mirror
   # mirrorOf: "external:*,!whatever"
+# Release lines included in jenkinsci/bom
+releaseLines: 'weekly'  # space separated

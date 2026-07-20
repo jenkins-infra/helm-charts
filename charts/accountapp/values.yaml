@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: dockerhubmirror.azurecr.io/jenkinsciinfra/account-app
-  tag: 0.6.88
+  tag: 0.6.94
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
@@ -61,7 +61,8 @@ smtp:
   port: 587
   user: null
   password: ""
-appUrl: https://accounts.jenkins.io
+# appUrl must have a trailing slash as per https://github.com/jenkins-infra/account-app/blob/fad7a2afda4419a78066913464bd25d0fc88feb8/src/main/java/org/jenkinsci/account/Parameters.java#L73 
+appUrl: https://accounts.jenkins.io/
 election:
   open: 1970-01-01
   close: 1970-01-02
