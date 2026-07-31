@@ -5,11 +5,11 @@ replicaCount: 1
 image:
   slapd:
     repository: dockerhubmirror.azurecr.io/jenkinsciinfra/ldap
-    tag: 2.1.36
+    tag: 2.1.37
     pullPolicy: IfNotPresent
   crond:
     repository: dockerhubmirror.azurecr.io/jenkinsciinfra/ldap
-    tag: cron-2.1.36
+    tag: cron-2.1.37
     pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
