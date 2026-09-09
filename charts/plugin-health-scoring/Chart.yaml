@@ -3,7 +3,7 @@ description: A Helm chart for Kubernetes
 name: plugin-health-scoring
 type: application
 version: 3.1.8
-appVersion: v6.0.2
+appVersion: v6.1.0
 maintainers:
 - email: jenkins-infra-team@googlegroups.com
   name: jenkins-infra-team
