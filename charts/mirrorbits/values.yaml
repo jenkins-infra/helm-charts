@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: dockerhubmirror.azurecr.io/jenkinsciinfra/mirrorbits
-  tag: 0.3.22
+  tag: 0.3.23
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
@@ -109,6 +109,9 @@ config:
   concurentSync: 5
   ## Interval in minutes between mirrors HTTP health checks
   checkInterval: 1
+  ## Allow Geographical Sorting to be disabled
+  ## Introduced in  https://github.com/videolabs/mirrorbits/releases/tag/v0.6.2
+  geographicalSort: true
   ## config.redis specifies the Redis configuration
   # redis:
   #   address: redis.local:6379

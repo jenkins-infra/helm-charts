@@ -105,6 +105,10 @@ GeoipDatabasePath: {{ . }}
 AllowHTTPToHTTPSRedirects: {{ . }}
   {{- end }}
 
+# Since https://github.com/videolabs/mirrorbits/releases/tag/v0.6.2
+# Enabled by default as per https://github.com/videolabs/mirrorbits/blob/v0.6.2/config/config.go#L48
+GeographicalSort: {{ .Values.config.geographicalSort }}
+
   {{- with .Values.config.sameDownloadInterval }}
 ## Interval in seconds between which 2 range downloads of a given file
 ## from a same origin (hashed (IP, user-agent) couple) are considered

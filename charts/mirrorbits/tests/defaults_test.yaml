@@ -195,6 +195,10 @@ tests:
           decodeBase64: true
       - matchRegex:
           path: data["mirrorbits.conf"]
+          pattern: 'GeographicalSort: true'
+          decodeBase64: true
+      - matchRegex:
+          path: data["mirrorbits.conf"]
           pattern: 'Gzip: false'
           decodeBase64: true
       - matchRegex:

@@ -28,6 +28,7 @@ config:
   repository: /DATA
   templates: /custom-tpls
   geoipDatabase: /geo-data
+  geographicalSort: false
   gzip: false
   port: 7777
   traceFile: /TIME
