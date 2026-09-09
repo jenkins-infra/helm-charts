@@ -323,6 +323,11 @@ tests:
       - documentIndex: 1
         matchRegex:
           path: data["mirrorbits.conf"]
+          pattern: 'GeographicalSort: false'
+          decodeBase64: true
+      - documentIndex: 1
+        matchRegex:
+          path: data["mirrorbits.conf"]
           pattern: 'Gzip: false'
           decodeBase64: true
       - documentIndex: 1
