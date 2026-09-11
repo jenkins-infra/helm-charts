@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: dockerhubmirror.azurecr.io/jenkinsciinfra/incrementals-publisher
-  tag: 1.8.33
+  tag: 1.8.34
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
