@@ -5,4 +5,4 @@ maintainers:
   name: jenkins-infra-team
 name: accountapp
 version: 0.11.11
-appVersion: 0.6.109
+appVersion: 0.6.110
