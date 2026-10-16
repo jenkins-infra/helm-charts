@@ -2789,6 +2789,15 @@ entries:
     version: 0.1.0
   artifact-caching-proxy:
   - apiVersion: v2
+    created: "2026-10-16T06:48:21.631448685Z"
+    description: artifact-caching-proxy is a Nginx caching proxy in front of repo.jenkins-ci.org
+    digest: c5ba6ac653c05f9cc134921caa768f2dff4a964c97656d3729566fd686621438
+    name: artifact-caching-proxy
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/artifact-caching-proxy-2.0.6/artifact-caching-proxy-2.0.6.tgz
+    version: 2.0.6
+  - apiVersion: v2
     created: "2026-09-16T06:36:50.712896796Z"
     description: artifact-caching-proxy is a Nginx caching proxy in front of repo.jenkins-ci.org
     digest: d335bec9ae262edca2de70226e48d2c2a6d7200ed328dee7cbdb5b19aa4fd2b5
@@ -15027,6 +15036,18 @@ entries:
   nginx-website:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2026-10-16T06:48:21.903978148Z"
+    description: A Helm chart for serving website with nginx
+    digest: 0fbf872444fa804b84f4b95b31a9a2c7f6f6cee2c2fe226be8f8a8e088b82281
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: nginx-website
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/nginx-website-0.7.9/nginx-website-0.7.9.tgz
+    version: 0.7.9
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2026-09-16T06:36:50.879383013Z"
     description: A Helm chart for serving website with nginx
     digest: 695fb95ccd7da970460aff8929083f3a8bc8c28148feb3df896bd0b38d85b135
@@ -16056,6 +16077,17 @@ entries:
     - https://github.com/jenkins-infra/helm-charts/releases/download/plugin-health-scoring-1.0.0/plugin-health-scoring-1.0.0.tgz
     version: 1.0.0
   plugin-site:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2026-10-16T06:48:22.111083332Z"
+    description: A Helm chart for plugins.jenkins.io
+    digest: 5d3e0796029c493aa7a2dd6a96ffd4bb357320acde29a6ce33e3141e4484f80c
+    maintainers:
+    - name: jenkins-infra-team@googlegroups.com
+    name: plugin-site
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/plugin-site-0.6.9/plugin-site-0.6.9.tgz
+    version: 0.6.9
   - apiVersion: v1
     appVersion: "1.0"
     created: "2026-09-16T06:36:51.004031483Z"
@@ -21773,4 +21805,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2026-10-14T12:28:16.797612184Z"
+generated: "2026-10-16T06:48:22.116475798Z"
