@@ -39,5 +39,10 @@ mavenMirror:
   enable: false
   # url: http://internal-mirror
   # mirrorOf: "external:*,!whatever"
+
+# jenkinsci/jenkins branches to retrieve dependencies to cache from
+jenkinsBranches: 'master'  # space separated
 # Release lines included in jenkinsci/bom
 releaseLines: 'weekly'  # space separated
+# Additional dependencies to cache
+additionalDependencies: '' # space separated, ex: 'org.apache.maven.plugins:maven-help-plugin:pom:3.5.0'
