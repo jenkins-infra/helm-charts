@@ -4866,6 +4866,17 @@ entries:
     version: 0.1.1
   incrementals-publisher:
   - apiVersion: v2
+    created: "2026-10-26T11:10:41.8486501Z"
+    description: incrementals-publisher
+    digest: 350ac3cc0b69331586b71dec8817a69de14f8734bc7a2f826a0e76ab250acbb0
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: incrementals-publisher
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/incrementals-publisher-0.8.16/incrementals-publisher-0.8.16.tgz
+    version: 0.8.16
+  - apiVersion: v2
     created: "2026-10-19T06:55:21.348941399Z"
     description: incrementals-publisher
     digest: 2f599debd13a80411a7c8bdf07d15d98c2690237936f26249ce9737c81ebd920
@@ -21973,4 +21984,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2026-10-26T09:25:16.616148781Z"
+generated: "2026-10-26T11:10:41.85107158Z"
