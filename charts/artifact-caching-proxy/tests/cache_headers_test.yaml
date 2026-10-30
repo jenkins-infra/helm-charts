@@ -1,0 +1,22 @@
+suite: Tests for upstream response headers
+templates:
+  - nginx-proxy-configmap.yaml
+tests:
+  - it: Should cache responses regardless of upstream caching headers
+    template: nginx-proxy-configmap.yaml
+    asserts:
+      - matchRegex:
+          path: data["cache.conf"]
+          pattern: proxy_ignore_headers .*"Set-Cookie"
+  - it: Should not send upstream cookies to clients
+    template: nginx-proxy-configmap.yaml
+    asserts:
+      - matchRegex:
+          path: data["cache.conf"]
+          pattern: proxy_hide_header +Set-Cookie;
+  - it: Should keep caching headers for clients and downstream caches
+    template: nginx-proxy-configmap.yaml
+    asserts:
+      - notMatchRegex:
+          path: data["cache.conf"]
+          pattern: proxy_hide_header +(Expires|Cache-Control|Vary)
