@@ -105,6 +105,17 @@ proxy:
     - CF-Cache-Status # Cloudflare custom header (Maven Central)
     - X-Checksum-MD5 # Cloudflare custom header (Maven Central)
     - X-Checksum-SHA1 # Cloudflare custom header (Maven Central)
+    - X-GUploader-UploadID # Google custom header (Google mirror of Maven Central)
+    - x-goog-generation # Google custom header (Google mirror of Maven Central)
+    - x-goog-metageneration # Google custom header (Google mirror of Maven Central)
+    - x-goog-stored-content-encoding # Google custom header (Google mirror of Maven Central)
+    - x-goog-stored-content-length # Google custom header (Google mirror of Maven Central)
+    - x-goog-meta-checksum-sha1 # Google custom header (Google mirror of Maven Central)
+    - x-goog-meta-last-modified-epoch # Google custom header (Google mirror of Maven Central)
+    - x-goog-meta-checksum-md5 # Google custom header (Google mirror of Maven Central)
+    - x-goog-meta-last-modified # Google custom header (Google mirror of Maven Central)
+    - x-goog-hash # Google custom header (Google mirror of Maven Central)
+    - x-goog-storage-class # Google custom header (Google mirror of Maven Central)
 poddisruptionbudget:
   minAvailable: 1
 env: []
