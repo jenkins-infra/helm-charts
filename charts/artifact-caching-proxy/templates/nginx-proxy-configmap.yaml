@@ -8,6 +8,10 @@ data:
     proxy_cache_path {{ .Values.cache.path }} levels=1 keys_zone=nginx_cache:{{ .Values.cache.keysZoneSize }} max_size={{ .Values.persistence.size }}g inactive={{ .Values.cache.inactive }} use_temp_path={{ .Values.cache.useTempPath }};
     # The following upstream response headers should be ignored to ensure response is cached - ref. https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_valid
     proxy_ignore_headers "X-Accel-Redirect" "X-Accel-Expires" "X-Accel-Limit-Rate" "X-Accel-Buffering" "X-Accel-Charset" "Expires" "Cache-Control" "Set-Cookie" "Vary";
+    # Do not send upstream cookies (such as Cloudflare's "__cf_bm" from Maven Central) to clients, including from cached responses.
+    # "X-Accel-*" headers are never passed to clients by default, while "Expires", "Cache-Control" and "Vary" are kept for clients and downstream caches.
+    # Ref. https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_hide_header
+    proxy_hide_header   Set-Cookie;
   common-proxy.conf: |
     # Ensure that no authentication header are sent to the upstreams
     proxy_set_header    Authorization     {{ .Values.proxy.authorizationHeader | quote }};
