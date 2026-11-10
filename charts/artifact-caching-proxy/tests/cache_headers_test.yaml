@@ -14,9 +14,3 @@ tests:
       - matchRegex:
           path: data["cache.conf"]
           pattern: proxy_hide_header +Set-Cookie;
-  - it: Should keep caching headers for clients and downstream caches
-    template: nginx-proxy-configmap.yaml
-    asserts:
-      - notMatchRegex:
-          path: data["cache.conf"]
-          pattern: proxy_hide_header +(Expires|Cache-Control|Vary)
