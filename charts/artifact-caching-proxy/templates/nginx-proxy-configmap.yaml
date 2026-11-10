@@ -63,6 +63,8 @@ data:
         resolver {{ .Values.proxy.dnsResolver }} valid=60s ipv6=off;
         # Specify the upstream URLs as a variables to ensure dynamic name resolution
         set $jenkins_repo {{ .Values.proxy.proxyPass }};
+        # Using US mirror (https://storage-download.googleapis.com/maven-central/index.html) as we run ci.jenkins.io in US
+        set $mirror_central_repo maven-central.storage-download.googleapis.com;
         set $central_repo repo1.maven.org;
         set $initial_proxy_location {{ .Values.proxy.initialProxyLocationPath }};
 
@@ -127,9 +129,29 @@ data:
 
             proxy_intercept_errors on;
             # If the file is not found, then fallback the search in the "maven central" upstream server
-            error_page 404 = @fallback_maven_central;
+            error_page 404 = @fallback_mirror_maven_central;
             # If upstream respond with "HTTP 30x Redirect" then Nginx must re-emit a proxy request to the new location (see location @handle_redirects)
-            error_page 307 302 301 = @handle_redirects;
+            error_page 308 307 302 301 = @handle_redirects;
+        }
+
+        ## If Jenkins Artifactory does not have the artifacts, try from the Google Mirror of the Maven Central repository
+        location @fallback_mirror_maven_central {
+{{- if .Values.proxy.proxyBypass.enabled -}}
+            add_header Cache $upstream_cache_status;
+            proxy_cache_bypass $bypass;
+{{- end }}
+            proxy_pass          https://$mirror_central_repo/maven2$request_uri;
+            proxy_cache_key     $uri;
+            include             /etc/nginx/conf.d/common-proxy.conf;
+            include             /etc/nginx/conf.d/proxy-cache.conf;
+
+            # If upstream respond with "HTTP 30x Redirect"
+            # then this section will be used to follow the redirect
+            # by using the "virtual location" @handle_redirects below
+            proxy_intercept_errors on;
+            error_page 308 307 302 301 = @handle_redirects;
+            # Fallback to Maven central if the mirror is overwhelmed
+            error_page 429 500 502 503 504 509 = @fallback_maven_central;
         }
 
         ## Fallback location to maven central
@@ -147,7 +169,7 @@ data:
             # then this section will be used to follow the redirect
             # by using the "virtual location" @handle_redirects below
             proxy_intercept_errors on;
-            error_page 307 302 301 = @handle_redirects;
+            error_page 309 307 302 301 = @handle_redirects;
         }
 
         location @handle_redirects {
