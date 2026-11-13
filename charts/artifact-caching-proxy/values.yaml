@@ -95,7 +95,7 @@ proxy:
   # Allows to set the DNS resolver to be used for upstreams
   dnsResolver: 9.9.9.9
   # Hide the following headers from upstream response
-  # "X-Accel-*" headers are never passed to clients by default, while "Expires", "Cache-Control" and "Vary" are kept for clients and downstream caches.
+  # Nginx suppresses "X-Accel-*" headers by default. Upstream "Expires" and "Cache-Control" are hidden, while "Vary" remains visible to downstream caches.
   # Ref. https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_hide_header
   proxyHiddenHeaders:
     - Set-Cookie # Do not send upstream cookies (such as Cloudflare's "__cf_bm" from Maven Central) to clients
