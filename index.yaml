@@ -2897,6 +2897,15 @@ entries:
     version: 0.1.0
   artifact-caching-proxy:
   - apiVersion: v2
+    created: "2026-11-16T06:17:29.712860093Z"
+    description: artifact-caching-proxy is a Nginx caching proxy in front of repo.jenkins-ci.org
+    digest: ed5442dea42372fc460b566d60be23c0e41c0bdeb176c05ef8d413bf0498cc3d
+    name: artifact-caching-proxy
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/artifact-caching-proxy-2.1.1/artifact-caching-proxy-2.1.1.tgz
+    version: 2.1.1
+  - apiVersion: v2
     created: "2026-11-10T15:13:08.88208218Z"
     description: artifact-caching-proxy is a Nginx caching proxy in front of repo.jenkins-ci.org
     digest: d864d6bed327a50155dfdf92e8e6cf75e1ca4a699e8bd653e3e91144e21f4a75
@@ -16772,6 +16781,19 @@ entries:
     version: 0.0.3
   plugin-site-issues:
   - apiVersion: v2
+    appVersion: 0.10.118
+    created: "2026-11-16T06:17:29.849252854Z"
+    description: plugin-site-issues
+    digest: bc66b3ec9ff9e23484bc1e0f8b3cdffd3f4be8a99fb556372919482ec52c50b0
+    maintainers:
+    - email: jenkins-infra-team@googlegroups.com
+      name: jenkins-infra-team
+    name: plugin-site-issues
+    type: application
+    urls:
+    - https://github.com/jenkins-infra/helm-charts/releases/download/plugin-site-issues-0.4.43/plugin-site-issues-0.4.43.tgz
+    version: 0.4.43
+  - apiVersion: v2
     appVersion: 0.10.117
     created: "2026-11-12T07:50:32.589376023Z"
     description: plugin-site-issues
@@ -22344,4 +22366,4 @@ entries:
     urls:
     - https://github.com/jenkins-infra/public-charts/releases/download/wiki-0.1.0/wiki-0.1.0.tgz
     version: 0.1.0
-generated: "2026-11-12T14:22:14.095674365Z"
+generated: "2026-11-16T06:17:29.853634117Z"
