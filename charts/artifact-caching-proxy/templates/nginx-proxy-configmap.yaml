@@ -151,7 +151,7 @@ data:
             proxy_intercept_errors on;
             error_page 308 307 302 301 = @handle_redirects;
             # Fallback to Maven central if the mirror is overwhelmed
-            error_page 429 500 502 503 504 509 = @fallback_maven_central;
+            error_page 403 404 429 500 502 503 504 509 = @fallback_maven_central;
         }
 
         ## Fallback location to maven central
