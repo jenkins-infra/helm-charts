@@ -34,6 +34,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            # NodeJS application will merge the file `/srv/uplink/config/${NODE_ENV}.json` with defaults from the image
             - name: NODE_ENV
               value: 'production'
             - name: DB_CONNECTION_STRING
@@ -72,6 +73,11 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          volumeMounts:
+            - name: conf
+              mountPath: /srv/uplink/config/production.json
+              subPath: production.json
+              readOnly: true
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -84,3 +90,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+      volumes:
+        - name: conf
+          configMap:
+            name: {{ include "uplink.fullname" . }}
