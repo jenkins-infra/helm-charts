@@ -52,6 +52,11 @@ spec:
                 secretKeyRef:
                   name: {{ include "uplink.fullname" . }}
                   key: client.secret
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "uplink.fullname" . }}
+                  key: jwt.secret
             - name: SENTRY_DSN
               valueFrom:
                 secretKeyRef:

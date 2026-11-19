@@ -29,6 +29,8 @@ sentry:
   dsn: https://XXX@sentry.io/YYY
 postgresql:
   url: postgres://username:password@postgres.example.com:5432/database
+jwt:
+  secret: xxxxxxxxxxxxxx
 
 ingress:
   enabled: true
