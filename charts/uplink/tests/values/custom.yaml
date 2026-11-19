@@ -5,6 +5,8 @@ client:
   secret: "example-secret"
 sentry:
   dsn: "example-dsn"
+jwt:
+  secret: "a poorly formed secret"
 podAnnotations:
   ad.datadoghq.com/uplink.logs: |
     [

@@ -26,6 +26,9 @@ tests:
       - equal:
           path: data['sentry.dsn']
           value: "ZXhhbXBsZS1kc24="  # Base64 encoded value of "example-dsn"
+      - equal:
+          path: data['jwt.secret']
+          value: "YSBwb29ybHkgZm9ybWVkIHNlY3JldA=="  # Base64 encoded value of "a poorly formed secret"
   - it: should create a PDB with defaults when multiple replicas are set
     template: pdb.yaml
     set:

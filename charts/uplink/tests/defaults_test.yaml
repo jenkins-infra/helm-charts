@@ -20,6 +20,8 @@ tests:
           path: data.client.secret
       - notExists:
           path: data.sentry.dsn
+      - notExists:
+          path: data.jwt.secret
   - it: should not generate any pdb with default values
     template: pdb.yaml
     asserts:
