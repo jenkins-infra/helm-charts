@@ -33,14 +33,6 @@ conditions:
         - arm64
 
 targets:
-  updateChart:
-    name: Update uplink helm chart
-    kind: helmchart
-    spec:
-      name: charts/uplink
-      key: $.image.tag
-      versionincrement: patch
-    scmid: default
   updateChartMeta:
     name: Update chart appVersion
     kind: helmchart
