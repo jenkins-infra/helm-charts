@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: dockerhubmirror.azurecr.io/jenkinsciinfra/account-app
-  tag: 0.6.127
+  tag: 0.6.128
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 nameOverride: ""
